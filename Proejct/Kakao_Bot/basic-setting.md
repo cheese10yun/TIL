@@ -136,18 +136,12 @@ router.delete('/chat_room/:user_key', (req, res) => {
 ```
 
 ## 옐로우 아이디 설정
+추후에 추가 예정
 
-## AWS EC2 설정 
 
-### 1\. AWS Setting
+## AWS EC2 설정
 
-### 2\. 옐로우 아이디 설정 (응답형 API)
-
-### 3\. 일단 모르겠음
-
-### 4.
-
-### AWS
+### AWS EC2 Node Clone
 
 **기본적으로 EC, GitHub 셋팅이 완료되었다고 가정하고 시작하겠씁니다.**
 
@@ -156,7 +150,7 @@ git init
 git clone [GitHub URL]
 ```
 
-#### Node 설정
+#### Node npm install & pm2 start
 
 ```
 cd clone 디렉토리
@@ -165,8 +159,9 @@ cd bin/
 pm2 start www -i 0 --name [APP_NAME]
 ```
 
-#### pm2 설정은 다론곳 참고
+#### PM2 설정은 [Yun Blog](https://cheese10yun.github.io/PM2) 참고
 
-### curl로 모든 API 작성
+#### AWS EC2 Nginx Node 연동 은 [Yun Blog ](https://cheese10yun.github.io/Node-AWS-Nginx) 참고
 
-### API 문서 작성
+
+## 실행 방법
