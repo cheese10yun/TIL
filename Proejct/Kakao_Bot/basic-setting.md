@@ -123,6 +123,7 @@ router.post('/friend', (req, res) => {
 ```
 
 ### Node chat_room API
+
 ```javascript
 router.delete('/chat_room/:user_key', (req, res) => {
     const user_key = req.params.user_key;
@@ -138,7 +139,6 @@ router.delete('/chat_room/:user_key', (req, res) => {
 ## 옐로우 아이디 설정
 
 ### 옐로우 아이디 등록 [링크][31868d62]
-[31868d62]: https://yellowid.kakao.com/ "링크"
 
 ![옐로우아이디 등록](http://i.imgur.com/68DXtkf.png)
 
@@ -155,11 +155,13 @@ router.delete('/chat_room/:user_key', (req, res) => {
 **API형 자동읍답 설정하기 선택**
 
 #### 앱등록시 반드시 keyboard API가 동작해야합니다.
+
 ![API TEST](http://i.imgur.com/JUFtFR8.png)
 
 ## 프로젝트 실행 방법 (Mac 기준)
 
 ### Redis 설치 및 실행
+
 ```
 $ wget http://download.redis.io/redis-stable.tar.gz
 $ tar xvzf redis-stable.tar.gz
@@ -169,6 +171,7 @@ $ redis-server
 ```
 
 ### Node 설정 및 실행
+
 ```
 $ [sudo] npm install pm2 -g
 $ cd Node-Boot/
@@ -176,28 +179,5 @@ $ [sudo] npm install
 $ cd bin/
 $ pm2 start www --name <APP_NAME>
 ```
-
-
-## AWS EC2 설정
-
-### AWS EC2 Node Clone
-
-**기본적으로 EC, GitHub 셋팅이 완료되었다고 가정하고 시작하겠씁니다.**
-
-```git
-git init
-git clone [GitHub URL]
-```
-
-#### Node npm install & pm2 start
-
-```
-cd clone 디렉토리
-[sudo] npn install
-cd bin/
-pm2 start www -i 0 --name [APP_NAME]
-```
-
-#### PM2 설정은 [Yun Blog](https://cheese10yun.github.io/PM2) 참고
-
-#### AWS EC2 Nginx Node 연동 은 [Yun Blog ](https://cheese10yun.github.io/Node-AWS-Nginx) 참고
+**PM2 설정은 [Yun Blog PM2](https://cheese10yun.github.io/PM2) 참고**
+**Redis Node 사용법은 [Yun Wiki Redis](https://github.com/cheese10yun/Yun-Wiki/blob/master/Node/Redis.md)**
