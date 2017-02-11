@@ -2,7 +2,21 @@ Redis
 ===
 
 
-## Redis 란?
+### Redis 란?
+
+### Redis 설치
+```
+$ wget http://download.redis.io/redis-stable.tar.gz
+$ tar xvzf redis-stable.tar.gz
+$ cd redis-stable
+$ make
+```
+
+### 실행
+```
+$ redis-server
+```
+
 
 ## Redis Node 연동
 
@@ -57,13 +71,17 @@ port, host에 대한 설정은 `secret.js` 값을 참조 한다. 디비 정보�
 전역변수 client에 레디스 컨넥션 정보를 넣고 `router.use`를 사용해서 레디스 정보를 req.cache에 넣는다.
 
 ### 사용방법
+
 ```javascript
 RedisDAO.getDiet(req.cache, redis_key_diet, (err, cached) => {
-                callback(err, JSON.parse(cached));
-            });
+    callback(err, JSON.parse(cached));
+});
 ```
+위 소스코드 처럼 req.cache를 이용해서 사용, DAO 객체는 아래에서 설명
 
 
+
+### Redis DAO
 ```javascript
 const RedisDAO = {};
 
@@ -77,3 +95,4 @@ RedisDAO.setDiet = (reqCache, key, value, callback) => {
 
 module.exports = RedisDAO;
 ```
+`reqCache(redis)`를 기반으로 key, callback을 넘겨 받아 작업을 수행하고 해당 값을 리턴 해줌
