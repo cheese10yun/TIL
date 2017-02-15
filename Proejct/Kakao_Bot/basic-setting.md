@@ -138,7 +138,7 @@ router.delete('/chat_room/:user_key', (req, res) => {
 
 ## 옐로우 아이디 설정
 
-### 옐로우 아이디 등록 [링크][31868d62]
+### [옐로우 아이디 등록](https://yellowid.kakao.com)
 
 ![옐로우아이디 등록](http://i.imgur.com/68DXtkf.png)
 
@@ -162,7 +162,7 @@ router.delete('/chat_room/:user_key', (req, res) => {
 
 ### Redis 설치 및 실행
 
-```
+```1
 $ wget http://download.redis.io/redis-stable.tar.gz
 $ tar xvzf redis-stable.tar.gz
 $ cd redis-stable
@@ -180,4 +180,5 @@ $ cd bin/
 $ pm2 start www --name <APP_NAME>
 ```
 **PM2 설정은 [Yun Blog PM2](https://cheese10yun.github.io/PM2) 참고**
-**Redis Node 사용법은 [Yun Wiki Redis](https://github.com/cheese10yun/Yun-Wiki/blob/master/Node/Redis.md)**
+
+**Redis Node 사용법은 [Yun Wiki Redis](https://github.com/cheese10yun/Yun-Wiki/blob/master/Node/Redis.md) 참고**
