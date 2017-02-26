@@ -769,7 +769,6 @@ next(); // 1을 반환
 next(); // 2을 반환
 next(); // 3을 반환
 ```
-
 - next를 통해서만 `var count` 값을 증가시킬수 있다.
 - 외부에서 `var count`에 접근할 방법이 없기 때문에 안전하다.
 
@@ -941,7 +940,6 @@ var  conf = {
   age : 27,
   sex: 'M',
 }
-
 function addPerson(conf) {
   conf.name // yun
   conf.age // 27
@@ -1117,7 +1115,6 @@ function Gadget (){
   };
 }
 var toy = new Gadget();
-
 console.log(Gadget.name; //'undefined' 비공개 멤버 접근 불가능
 console.log(Gadget.getName()); // 'yun' 공개 메서드 접근 가능
 ```
