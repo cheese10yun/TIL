@@ -162,7 +162,7 @@ router.delete('/chat_room/:user_key', (req, res) => {
 
 ### Redis 설치 및 실행
 
-```1
+```
 $ wget http://download.redis.io/redis-stable.tar.gz
 $ tar xvzf redis-stable.tar.gz
 $ cd redis-stable
