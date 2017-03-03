@@ -86,4 +86,7 @@ $ vi .profile or .bash_profile
 ```
 $ exit and log in
 ```
-변경이 완료되면 eixt and login 실행
+변경이 완료되면 eixt and login 실행 이후 다시 접속 `date` 명령어 입력해서 타임존 설정 확인
+
+
+  
