@@ -1,5 +1,10 @@
 ## AWS S3 업로드시 이미지 최적화
-AWS S3 이미지 업로드시 이미지 최적화를 진행
+AWS S3 이미지 업로드시 이미지 최적화를 진행하고 업로드하는 것이 브라우저에서의 속도가 크게 도움이 됩니다. `formidable` 업로드 , `AWS-S3` 업로드는 이 전 포스팅에서 한번 다뤘기 때문에 간단하게 설명하고 이미지 최적화 적업에 대해서 자세히 포스팅하겠습니다.
+
+## 작업순서
+1. `formidable` 모듈로 이미지 업로드 진행
+2. `imagemin` 모듈로 업로드된 이미지 최적화 진행
+3. `aws-sdk` 모듈을로 최적화 작업이 완료된 이미지 S3에 업로드
 
 ## 필수 패키지 설치
 ```
@@ -10,9 +15,9 @@ npm install --save imagemin-pngquant
 npm install --save formidable
 ```
 
-## UploadService 설명
+## UploadService.js 설명
 
-### formidable 업로드
+### formidable 모듈을 이용한 이미지 업로드
 ```javascript
 Upload.formidable = (req, callback) => {
   let _fields;
@@ -32,9 +37,9 @@ Upload.formidable = (req, callback) => {
 ```
 
 * `form.on('error')` formidable 업로드 중 오류 발생시 `callback`으로 `err` 전달
-* `form.on('end')` formidable 업로드가 완료되면 `callback`으로 파일정보와, 필드값 전달
+* `form.on('end')` formidable 업로드가 오류 없이 완료되면 `callback`으로 파일정보와, 필드값 전달
 
-### 이미지 최적화
+### imagemin 모듈을 이용한 이미지 최적화
 ```javascript
 Upload.optimize = (files, callback) => {
   async.each(files, (file, cb) => {
@@ -50,17 +55,25 @@ Upload.optimize = (files, callback) => {
   });
 };
 ```
-* `async.each`으로 업로드할 파잇의 이미지 최적화 작업진행
-* `imagemin(최적화할 이미지, 최적화 이후 저장될 이미지 경로, 이미지 최적화 작업)`
+* `async.each`으로 업로드할 파일의 개수만큼 이미지 최적화 적업 진행
+* `imagemin([최적화할 이미지 경로(배열 타입이여야함)], 최적화 이후 저장될 이미지 경로, 이미지 최적화 작업)`
+* 위의 예제는 업로된 경로와 최적화가 이루어지는 경로가 동일하여 덮어쓰여 집니다.
 * 이미지 최적화 플러그인 `imageminPngquant` 사용
 
 ### imageminPngquant 플러그인
 
+```javascript
+plugins: [
+	imageminPngquant({quality: '0-80', verbose: false, floyd: 1})
+]
+```
 * `floyd` 이미지 디더링 작업 사용 `Type: boolean, Default: false`
 * `quality` 이미지 퀄리 지정 사용 `Type: string` 0~100 사용 가능
 * `verbose` 불필효한 메타정보 제거 사용 `Type: boolean, Default: false`
+* `imageminPngquant` 의 다양한 속성은 [imageminPngquant](https://www.npmjs.com/package/imagemin-pngquant) 에서 확인 할 수 있습니다.
+* `imageminPngquant` 플러그인 이외에도 다양한 플러그인을 사용해서 이미지에 대한 다양한 작업들을 진행할 수 있습니다.
 
-### S3 업로드
+### 최적화 완료된 이미지 S3 업로드
 ```javascript
 Upload.s3 = (files, key, callback) => {
   async.each(files, (file, cb) => {
@@ -75,10 +88,11 @@ Upload.s3 = (files, key, callback) => {
   });
 };
 ```
-* `async.each`으로 업로드할 파잇의 갯수만큼 S3에 업로드
+* `async.each`으로 업로드할 파잇의 개수만큼 S3에 업로드 작업 진행
 * `files` 업로드할 파일들의 정보
-* `key` S3에 업로드될 경로
-* `err, result` 값을 `callback` 으로 전달 에러가 발생하면 S3업로드 정지
+* `params.Key` S3에 업로드 될 경로와 파일이름을 지정합니다.
+* `params.Body` 이미지 최적화 작업이 끝난 파일의 경로를 입력합니다.
+* `S3.upload(...)` 실질적인 S3 이미지 업로드가 진행됩니다. `cb(err, result)`으로 에러가 발생하면 즉시 정지하고, 에러가 발생하지 않으면 파일의 개수만큼 업로드를 반복합니다.
 * [Yun Blog Node AWS S3 업로드](https://cheese10yun.github.io/Node-AWS-S3-Upload) 자세한 설명은 참고
 
 
@@ -114,9 +128,10 @@ router.post('/upload', (req, res) => {
 
 ### tasks 작업은 UploadService 모듈로 진행
 
+* 위에서 작성한 `UploadService.js` 모듈로 아래의 작업들이 진행됩니다.
 * `formidable` 메소드로 이미지 업로드 진행
 * `optimize` 메소드로 이미지 최적화 진행
-* `s3` 모듈로 s3 업로드 진행
+* `s3` 메서드로 s3 업로드 진행
 * `async.waterfall` 으로 위 작업 순차 진행
 
 
@@ -141,3 +156,7 @@ router.post('/upload', (req, res) => {
 
 ### 최적화 이미지
 ![](http://i.imgur.com/4pEMLxw.png)
+
+### 마무리
+
+최근에 이미지 S3 업로드시 이미지 최적화 해야 할 작업이 있어서 코드를 만들고 간단하게 정리해보았습니다. 아직 프로덕션에 사용하는 코드는 아니라서 그렇게 안전한 코드는 아닌점... 미리 말씀드립니다. 이 플러그인 외에도 이미지 크롭, 이미지 해상도 조정 등 다양한 플러그인들이 많아 좀 더 검색해보시고 적용하시면 보다 좋을 거 같습니다. 부디 도움이 조금이라도 되셨기를 바랍니다.
