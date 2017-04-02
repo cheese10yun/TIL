@@ -133,3 +133,17 @@ describe('GET /users는', ()=>{
 },
 ```
 *  긴명령어 없이 간단하게 실행가능
+
+
+## describe 사용법
+
+### only
+
+```javascript
+describe.only(....)
+it.only(...)
+before(...)
+```
+* `only` 메서드를 통해서 이미 많이 작성된 TDD 케이스중에 `only`옵션만 붙은 것만 실행 시킬 수 있다.
+* `before(()` 작성된 TDD 케이스 실행 이전에 특정 함수를 실행 시킬 수 있다. 예를 들어 더미데이터 값을 입력하고 그 더미데이터에 대해서 TDD를 수행시킬 수 있다.
+* `--watch` : `package.json`에서 모카 실행 옵션에 `--watch`을 작성하면 코드가 변경되면 자동으로 TDD을 돌려준다
