@@ -48,3 +48,22 @@ $ nvm alias default v6.7.0
 * 설치된 노드 버전 리스트
 * 설치할 수 있는 버전 리스트 가져오기
 * 해당 버전 디폴트로 설정 (디폴트 설정을 안하게될 경우 매번 노드 버전을 nvm use 명령어를 사용해야한다.)
+
+
+
+## 과제
+
+### LoopBack
+
+* part 1 ~ 2
+
+
+### 게시판
+
+#### LoopBack
+* 게시판 CURD
+* 로그인
+* 댓글
+* 스퀸시 다이어그램
+* Define model relations 잘볼것
+* Define access controls 잘볼것
