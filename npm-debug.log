@@ -1,0 +1,22 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/cheese/.nvm/versions/node/v7.6.0/bin/node',
+1 verbose cli   '/Users/cheese/.nvm/versions/node/v7.6.0/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'init' ]
+2 info using npm@4.1.2
+3 info using node@v7.6.0
+4 verbose stack Error: ENOENT: no such file or directory, open '/Users/cheese/yun/yun_Wiki/package.json'
+5 verbose cwd /Users/cheese/yun/yun_Wiki
+6 error Darwin 16.4.0
+7 error argv "/Users/cheese/.nvm/versions/node/v7.6.0/bin/node" "/Users/cheese/.nvm/versions/node/v7.6.0/bin/npm" "run" "init"
+8 error node v7.6.0
+9 error npm  v4.1.2
+10 error path /Users/cheese/yun/yun_Wiki/package.json
+11 error code ENOENT
+12 error errno -2
+13 error syscall open
+14 error enoent ENOENT: no such file or directory, open '/Users/cheese/yun/yun_Wiki/package.json'
+15 error enoent ENOENT: no such file or directory, open '/Users/cheese/yun/yun_Wiki/package.json'
+15 error enoent This is most likely not a problem with npm itself
+15 error enoent and is related to npm not being able to find a file.
+16 verbose exit [ -2, true ]
