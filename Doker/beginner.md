@@ -645,3 +645,14 @@ $ docker run -i -t p- 8080:8080 my-nodejs
 
 * `my-nodejs` 이름으로 이미지 빌드
 * `8080` 번으로 외부 포트를 바라 보게 한다.
+
+
+## 막정리
+
+## 접속
+
+docker ps -a
+
+docker exec -it  c456623003b1 /bin/bash
+
+c456623003b1 = container id
