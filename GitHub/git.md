@@ -19,19 +19,28 @@ ex -> git checkout -b develop-api-init origin/develop-api-init
 * branch : 각각의 독립된 환경
 
 
-##
+## git 이그노어 무시돨때
 
-##
+To untrack a single file that has already been added/initialized to your repository, i.e., stop tracking the file but not delete it from your system use: git rm --cached filename
 
-Rest 리벌트
+To untrack every file that is now in your .gitignore:
 
-머지 리베이스
+First commit any outstanding code changes, and then, run this command:
 
-스테시
+```
+git rm -r --cached .
+```
+This removes any changed files from the index(staging area), then just run:
 
-## merge
-* Merge :
-* Rebase : Rebase 명령으로 한 브랜치에서 변경된 사항을 다른 브랜치에 적용할 수 있다.
+```
+git add .
+```
+Commit it:
+
+```
+git commit -m ".gitignore is now working"
+```
+
 
 
 ## Rebase
@@ -76,6 +85,4 @@ git stash save "블라블라~ 작업중 branch이 동을 위한 stash"
 git stash pop stash@\{0\}
 ```
 ##
-
 * [stash](https://blog.outsider.ne.kr/788)
-* 333
