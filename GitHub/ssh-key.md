@@ -23,14 +23,3 @@ Hi cheese10yun! You've successfully authenticated, but GitHub does not provide s
 * 위와같은 메세지가 출력되면 성공
 
 ```
-
-
-```javascript
-var sendEmail = {};
-
-sendEmail.removeEmail = function (){
-
-};
-
-sendEmail.
-```
