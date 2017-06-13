@@ -44,7 +44,7 @@
 
 * 매번 sudo를 입력하는게 귀찮을 경우
 ```
-$ sudo usermod -ag docker ${USER}
+$ sudo usermod -a -G docker ${USER}
 $ sudo service docker restart
 ```
 
@@ -134,7 +134,6 @@ $ docker rmi <컨테이이름>:<태그이름>
 * docker start my-container : 컨테이너 실행
 * docker exec -it my-container myjob.sh : myjob의 스크립트 파일 실행 (프로세스 실행)
 * docker logs -ft my-container : `-tf` 옵션을 주면 실행 이전까지 로그 출력됨
-
 
 ## 컨테이너 하드웨어 자원 제어
 ### CPU 사용량 제어
@@ -409,7 +408,6 @@ $ docker inspect --format {{.NetworkSettings.IPAddress}}'' test_sshd
 ```
 
 * 아이피 확인
-
 ```
 $ ssh root@localhost -p 32768
 ```
