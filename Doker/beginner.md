@@ -581,6 +581,12 @@ ADD ../test /mydir/
 * 로컬 개발 환경, 테스트 서버, CI 등의 환경에서 사용하면 편리
 * 각 애플리케이션에 dockerfile을 정의하고, 서비스들을 `docker-compose.yml`에 설정
 
+### 설치
+
+```
+$ sudo pip install docker-compose
+```
+
 ### 명령어
 
 ```
