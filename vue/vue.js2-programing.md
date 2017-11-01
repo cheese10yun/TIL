@@ -5,7 +5,7 @@
 	<img src="http://image.kyobobook.co.kr/images/book/xlarge/754/x9791158390754.jpg">
 </p>
 
-* [ Link](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791158390754&orderClick=LEA&Kc=)
+* [ Link](http://www.kyobobook.col.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791158390754&orderClick=LEA&Kc=)
 
 ## 2 양반양 바인딩
 
