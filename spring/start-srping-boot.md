@@ -193,3 +193,53 @@ Select Generate Sources And Update Folders
 * 인텔리제이에서 플러그인 설정 ?
 
 [link](https://stackoverflow.com/questions/5170620/unable-to-use-intellij-with-a-generated-sources-folder)
+
+
+## Predicate 준비
+* predicate는 쉽게 말해서 이 조건이 맞다고 판단하는 근거를 함수로 제공하는 것임
+* 함수형 패러다임을 가진 언어에서 자주 사용됨 java8에서 추가됨
+
+
+
+## 다양한 연관관계 처리
+
+* 객체 간 여관관계 설정
+* 단방향, 양반향 관계의 이해
+* JPQL을 이용한 @Query 처리와 Fetch JSON
+
+### 연관관계 처리와 순서 사전 설계
+
+1. 필요한 각각의 클래스를 정의
+2. 각 클래스의 연관관계에 대한 설정을 추가
+  1. '일대다', '다대다' 등의 연관관계 설정
+  2. 단방향, 양방향 설정
+  3. 데이터베이스 상에 원하는 테이블이 만들어 지는지를 확인
+  4. 테스트 코드를 통해 정상적으로 동작하는지를 확인
+
+### JPA 연관관계 형태
+* 일대일 : OneToOne
+* 일대다 : OneToMany
+* 다대일 : ManyToOne
+* 다대다 : ManyToMany
+
+### JPA 방향
+* 단방향(Unidirectional) 참조 한쪽의 클래스만이 다른 클래스의 인스턴르를 참조하도록 설정
+* 양방향(Bidirectional) 참조 양쪽 클래스 모두 다른 클래스의 인스턴스를 참조
+
+### JPA - 단방향
+
+* @JoinTable은 자동으로 생성되는 테이블 대신에 별도의 이름을 가진  테이블을 생성하고자할때 사용
+* @JointColumn은 이미 존재하는 테이블에 칼럼을 추가할 때 사용
+
+### 지연로딩
+* JPA는 연관관계가 있는 엔티티를 조회할 떄 기본적으로 레이지 로딩을 이용한다
+* 레이지는 게으른 이라는 의미로 정보가 필요하기 전까지는 최대한 테이브렝 접근하지 않는 방식
+
+
+## @Jsonignore 어노테이션
+
+* Spring MVC는 객체의 데이터를 자동으로 JSON 데이터로 처리해주는 jackson-databind를 이용해서 JSON을 변환을 함(spring boot 자동으로 다운)
+* JSON 변환은 현재 객체를 JSON 으로 반환하는 것 외에도 객체가 잠조하고 있는 내부 객체 역시 JSON 으로 변환 된다
+* 문제는 양뱡향의 경우에는 이러한 반환이 상호 호출이 되기 떄문에 무한이 반복되서 생성하는 문제가 생길수 있다느 점
+* Lombok의 toString이 상호 호출되는 것과 동일한 문제
+* 이를 해경하기 위해서 특정한 속성은 JSON 으로 변환되지 않도록 @JsonIgnore 어노테이션을 적용합니다.
