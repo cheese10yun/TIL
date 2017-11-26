@@ -641,5 +641,283 @@ class Book extends com.example.mall.test.Item {
 * JPA에서 식별자로 엔티티 하나를 조회할 떄는 `EntityManager.find()`를 사용한다. 이 메서드는 영속성 컨텍스트에 엔티티가 없으면 데이터베이스를 조회한다.
 
 ```java
-JP
+Memeber member = em.find(Memeber.class, "memeber1");
 ```
+* 이렇게 엔티티를 직접 조회하면 조회한 엔티티를 실제 사용하든 사용하지 않든 데이터베이스를 조회하게 된다.
+* 엔티티를 실제 사용하는 시점까지 데이터베이스 조회를 미루고 싶다면 `EntityManager.getReference(Memeber.class, "member1")` 메소드를 사용하면된다
+* 이 메소드를 호출할 때 JPA는 데이터베이스를 조회하지 않고 실제 엔티티 객체도 생성하지 않는다.
+* 대신에 데이터베이스 접근을 위임한 프록시 객체를 반환한다.
+* 지금부터 프록시에 대해서 알아보자
+
+### 프록시의 특징
+* 프록시 클래스는 실제 클래스를 상송 받아서 만들어지므로 실제 클래스와 겉 모양이 같다. 따라서 사용하는 입장에서는 이것이 진짜 객체인지 프록시 객체인지 구분하지 않고 사용하 면된다.
+
+### 프록시 객체의 초기화
+프록시 객체는 `Member.getName()` 처럼 실제 사용될 때 데이터베이스를 조회해서 실제 엔티티 객체를 생성하는데 이것을 프록시 객체의 초기화라 한다.
+
+
+```java
+Member member = em.getReference(Member.class, "id1");
+member.getName(); //1. getName();
+```
+
+```java
+class MemberProxy extedns Member{
+	Member target = null;
+
+	public String getName(){
+		if(target ==null){
+			//2. 초기화 요청
+			//3. DB 조회
+			//4. 실제 엔티티 생성 및 참조 보관
+			this.target = ...;
+		}
+
+		//5. target.getName();
+		return target.getName();
+	}
+}
+```
+1. 프록시 객체에 `member.getName()`을 호출해서 실제 데이터를 조회한다.
+2. 프록시 객체는 실제 엔티티가 생성되어 있지 않으면 영속성 컨텍스트에 실제 엔티티 생성을 요청하는데 이것을 초기화라 한다.
+3. 영속성 컨텍스트는 데이터베이스를 조회해서 실제 엔티티 객체를 생성한다.
+4. 프록시 객체는 생ㅇ성된 실제 엔티티 객체의 참조를 `Member target` 멤버 변수에 보관한다.
+5. 프록시 객체를 실제 엔티티 객체의 `getName()`을 호출해서 결과를 반환한다.
+
+### 프록시의 특징
+* 프록시 객체는 처음 사용할 때 한번만 초기화된다.
+* 프록시 객체를 초기화한다고 프록시 객체가 실제 엔티티로 바뀌는 것은 아니다. 프록시 객체가 초괴화되면 프록시 객체를 통해서 실제 엔티티에 접근할 수 있다.
+* 프록시 객체는 ㅜ언본 엔ㄴ티티를 상속받은 객체이므로 타입 체크 시에 주의해서 사용해야한다.
+* 초기화는 영속성 컨텍스트의 도움을 받아야 가능하다. 따라서 영속성 컨텍스트의 도움을 받을 수 없는 준영속성 상태의 프록시를 초가화하면 문제가 발생환다.
+
+### 즉시 로딩과 지연 로딩
+
+* 프록시 객체는 주로 연ㄴ관된 엔티티를 지연 로딩할 떄 사용한다.
+* Member1이 team1에 소속해 있다고 가정해보자
+```java
+Member member = em.find(Member.class, "member1");
+Team team = member.getTeam(); // 객체 그래프 탐색
+team.getName(); // 팀 엔티티 사용
+```
+* 회원 엔티티를 조회할 떄 연관된 팀 엔티티도 함꼐 데이터베이스에서 조회하는 것이 좋을까? 아니면 회원 엔티티만 조회해 두고 팀 엔티티는 실제 사용하는 시점에 데이터베이스에서 조회하는 것이 좋을까?
+* JPA는 개발자가 연관된 엔티티의 조회 시점을 서냋ㄱ할 수 있도록 다음 두 가지 방법을 제공한다.
+* 즉시 로딩 : 엔티티를 조회할 떄 연관된 엔티티도 함께 조회한다.
+	- em.find(Member.class, "member1")를 호출할 때 회원 엔티티와 연관된 팀 엔티티도 함께 조회한다.
+	- 설정 방법 : @ManyToOne(fetch = Fetchtype.Eanger)
+	- 즉시 로딩을 최적화하기 위해서 가능하면 조인 쿼리를 사용한다. 여기서는 회원과 팀 조인을 해서 한 번으로 두 엔티티를 모두 조회한다.
+* 지연 로딩 : 연관된 엔티티를 실제 사용할때 조회된다.
+	- member.getTeam().getName() 처럼 조회한 팀 엔티티를 실제 사용하는 시점에 JPA가 SQL을 호출해서 팀 엔티티를 조회한다.
+	- 설정 방법 : @ManyToOne(fetch = Fetchtype.LAZY)
+
+### 즉시 로딩, 지연 로딩 정리
+* 처음부터 연관된 엔티티를 모두 영속성 컨텍스트에 올려두는 것이 현실적이지 않고, 필요 할 때마다 SQL을 실행해서 연관된 엔티티를 지연 로딩하는 것도 최적화 관점에서 보면 꼭 좋은 것만은 아니다. 예를 들어 대부분 애플리케이션 로직에서 회원과 팀 엔티티를 같이 사용한다면 SQL 조인을 사용해서 회원 팀 엔티티를 한번에 조회하는 것이 더 효율적이다. 결국 연관된 앤티티를 즉시 로딩하는 것이 좋은지 아니면 실제 사용할 때 까지 이연해서 로딩하는 것이 좋은지는 상황에 따라 다르다.
+* 지연 로딩(LAZY) : 연관된 엔티티를 프록시로 죄회한다. 프록시를 실제 사용할 때 초기화 하면서 데이터베이스를 조회한다.
+* 즉시 로딩 (EAGER) : 연관된 엔티티를 즉시 조회한다. 하이버네이트는 가능하면 SQL 조인을 사용해서 한 번에 조회한다.
+
+### 지연 로딩 활용
+
+#### 모델링 분석
+* 회원은 팀 하나에만 소속할 수 있다. (N:1)
+* 회원은 여러 주문내역을 가진다. (1:N)
+* 주문내역은 상품정보를 가진다(N:1)
+* Member와 연관된 Team은 자주 함께 사용되었다. 그래서 Member와 Team은 즉시 로딩으로 설정했다.
+* Member와 연곤된 Order는 가끔 사용되었다. 그래서 member와 order는 지연 로딩으로 설정했다
+* Order와 연괸된 Product 자주 함꼐 사용되었다. 그래서 Order와 Product 는 즉시 로딩으로 설정했다.
+
+### JPA 기본 페치 전략(중요!)
+* fetch 속성의 기본 설정값은 다음과 같다.
+	- `@ManyToOne`, `@OneToOne`: 즉시 로딩 (Fetchtype.EAGER)
+	- `@OneToMany`, `@ManyToMany`: 지연 로딩 (Fetchtype.LAZY)
+
+* JPA의 기본 패치 전략은 야ㅕㄴ관된 엔티티가 하나면 즉시 로딩을, 컬랙션이면 지연 로딩을 사용한다. 컬렉션을 로딩하는 것은 비용이 많이 들고 잘못하면 너무 많은 데이터를 로딩할 수 있기 때문이다. 예를 들어 특정 회원이 연관된 컬랙션에 데이터를 수만 건 등록 했는데, 설정한 패치 전략이 즉시 로딩이이면 해당 회원을 로딩하는 순간 수만 건의 데이터도 함께 로딩된다. 반면에 연관된 에니티가 하나면 즉시 로딩을 해도 큰문제가 발생되지 않는다.
+* **추천하는 방법은 모든 연관관계에 지연 로딩을 하는 것이다.** 그리고 애플리케이션 개발이 어느정도 완료단계에 왔을떄 실제 사용하는 상황을 보고 꼭피ㅏㄹ요한 곳에만 즉시 로딩을 사용하도록 최적화하면된다
+* 참고로 SQL을 직접사용하면 이러 유연한 최적화가 어렵다. 예를 들어 SQL로 각각의 테이블을 조회해서 처리하다가 조인으로 한 번에 조회하도록 변경하려면 많은 SQL과 애플리케이션 코드를 수정해야한다.
+
+### 컬렉션에 FetchType.EAGER 사용 시 주의점
+
+* 컬랙션을 하나 이상 즉시 로딩하는 것은 권장하지 않는다.
+	- 컬렉션과 조이하는 것은 데이터베이스 테이블로 보면 일대다 조인이다. 일대다 조인은 결과 데이터가 다 쪽에 있는 수만큼 증가하게 된다. 문제는 서로 다른 컬랙션을 2 개 이상 조인할 때 발생하는데 예를들어 A 테이블에 N, M 두 테이블과 일대다 조인하면 SQL 실행 결과가 N곱하기 M이 되면서 너무 많은 데이터를 반환할 수 잇고 결과적으로 성능저화가 될 수있다.
+	- 따라서 N개 이상은 즉시 로딩으로 설정하는 것은 권하지 않는다.
+* 컬렉션 즉시 로딩은 항상 외부 조인을 사용한다.
+	- 예를 들어 다대일 관계 인 회원 테이블과 팀 테이블을 조인할 떄 회원 테이블의 외래 키에 not null 제약 조건을 걸어두면 모든 회원은 팀에 소속되므로 항상 내부 조인을 사용해도 된다.
+	- 반대로 팀 테이블에서 회원 테이블로 일대다 관계를 조인할 때 회원이 한명 도 없는 팀을 내부 조인하면 팀까지 조회되지 않는 문제가 발생한다. 데이터베이스 제약조건을 이런 사항을 말을 수 없다. 따라서 JPA는 일대다 관계를 즉시 로딩할 때 항상 외부 조인을 사용한다.
+
+### FetchType.EAGER 설정과 조인 전략을 정리하면 다음과 같다.
+* `@ManyToOne`, `@OneToOne`
+	- (optional = false) : 내부 조인
+	- (optional = true) : 외부 조인
+* `@OneToMany`, `@ManyToMany`
+	- (optional = false) : 외부 조인
+	- (optional = true) : 내부 조인
+
+### 영속성 전이 : CASECADE
+* 특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만들고 싶으면 영속성 전이 기능을 사용하면된다.
+* JPA는 CASECADE 옵션으로 영속성 전이를 제공한다. 쉽게 말해서 영속성 전이를 사용하면 부모 엔티티를 저장할 떄 자식 엔티티도 함께 수정할 수있다.
+
+```java
+@Entity
+public class Parent {
+	@Id
+	@GeneratedValue
+	private Long id;
+
+	@OneToMany(mappedBy = "parent")
+	private List<Child> children = new ArrayList<Child>();
+}
+
+@Entity
+public class Child {
+	@Id
+	@GeneratedValue
+	private Long id;
+
+	@ManyToOne
+	private Parent parent;
+
+	private static saveNoCsecade(EntityManager em){
+		Parent parent = new Parent();
+		em.persist(parent);
+
+		// 1 번 자식 저장
+		Child child1 = new Child();
+		child1.setParent(parent); // 자식 -> 부모 연관관계 설정
+		parent.getChilden().add(child1); // 부모 -> 자식
+		em.persist(child1);
+
+
+		// 2 번 자식 저장
+		Child child2 = new Child();
+		child1.setParent(parent); // 자식 -> 부모 연관관계 설정
+		parent.getChilden().add(child2) // 부모 -> 자식
+		em.persist(child2);
+	}
+}
+```
+* JPA에서 엔티티를 저장할 떄 연관된 모둔 엔티티는 영속성 상태여야 한다. 따라서 예제를 보면 부모 엔티티를 여속 상태로 만드로 자식 엔티티도 각각 영속 상태로 만든다. **이럴 때 영속성 전이를 사용하면 부모만 영속 상태로 만들면 연관된 자식 까지 한 번에 영속 상태로 만들 수 있다.**
+
+### 영속성 전이 : 저장
+```java
+@Entity
+public class Parent {
+	@Id
+	@GeneratedValue
+	private Long id;
+
+	@OneToMany(mappedBy = "parent", casecade = CasecadeType.PERSIST)
+	private List<Child> children = new ArrayList<Child>();
+}
+```
+* 부모를 영속화할 때 연관된 자식들도 함께 영속화하라고 `casecade = CasecadeType.PERSIST` 옵션을 설정했다. 이 옵션을 적용하면 간편하게 부모 자식 엔티티를 한 번에 영속화 할 수 있다.
+```java
+private static saveNoCsecade(EntityManager em){
+
+	Child child1 = new Child();
+	Child child2 = new Child();
+	Parent parent = new Parent();
+
+	parent.getChilden().add(child1); // 부모 -> 자식
+	parent.getChilden().add(child2) // 부모 -> 자식
+	child1.setParent(parent); // 자식 -> 부모 연관관계 설정
+	child2.setParent(parent); // 자식 -> 부모 연관관계 설정
+
+	em.persist(parent);
+}
+```
+* 부모만 영속화 하면 `CasecadeType.PERSIST`로 설정한 자식 엔티티까지 함께 영속화해서 저장한다.
+* 영속성 전이는 연관관계를 매핑하는 것과 아무 관련이 없다. **단지 엔티티를 영속화 할 때 연관된 엔티티도 같이 영속화 하는 편리함을 제공할 뿐이다.**
+
+### 영속성 전이 : 삭제
+
+* 방금 젖아한 부모와 자식 엔티티를 모두 제거하려면 다음 코드와같이 각가의 엔티티를 하나씩 제거 해야한다.
+
+```java
+
+Parent parent = em.find(Parent.class, 1L);
+Child child1 = em.find(Child.class, 1L);
+Child child2 = em.find(Child.class, 2L);
+
+em.remove(parent);
+em.remove(child1);
+em.remove(child2);
+```
+* 영속성 전이는 엔티티를 삭제할 떄도 사용할 수있다. `CasecadeType.REMOVE`로 설정하고 다음 코드 처럼 부모 엔티티만 삭제하면 연관된 자식 엔티티도 함께 삭제된다.
+```java
+
+Parent parent = em.find(Parent.class, 1L);
+em.remove(parent);
+```
+* 코드를 실행하면 DELETE SQL을 3번 실행하고 부모는 물론 연관돈 자식도 모두 삭제한다.
+* 삭제 순서는 외래 키 제약조건을 고려해서 자식을 먼저 삭제하고 부모를 삭제한다.
+* 만약 `CasecadeType.REMOVE`를 설정하지 않고 이 코드를 실행하면 부모 엔티티만 삭제 된다. 하지만 데이터베이스 부모 로우를 삭제하는 순간 자식 테이블에 걸려있는 외래 키 제약 조건으로 인해, 데이터베이스에서 외래키 무결성 예외가 발생한다.
+
+### CASECADE의 종류
+
+```java
+public enum CaseCadeType {
+	ALL, // 모두 적용
+	PERSIST, // 영속
+	MERGE, // 병합
+	REMOVE, // 삭제
+	REFRESH, // REFRESH
+	DETACH // DETACH
+}
+```
+* 다음 처럼 여러 속성을 같이 사용할 수있다.
+casecade = {CasecadeType,PERSIST, CasecadeType.REMOVE}
+
+### 고아 객체
+* JPA는 부모 엔티티와 연관관계가 끈ㄹㅎ어진 자식 엔티티를 자동으로 삭제하는 기능을 제공할는데 이것을 고아 객체 제거라 한다.
+* 이 기능을 사용해서 부모 엔티티의 컬렉션에서 자식 엔티ㅣㅌ의 참조만 제거하면 자식 엔티티가 자동으로 삭제되도록 해보자
+
+```java
+```java
+@Entity
+public class Parent {
+	@Id
+	@GeneratedValue
+	private Long id;
+
+	@OneToMany(mappedBy = "parent", orphanRemoval = true)
+	private List<Child> children = new ArrayList<Child>();
+}
+
+Parent parent1 = em.find(Parent.class, id);
+parent1.getChildren().remove(0); //자식 엔티티를컬렉션에서 제거
+```
+* 실행 결과 SQL은 다음과 같다. `delete from child where id =?`
+* 사용 코드를 보면 컬렉션에서 첫 번째 자식을 제거 했다. `orphanRemoval = true` 옵션으로 인해 컬렉션에서 엔티티를 제거하면 데이터베이스의 데이터도 삭제된다. 고아 객체 제거 기능은 영속성 컨텍스트를 플러시 할 떄도 적용되므로 플러시 시점에서 delete sql이 실행된다.
+* 모든 자식 엔티티를 제거하려면 다음 코드처럼 컬렉션을 비우면 된다.
+```java
+parent1.getChildren().clean();
+```
+* 고아 객체를 정리해보자. **고아 객체 제거는 참조가 제고된 엔티티는 다른 곳에서 참조하지 않ㄹ은 고아 객체로 보고 삭제 하능 기능이다**.
+* 따라서 이 긴능은 참조하는 곳이 하나일 때만 사용해야 한다. 쉽게이야기해서 특정 엔티티가 개이 소유 하는 엔티티에만 이 긴능을 적용해야 한다. 만약 삭제한 엔티티를 다른 곳에서 참조한다면 무제가 발생할 수있다.
+* 이런 이유로 `orphanRemoval = true`은 `@OneToOne`, `@OneToMany` 에서만 사용할 수있다.
+
+### 정리
+* JPA 구현체들은 객체 그래프를 마음껏 탐색할 수 있도록 지원하는데 이때 프록시 기수을 사용한다.
+* 객체를 조회할 때 연관된 객체를 즉시 로딩하는 방버을 즉시 로딩이라 하고, 연관된 객체를 지연해서 로딩하는 방법을 지연 로딩이라 한다.
+* 객체를 저장하거나 삭제할 떄 연관된 객체도 함께 저장하거나 삭제할 수있는데 이것을 영속성 전이라 한다.
+* 부모 엔티티와 연관계가 끊어진 자식 엔티티를 자동으로 삭제하려면 고아 객체 제거 기능을 사용하면된다.
+
+
+## 09 값 타입
+* JPA의 데이터 타입은 가장 크게 분류하면 엔티티 타입과, 값 타입을 나눌 수 있다.
+* 엔티티 타입튼 `@Entity`로 정의하는 객체이고, 값 타입은 int, Interger, String 처럼 단순히 값으로 사용하는 자바 기본 타입이나 객체를 말한다.
+* 엔티티 타입은 식별자를 통해서 지속해서 추적할 수있지만, 값 타입은 식별자가 없고 숫자나 문자같은 속성만 있으므로 추적할 수없다. 예를들어 회원 엔티티라는 것은 그 회원의 키나 나이 값을 변경해도 같은 회원이다. 심지어 그 회원의 모든 데이터를 변경해도 식별자만 유지하면 같은 회원으로 인식 할 수있다. 반면에 숫자 값을 100을 200으로 변경하면 완전히 다른 값으로 대체된다
+* 비유하자면 엔티티 타입은 살아있는 생물이고, 값 타입은 단순한 수치정보이다.
+* 기본 타입
+	- 자바 기본 타입 : int, double
+	- 래퍼 클래스 : Integer
+	- String
+* 임베디드 타입
+	- 복합 값 타입
+* 컬렉션 값
+
+
+### 기본 타입
+* Memeber 엔티티는 id라는 식별자 값도 가지고 새명주기도 있지만 값 타입은 name, age 속성은 식별자 값도 없고 샐명주기도 회원 엔티티에 의존한다. 따라서 회원 엔티티 인스턴스를 제거하면 name, age 값도 제거 된다. 그리고 값 타입은 공유하면 안된다.
+* 예를 들어 다른 회원 엔티티의 이름을 변경한다고 해서 나의 이름까지 변경되는 것은 상상하기도 싫을 것이다
+
+### 임베디드 타입(복합 값 타입)
+* 새로운 값 타입을 직접 정의해서 사용할 수있는데, JPA에서 이것을 임베디드 타입 이라 한다. 중요한 것은 직접 정의한 임베디드 타입도 int, String 처럼 값 타입이라는 것이다.
