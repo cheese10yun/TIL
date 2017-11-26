@@ -417,3 +417,229 @@ select m from Member m join m.team t where tmname = :teamName
 
 * 시별 관계 : 받아온 실별자를 기본 키 + 외래 키로 사용한다
 * 비식별 관계 : 받아온 실별자는 왜래 키로만 사용하고 새로운 식별자를 추가한다.
+
+## 07장 고급 매핑
+
+* 상속 과계 매핑 : 객체의 상속 관계를 데이터베이스를 어떻게 매핑하는지 다룬다.
+* `@MappedSuperclass` : 등록일, 수정일 같이 여러 엔티티에서 공통적으로 사용하는 매핑 정보만 상속받고 싶으면 이기능을 사용하면된다.
+* 복합 키와 식별 관계 매핑 : 데이터베이스의 식별자가 하나 이상일 때 매핑하는 방법을 다룬다. 그리고 데이터베이스 설계에서 이야기하는 식별 관계와 비식별 관계에 대해서 다룬다
+* 조인 테이블 : 테이블은 외래 키 하나로 연관관계를 맺을 수 있지만 연관관계를 관리하는 연결 테이블을 두는 방법도있다. 여기서는 이 연결 테이블을 매핑하는 방법을 다룬다
+* 엔티티 하나에 여러 테이블을 매핑하기: 보통 엔티티 하나에 테이블하나를 매핑하지만 엔티티 하나에 여러 테이블을 매핑하는 방법도 있다.
+
+### 상속 관계 매핑
+* 관계형 데이터베이스에는 객체지향ㅇ 언어에 다루는 상속이라는 개념이 없다. 대신에 슈퍼타입과 서브타입 관계 라는 모델링 기법이 객체의 상속 개념과 가장 유사하다
+* ORM에서 이야기하는 상소 관계 매핑은 객체의 상속 구조와 데이터베이스의 슈퍼ㅏ입 서브타입 관계를 매핑하는 것이다
+
+### 상속관계 매핑 방법
+* 각각의 테이블 변환 : 모두 테이블로 만들고 조회할 떄 조인을 사용한다. JPA에서는 조인 전략이라 한다.
+* 통합 테이블로 변환 : 테이블을 하나만 사용해서 통합한다. JPA에서는 단일 테이블 전략이라 한다.
+* 서브타입 테이블로 변환 : 서브 타임마다 하나으 테이블을 만든다. JPA에서는 구현 클래스마다 테이블 전략이라한다.
+
+### 조이 전략
+* 엔ㄴ티티 각각을 모두 테이블로 만들고 자식 테이블이 모두 부모 테이블의 기본 키를 받아서 기본 키 + 왜래 키로 사용하는 전략이다.
+* 조회할 경우 조인을 사용한다. 이 전력을 사용할때 주의 점은 객체는 타입으로 구분할 수있지만 테이블은 타입의 개념이 없다. 따라서 타입을 구분하는 칼럼을 추가해야한다. 여기서는 DTYPE 칼럼을 구분 칼럼으로 사용한다.
+
+```java
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "DTYPE")
+public abstract class Item {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "ITEM_ID")
+    private Long id;
+}
+
+@Entity
+@DiscriminatorValue("A")
+class Album extends Item {
+    private String artist;
+}
+
+@Entity
+@DiscriminatorValue("M")
+class Movie extends Item {
+    private String director;
+    private String actor;
+}
+```
+* `@Inheritance(strategy = InheritanceType.JOINED)` : 상속 매핑은 부모 클래스에 `@@Inheritance`를 사용해야한다. 그리고 매핑 전략을지정해야 하는데 여기서는 조인 전략을 사용하므로 `InheritanceType.JOINED`을 사용한다.
+* `@DiscriminatorColumn(name = "DTYPE")`: 부모 클래스에 구분 칼럼을 지정한다. 이 칼럼으로 지정된 자식 테이블을 구분할 수있다. 기본 값이 DYTPE 이므로 `@DiscriminatorColumn`으로 줄여 사용해도 된다.
+* @DiscriminatorValue("M"): 엔티티를 지정할 때 구분 칼럼을 입력을 지정한다. 만약 영화 엔티티를 지정하려면 구분 칼럼의 DTYPE을 지정값에 M을 지정하면된다.
+* 기본값으로 자식 테이블은 부모 테이블의 ID 칼럼명을 그대로 사용하는데, 만약 자식 테이블의 기본 키 칼럼명을 변경하고 싶으면 `@PrimaryKeyJoinColumn`속성을 사용하면된다.
+
+```java
+@Entity
+@PrimaryKeyJoinColumn(name = "BOOK_ID")
+@DiscriminatorValue(value = "B")
+class Book extends Item{
+    private String author;
+    private String isbn;
+}
+```
+* BOOK 테이블의 ITEM_ID를 기본키 칼럼명을 BOOK_ID로 변경했다
+
+* 장점
+	- 테이블이 정규화 된다.
+	- 왜래 키 참조 무결성 제약조건을 활용할 수 있다.
+	- 저장공간을 효율적으로 사용한다.
+* 단점
+	- 조회할 떄 조인이 많이 사용되므로 성능이 저하될 수 있다.
+	- 조회 쿼리가 복잡하다
+	- 데이터를 등록할 Insert SQL을 두번 실행한다.
+* 특징
+	- JPA 표쥰 명세는 구분 칼럼을 사용하도록 하지만 하이버네이트를 포함한 몇 몇 구현체는 구분 칼러 없이도 동작한다.
+
+### 단일 테이블 전략
+* 단일 테이블 전략은 이름 그대로 테이블하나만 사용한다. 그리고 구분칼럼으로 어떤 자식 데이터가 저장되있는지 구분한다. 조회할 떄 종인을 사용하지 않으므로 일반적으로 가장 빠르다.
+* 이 전략을 사용할 떄 주의점은 자식 엔티티가 매핑한 칼럼은 모두 null을 허용해야한다느 점이다.
+* 예를들어 Book 엔티티를 저장하려면 ITEM 테이블의 AUTHOR, ISBN 칼럼만 사용하고 다른 엔티티와 매핑된 다른 칼럼은 사용하지 않음으로 null 처리해야한다
+
+
+
+```java
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "DTYPE")
+public abstract class Item {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "ITEM_ID")
+    private Long id;
+}
+
+@Entity
+@DiscriminatorValue("A")
+class Album extends com.example.mall.test.Item {
+    private String artist;
+}
+@Entity
+@DiscriminatorValue("M")
+class Movie extends com.example.mall.test.Item {
+    private String director;
+    private String actor;
+}
+
+@Entity
+@DiscriminatorValue(value = "B")
+class Book extends com.example.mall.test.Item {
+    private String author;
+    private String isbn;
+}
+```
+* `@Inheritance(strategy = InheritanceType.SINGLE_TABLE)` 지정하면 단일 테이블 전략을 사용한다. 테이블 하나에 모든 것을 통합하므로 구분 칼럼을 필수로 사용해야 한다. 단일 테이블 저략은 장단점은 하나의 테이블을 사용하는 특징과 관련 있다.
+
+* 장점
+	- 조인이필요 없음으로 일반적으로 조회 성능이 빠르다.
+	- 조회 쿼리가 단순하다
+* 단점
+	- 자식 엔티티가 매핑한 커러럼은 모두 null을 허용해야한다.
+	- 단일 테이블에 모든 것을 지정하므로 테이블이 커질 수 도 있다. 그러므로 상황에 따라서 조회 성능이 오히려 느려질 수 있다.
+* 특징
+	- 구분 칼럼을 꼭 사용해야한다. 즉 `@DiscriminatorValue("M")`을 꼭 설정해야 한다.
+	- `@DiscriminatorValue("M")`를 지정하지 않으면 기본 엔티티 이름을 사용한다.
+
+### 구현 클래스 마다 테이블 전략
+* 구현 클래스마다 테이블 전략은 자식 엔티티 테이블마다 테이블을 만든다. 그리고 자식 테이블에 가각 필요한 칼럼이 모두 있다.
+
+```java
+package com.example.mall.test.mutlple;
+
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorColumn(name = "DTYPE")
+public abstract class Item {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "ITEM_ID")
+    private Long id;
+}
+
+
+@Entity
+class Album extends com.example.mall.test.Item {
+    private String artist;
+}
+@Entity
+class Movie extends com.example.mall.test.Item {
+    private String director;
+    private String actor;
+}
+
+@Entity
+class Book extends com.example.mall.test.Item {
+    private String author;
+    private String isbn;
+}
+```
+* `@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)`를 선택하면 구현 클래스마다 테이블 전략을 사용해야한다. 이 전략은 자식 엔티티마다 테이블을 만든다, 일반적으로 추천하지 않는 전략이다.
+
+* 장점
+	- 서브 타입을 구분해서 처리할 떄 효과적이다.
+	- not null 제약조건을 사용할 수 있다.
+* 단점
+	- 여러 자식 테으블을 함꼐 조회할 때 성능이 느리다.
+	- 자식 테이블을통합해서 쿼리하기 어렵다
+* 이 전략은 데이터베이스 설계자와 ORM 전문가 둘 다 추천하지 않는 전략이다. 조인이나 단일 테이블 전략을 고려하자
+*
+
+### 복합 키와 식별 관계 매핑
+* 데이터베이스 테이블 사이에 관계는 외래 키가 기본 키에 포홤되있는지 여부에 따라 식벽 관계와 비 식별관계로 구분된다. 이 두 관계의 특징을 잏하고 각가 어떻게 매핑되는지 알아보자
+
+### 식별 관계
+* 식별 관계는 부모 테이블의 기본 키를 내려받아서자식 테이블의 기본 키 + 왜래키로 사요ㅇ하는 것이다.
+
+### 비식별 관계
+* 비식별 관계는 부모 테이블의 기본 키를 받아서 자식 테이블의 외래 키로만 사용하는 관계이다.
+* 필수적 비식별 관계
+	- 외래 키에 null을 허용하지 않는다. 연관관계를 필수적으로 맺어어야 한다.
+* 선택적 비식별 관계
+	- 외래 키에 null을 허용한다. 연관관계를 맺을지말지를 선택할 수 있다.
+
+### 조인 테이블
+* 데이터베이스 테이블의 연관관계를 설계하는 방법은 크게 2가지아다
+	- 조인 커럼 사용(외래 키)
+	- 조인 테이블 사용 (테이블 사용)
+
+#### 조인 칼럼 사용
+* 테이블 간에 관계는 주로 조인 칼럼이라 부르는 외래 키 칼럼을 사용한다
+* 외부 조인을 할 경우 outer join을 선택해야한다. 실수로 내부 조인을 사용하면 사물함과 관계 없는 회원은 조회되지 않는다.
+
+#### 조인 테이블 사용
+* 조인 테이블은 조인을 위한 외래키 대신 테이블을 만들고 해당 테이블에 객체 관의 PK를 FK로 지정해서 객체를 연결하는 방법이다.
+* 관리해야할 테이블이 하나 늘어나는 형태임으로 그렇게 추천하지는 않는다.
+* 다대다 조인시 주로 사용
+
+
+## 08 프록시와 연관관계 관리
+
+* 프록시와 즉시로딩, 지연로딩
+	- 객체는 객체 그래프로 연관된 객체들을 탐색한다. 그런데 객체가 데이터베이스에 저장되어 있으므려 연관된 객체를 마음껏 탐색하기는 어렵다.
+	- JPA 구현체들은 이 문제를 해결하려고 프로식라는 기수을 사용한다. 프록시를 사용하면 연관된 객체를 처음부터 데이터베이스에서 조회할 수있다.
+	- 프록시를 사용하면 연과된 객체를 처음부터 데이터베이스에서 조회하는 것이 아니라. 실제 사용하는 시점에 데이터베이스에서 조회할 수있다.
+	- 하지만 자주 함께 사용하는 객체들은 조인을 사용해서 함꼐 조회하는 것이 효과적이다
+	- JPA는 즉시 로딩괴 지연 로딩 이라는 방법으로 둘을 모두 지원한다
+* 영속성 전이와 고아 객체
+	- JPA는 연관된 객체를 함께 저장하거나 함꼐 삭제할수 있는 연속성 전이와 고아 객체 제거라는 편리한 기능을 제공하고있다
+
+### 프록시
+
+* 엔티티를 조회할 떄 연관된 엔티티들이 항상 사용되는 것은 아니다. 예를 들어 회원 엔티티를 조회할 때 연관된 팀 엔티티 비니지스 로직에 따라 사용될 때도 있지만 그렇지 않을 떄도 있다.
+* 회원 엔티티만 조회하 고 싶을 경우도 있고 회원에 팀까지 조회하고 싶은 경우도 있다. 이럴 경우 두 벌의 비지니스 로직이 필요 하다.
+* JPA는 이런 문제를 해결하려고 엔티티가 실제 사용될 떄 까지 데이터베이스 조회를 지연하는 방법을 제공하는데 이것을 `지연 로딩` 이라 한다.
+* **쉽게 이야기해서 `team.getName()` 처럼 팀 엔티티의 값을 실제 사용하는 시점에 데이터베이스에서 팀 엔티티에 필요한 데이터를 조회하는 것이다**
+* 그런데 지연 로딩 을 사용하려면 실제 엔티티 객체 대신에 데이터베이스 조회를 할 수 있는 각짜 객체가 필요한데 이것을 **`프록시 객체`**라고한다
+* JPA 표준 명세는 지연 로딩의 구현 방법을 JPA 구현체에 위임했다. 따라서 지금 부터 설명할 내용은 하이버네이트 구현체에 대한 내용이다. 하이버네이트는 지연 로딩을 지원하기 위해 프록시를 사용하는 방법과 바이트코드를 수정하는 두 가징 방법을 제공하는 데 바이트코드를 수정하는 방법은 설정이 복잡하므로 여기서는 별도의 설정없는 프록시에 대해서만 알아보겠다.
+
+### 프록시 기초
+
+* JPA에서 식별자로 엔티티 하나를 조회할 떄는 `EntityManager.find()`를 사용한다. 이 메서드는 영속성 컨텍스트에 엔티티가 없으면 데이터베이스를 조회한다.
+
+```java
+JP
+```
