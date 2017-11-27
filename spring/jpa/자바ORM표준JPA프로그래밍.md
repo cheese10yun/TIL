@@ -921,3 +921,63 @@ parent1.getChildren().clean();
 
 ### 임베디드 타입(복합 값 타입)
 * 새로운 값 타입을 직접 정의해서 사용할 수있는데, JPA에서 이것을 임베디드 타입 이라 한다. 중요한 것은 직접 정의한 임베디드 타입도 int, String 처럼 값 타입이라는 것이다.
+
+```java
+@Temporal(TempoalType.DATE) java.util.date starstDate;
+@Temporal(TempoalType.DATE) java.util.DATE endDate
+
+private String citty;
+private String street;
+private String zipcode;
+```
+
+* 회원 엔티티는 이름, 근무 시작일, 근무 종료일, 주소 도시, 주소 번지, 주소 우편 번호를 가진다
+* 이런 설명은 단순히 정보를 풀어 둔 것뿐이다. 그리고 근무 시작일과 우편번호는 서로 아무 관련이 없다. 이것보다 다음처럼 설명하는것이 더 명확하다
+* 회원 엔티티는 이름, 근무 기간, 집주소를 가진다.
+* 회원이 상세한 데이터를 그대로 가지고 있는 것은 객체지향적이지 않으ㅕ 응집력만 떨어뜰인다. 대신에 근무 기간, 주소 같은 타입이 ㅇ있다면 코드가 더 명확해질것이다
+
+
+```java
+@Entity
+public class Member {
+	@Id
+	private Long id;
+
+	private String name;
+
+	@Embedded Period workPeriod; // 근무기간
+	@Embedded Address homeAddress; // 집주소
+}
+
+@Enbeddable
+public class workPeriod{
+	@Temporal (TemporalType.DATE) java.util.Date startDate;
+	@Temporal (TemporalType.DATE) java.util.Date endDate;
+
+	public boolean isWork(Date date){
+		//값 타입을 위한 메소드를 지정할 수있다
+	}
+}
+
+@Enbeddable
+public class Address {
+	@Column (name = "city") // 매핑할 컬럼 정의
+	private String city;
+	private String street;
+	private String zipcode;
+
+}
+```
+* `startDate`, `endDate`를 합해서 Period기간 클래스를 만들었다
+* `city`, `street`, `zipcode`를 합해서 Address 주소 클래스를 만들었다.
+* 새로 정의한 값 타입들은 재사용할 수 있고 응집도가 아주 높다. 또한 `isWork`처럼 해당 값 타입만 사용하는 의미 있는 메소들도 만들 수있다.
+* `@Embeddable` : 값 타입을 정의하는 곳에 표시
+* `@Embedded`: 값 타입을 사용하는 곳에 표시
+
+### 임베디드 타입과 테이블 매핑
+* 임베디드 타입은 엔티티의 값일 뿐이다. 따라서 값이 속한 엔티티의 테이블에 매핑한다.
+* 임베디드 타입 덕분에 객체와 테이블을 아주 세밀하게 매핑하는 것이 가능하다
+* 잘 설계한 OMR 애플리케이션은 매핑한 테이블의 수보다 클래스의 수가 더 많다
+* ORM을 사용하지 않고 개발하면 테이블 칼럼과 객체 필드를 대부분 1:1 매핑한다
+* 주소나 근무 기간 같은 값 타입 클래스를 만들어서 더 객체지향적으로 개발하고 싶어도 SQL을 직접 다루면 테이블 하나에 클래스 하나를 매핑하는 것도 고단한 작업인데 테이블 하나에 여러 클래스를 매핑하는 것은 사상하기도 싫을 것이다.
+*
