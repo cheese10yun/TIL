@@ -1,6 +1,8 @@
 # Clean-Code
 * [Git-Hub link](https://github.com/msbaek/clean-coders-2013)
 
+# 1. 강의 OOP
+
 ## 1. Why Clean Code
 * 소프트웨어는 한번 작성되면 최소 10 이상 읽힌다. 그래서 대충 돌아가게 작성하면 안되고 읽기 편하도록 작성해야된다.
 * 기계가 이해할 수있는 코드는 어느 바보도 작성할 수 있다. 하지만 인간이 이해할 수있는 코드는 잘 훈려된 소프트웨어 엔지니어만 작성 할 수있다.
@@ -129,3 +131,13 @@ public class Time {
 * `Encapsulation`이 유지되어 변경에 영향을 안 받게 됨
 	- `if(member.getExpireDate.getTime()) < System.currentTimeMillis){...}`를 사용하지말고
 	- `if(member.isExpired()){...}`를 사용하라
+
+# 강의 Function Part 1
+
+## 1. 원칙
+
+* 한가지 일만 해야 한다.
+* 함수의 크기는 작아야한다.
+* 잘 지어진 서술적인 긴 이름을 갖는 많은/작은 함수들로 유지해야 한다.
+	- 주석 처리 보다 함수의 이름으로 유츄해야 좋은 코드다.
+*  
