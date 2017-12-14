@@ -140,4 +140,23 @@ public class Time {
 * 함수의 크기는 작아야한다.
 * 잘 지어진 서술적인 긴 이름을 갖는 많은/작은 함수들로 유지해야 한다.
 	- 주석 처리 보다 함수의 이름으로 유츄해야 좋은 코드다.
-*  
+
+# Function Structure
+
+## 1. Arguments
+* 인자가 많으면 복잡도 증가
+* 인자는 최대 3개를 넘어 가지 않게 한다
+
+```java
+amountXXXX(Date start, Date end);
+amountXXXX(Date start, Date end);
+amountXXXX(Date start, Date end);
+
+// 클래스로 변경할것
+amountXXXX(Date Range);
+amountXXXX(Date Range);
+amountXXXX(Date Range);
+```
+* 클래스로 넘겨서 매게변수를 줄인다.
+
+##  
