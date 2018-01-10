@@ -49,3 +49,22 @@ public String toString(){
 ### 페이징 쿼리
 * fetch join 을 사용하기 위해서는 value , count  쿼리를 각각 따로 구현 해야 하는 거같음(약간 뇌피셜)
 * count query에서는 fetch 조인 말고 그냥 join을 사용해야한다 정확한 이유는 모르겠다
+
+## creatdAt, updatedAt 자동 입력 어노테이션
+```java
+@Column(name = "created_at")
+@CreationTimestamp
+private Timestamp createdAt;
+
+@Column(name = "updated_at")
+@UpdateTimestamp
+private Timestamp updatedAt;
+```
+* 생성 날짜, 업데이트 날짜가 자동 입력된다
+* 변경된 값이 없으면 업데이트 날짜는 입력되지 않는다.
+
+
+### 오토 와이어드 못하는 버그
+
+* Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)
+* entityManagerFactoryBean - > entityManagerFactory 으로 변경
