@@ -1,0 +1,24 @@
+= pandoc =
+
+== Install ==
+
+<pre>brew install pandoc</pre>
+== pandoc 이란 ? ==
+
+Haskell 로 만들어진 converter 로 markdown, MediaWiki, textile, HTML, ms 워드(.docx), epub, PDF 등으로 변환이 가능한 유틸리티 [https://www.lesstif.com/pages/viewpage.action?pageId=26083394 출처]
+
+Markdown to MediaWiki를 주로 사용
+
+== 사용 목적 ==
+
+* MediaWiki 작성 문법이 어렵고 위키 작성 생상성이 좋지 않음
+* 마크다운 포멧으로 위키 작성하고 pandoc convert를 사용해서 MediaWiki 포맷으로 자동 변경
+
+== Markdown to MediaWiki ==
+
+=== Terminal ===
+
+<pre>pandoc file_name.md -f markdown -t mediawiki -s -o file_name.html</pre>
+=== Atom ===
+
+[[File:https://i.github-camo.com/3f67a44c3958dbaebc7d41ce0e8d99a8c2c0659a/68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f6a6f736134322f61746f6d2d70616e646f632d636f6e766572742f6d61737465722f73637265656e73686f742e676966]] * [https://atom.io/packages/pandoc-convert link]
