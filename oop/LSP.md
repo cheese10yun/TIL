@@ -46,3 +46,7 @@ public class LSP {
   - LSP가 위반되면 OCP도 위반됨
   - LSP를 위반하면 subtype이 추가될떄 마다 클라이언트들이 수정되어야함
   - InstanceOf/downcasting을 사용하는 것이 전형적인 LSP위반의 징조
+
+## 나의 정리
+* 서브 타입이나 슈퍼 타입에서 `InstanceOf/downcasting`를 사용해서 정확한 타입이 무엇인지 알아야 되는 일이 생기면 LSP 위반
+* 서브 클래스에서 슈퍼 클래스를 사용하는 것은 좋지 않은 거같다
