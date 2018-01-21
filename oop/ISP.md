@@ -42,21 +42,3 @@ public class Switch {
 * Interface를 생성하여 Fat Class를 클라이언트로부터 isolate 시켜야함
 * Fat Class에서 다수 Interface를 구현
 * Interface는 구현체보다 클라이언트와 논리적으로 결합되므로 클라이언트가 호출하는 메소드만 Interface에 정의되있다는 것을 확신할 수있음 ISP준수
-
-## DIP
-* 상위 레벨의 정책은 하위 레벌의 상세 합에 의존하면 안된다.
-
-### OOP의 핵심
-
-* IoC를 통해 상위 레벨의 모듈을 하위레벨의 모듈로 부터 보호하는 것
-	- OCP를 통해 새로운 요구사항을 반영할 수 있음
-* OO deign은 Dependency management
-
-### Dependency Inversion
-
-![](https://i.imgur.com/dLqcuKG.png)
-
-* 절차
-	- A와 B 사이에 polumorphic Interface를 산입
-	- A는 uses Interface
-	- B는 implements the interface
