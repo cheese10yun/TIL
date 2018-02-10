@@ -26,3 +26,27 @@ Authenication ---------> ### Authorization
 ### 권한부여 분류
 * 부여된 권한 : 적절한 절차로 사용자 인증(Authenication)이 되었 다면, 권한을 부여 해야한다.
 * 리소스의 권한(Intercept) : 권한이 없는 자들이 원천적으로 리소스에 접근할 수 없도록 막아내는 것, 즉 적절한 권한을 가진자만 해당 자원에 접근할 수 있도록 자원에 접근할 수 있도록 자원의 외부요청을 원천적으러 가로채는 것
+
+
+### 스프링에서
+* 모든 리소스에 권한 확인을 부여하는 것은 비효율적
+* DelegateFilterProxy - > 모든 요청을 가로챔
+
+* DisPatcher Servlet : 모든 요청을 가로채는 클래스
+
+
+DelegateFilterProxy --------> Spring Security -------> Resouce
+                 요청        인증 여부판단 (인증요구 or 리소스접근)
+
+### 우선 순위
+1. DelegateFilterProxy
+2. DisPacherServlet
+
+* DisPacherServlet에서 필터 체인 방식으러 DelegateFilterProxy 먼저 호출된다
+
+## 요청 흐름
+1. 클라이언트 A resocure 접근
+2. DelegateFilterProxy 에서 인터셉트 후 SpringSecurity 호출
+3. SpringSecurity에서 인증 처리 확인
+  1. 미확인시 -> DelegateFilterProxy 리턴
+  2. 확인시 -> A resocure 접근
