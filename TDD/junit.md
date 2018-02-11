@@ -9,3 +9,5 @@ assertThat(isRunning, anyOf(
 ))
 ```
 * `equalTo` 중에 하나 ~
+
+## is number
