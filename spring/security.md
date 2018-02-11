@@ -50,3 +50,16 @@ DelegateFilterProxy --------> Spring Security -------> Resouce
 3. SpringSecurity에서 인증 처리 확인
   1. 미확인시 -> DelegateFilterProxy 리턴
   2. 확인시 -> A resocure 접근
+
+
+## Spring Web Security
+
+* Authorization
+  - 권한 부여, 허가 와 같은 의미로 사용됩니다.
+
+
+## 정리
+* 모든 인증은 인증 매니저 (AuthenicationManager)를 총해서 이루어진다. 인증 매니저를 생성하기 위해 인증 매니저 빌더 (AuthenicationManagerBuilder)가 사용된다.
+* 인증 매니저를 이용해서 인증(Authenication) 작업이 수행된다.
+* 인증 매니저들은 인증/인가를 위한 UserDetailsService를 통해서 필요한 정보들을 가져온다
+* UserDetails는 사용자의 정보 궈한의 묶음이다.
