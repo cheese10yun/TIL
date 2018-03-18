@@ -35,6 +35,7 @@ public class LSP {
 }
 ```
 
+
 * `public void doSomething(T p){...}` **에서 T 타입인지 S 타입인지 알필요 없이 돌아가야 한다.**
 * `InstanceOf`를 사용하지 않아야 한다는 말 타입에 대한 의존성을 제거 해야한다.(타입 의존성은 지독한 의존성이다.)
 
