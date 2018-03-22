@@ -63,3 +63,13 @@ DelegateFilterProxy --------> Spring Security -------> Resouce
 * 인증 매니저를 이용해서 인증(Authenication) 작업이 수행된다.
 * 인증 매니저들은 인증/인가를 위한 UserDetailsService를 통해서 필요한 정보들을 가져온다
 * UserDetails는 사용자의 정보 궈한의 묶음이다.
+
+## 다양한 인증 방식
+
+외부에서 인증이 필요하다고 판단되는 경우 가장 필요한 존재는 인증에 대한 실제적 처리를 담당하는 인증매니저 입니다. 인증 매니저는 결과적으로 ㅇ니증과 관련된 모든 정보를 UserDetails라는 타입으로 반환하는데 이를 위해서 자신이 어떻게 관련 정보를 처리해야 하는지를 판단할 UserDetailsService라는 존재를 활용하게 됩니다.
+
+만일 개발자가 인증되는 방식을 수정하고 싶다면 UserDetailsService라는 인터페이스를 구현하고, 인증 매니저에 연결시켜줍니다.
+
+결과로 반환되는 UserDetails는 기본적인 사용자 계정과 같은 정보와 더불어 사용자가 어떤 권한들을 가지고 있는지를 Collection 타입으로 가지고 있습니다.
+
+인증 매니저와 인증 정보를 제공하는 UserDetailsService위 관계를 좀더 쉽게 표현하면 다음과 같은 형태가 됩니다. 
