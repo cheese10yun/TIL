@@ -1,4 +1,4 @@
-# equals를 재정의할 때는 반드시 hashCode도 재정의하라
+# 10. equals를 재정의할 때는 반드시 hashCode도 재정의하라
 
 * 많은 버그가 hashCode를 재정의하지 않아서 생긴다.
 * **equals 메서드를 재정의한 클래스는 반드시 hashCode 메서드도 재정의햐아한다.**
