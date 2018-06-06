@@ -40,7 +40,7 @@
 ### 일관성(consistent): null 아닌 참조 x와 y가 있을 때, equals를 통해 비교되는 정보에 아무 변환가 없다면 x.equals(y) 호출결과는 호출 횟수에 상관없이 같아야한다.
 * 일단 같다고 판정된 객체들은 추후 변경되지 않는 한 계속 같아야 한다는 것이다.
 * 변경 가능한 객체들 간의 동치 관계는 시간에 따라 달라질 수 있지만 변경 불가능 객체 사이의 동치 관계는 달라질 수 없다.
-* **신뢰성이 보당되지 않는 자원들을 비교하는 equals를 구현하는 것은 삼가하라**
+* **신뢰성이 보장되지 않는 자원들을 비교하는 equals를 구현하는 것은 삼가하라**
 
 ### null 아닌 참조 x에대해서 x.equals(null)은 항상 false 이다
 * 모든 객체는 null과 동치 관계에 있지 아니한다는 요구조건
@@ -52,7 +52,7 @@
 2. instanceof 연산자를 사용하여 인자의 자료형이 정확한지 검사하라
     * 그렇지 않다면 false 리턴
     * 두 번째 검사로직에 있는 것이 바림직, 컬랙션 equals도 동일하게 구현
-3. equals의 인자로 정호가한 자료형으로 변경하라
+3. equals의 인자로 정확한 자료형으로 변경하라
     * 그 앞에 instnaceof를 사용한 검사코드를 두엇음으로, 형변환은 반드시 성공할것이다.
 4. * **중요** 필드 각각이 인자로 주어진 객체의 해당 필드와 일치하는지 검사한다
     * 논리적 동일성을 검사한다
@@ -74,8 +74,7 @@
 public boolean equals(Object o) {
     if (this == o) return true; // 1.  == 연산자를 사용하여 equals의 인자가 자기 자신인지 검사하라.
     if(!(o instanceof MemberId)) return false; //2. instanceof 연산자를 사용하여 인자의 자료형이 정확한지 검사하라, null 체크 까지 함
-
-    MemberId memberId = (MemberId) o;  // 3. equals의 인자로 정호가한 자료형으로 변경하라
+    MemberId memberId = (MemberId) o;  // 3. equals의 인자로 정확한 자료형으로 변경하라
     return Objects.equals(id, memberId.id); // 4. * **중요** 필드 각각이 인자로 주어진 객체의 해당 필드와 일치하는지 검사한다
 }
 ```
