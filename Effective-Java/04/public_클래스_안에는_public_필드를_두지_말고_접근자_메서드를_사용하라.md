@@ -1,4 +1,4 @@
-# public 클래스 안에는 public 필드를 두지 말고 접근자 메서드를 사용하라
+# 14. public 클래스 안에는 public 필드를 두지 말고 접근자 메서드를 사용하라
 
 ```java
 //이런 저급한 클래스는 절대로 public 으로 선헌하지 말것
@@ -16,3 +16,18 @@ class Point {
 ## 예외
 * **package-private 클래스나 private 중첩 클래스(nested class)는 데이터 필드를 공개하더라도 잘못이라 할 수없다**
     * 클래스가 추상화하려는 내용을 제대로 기술하기만 하면말이다.
+
+
+
+```java
+public final class Time {
+    ...
+    ...
+    // 변경 불가능 필드를 외부로 공개하는 public 클래스 - 정말 이래야하는 지 의문
+    public final int hour;
+    public final int minute;
+}
+```
+* 비록 final 키워드가 있다곤 하지만 public 으로 굳이 공개가 필요할지 의문이다.
+    * 내 개인적인 생각은 왠만하면 getter 메서드로 뺴는 것이 올바르다.
+
