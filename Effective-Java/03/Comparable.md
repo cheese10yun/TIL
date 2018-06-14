@@ -1,4 +1,4 @@
-# Comparable 구현을 고려하라
+# 12. Comparable 구현을 고려하라
 * CompareTo 메서드는 Object에 선언되지 않다.
 * Comparable 인터페이스에 포함된 유일한 메서드이다.
 * equals 메서드와 특성은 비슷하지만, 단순한 동치성 검사 이외에 순서 비교가 가능하며, 좀 더 일반적이다.
