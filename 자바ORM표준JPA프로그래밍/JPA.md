@@ -21,6 +21,15 @@
         - [패러다임의 불일치 해결](#패러다임의-불일치-해결)
         - [성능](#성능)
         - [데이터접근 추상화와 벤더 독립성](#데이터접근-추상화와-벤더-독립성)
+- [2장](#2장)
+    - [애플리케이션 개발](#애플리케이션-개발)
+    - [엔티티 매니저 설정](#엔티티-매니저-설정)
+        - [엔티티 매니저 팩토리 생성](#엔티티-매니저-팩토리-생성)
+        - [엔티티 메니저 생성](#엔티티-메니저-생성)
+        - [종료](#종료)
+    - [트랜잭션 관리](#트랜잭션-관리)
+    - [비지니스 로직](#비지니스-로직)
+    - [JPQL](#jpql)
 
 <!-- /TOC -->
 
@@ -176,7 +185,126 @@ member.getOder(); // null 인경우에는 객체 그래프 탐색을 할 수 가
 * 관계형 데이터베이스는 같은 기능도 벤더마다 사용벙이 다른 경우가 많다. 단적인 예로 페이징 처리는 데이터베으사마다 달라서 사용법이 각각 배워야한다. 
 * 결국 애플리케이션은 처음 선택한 데이터베이스 기술에 종속되고 다른 데이터 베이스고 변경하기 매우 어렵다.
 
+# 2장
+
+## 애플리케이션 개발
+
+```java
+pulbic class JpaMain {
+    
+    public static void main(String[] args) {
+    // [엔티티 매니저 팩토리] - 생성
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
+    // [엔티티 매니저] - 생성
+    EntityManger em = emf.createEntityManager();
+    // [트랜잭션] - 획득
+    EntityTransaction tx = em.getTransaction();
+
+    try {
+        tx.begin(); // [트랜잭션] - 시작
+        logic(em) // 비지니스 로직 실행
+        tx.commit(); // [트랜잭션] - 커밋
+    } catch (Exception e) {
+        tx.rollback(); // [트랜잭션] - 롤백
+    } finally {
+        em.close(); // [엔티티 매니저 종료]
+    }
+    emf.close(); // [엔티티 매니저 팩토리 종료]-
+    }
+    
+    //비지스 로직
+    private static void logic (EntityManager em) {...}
+}
+
+```
+* 엔티티 매니저 설정
+* 트랜잭션 관리
+* 비지니스 로직
+
+## 엔티티 매니저 설정
+```java
+Persistence             2. 생성 -> EnityManagerFactory
+
+1. 설정 정보                            3. 생성  
+    
+META-INF/                           EntityManager...
+persistence.xml                     EntityManager...
+```
 
 
+### 엔티티 매니저 팩토리 생성
+```java
+EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
+```
+* JPA를 시작하려면 우선 persistence.xml의 설정 정보를 사용해서 엔티티 매니저 팩토리를 생성 해야한다.
+* 이떄 persistence.xml의 설정정보를 읽어서 JPA를 동작시키기 위한 기반 객체를 만들고 JPA 구현체에 따라서 데이터베이스 컨넥샨 풀도 생성하므로 엔티티 ㅐㅁ니저 팩토리르 생성하는 비용은 아주 크다.
+* **엔티티 매니저 팩토리는 애플리케이션 전체에서 딱 한번만 생성하고 공유해서 사용 해야한다.**
 
+### 엔티티 메니저 생성
+```java
+EntityManger em = emf.createEntityManager();
+```
+* 엔티티 매니저 팩토리에서 엔티티 매니저를 생성한다. JPA의 기능 대부분은 이 엔티티 매니저가 제공한다. 대표적으로 **엔티티 매니저를 사용해서 엔티티를 데이터베이스에 등록/수정/삭제/조회 할 수있다.**
+* 엔티티 매니저는 내부에 데이터소스를(데이터베이스 컨넥션)를 유지하면서 데이터베이스와 통신한다.
+* 따라서 애플리케이션 개발자는 엔티티 매니저를 가상의 데이터베이스로 생각할 수 있다.
+* **엔티티 매니저는 데이터베이스 컨넥션과 밀접한 관계가 있음으로 스레드 간에 공유하거나 재사용하면 안된다.**
 
+### 종료
+* 마지막으로 사용이 끝난 엔티티 매니저는 다음 처럼 반드시 종료 되오야 한다.
+```java
+em.close(); // [엔티티 매니저 종료]
+```
+* 애플리케이션 종료할 때 엔티티 매니저 팩토리도 다음처럼 종료 해야한다.
+
+```java
+emf.close(); // [엔티티 매니저 팩토리 종료]-
+```
+
+## 트랜잭션 관리
+```java
+EntityTransaction tx = em.getTransaction();
+try {
+    tx.begin(); // 트랜잭션 시작
+    logic(em); // 비지니스 로직 실행
+    tx.commit(); // 트랜잭션 커밋
+}catch (Exception e) {
+    tx.rollback(); // 예외발생시 트랜잭션 롤백
+}
+```
+* **JPA를 사용하면 항상 트랜잭션 안에서 데이터를 변경해야 한다.**
+* 트랜잭션 없이 데이터 베이스를 변경하면 예외가 발생한다. **트랜잭션을 시작하려면 엔티티 메니저 에서 트랜잭션 API를 받아와야 한다.**
+* 트랜잭션 API를 사용해서 비지니스 로직이 정상 동작하면 트랜잭셔을 커밋하고 예외가 발생하면 롤백 한다.
+
+## 비지니스 로직
+```java
+public static void logic(EntityManager em){
+    String id = "id";
+    Member emember = new Member();
+    member.setId(id);
+    member.setUsername("yun");
+    member.setAsge(28);
+
+    // 등록
+    em.persist(member);
+
+    // 수정
+    member.setAge(20);
+
+    // 한건 조회
+    Member findMember = em.find(Member.class, id);
+    
+    // 목록 조회
+    List<Member> members = em.createQuery("select m from member m", Member.class);
+    
+    // 삭제
+    em.remvoe(member);
+    
+}
+```
+## JPQL
+
+* 테이블이 아닌 엔티티 객체를 대상으로 검색하려면 데이터베이스의 모든 데이터를 애플리케이션으로 불러와서 엔ㄴ티티 객체러 변경한 다음 검색 해야하는데, 이는 사실상 불가능하다.
+* 앺플리케이션이 필요한 데이터만 데이터베이스에서 불러오려면 결국 검색 조건이 포함된 SQL을 사용해야한다. JPA는 **JPQL 이라는 쿼리 언어로 이런 문제를 해결한다.**
+* JPQL은 엔티티 객체를 대상으로 쿼리한다. 쉽게 이야기해서 클래스와 필드를 대상으로 쿼리한다.
+* SQL은 데이터베이스 테이블을 대상으로 쿼리한다.
+* JPA는 JPQL을 분색해서 다음과 같은 적절한 SQL을 만들어 데이터베이스에서 데이터를 조회한다.
