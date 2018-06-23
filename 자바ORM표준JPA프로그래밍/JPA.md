@@ -127,6 +127,11 @@
             - [양방향은 외래 키가 있는 쪽이 연관관계의 주인이다.](#양방향은-외래-키가-있는-쪽이-연관관계의-주인이다)
             - [양방향 연관관계는 항상 서로를 참조해야 한다.](#양방향-연관관계는-항상-서로를-참조해야-한다)
     - [일대다](#일대다)
+        - [일대다 단방향: [1:N]](#일대다-단방향-1n)
+            - [일대다 단방향 매핑의 단점](#일대다-단방향-매핑의-단점)
+            - [일대다 단방향 매핑보다는 다대일 양방향 관계를 매핑을 사용하자](#일대다-단방향-매핑보다는-다대일-양방향-관계를-매핑을-사용하자)
+    - [일대다 양방향 [1:N, N:1]](#일대다-양방향-1n-n1)
+    - [일대일 [1:1]](#일대일-11)
 - [7장 고급 매핑](#7장-고급-매핑)
 - [8장 프로시와 연관관계 관리](#8장-프로시와-연관관계-관리)
 - [9장 값타입](#9장-값타입)
@@ -1572,7 +1577,7 @@ public void setTeam(Team team) {
 
 
 ## 정리
-단방향 매핑과 비교해서 양방향 매핑은 복잡하다. 연관관계의 주인도 절해야하고, 두 개 의 단방향 연관관계를 양방향으로 만들기 위해서 로직도 잘 관리해야 한다. 중요한 사실은 연관관계가 하나인 단방ㅎㅇ ㄱ매핑은 언제나 연관관계의 주인이라는 점이다. 양뱡향은 여기서 주인이 아닌 연관관계를 하나 추가 했을 뿐이다. 결국 단방향과 비교해서 **양뱡향의 장점은 반대방향으로 객체 그래프 탐색 기능이 추가된것 뿐이다.**
+단방향 매핑과 비교해서 양방향 매핑은 복잡하다. 연관관계의 주인도 절해야하고, 두 개 의 단방향 연관관계를 양방향으로 만들기 위해서 로직도 잘 관리해야 한다. 중요한 사실은 연관관계가 하나인 단방향 매핑은 언제나 연관관계의 주인이라는 점이다. 양뱡향은 여기서 주인이 아닌 연관관계를 하나 추가 했을 뿐이다. 결국 단방향과 비교해서 **양뱡향의 장점은 반대방향으로 객체 그래프 탐색 기능이 추가된것 뿐이다.**
 
 * 단방향 매핑만으로 테이블과 객체의 연관관계 매핑은 이미 완료되었다.
 * 단방향을 양뱡향으로 만들려면 단방향으로 객체 그래프 탐색 기능이 추가된다.
@@ -1685,7 +1690,7 @@ class Team {
     
     private String name;
 
-    @ManyToOne(mappedBy = "team")
+    @OneToMany(mappedBy = "team")
     private List<Member> members = new ArraList<>();
 
     public void addMember(Member member) {
@@ -1703,6 +1708,77 @@ class Team {
 양뱡행 연관과계는 항상 서로를 차조해야 한다. 어느 한쪽만 참조하면 양뱡향 연관관계가 성립하지 않는다. 항상 서로를 참조 하려면 연관관계의 편위 메소드를 작성하는 것이 좋은데 회원의 setTeam(), 팀의 addMember() 메서드가 이런 편의 메서드드들이다. 편의 메소드는 한 곳에만 작성하거나 양쪽 다 작성할 수 있는데. 양쪽에 다 작성하면 무한루프에 빠지므로 주의 해야한다. 예제 코드는 편의 메소드를 양쪽에 다 작성해서 둘 중 하나만 호출하면 된다. 또 무한 루프에 빠지지 않도록 검사하는 로직도 있다.
 
 ## 일대다
+일다대 관계는 다대일 관계의 반대 방향이다. 일대다 관계는 엔티티를 하나 이상 참조할 수 있도록 자바 컬랙션인 List, Set, Map 중에 하나를 사용해야 한다.
+
+### 일대다 단방향: [1:N]
+하나의 팀은 여러 회원을 참조 할 수 있는데 이런 관계를 일대다 관계라 한다. 그리고 팀은 회원들은 참조하지만 반대로 회원은 팀을 참조 하지 않으면 둘의 관계는 단방향이다. 
+
+
+```java
+@Entity
+class Team {
+    @Id
+    @GenratedValue
+    @Column(name "TEAM_ID")
+    private Long id;
+    
+    private String name;
+
+    @OneToMany
+    @JoinColumn(name = "TEAMD_ID") // MEMBER 테이블의 TEAM_ID (PK)
+    private List<Member> members = new ArraList<>();
+}
+
+@Entity
+class Member {
+    @Id
+    @GenratedValue
+    @Column(name "MEMBER_ID")
+    private Long id;
+
+    private String username;
+}
+
+```
+팀 엔티티의 Team.members로 회원 테이블의 TEAM_ID 외래 키를 관리한다. 보통 자신이 매핑한 테이블의 외래 키를 관리하는데, 이 매핑은 반대쪽 테이블에 있는 외래 키를 관리한다. 그럴 수밖에 없는 것이 일다대 관계에서 외래 키는 항상 다쪽 테이블에 있다. 하지만 다 쪽인 Member 엔티티에는 외래 키를 매핑할 수 있는 참조 필드가 없다. 대신 반대쪽인 Team 엔티티에만 참조 필드인 members가 있다 따라서 반대편 테이블의 외래 키를 관리하는 특이한 모습이 나타난다.
+
+#### 일대다 단방향 매핑의 단점
+일다대 단방향 매핑의 단점은 매핑한 객체가 관리하는 외래 키가 다른 테이블에 있다는 점이다. 본인 테이블에 외래 키가 있으면 엔티티의 저장된 연관관계처리를 INSERT SQL ㅎ ㅏㄴ번에 끝낼 수 있지만 다른 테이블에 외래 키가 있으므면 연관 관계 처리를 위한 UPDATE SQL을 추가로 실행 해야한다.
+
+```java
+public void testSave() {
+    Member member1 = new Member("member1");
+    Member member2 = new Member("member2");
+
+    Team team1 = new Team("team1");
+    team.getMembers.add(team1);
+    team.getMembers.add(team2);
+
+    em.persist(member1); // INSERT member 1
+    em.persist(member2); // INSERT member 2
+    em.persist(team); // INSERT team, UPDATe member1 fk, UPDATE member2 fk
+}
+```
+
+```SQL
+INSERT INTO MEMBER (MEMBER_ID, username) values (null, ?)
+INSERT INTO MEMBER (MEMBER_ID, username) values (null, ?)
+INSERT INTO TEAM (TEAM_ID, name) values (null, ?)
+update Member SET TEAM_ID ? WHERE MEMBER_ID = ?
+update Member SET TEAM_ID ? WHERE MEMBER_ID = ?
+```
+Member 엔티티는 Team 엔티티를 모른다. 그리고 얀관관계에 대한 정보는 Team 엔티티의 members가 관리한다. 따라서 member 엔티티를 저장할 떄는 MEMBER 테이블의 TEAM_ID 외래 키에 아무값도 저장되지 않는다. 대신 TEAM 엔티티를 저장할 때 Team.members의 참조 값을 확인해서 회원 테이블에 있는 TEAM_ID 외래 키를 업데이트 한다.
+
+#### 일대다 단방향 매핑보다는 다대일 양방향 관계를 매핑을 사용하자
+일대다 당방향 매핑을 사영하면 엔티티를 매핑한 테이블이 아닌 다른 테이블의 외래 키를 관리해야한다. 이것은 성능의 문제도 있지만 관리도 부담스럽다. 문제를 해겨하는 좋은 방법은 일대다 단방향매핑 대신에 다대일 양방향 매핑을 사용하는 것이다. 다대일 양방향 매핑은 관리해야하는 외래 키가 본인 테이블에 있다. 따라서 일대다 단방행 매핑 같은 문제가 발생하지 않는다. 두 매핑의 에이블 모양은 완전히 같으므로 엔티티만 약간 수정하면 된다. 상황에 따라 다르겠지만 **일대다 단방향 매핑보다는 다대일 양방향 매핑을 권장한다**
+
+## 일대다 양방향 [1:N, N:1]
+일대다 양뱡향 매핑은 존재 하지 않는다. 대신 다대일 양향향 매핑을 사용해야한다. 더 정확히 말하자면 양뱡향 매핑에수 @OneToMany는 연관관계의 주인이될 숭벗다. 왜냐하면 관계형 데이터베이스 특성상 일대다, 다대일, 관계는 항상 다쪽에 외래 키가 있다. 따라서 @OneToMany, @ManyToOne 둘 중에 연관관계의 주인은 항상 다 쪽인 @ManyToOne을 사용 한곳이다. 이런 이유로 @ManyToOne에는 mappedBy 속성이 없다.
+
+그렇다고 일대다 양뱡향 매핑이 완전히 불가능 한 것은 아니다. 일대다 단방향 매핑을 읽기 전용으로 하나 추가하면 된다.
+
+## 일대일 [1:1]
+
 
 
 
