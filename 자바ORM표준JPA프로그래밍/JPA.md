@@ -132,6 +132,13 @@
             - [일대다 단방향 매핑보다는 다대일 양방향 관계를 매핑을 사용하자](#일대다-단방향-매핑보다는-다대일-양방향-관계를-매핑을-사용하자)
     - [일대다 양방향 [1:N, N:1]](#일대다-양방향-1n-n1)
     - [일대일 [1:1]](#일대일-11)
+        - [주 테이블에 왜래 키](#주-테이블에-왜래-키)
+            - [단방향](#단방향)
+            - [양방향](#양방향)
+        - [대상 테이블에 외래 키](#대상-테이블에-외래-키)
+            - [단방향](#단방향-1)
+            - [양뱡향](#양뱡향)
+    - [다대다 [N:N]](#다대다-nn)
 - [7장 고급 매핑](#7장-고급-매핑)
 - [8장 프로시와 연관관계 관리](#8장-프로시와-연관관계-관리)
 - [9장 값타입](#9장-값타입)
@@ -1738,7 +1745,6 @@ class Member {
 
     private String username;
 }
-
 ```
 팀 엔티티의 Team.members로 회원 테이블의 TEAM_ID 외래 키를 관리한다. 보통 자신이 매핑한 테이블의 외래 키를 관리하는데, 이 매핑은 반대쪽 테이블에 있는 외래 키를 관리한다. 그럴 수밖에 없는 것이 일다대 관계에서 외래 키는 항상 다쪽 테이블에 있다. 하지만 다 쪽인 Member 엔티티에는 외래 키를 매핑할 수 있는 참조 필드가 없다. 대신 반대쪽인 Team 엔티티에만 참조 필드인 members가 있다 따라서 반대편 테이블의 외래 키를 관리하는 특이한 모습이 나타난다.
 
@@ -1778,7 +1784,121 @@ Member 엔티티는 Team 엔티티를 모른다. 그리고 얀관관계에 대�
 그렇다고 일대다 양뱡향 매핑이 완전히 불가능 한 것은 아니다. 일대다 단방향 매핑을 읽기 전용으로 하나 추가하면 된다.
 
 ## 일대일 [1:1]
+일대일 관계는 양쪽이 서로 하나의 관계만 가진다. 예를들어 회원은 하나의 사물함을 사용하고 사물함도 하나의 회원에 의해서만 사용 된다. 1:1 관계는 다음과 같은 특징이 있다.
 
+* 일대일 관계는 그 반대도 일대일 관계다
+* 테이블 관곙서 일대다, 다대일은 항상 다(N)쪽이 외래 키를 가진다. 반면에 일대일 관계는 주 테이블이나 대상 테이블 중 어느곳이 외래 키를 가줄 수 있다.
+
+테이블은 주 테이블이든 대상 테이블이든 외래 키 하나만 있으면 양쪽으로 조회할 수 있다. 그리고 일대일 관계는 반대쪽도 일대일 관계다. **따라서 이대일 관계는 주 테이블이나 대상 테이블 중 누가 외래 키를 가질지 선택 해야한다**
+
+### 주 테이블에 왜래 키
+주 객체에 대상 객체를 참조하는것처럼 주 테이블에 외래 키를 두고 대상 테이블을 참조 한다. 외래 키를 객체 참조와 비슷하게 사용할 수 있어서 객체지향 개발자들이 선호한다. 이 방법은 장점은 주 테이블의 외래키를 가지고 있음으로 주 테이블만 확인해도 대상 테이블과 연관관계가 있는지 알 수 있다. 
+
+일대일 관계를 구성할 때 객체지향 개발자들은 주 테이블에 외래 키가 있는 것을 선호한다. JPA도 주 테이블에 외래 키가 있으면 좀더 편리하게 매핑할 수 있다. 주 테이블에 외래 키가 있는 단방향 관계를 먼저 살펴보고 양방향 관계도 살펴보자
+
+#### 단방향
+
+```java
+@Entity
+class Member {
+    @Id
+    @GenratedValue
+    @Column(name "MEMBER_ID")
+    private Long id;
+
+    private String username;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+}
+
+@Entity
+class Locker {
+    @Id
+    @GenratedValue
+    @Column(name "LOCKER_ID")
+    private Long id;
+
+    private String name;
+}
+```
+일대일 관계이므로 객체 매핑에 @OneToOne을 사용 했고 데이터베이스에는 LOCKER_ID 외래 키에 유니크 제약조건을 추가했다.
+
+#### 양방향
+
+```java
+@Entity
+class Member {
+    @Id
+    @GenratedValue
+    @Column(name "MEMBER_ID")
+    private Long id;
+
+    private String username;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+}
+
+@Entity
+class Locker {
+    @Id
+    @GenratedValue
+    @Column(name "LOCKER_ID")
+    private Long id;
+
+    private String name;
+
+    @OneToOne(mappedBy = "locker")
+    private Member member;
+}
+```
+양방향이므로 연관관계의 주인을 정해야 한다. MEMBER 테이블의 외래 키를 가지고 있음으로 Member 엔티티에 있는 Member.locker가 연관관계의 주인이다.
+
+
+### 대상 테이블에 외래 키
+정통적인 데이터베이스 개발자들은 보통 대상 테이블에 외래 키를 두는 것을 선호한다. 이 방법의 장점은 테이블 연관관계를 일대일에서 일다대로 변경할 때 테이블 구조롤 그대로 유질 할 수 있다.
+
+#### 단방향
+일대일 관계중 대상 테이블에 외래 키가 있는 단방향 관계는 JPA에서 지원하지 않는다. 그리고 이런 모양으로 매핑할 수 있는 방법도 없다. 이 떄는 단방향 관계를 Locker에서 Member 방향으로 수정하거나, 양뱡향 관계로 만들고 Locker를 연관관계의 주인으로 설정 해야한다.
+
+#### 양뱡향
+```java
+@Entity
+class Member {
+    @Id
+    @GenratedValue
+    @Column(name "MEMBER_ID")
+    private Long id;
+
+    private String username;
+
+    @OneToOne(mappedBy = "member")
+    private Locker locker;
+}
+
+@Entity
+class Locker {
+    @Id
+    @GenratedValue
+    @Column(name "LOCKER_ID")
+    private Long id;
+
+    private String name;
+
+    @OneToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+}
+```
+일대일 매핑에서 대상 테이블에 외래 키를 두고 싶으면 이렇게 양뱡향으로 매핑한다. 주 엔티티 Member 엔티티 대신에 대상 엔티티 Locker를 연관관계의 주인으로 만들어 Locker 테이블에 외래 키를 관리 하도록 했다.
+
+>**주의**
+>픍시를 사용할 때 외래 키를 직접 관리 하지 않은 일대일 관계는 지연로딩으로 설정해도 즉시로딩이 된다. 이것은 프록시의 한계 때문에 발생하는문제 인데 프록시 대신에 bytecode instrumentaition을 사용하면 해결 할 수 있다.
+
+## 다대다 [N:N]
 
 
 
