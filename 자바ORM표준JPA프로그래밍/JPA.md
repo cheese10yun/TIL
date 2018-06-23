@@ -79,6 +79,14 @@
         - [TABLE 전략](#table-전략)
         - [AUTO 전략](#auto-전략)
         - [기본 키 매핑 정리](#기본-키-매핑-정리)
+    - [필드와 칼럼 매핑: 래퍼렌스](#필드와-칼럼-매핑-래퍼렌스)
+        - [@Colnum](#colnum)
+        - [@Enumerated](#enumerated)
+        - [@Temporal](#temporal)
+        - [@Lob](#lob)
+        - [@Transient](#transient)
+        - [@Access](#access)
+    - [정리](#정리-1)
 
 <!-- /TOC -->
 
@@ -872,6 +880,111 @@ IDENTITY 전략과 같지만 내부 동작 방식은 다르다. SEQYENCE 전략�
 > 1. null값은 허용하지 않는다
 > 2. 유일해야한다
 > 3. 변해서는 안된다
+
+## 필드와 칼럼 매핑: 래퍼렌스
+
+| 매핑 어노테이션    | 설명                       |
+| ----------- | ------------------------ |
+| @Colnum     | 칼럼을 매핑한다.                |
+| @Enumerated | 자바의 enum 타입을 매핑한다.       |
+| @Temporal   | 날짜 타입을 매핑한다.             |
+| @Lob        | BLOG, CLOB 타입을 매핑한다.     |
+| @Transient  | 특정 필드를 데이터베이스에 매핑하지 않는다. |
+| @Access     | JPA가 엔티티에 접근하는 방식을 지정한다. |
+     
+    
+### @Colnum 
+@Colnumdms 객체 필드를 테이블 칼럼에 매핑한다. name, nullable이 주로 사용되고 나머지는 잘 사용되지 않는다.
+insertable, updatealbe 속성은 데이터베이스에 저장되어 있는 정보를 읽기만 하고 실수로 변경하는 것을 바징하고 싶을 때 사용한다.
+
+### @Enumerated 
+자바의 enum 타입을 매핑할 때 사용 한다.
+* EnumType.ORDINAL: enum 순서를 데티어베이스에 저장
+* EnumType.STRING: enum 이름을 데티어베이스에 저장
+
+**EnumType.ORDINAL 정의돈 순서대로 데티어베이스에 저장 될 수 있어 데이터 크가가 작은 장점이 있지만 이미 지정된 enum의 순서를 변경할 수없다. 또 사람이 인식하기 어렵다는 단점이 있어 String 타입으로 관리하는 것이 좋다고 생각한다**
+
+
+### @Temporal
+날짜 타입을 매핑할 때 사용 한다.
+```java
+@Temporal(TemporalType.DATE)
+private Date date // 날짜
+
+@Temporal(TemporalType.DATE)
+private Date time // 시간
+
+@Temporal(TemporalType.TIMESAMP)
+private Date timestamp; // 날짜 + 시간
+```
+자바의 Date 타입에는 년월일 시분초가 있지만 데이터베이스에는 date(날짜), time(시간), timestamp(날짜와 시간) 세 가지 타입이 별도로 존재한다.
+
+@Temporal을 생략하면 자바의 Date와 가장 유사한 timestamp로 정의된다.
+
+### @Lob
+데이터베이스 BLOB, CLOB 타입과 매핑한다.
+
+
+### @Transient
+이 필드는 매핑하지 않는다 따라서 데이터베이스에 저장하지 않고 조회하지도 않는다.
+
+### @Access
+JPA가 엔티티 데이터에 접근하는 방식을 지정한다.
+
+* 필드 접근
+    * AccessType.FIELD로 지정한다.
+    * 필드에 직접 적흔한다. 필드 접근권한이 private 이어도 접근할 수 있다.
+* 프로퍼티 접근
+    * AccessType.PROPERTY 지정한다.
+    * 접근자 getter를 사용한다 
+
+```java
+// 필드 접근 코드
+@Entity
+@Access(AccessType.FIELD)
+public class Member {
+    @Id
+    private String id;
+
+    private String data1;
+    private String data2;
+    ...
+}
+```
+@Id가 필드에 있으므로 @Access(AccessType.FIELD)로 설정한 것과 같다. 따라서 @Access는 새략해도 된다.
+
+
+```java
+// 프로퍼티 접근 코드
+@Entity
+@Access(AccessType.FIELD)
+public class Member {
+    private String id;
+
+    private String data1;
+    private String data2;
+
+    @Id
+    publoc String getId(){
+        return id;
+    }
+
+    @Column
+    pubic String getData1(){
+        return data1;
+    }
+
+    @Column
+    pubic String getData2(){
+        return data2;
+    }
+}
+```
+@Id가 프로퍼티에 있으므로 @Access(AccessType.PROPERTY)로 설정한 것과 같다. 따라서 @Access는 생략해도 된다.
+
+## 정리
+JPA는 다양한 기본 키 매핑 전략을 지원한다. 기본 키를 애플리케이션에서 직접 할당하는 방법부터 데이터베이스가 제공하는 기본 키를 사용하는 전략들을 살펴 보았다.
+
 
 
 
