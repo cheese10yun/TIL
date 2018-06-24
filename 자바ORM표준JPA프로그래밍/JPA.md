@@ -141,6 +141,11 @@
     - [다대다 [N:N]](#다대다-nn)
         - [다대다 : 단방향](#다대다--단방향)
         - [다대다 : 양방향](#다대다--양방향)
+    - [다대다: 매핑의 한계와 극복](#다대다-매핑의-한계와-극복)
+        - [복합 기본 키](#복합-기본-키)
+        - [식별 관계](#식별-관계)
+    - [다대다: 새로운 기본 키 사용](#다대다-새로운-기본-키-사용)
+    - [다대다 연관관계 정리](#다대다-연관관계-정리)
 - [7장 고급 매핑](#7장-고급-매핑)
 - [8장 프로시와 연관관계 관리](#8장-프로시와-연관관계-관리)
 - [9장 값타입](#9장-값타입)
@@ -1909,9 +1914,293 @@ class Locker {
 **관계형 데이터베이스는 졍규화된 테이블 2개로 다대다 관계를 표현할 수 없다. 그래서 보통 다대다 관계를 일대다, 다대일 관계로 풀어 내는 연결 테이블을 사용한다.**
 
 ### 다대다 : 단방향
+```java
+@Entity
+class Member {
+    @Id @GenratedValue @Column(name "MEMBER_ID")
+    private Long id;
+
+    private String username;
+
+    @ManyToMany
+    @JoinTable(
+        name = "MEMBER_PRODUCT",
+        joinColums = @JoinColumn(name = "MEMBER_ID"),
+        inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"),
+    )
+}
+
+@Entity
+class Product {
+    @Id @GenratedValue
+    private Long id;
+    private String name;
+}
+```
+
+회원 엔티티와 상품 엔티티를 @ManyToMany로 매핑했다. 여기서 중요한 점은 @ManyToMany, @JoinTable을 사용해서 연결 테이블을 바로 매핑한 것이다. **따라서 회원과 상품을 연결하는 회원 상품 엔티티 없이 매핑을 완료할 수있다.**
+
+
+* @JoinTable.name: 연결 테이블을 지정한다. 여기서는 MEMBER_PRODUCT 테이블을 선택했다
+* @JoinTable.jounColumn: 현재 방향인 회원과 매핑할 조인 칼럼 정보를 지정한다. MEMBER_ID로 지정했다.
+* @JoinTable.inverseJoinColumns: 반대 방향인상품과 매핑할 조인 카럼 정보를 지정한다. PRODUCT_ID로 지정했다
+
+MEMBER_RPDUCIT 테이블은 다대다 관계를 일대다, 다대일 관계로 풀어 내기 위해 필요한 연결 테이블 뿐이다. @ManyToMany로 매핑한 덕분에 다대다 관계를 사용할 떄는 이 연결 테이블을 신경쓰지 않아도 된다.
+
+```java
+// 다대다 관계 저장 코드
+public void save(){
+    Product productA = new Product();
+    productA.setId("ProductA");
+    productA.setNAme("상품A");
+    em.persist();
+
+    Member member1 = new Member();
+    member1.setId("member1");
+    member1.setUsername("회원1");
+    member1.getProducts.add(productA); // 연관관계 지정
+    em.persist();
+}
+```
+
+```SQL
+// 다대다 관계 저장 SQL
+INSERT INTO PRODUCT ...
+INSERT INTO MEMBER ...
+INSERT INTO MEMBER_PRODUCT ...
+```
+
+```java
+// 객체 탐색
+public void find(){
+    Member member = em.find(Member.class, "member1");
+    List<Product> products = member.getProducts(); // 객체 그래프 탐색
+    for (Product product : products){
+        print(product.getName());
+    }
+}
+```
+@ManyToMany 덕분에 복잡한 다대다 관계를 애플리케이션에서 아주 단순하게 사용할 수 있다. 
 
 ### 다대다 : 양방향
 
+역방향도 @ManyToMany를 사용한다. 그리고 양쪽 중 원 하는 곳에 mappedBy로 연관관계의 주인을 지정한다.
+
+```java
+// 역방향에 추가
+@Entity
+class Product {
+    @Id @GenratedValue
+    private Long id;
+    private String name;
+
+    @ManyToMany(mappedBy = "products") // 역방향 추가
+    private List<Member> members;
+}
+```
+다대다의 양뱡향 연관관계는 다음처럼 설정하면 된다.
+
+```java
+member.getProducts().add(product);
+product.getMembers().add(member);
+```
+양방향 연관관계는 연관관계의 편의 메소드를 추가해서 관리하는 것이 편리하다.
+
+```java
+public void addProduct(Product product){
+    ...
+    product.add(product);
+    product.getMembers().add(this);
+}
+```
+연관관계 편위 메소드를 추가했음으로 다음처럼 간단히 연관관계를 설정하면 된다
+```java
+member.addProduct(product);
+```
+
+## 다대다: 매핑의 한계와 극복
+@ManyToMany를 사용하면 연결 테이블을 자동으로 처리해주므로 도메인 모델이 단순해지고 여러 가지로 편리하다. 하지만 이 매핑을 실무에서 사용하기에는 한계가 있다. 예를 들어 회원 사웊ㅁ을 주문하면 연결 테이블에 다순히 주문한 회원 아이디와 상품 아이디만 담고 끝나지 않는다. 보통 연결 테이블에 주문 수량 칼럼이나 주문한 날짜 같은 칼럼이 더 필요하다.
+
+그렇다면 결국 연결 테이블을 매핑하는 연결 엔티티를 만들고 이곳에서 추가한 카럼들을 매핑해야한다. 그리고 엔티티의 간의 관계도 테이블 관계처럼 다대다에서 일대다. 다대일 관계러 풀어야하다.
+
+```java
+@Entity
+class Member {
+    @Id @GenratedValue @Column(name "MEMBER_ID")
+    private Long id;
+
+    private String username;
+
+    // 역방향
+    @OneToMany(mappedBy = "member")
+    private List<MemberProduct> memberProducts;
+}
+
+@Entity
+class Product {
+    @Id @GenratedValue
+    private Long id;
+    private String name;
+}
+
+@Entity
+@IdClass(MemberProductId.class)
+class MemberProduct {
+    
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member; // MemberProductId.member와 연결
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "PRODUCT_ID")
+    private Product product; // MemberProductId.member와 연결
+}
+
+class MemberProductId implemnts Serializable {
+    
+    private String member; // MemberProduct.member 와 연결
+    private String product; // MemberProduct.product 와 연결
+
+    //hashCode and equals
+}
+```
+회원상품 엔티티를 보면 기본 키를 매핑하는 @Id와 외래 키를 매핑하는 @JoinColum을 동시에 사용해서 기본 키 + 외래 키를 한번에 매핑했다. 그리고 @IdClass를 사용해서 복합 키를 매핑했다.
+
+### 복합 기본 키
+회원상품 엔티티는 기본 키가 MEMBER_ID, PRODUCT_ID로 이러우전 복합 기본키(단간히 복합 키라 하겠다). JPA에서 복합 키를 사용하려면 벽도의 식별자 클래스를 만들어야 한다. 그리고 엔티티에 @IdClass를 사용해서 식별자 클래스를 지정하면 된다.
+
+복합 키를 위한 식별자 클래스는 다음과 같은 특징이 있다.
+
+* 복합 키는 별도의 실별자 클래스로 만들어야 한다.
+* Serializable을 구현해야 한다.
+* equals와 hashCode 메소드를 구현 해야한다
+* 기본 생성자가 있어야 한다
+* 실별자 클래스는 public 이여야 한다
+* @IdClass를 사용하는 방법 외에 @EmbeddedId를 사용 하는 방법도 있다
+
+### 식별 관계
+회원상품은 회원과 상품의 기본 키를 받아서 자신의 기본 키로 사용한다. 이렇게 부모 테이블의 기본 키를 바당서 자신의 기본키 + 외래 키로 사용하는 것을 데이터베이스 용어로 식별 관계라 한다.
+
+종합해보면 회원상품은 회원의 기본 키를 받아서 자신의 기본키로 사용함에 동시에 회원의 관계를 위한 왜래 키로 사용한다. 그리고 상품의 기본 키로 받아서 자신의 기본 키로 사용함과 동시에 상품과의 관계를 위한 왜래 키로 사용한다. 또한 MembedProductId 식별자 클래스로 두 기본 키를 묶어서 복합 기본 키로 사용한다
+
+
+```java
+// 저장 하는 코드
+public void save(){
+    // 회원 저장
+    Member member1 = new Member();
+    member.setId("member1");
+    member.setUsername("회원1");
+    em.persist(member1);
+
+    // 상품 저장
+    Product productA = new Product();
+    productA.setId("productA");
+    productA.setName("productA");
+    em.persist(productA);
+    
+    // 회원상품 저장
+    MemberProduct memberProduct = new MemberProduct();
+    memberProduct.setMember(member1); // 주문 회원 - 완관괸계 설정
+    memberProduct.setProduct(productA) // 주문 상품 - 연관관계 설정
+    memberproduct.setOrderAmount(2); //  주문 수량
+    em.persist(memberProduct)
+}
+
+// 조회 하는 코드
+public void find(){
+    
+    //기본 키 값 설정
+    MemberProductId memberProductId = new MemberProductId();
+    memberProductId.setMember(member1);
+    memberProductId.setProduct(productA);
+
+    MemberProduct memberProduct = em.find(MemberProduct.class, memberProductId);
+    
+    Member member = memberProduct.getMember();
+    Product product = memberProduct.getProduct();
+}
+```
+
+## 다대다: 새로운 기본 키 사용
+**추천하는 기본 키 생성 전략은 데이터베이스에서 자동으로 생성해주는 대리 키를 Long 값으로 사용하는 것이다** 이것의 장점은 간편하고 겅의 영구히 쓸 수 있으며 비지느싀에 의존하지 않는다. 그리고 ORM 매핑시에 복합 키를 만들지 않아도 된다.
+
+```java
+@Entity
+class Order {
+    @Id @GenratedValue @Column(name = "ORDER_ID")
+    private Long id;
+
+    @ManyToOne
+    @JointColumn(name = "MEMBER_ID")
+    private Member member;
+
+    @ManyToOne
+    @JointColumn(name = "PRODUCT_ID")
+    private Product product;
+    
+    pviate int orderAmount;
+}
+
+@Entity
+class Member {
+    @Id @Column(name = "MEMBER_ID")
+    private Long id;
+    private String username;
+
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();    
+}
+
+@Entity
+class Product {
+    @Id @Column(name = "PRODUCT_ID")
+    private Long id;
+}
+```
+
+```java
+// 저장 하는 코드
+public void save(){    
+    // 회원 저장
+    Member member1 = new Member();
+    member1.setId("member1");
+    member1.setUsername("회원1");
+    em.persist(member1);
+
+    // 상품 저장
+    Product productA = new Product();
+    productA.setId("productA");
+    productA.setName("상품");
+    em.persist(productA);
+
+    // 주문 저장
+    Order order = new Order(); 
+    order.setMember(member1); // 주문 회원 - 연관관계 설정
+    order.setProduct(productA); // 주문 상품 - 연관관계 설정
+    order.setOderAmount(2); // 주문 수량
+    em.persist(order);
+}
+
+// 조회 하는 코드
+public void find(){
+    Loing OrderId = 1L;
+    Order order = en,find(Order.classm orderId);
+    
+    Member meber = order.getMember();
+    Product product = order.getPRoduct();
+}
+```
+* **식별자 클래스를 사용하지 않아서 코드가 한결 단순해졌다. 이 처럼 새로운 기본 키를 사용해서 다대다 관계를 풀어내는 것도 좋은 방법이다.**
+
+
+## 다대다 연관관계 정리
+다대다 관계를 일대다 다대일 관계로 풀어내기 위한 연결 테이블을 만들 떄 식별자 를 어떻게 구성할지 선택해야한다.
+
+* 식별 관계 : 받아온 식별자 기본 키 + 왜래 키로 사용한다.
+* 비식별 관계: 받아온 식별자 외래 키로만 사용하고 새로운 식별자를 추가한다.
 
 # 7장 고급 매핑
 # 8장 프로시와 연관관계 관리
