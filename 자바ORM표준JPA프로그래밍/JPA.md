@@ -2521,10 +2521,394 @@ JPA가 공식으로 지원 하는 기능이다.
 * @Query 어노테이션을 사용해서 레포지토리 인터페이스에 쿼리 직접 정의
 
 
-# 13장 웹 애플리케이션 영속 관리
+# 13장 웹 애플리케이션과 영속성 관리
+스프링링 환경서 JPA를 사용하려면 컨테이너가 트랜잭셩과 영속성 컨텍스트를 관리해주므로 애플리케이션을 솜쉽게 개발할 수 있다. 하지만 컨테이너 환경에서 동작하는 JPA의 내부 동작 방식을 이해하지 못하면 묹가 발생했을 때 해결하기가 쉽지가 않다. JPA 내부 동작 방식, 컨테이너 환경에서 웹 애플리케이션을 개발할 때 발생할 수 있는 다양한 문제점과 해결 방법을 알아보자
+
+
+## 스프링 컨테이너 기본 전략
+스프링 컨테이너는 **트랜잭션 범위의 영속성컨텍스트** 전략을 기본으로 사용한다. 이 전략은 이름 그대로 트랜잭션의 범위와 영속성 컨텍스트의 생존 범위가 같다는 뜻이다. 좀 더 풀어서 이야기하자면 이 전략은 트랜잭션을 시작할 때 영속성 컨텍스트를 생성하고 트랜잭션이 끝날 때 영속성 컨텍스트를 종료한다.
+
+스프링을 사용하면 보통 비지니스 로직을 시작하는 서비스 계층에 @Transactional 어노테이션을 선언해서 트랜잭션을 시작한다. 외부에서는 단순히 서비스 계층의 메소드를 호출하는 것처럼 보이지만 이 어노테이션이 있으면 호출한 메소드들 실행하기 직전에 트랜잭션 AOP가 먼저 작동한다.
+
+### 트랜잭션 범위의 영속성 컨텍스트 예제
+
+```java
+@Controller
+class HelloController {
+
+    @Autowired HelloService helloService;
+
+    public  void hello(){
+        // 반환된 member 엔티티는 중영속 상태다 ...(4)
+        Member member = helloService.logic();
+    }
+}
+
+@Service
+Class HelloService {
+    @PersistenceContext //엔티티 매니저 주입
+    private EntityManager em;
+
+    @Autowired Repositry1 repositort1;
+    @Autowired Repositry2 repositort2;
+
+    // 트랜잭션 시작 ...(1)
+    @Transactional
+    public void logic(){
+        repository1.hello();
+        // member는 영속 상태다 ...(2)
+        Member member = repository2.findMember();
+        return member;
+    }
+    // 트랜잭션 종료 ...(3)    
+}
+
+@Repository
+class Repository1 {
+    @PersistenceContext
+    EntityManager em;
+
+    public void hello(){
+        em.xxx(); // A. 영속성 컨텍스트 접근
+    }
+}
+
+@Repository
+class Repository12{
+    @PersistenceContext
+    EntityManager em;
+
+    public Member findMember(){}
+        return em.find(Member.calss, "id"); // B. 영속성 컨텍스트 접근
+    }
+}
+```
+
+1. HelloService.logic() 메서드에 @transactional을 선언해서 메소드를 호출할때 트랜잭션을 먼저 시작한다
+2. repositroy2.findMember()를 통해조회한 member 엔티티는 트랜잭션 범위 안에 있음으로 영속성 컨텍스트의 관리를 받는다. 따라서 지금은 영속 상태다.
+3. @Transcational을 선언한 메소드가 정상 종료되면 트랜잭션을 커밋하는ㄴ데, 이때 영속성 컨텍스트를 종료한다. 영속성 컨텍스트가 자라졌음으로 엔티티는 이제부터 준영속 상태가 된다.
+4. 서비스 메소드가 끝나면 트랜잭션과 영속성 컨텍스트가 종료되었다. 따라서 컨트롤러에 반횐된 member 엔티티는 준영속 상태다
+
+### 트랜잭션이 같으면 같은 영속성 컨텍스트를 사용한다
+트랜잭션 범위의 영속성 컨텍스트 전략은 다양한 위치에서 엔티티 매니저를 주입받아 사용해도 **트랜잭션이 같으면 항상 같은 영속성 컨텍스트를 사용한다.**
+
+Repository1, Repository2는 같은 트랜젹선 범위에 있다. 따라서 엔티티 매니저는 달라도 같은 영속성 컨텍스트를 사용한다.
+
+### 트랜잭션이 다르면 다른 용속성 컨텍스트를 사용한다
+**여러 스레드에서 동시 요청이 와서 같은 엔티티 매니저를 사용해도 트랜잭션에 따라 접근하는 영속성 컨텍스트가 다르다.** 조금 더 풀어서 이야기하자면 **스프링 컨테이너는 스레드마다 각각 다른 트랜잭션을 할당한다**. 따라서 같은 엔티티 매니저를 호출해도 접근하는 영속성 컨텍스트가 다르므로 멀티스레드 상황에 안전하다.
+
+스프링이나 J2EE 컨테이너의 가장 큰 장점은 트랜잭션과 복잡한 멀티 스레드 상황을 컨테이너가 처리해준다는 점이다. 따라서 개발자는 싱글 스레드 애플리케이션 처럼 단순하게 개발할 수 고 결과적으로 비지니스 로직 개발에 집중할 수있다.
+
+## 준영속 상태와 지연로딩
+스프링은 컨테이너 트랜잭션 범위의 영속성 컨텍스트 전략을 기본으로 사용한다. 그리고 **트랜잭션은 보통 서비스 계층에서 시작하므로 서비스 계층이 끝나느 시점에 트랜잭션이 종료되면서 영속성 컨텍스트도 함께 종료된다.** 따라서 조회 엔티티가 **서비스와 리포지토리 계층에서는 영속성 컨텍스트에 관리되면서 영속 상태를 유지하지만 컨트롤러나 뷰 같은 프리젠테이션 계층에서는 준영속 상태가 된다.**
+
+```java
+@Entity
+class Order {
+    @Id @GeneraltedValue
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 전략
+    private Member member; // 주문 회원
+    ...
+}
+```
+컨테이너 환경의 기본 전략인 트랜잭션 범위의 영속성 컨텍스트 전략을 사용하면 트랜잭션이 없는 프리젠테이션 계층에서 엔티티는 준영속 상태다. 따라서 변경 감지와 지연로딩이 동작하지 앟는다. 컨트롤러에 있는 로직인 지연로딩 시점에 예외가 발생한다.
+
+```java
+class OrderController {
+    public String view(Long orderId){
+        Order oder = orderService.findOne(orderId);
+        Member member = order.getMember();
+        member.getName(); // 지연 로딩 시 예외 발생
+    }
+}
+```
+
+### 준영속 상태와 변경 감지
+변경 감지 기능은 영속성 컨텍스트가 살아 있는 서비스 계층 까지만 동작하고 영속성 컨텍스트가 종료된 프리젠테이션 계층에서는 동작하지 않는다. 보통 변경 감지 긴능은 서비스 계층에서 비지니스 로직을 수행하면서 발생한다. 
+
+단순히 데이터를 보여주기만 하는 프리젠테이샨 계층에서 데이터를 수정할 일은 거의없다. 오히려 변경 감지 기능이 프리젠테이션 계층에도 동작하면 애플리케이션 계층이 가지는 책임이 모호해지고 무엇보다 데이터를 어디서 어떻게 변경 했는지 프리젠테이이션 계층까지 다 찾아야 하므로 유지보수하기 어렵다.
+
+### 준영속 상태와 지연 로딩
+준영속 상태의 가장 골치 아픈 문제는 지연 로딩 가능이 동작하지 않다는 점이다. 준영속 상태의 지연 로딩 문제를 해결하는 방법은 크게 2가지가 있다.
+
+* 뷰가 필요한 엔티티를 미리 로딩해느는 방법
+* OSIV를 사용해서 엔티티를 항상 영속 상태로 유지하는 방법
+
+뷰가 필요한 엔티티 미리 로딩해두는 방법은 어디서 미리 로딩하느냐에 따라 3가지 방법이 있다.
+* 글로벌 패치 전략 수정
+* JPQL 패치 조인
+* 강제로 초기화
+
+### 글로벌 패치 전략
+```java
+@Entity
+class Order {
+    @Id @GeneraltedValue
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER) // 즉시 로딩 전략
+    private Member member; // 주문 회원
+    ...
+}
+
+// 프리젠테이션 로직
+Order order = orderService.findOne(orderId);
+Member member = order.getMember();
+memger.getName(); // 이미 로딩된 엔티티
+```
+엔티티에 있는 fetch 타입을 변경하면 애플리케이션 전체 이 엔티티를 로딩할 대마다 전략을 사용하므로 글로벌 패치 전략이라 한다.
+
+### 글로벌 패치 전략 단점
+
+#### 사용하지 않는 엔티티를 로딩한다
+글로벌 설정으로 되니 Order를 조회하는 모든 엔티티에서 Member도 함께 조회하게 된다.
+
+#### N +1 문제가 발생한다
+JPA를 사용하면 성능상 가장 조심해야 하는 것이 N + 1 문제다. N + 1 문제가 어떤것인지 알아보자
+
+```java
+Order order = em.find(Member.class , 1L);
+
+// 실행된 SQL
+SELECT o.*, m.*
+FORM ORder o
+LEFT OUTER JOIN Member m on o.MEMBER_ID = m.MEMBER_ID
+WHERE o.id = 1 
+```
+실행된 SQL을 보면 즉시 로딩으로 설정한 Member 엔티티를 JOIN 쿼리로 함께 조회한다. 여끼 까지보면 글로벌 즉시 로딩 전략이 상당히 좋아 보이지만 문제닌 JPQL을 사용할 때 발생한다.
+
+```java
+List<Order> orders = em.createQuery("select o from ORder o", Order.class)
+    .getResultList(); // 연관된 모든 엔티티를 조회한다.
+```
+
+실행된 SQL은 다음과 같다.
+```SQL
+select * from Order // JPQL로 실행된 SQL
+select * from Member where id = ? // EAGER로 실행된 SQL
+select * from Member where id = ? // EAGER로 실행된 SQL
+select * from Member where id = ? // EAGER로 실행된 SQL
+select * from Member where id = ? // EAGER로 실행된 SQL
+...
+```
+**JPA가 JPQL을 분석해서 SQL을 생성할 때는 글로벌 패치 전략을 참고하지 않고 오직 JPQL 자체만 사용한다.** 따라서 즉시 로딩이든 지연 로딩이든 구분하지 않고 JPQL 쿼리 자체에 충실하게 SQL을 만든다.
+
+만약 조회된 order 엔티티가 10개면 member를 조회하는 SQL로 10번 실행된다. 이것을 N + 1 문제라고 한다. 이러한 문제는 JPQL 패치 조인으로 해결 할 수있다
+
+### JPQL 패치 조인
+글로벌 패치 전략을 즉시 로딩으로 설정하면 애플리케이션 전체에 영향을 주므로 너무 비효율적이다. JQPL을 호출하는 시점에 함께 로딩할 엔티티를 선택할 수 있는 패치 조인을 알아보자.
+
+```
+// JPQL
+select o
+form Order o
+join fetch o.member
+
+// SQL
+select o.*, m.*
+from Order o
+join Member m on o.MEMBER_ID = m.MEMBER_ID
+```
+사용딘 SQL JOIN을 사용해서 패치 조인 대상까지 함께 조회 되므로 N + 1 문제는 발생하지 않는다.
+
+### JPQL 패치 조인 단점
+패치 조인의 현실적인 대안이긴 하지만 무분별하게 사용하면 화면에 맞춘 레포지토리 메소드가 증가할 수 있다. 결국 프리젠테이션 계층이 알게 모르게 데이터 접근 계층을 침법하는 것이다.
+
+### 강제로 초기화 
+강제로 초기화는 영속성 컨텍스트가 살아 있을떄 프리젠테이션 계층이 필요한 엔티티를 강제로 초기화해서 반환하는 방법이다. 글로벌 패치전략을 모두 지연 로딩이라 가정하겠다.
+
+```java
+class OrderService {
+    Order order = orderRepository.findOer(id);
+    order.getMember().getName(); // 프록시 객체를 강제로 초기화한다.
+    return order;
+}
+```
+글로벌 패치 전략을 지연 로딩으로 설정하면 연관된 엔티티를 실제 엔티티가 아닌 프록시 객체로 조회한다. 프록시 객체는 실제 사용하는 시점에 초기화된다. 
+
+order.getMember() 까지만 호출하면 단순히 프록시 객체만 반환하고 아직 초기화 하지 않는다. 프록시 객체는 member.getName() 처럼 실제 값을 사용하는 시점에 초기화 된다.
+
+프록시를 초기화하는 역할을 서비스 계층이 담당하면 뷰가 필요한 엔티티에 따라 서비스 계층의 로직을 변경해야 한다. 은글 슬쩍 프리젠테이션 계층이 서비스 계칭을 침범하는 상항이다. 서비스 계층은 비지니스 로직을 담당해야지 이렇게 프리젠테이션 계층을 위한 일까지 하는 것은 좋지 않다. 따라서 비지니스 계층과 프리젠테이션 계층을 위한 프록시 초기화 역할을 FACADE 계층을 추가 한다
+
+
+#### FACADE 계층추가
+* 프리젠테이션 계층과 도메인 모델 계층 간의 논리적 의존성을 분리해준다
+* 프리젠테이샨 계층에서 필여한 프록시 객체를 초기환다.
+* 서비스 계층을 호출해 비지니스 로직을 싱행한다.
+* 리포지토리를 직접 호출해서뷰가 요구하는 엔티티를 찾는다.
+
+```java
+class OrderFacade {
+    @Autuwired OrderService orderSerivce;
+
+    public Order findOrder(id){
+        ORder order = orderService.findOder(id);
+        // 프리젠테이션 계층이 필요한 프록시 객체를 강제로 초기화한다.
+        order.getMember().getName();
+        return order;
+    }
+}
+class OrderService {
+
+    public Order findORder(id){
+        return orderRepositroy.findOrder(id);
+    }
+}
+```
+서비스 계층과 프리젠테이샨 계층 간의 논리적 의존관계를 제거 했다.
+
+### OSIV
+OSIV(Open Session In View)는 영속성 컨텍스트 뷰까지 열어 둔다는 뜻이다. 영속성 컨텍스트가 살아 있으면 엔티티 영속 상태를 유지한다. 따라서 뷰에서도 지연 로딩을 사용할 수 있다.
+
 # 14장 컬랙션과 부가기능
 
----
+* 컬렉션 : 다양한 컬렉션과 특징을 설명한다.
+* 컨버터 : 엔티티으ㅏ 테이블을 반환해서 데이터베이스에 저장한다.
+* 리스너: 엔티티에 발생한 이벤트를 처리한다.
+* 엔티티 그래프: 엔티티를 조회할 때 연관된 엔티티를 선택해서 함께 조회한다.
+
+## 컬렉션
+JPA는 자바가 기본적으로 제공하는 Collection, List, Set, Map 컬렉션을 지원하고 다음 경우에 이 컬렉션을 사용 할 수있다.
+
+* OneToMany, @ManyToMany를 사용해서 일대다 다대다 엔티티 관계를 매핑 할 때
+* @ElementCollection을 사용해서 값 타입을 하나 이상 보관할 때
+
+자바 컬렉션 인터페이스의 특징은 다음과 같다
+
+* Collection: 자바가 제공하는 초ㅓㅣ상위 컬렉션이다. 항버네이트는 중복을 허용하고 순서를 보장하지 않는다고 가정한다.
+* Set: 중복을 허용하지 않는 컬렉션이다. 순서를 보장하지 않는다.
+* List: 순서가 있는 컬렉션이다. 순서를 보장하고 중복을 허용한다.
+* Map: Key, Value 구조로 되어 있는 특수한 컬렉션이다.
+
+### JPA와 컬렉션
+하이버네이트는 엔티티를 영속 상태로 만들 때 컬렉션 필드를 하이버네이트에서 준비한 컬렉션으러 감싸서 사용한다.
+
+```java
+@Entity
+class Team {
+    @Id
+    private String id;
+
+    @OneToMany
+    @JoinColumn
+    private Collection<Member> members = new ArrayList<Member>();
+}
+```
+Team은 members 컬렉션을 필드고 가지고 있다 다음 코드로 Team을 영속 상태로 만드렁보자
+
+```java
+Team team = new Team();
+
+print("before persist = " + team.getMembers().getClass());
+team.getMembers().getClass();
+print("after persist = " + team.getMembers().getClass());
+```
+
+```
+before persist = class java.util.ArraList
+after persit = class org.hibernate.collection.internal.PErsistendBag
+```
+
+출력 결과를 보면 원래 ArrayList 타입 이었던 컬렉션이 엔티티를 영속 상태로 만든 직후 하이버네이트가 제공하는 PersistentBag 타입으로 변경되었다. **하이버네이트는 컬렉션을 효율적으로 관리하기 위해 엔티티를 영속 상태로 만들 때 원본 컬렉션을 감싸고 있는 내장 컬렉션을 생성해서 내장 컬렉션을 사용하도록 참조를 변경한다.** 하이버네이트가 제공하는 내장 컬렉션은 원본 컬렉션을 감싸고 있어서 래퍼 컬렉션이라고 부른다.
+하이버네이트는 이런 특성 때문에 컬렉션을 사용할 때 다음 처럼 즉시 초기화해서 사용하는 것을 권장한다.
+
+```java
+Collection<Member> member = new ArrayList<Member>();
+```
+
+| 컬렉션 인터페이스           | 내장 컬렉션          | 중복 허용 | 순서 보관 |
+| ------------------- | --------------- | ----- | ----- |
+| Collection, List    | PersistenceBag  | O     | X     |
+| Set                 | PersistenceSet  | X     | X     |
+| List + @OrderColumn | PersistenceList | O     | O     |
+
+### Collection, List
+Collection, List 인터페이스는 중복을 허용하는 컬렉션이고 PersistenceBag을 래퍼 컬렉션으로 사용한다. 이 인터페이스는 ArrayList로 초기화 하면된다
+
+```java
+@Entity
+class Parent {
+    @Id @GeneratedValue
+    private Long id;
+
+    @OneToMany
+    @JoinColumn
+    private Collection<CollectionChild> collection = new ArrayList<CollectionChild>();
+
+    @OneToMany
+    @JoinColumn
+    private List<ListChild> List = new ArrayList<CollectionChild>();
+    
+}
+```
+중복을 허용한다는 가정하므로 객체를 추가하는 add() 메소드는 내부에서 어떤 비교도 하지 않고 항상 true를 반환한다. 같은 엔티티가 있는지 찾거나 삭제하는 equals() 메소드를 사용한다.
+
+**Collection, List는 엔티티를 추가할 떄 중복된 엔티티가 있는지 비교하지 않고 단순히 저장만 하면 된다. 따라서 엔티티를 추가해도 지연 로딩된 컬렉션을 초기화 하지 않는다.**
+
+
+### Set
+Set은 중복을 허용하지 않는 컬렉션이다 하이버네이트는 PersistentSet을 컬렉션 래퍼로 사용한다. 이 인터페이스는 HashSet으로 초기화 하면된다.
+
+```java
+public class Parent {
+    @OneToMany
+    @JoinColmn
+    private Set<SetChild> set = new HashSet<>();
+}
+```
+HashSet은 중복을 허용하지 않음으로 add() 메소드로 객체를 추가할 때 마다 equals() 메소드로 같은 객체가 있는지 비교 한다. 같은 객체가 없으면 객체를 추가하고 true를 리턴하고 같은 객체가 이미 있어서 추가에 실패하면 false를 반환한다.
+
+**Set은 엔티티 추가할 때 중복된 엔티티가 있는지 비교해야 한다. 따라서 엔티티를 추가할 때 지연 로딩된 컬렉션을 최기화한다.**
+
+
+### List + @OrderColumn
+List 인터페이스에 @OrderColumn을 추가하면 순서가 있는 툭수한 컬렉션으로 인식한다. 순서가 있다는 의미는 데이터베이스에 순가 값을 저장해서 조회할 때 사용한다는 의미다. 하이버네이트 내부 컬렉션인 PersistenceList를 사용한다.
+
+```java
+@Entity
+public class Baord {
+    @Id @GeneratedValue
+    private Long id;
+
+    private String title;
+    private String content;
+
+    @OneToMany(mappedBy = "board")
+    @ORderColumn(name = "POSTION")
+    private List<Comment> comments = new ArrayList<>();
+}
+
+@Entity
+class Comment {
+    @Id @GeneratedValue
+    private Long id;
+    
+    private String Comment
+
+    @ManyToOne
+    @JoinColumn(name = "BOARD_ID")
+    private Board board;    
+}
+```
+Board.comments는 순서가 있는 컬렉션으로 인식된다. 자바가 제공하는 List 컬렉션 내부에 위치 값을 가지고 있다. 따라서 다음 코드처럼 List의 위치 값을 활용할 수 있다.
+
+```java
+list.add(1, data); // 1번 위치에 data1을 저장하라
+list.get(10); // 10번 위치에 있는 값을 조회하라
+```
+#### @OrderBy
+@OrderBy는 데이터베이스의 ORDER BY절을 사용해서 컬렉션을 정렬한다. 따라서 순서용 컬럼을 매핑하지 않아도 된다. 그리고 @OrderBy는 모든 컬렉션에 사용할 수 있다.
+
+## @Converter
+컨버터를 사용하면 엔티티의 데이터를 변환해서 데이터베이스에 저장할 수 있다. 예를 들어 회원의 VIP 여부를 자바의 boolean 타입을 사용하고 싶다고 하자 JPA를 사용하면 자바의 boolean 타입은 방언에 따라 다르지만 데이터베이스에 저장 될때 0, 1 숫자로 저장된다. 그런데 데이터베이스에 Y, N 으로 저장 하고싶다면 컨버터를 사용하면 된다.
+
+## 리스너
+모든 엔티티를 대상으러 언제 어떤 사용자가 삭제를 요청했는지 모두 로그를 남겨야 하는 요구사항이 있다고 가정 하자. 이떄 애플리케이션 삭제 로직을 하나씩찾아서 로그를 남기는 것은 너무 비효율적이다. JPA 리스너 기능을 사영하면 엔티티의 생명주기에 따른 이벤트를 처리할 수 있다.
+
+
+
 # 15장 고급 주제와 성능 최적화
 # 16장 트랜잭션과 락, 2차 캐시
 
