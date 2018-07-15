@@ -1,7 +1,15 @@
+# 자바 ORM 표준 JPA 프로그래밍 
 
+<p align="center">
+  <img src="https://camo.githubusercontent.com/3073829860a866037e0ca12f244a9eb5462e4cfa/687474703a2f2f696d6167652e6b796f626f626f6f6b2e636f2e6b722f696d616765732f626f6f6b2f786c617267652f3333302f78393738383936303737373333302e6a7067">
+</p>
+* [자바 ORM 표준 JPA 프로그래밍](https://github.com/ihoneymon/study-orm-jpa)을 정리한 자료입니다.
+
+# 목차
 <!-- TOC -->
 
 - [자바 ORM 표준 JPA 프로그래밍](#자바-orm-표준-jpa-프로그래밍)
+- [목차](#목차)
 - [1장](#1장)
     - [패러다임의 불일치](#패러다임의-불일치)
     - [상속](#상속)
@@ -239,14 +247,7 @@
 - [16장 트랜잭션과 락, 2차 캐시](#16장-트랜잭션과-락-2차-캐시)
 
 <!-- /TOC -->
-# 자바 ORM 표준 JPA 프로그래밍 
 
-<p align="center">
-  <img src="https://camo.githubusercontent.com/3073829860a866037e0ca12f244a9eb5462e4cfa/687474703a2f2f696d6167652e6b796f626f626f6f6b2e636f2e6b722f696d616765732f626f6f6b2f786c617267652f3333302f78393738383936303737373333302e6a7067">
-</p>
-
-
-* [자바 ORM 표준 JPA 프로그래밍](https://github.com/ihoneymon/study-orm-jpa)을 정리한 자료입니다.
 
 # 1장 
 
