@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="http://image.kyobobook.co.kr/images/book/xlarge/847/x9791162240847.jpg">
+</p>
+
 <!-- TOC -->
 
 - [1장 인터페이스](#1%EC%9E%A5-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4)
