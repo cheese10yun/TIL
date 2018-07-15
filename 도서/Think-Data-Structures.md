@@ -2,11 +2,13 @@
   <img src="http://image.kyobobook.co.kr/images/book/xlarge/847/x9791162240847.jpg">
 </p>
 
+# 목차
 <!-- TOC -->
 
-- [1장 인터페이스](#1%EC%9E%A5-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4)
-    - [리스트가 두 종류인 이유](#%EB%A6%AC%EC%8A%A4%ED%8A%B8%EA%B0%80-%EB%91%90-%EC%A2%85%EB%A5%98%EC%9D%B8-%EC%9D%B4%EC%9C%A0)
-    - [자바 inferface](#%EC%9E%90%EB%B0%94-inferface)
+- [목차](#목차)
+- [1장 인터페이스](#1장-인터페이스)
+    - [리스트가 두 종류인 이유](#리스트가-두-종류인-이유)
+    - [자바 inferface](#자바-inferface)
     - [List inferface](#list-inferface)
 
 <!-- /TOC -->
