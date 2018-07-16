@@ -17,7 +17,7 @@ ssh-add ~/.ssh/id_rsa
 
 ```
 $ ssh -T git@github.com
-Hi cheese10yun! You've successfully authenticated, but GitHub does not provide shell access
+Hi YourEmail@example.com! You've successfully authenticated, but GitHub does not provide shell access
 ```
 * 해당키 ssh가 제대로 발급됬나 확인
 * 위와같은 메세지가 출력되면 성공
