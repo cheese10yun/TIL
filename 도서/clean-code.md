@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="http://image.kyobobook.co.kr/images/book/xlarge/959/x9788966260959.jpg">
+</p>
 
 # 목차
 <!-- TOC -->
