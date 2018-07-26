@@ -6,10 +6,11 @@ SOLID 다소 딱딱하고 장황할 설명으로 인해서 이해하지 못한 �
 
 # 목차
 * [단일 책임의 원칙: Single Responsibility Principle 작업중 ..]()
-* [개방 폐쇄의 원칙: Open Close Principle]()
+* [개방 폐쇄의 원칙: Open Close Principle](https://www.popit.kr/spring-%EC%98%88%EC%A0%9C%EB%A1%9C-%EB%B3%B4%EB%8A%94-solid-%EA%B0%9C%EB%B0%A9-%ED%8F%90%EC%87%84%EC%9D%98-%EC%9B%90%EC%B9%99-open-close-principle)
 * [리스코브 치환의 원칙: The Liskov Substitution Principle 작업중...]()
 * [인터페이스 분리의 원칙: Interface Segregation Principle 작업중...]()
-* [의존성역전의 원칙: Dependency Inversion Principle 작업중...]()
+* [의존성역전의 원칙: Dependency Inversion Principle](https://www.popit.kr/spring-%EC%98%88%EC%A0%9C%EB%A1%9C-%EB%B3%B4%EB%8A%94-solid-%EC%9D%98%EC%A1%B4%EC%84%B1%EC%97%AD%EC%A0%84%EC%9D%98-%EC%9B%90%EC%B9%99-dependency-inversion-principle)
+
 
 # 개방 폐쇄의 원칙: Open Close Principle
 
