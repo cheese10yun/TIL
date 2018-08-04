@@ -127,7 +127,7 @@ public class WooriCardPaymentService implements CardPaymentService {
 * 클래스는 단 한 개의 책임을 가져야 한다.
 
 책임의 분류
-* 메소드의 client에 의해 결졍됨
+* 메소드의 client에 의해 결졍됨 
 * 누가 해당 메소드의 변경을 유발하는 사용자인가?
 * 변경을 유발하는 사용자 == Actor
 * SRP는 사용자에 관한것
