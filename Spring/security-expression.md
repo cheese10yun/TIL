@@ -14,6 +14,7 @@
     - [isAnonymous, isRememberMe, isAuthenticated, isFullyAuthenticated](#isanonymous-isrememberme-isauthenticated-isfullyauthenticated)
     - [principal, authentication](#principal-authentication)
     - [hasPermission API](#haspermission-api)
+- [Expression-Based Access Control](#expression-based-access-control)
 
 <!-- /TOC -->
 
@@ -134,3 +135,11 @@ public void acceptArticle(Article article) {
    …
 }
 ```
+
+# Expression-Based Access Control
+
+> [Expression-Based Access Control](https://docs.spring.io/spring-security/site/docs/current/reference/html/el-access.html) Document를 보고 간략하게 정리한 글입니다.
+
+Spring Security 3.0은 이전 보았던 구성 속성과 의가 결정권자의 간단한 사용 외에도 권한 부여 메커니즘으로 Spring EL 표현식을 사용 할 수있도록 기능을 도입했습니다.표현식 기반 엑세스 제어는 동일한 아키텍처에서 빌드되지만 복잡한 boolean 로직을 단일 표현식에 캡슐화 할 수 있습니다.
+
+
