@@ -37,6 +37,18 @@
             - [디큐 메서드 deque](#디큐-메서드-deque)
             - [검색 메서드 indexOf](#검색-메서드-indexof-1)
             - [모든 데이터를 출력하는 메서드 dump](#모든-데이터를-출력하는-메서드-dump)
+- [07 집합](#07-집합)
+    - [집합의 요소](#집합의-요소)
+    - [배열로 집합만들기](#배열로-집합만들기)
+        - [max](#max)
+        - [num](#num)
+        - [set](#set)
+        - [집합 최대 개수를 반환하는 capacity 메서드](#집합-최대-개수를-반환하는-capacity-메서드)
+        - [집합의 현재 요소 개수를 반환하는 size 메서드](#집합의-현재-요소-개수를-반환하는-size-메서드)
+        - [요소를 검색하는 indexOf 메서드](#요소를-검색하는-indexof-메서드)
+        - [요소 n이 있는지 확인하는 contains 메서드](#요소-n이-있는지-확인하는-contains-메서드)
+        - [요소 n을 추가하는 add 메서드](#요소-n을-추가하는-add-메서드)
+        - [요소 n을 집합에서 삭제하는 remove 메서드](#요소-n을-집합에서-삭제하는-remove-메서드)
 
 <!-- /TOC -->
 
@@ -437,3 +449,92 @@ public void dump() {
 스캔의 시작은 배열의 첫요소가 아니라 큐의 첫 요소, **프런트입니다. 그래서 스캘할 때 주목하는 인덱스는 idx 계산이 (i + fornt )/ % max**입니다.
 #### 모든 데이터를 출력하는 메서드 dump
 큐에 인큐된 모든 데이터를 프런트에서 리어 순으로 출력하는 메서드입니다. 큐가 비어 있으면 큐가 비어있습니다. 라고 표시합니다.
+
+
+# 07 집합
+집합이란 명확한 조건을 만족하는 자료의 모임을 의미합니다. 즉, 집합도 자료구조로 표현할 수 있습니다.
+
+## 집합의 요소
+집합이란 객관적으로 범위를 규정한 '어떤 것'의 모임이며, 그 지합 안에서 각각의 어떤 것들을 요소라고 부릅니다
+
+## 배열로 집합만들기
+
+```java
+public class InetSet {
+    private int max; // 집합의 최대 크기
+    private int num; // 집합의 요소 개수
+    private int[] set; // 집합 본체 
+
+    // 집합의 쵀대 개수
+    public int capacity() {
+        return max;
+    }
+
+    // 집합의 쵀대 개수
+    public int size() {
+        return num;
+    }
+
+    // 집합에서 n을 검색합니다.
+    public int indexOf(int n) {
+        for (int i = 0; i < num; i++)
+            if (set[i] == n)
+                return i;
+        return -1;
+    }
+
+    // 집합에 n 이 있는지 없는지 확인합니다.
+    public boolean contains(int n) {
+        return indexOf(n) == 1;
+    }
+
+    // 집합에 n을 추가합니다.
+    public boolean add(int n) {
+        if (num >= max || contains(n)) {
+            return false;
+        } else {
+            set[num++] = n;
+            return true;
+        }
+    }
+
+    public boolean remove(int n) {
+        int idx;
+
+        if (num <= 0 || (idx = indexOf(n)) == -1) {
+            return false;
+        }else{
+            set[idx] = set[--num];
+            return true;
+        }
+    }
+}
+```
+
+### max
+집합의 최대 크기를 나타내는 필드입니다.
+
+### num
+집합의 요소 개수입니다. 집합의 요소는 배열의 앞쪽 부터 0 ~ num - 1 까지 넣습니다.
+
+### set
+집합을 저장할 배열입니다. 
+
+### 집합 최대 개수를 반환하는 capacity 메서드
+집합이 가질 수 있는 가장 큰 값을 반환하는 메서드로 max를 반환합니다ㅣ
+
+### 집합의 현재 요소 개수를 반환하는 size 메서드
+집합의 현재 요소 개수를 반환하는 메서드로 num의 값을 반한환합니다.
+
+### 요소를 검색하는 indexOf 메서드
+집합 배열 set에 n이 있는지 선형 검색으로 확인합니다.
+
+### 요소 n이 있는지 확인하는 contains 메서드
+집합 배열 set에 n이 들어 있는지 확인 하는 메서드
+
+### 요소 n을 추가하는 add 메서드
+요소 n을 집합에 추가하는 메서드입니다. 같은 요소가 없을 경우 추가됩니다.
+
+### 요소 n을 집합에서 삭제하는 remove 메서드
+집합에서 요소 n을 삭제하는 메서드.
+먼저 indexOf 메서드에서 삭제할 수 읐는 요소 인뎃스를 idx에 대입 합니다. 그런 다음 요소 개수 num을 -1 감소 시키고 마지막 요소은 set[num]을 set[idx]에 복사합니다.
