@@ -60,7 +60,7 @@
 
 ### Job
 * Job은 배치 처리 과정을 하나의 단위로 만들어 포현한 객체입니다. 또한 전체 배치 처리에 있어 항상 최상단 계층에 있습니다.
-* 위에서 하나의 Job(일감) 안에는 여러 Step(단계)이 있다고 설명했던 바와 같이 **스프링 배치에서 Job 객체는 여러 Step 인스턴르를 포함하는 컨테이너 입니다**
+* 위에서 하나의 Job(일감) 안에는 여러 Step(단계)이 있다고 설명했던 바와 같이 **스프링 배치에서 Job 객체는 여러 Step 인스턴스를 포함하는 컨테이너 입니다**
 * Job 객체를 만드는 빌더는 여러 개 있습니다. 여러 빌더를 통합합 처리하는 공장인 JobBuilderFactory로 원하는 Job을 쉽게 만들수 있습니다.
 
 ```java
@@ -255,7 +255,7 @@ public ItemWriter<User> inactiveUserWriter() {
     return ((List<? extends User> users) -> userRepository.saveAll(users));
 }
 ```
-ItemWriter는 리스트 ㅏ입을 앞서 설정한 청크 단위로 받습니다. 청크 단위를 10으로 설정했기 때문에 users에게 휴면회원 10개가 주어지며 saveAll()메서드를 통해서 한번에 DB에 저장합니다.
+ItemWriter는 리스트 타입을 앞서 설정한 청크 단위로 받습니다. 청크 단위를 10으로 설정했기 때문에 users에게 휴면회원 10개가 주어지며 saveAll()메서드를 통해서 한번에 DB에 저장합니다.
 
 
 
