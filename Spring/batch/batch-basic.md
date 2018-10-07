@@ -17,7 +17,8 @@
     - [ItemReader](#itemreader)
     - [ItemProcessor](#itemprocessor)
     - [ItemWriter](#itemwriter)
-- [스프링 부트 배치 설계](#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EB%B0%B0%EC%B9%98-%EC%84%A4%EA%B3%84)
+- [휴먼회원 배치 설계](#%ED%9C%B4%EB%A8%BC%ED%9A%8C%EC%9B%90-%EB%B0%B0%EC%B9%98-%EC%84%A4%EA%B3%84)
+- [휴먼회원 배치 구현](#%ED%9C%B4%EB%A8%BC%ED%9A%8C%EC%9B%90-%EB%B0%B0%EC%B9%98-%EA%B5%AC%ED%98%84)
 - [참고](#%EC%B0%B8%EA%B3%A0)
 
 <!-- /TOC -->
@@ -49,7 +50,9 @@
 
 배치 처리는 읽기 -> 처리 -> 쓰기 흐름을 갖습니다. 다음 그림은 스프링에서 이러한 배치 처리를 어떻게 구현 했는지 배치 처리와 관련된 객체의 관계를 보여줍니다.
 
-![batch-obejct-relrationship](/assets/batch-obejct-relrationship.png)
+<p align="center">
+  <img src="/assets/batch-obejct-relrationship.png">
+</p>
 
 * Job과 Step은 1:M
 * Step과 ItemReader, ItemProcessor, ItemWriter 1:1 
@@ -149,14 +152,113 @@ ItemWriter는 배치 데이터를 저장합니다. 일반적으로 DB나 파일�
 ItemWriter도 ItemReader와 비슷한 방식을 구현합니다. 제네릭으로 원하는 타입을 받고 write() 메서드는 List를 사용해서 저장한 타입의 리스트를 매게변수로 받습니다.
 
 
-## 스프링 부트 배치 설계
-![bach-process](/assets/bach-process.png)
+## 휴먼회원 배치 설계
+<p align="center">
+  <img src="/assets/bach-process.png">
+</p>
 
-**가입한 회원 중 1년이 지나도록 상태 변화가 업슨ㄴ 회원을 휴면회원으로 전환하는 배치 처리**
+**가입한 회원 중 1년이 지나도록 상태 변화가 없는 회원을 휴면회원으로 전환하는 배치 처리**
 
 * (1) DB에 저장된 데이터 중 1년간 업데이트되지 않은 사용자를 찾는 로직 ItemReader 구현합니다.
 * (2) 대상 사용자 데이터의 상탯값을 휴면으로 전환하는 프로세스를 ItemProcessor에 구현합니다.
 * (3) 상태값이 변환된 휴먼회원을 실제DB에 저장하는 ItemWriter를 구현합니다.
 
+## 휴먼회원 배치 구현
+
+배치처리 순서는 다음과 같습니다.
+
+1. 휴면 회원 Job 설정
+2. 휴먼회원 Step 설정
+3. 휴면회원 Reader, Processor, Writer 설정
+
+
+```java
+@Configuration
+public class InactiveUserJobConfig {
+    ...
+    @Bean
+    public Job inactiveUserJob(JobBuilderFactory jobBuilderFactory, Step inactiveJobStep) { //(1)
+        return jobBuilderFactory.get("inactiveUserJob")
+                .preventRestart() //(2)
+                .start(inactiveJobStep) //(3)
+                .build();
+    }
+```
+
+* (1) Job 생성을 직관적이고 편리하게 도와주는 빌더 JobBuilderFactory를 주입받습니다.
+* (2) inactiveUserJob 이라는 JobBuilder를 생성하며 `preventRestart()` 설정을 통해 재실행을 막았습니다.
+* (3) `start(inactiveJobStep)`은 파라미터에서 주입받은 휴먼회원 관련 Step인 inactiveJobStep을 제일 먼저 실행하도록 설정하는 부분입니다. 
+
+기본적인 Job설정은 완료 했습니다. Step 설정을 진행하겠습니다.
+
+```java
+...
+@Bean
+public Step inactiveJobStep(StepBuilderFactory stepBuilderFactory) {
+    return stepBuilderFactory.get("inactiveUserStep") //(1)
+            .<User, User> chunk(10) //(2)
+            .reader(inactiveUserReader()) //(3)
+            .processor(inactiveUserProcessor())
+            .writer(inactiveUserWriter())
+            .build();
+}
+```
+* (1) `stepBuilderFactory.get("inactiveUserStep")`로 inactiveUserStep 이라는 이름의 StepBuilder를 생성합니다.
+* (2) 제네릭을 사용해서 `chunk()` 의 입력과 추력 타입을 User로 설정 했습니다. chunk의 인자값은 10으로 설정해서 **쓰기 시에 청크 단위로 writer() 메서드를 실행시킬 단위를 지정했습니다. 즉 커밋단위가 10개입니다.**
+* (3) step의 reader, proccsor, writer를 각각 설정했습니다.
+
+```java
+@Bean
+@StepScope //(1)
+public QueueItemReader<User> inactiveUserReader() {
+    //(2)
+    List<User> oldUsers =
+            userRepository.findByUpdatedDateBeforeAndStatusEquals(
+                    LocalDateTime.now().minusYears(1),
+                    UserStatus.ACTIVE);
+
+    return new QueueItemReader<>(oldUsers); //(3)
+}
+```
+* (1) 기본 빈 생성은 싱글턴이지만 @StepScope를 사용하면 해당 메서드는 Step의 주기에 따라 새로운 빈을 생성합니다. **즉, 각 Step의 실행마다 새로운 빈을 만들기 때문에 지연 생성이 가능합니다. 주의할 사항은 @StepScode는 기본 프록시 모드가 반환되는 클래스 타임을 참조하기 때문에 @StepScode를 사용하면 반드시 구현된 반환 타입을 명시해 변환해야합니다.** 해당 예제는 QueueItemReader<User>라고 명시했습니다.
+* (2) `findByUpdatedDateBeforeAndStatusEquals()` 메서드를 통해서 휴먼 회원 리스트를 가져옵니다.
+* (3) QueueItemReader 객체를 생성하고 불러온 휴먼회원 타깃 대상을 데이터 객체에 넣어 반환합니다.
+
+```java
+public class QueueItemReader<T> implements ItemReader<T> {
+    private Queue<T> queue;
+
+    public QueueItemReader(List<T> data) {
+        this.queue = new LinkedList<>(data); //(1)
+    }
+
+    @Override
+    public T read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+        return queue.poll(); //(2)
+    }
+}
+```
+QueueItemReader는 큐를 사용해서 자장하는 ItemReader 구현체입니다. ItemReader의 기본 반환 타입은 단수형인데 그 에 따라 구현하면 User 객체 1개씩 DB에 select 요청 하므로 매우 비효율적인 방식이 될 수 있씹느다.
+
+* (1) QueueItemReader를 사용해서 휴면회원으로 지정될 타깃 데이터를 한번에 불러와 큐에 담아 놓습니다.
+* (2) reade() 메서드를 사용할 때 큐의 `poll()`메서드를 통해서 큐에서 데이터를 하나씩 반환합니다.
+
+```java
+public ItemProcessor<User, User> inactiveUserProcessor() {
+    return user -> user.setInactive();
+}
+```
+읽어온 타깃 데이터를 휴먼 회원으로 전환시키는 Processor입니다. reader에서 읽은 User를 휴면 상태로 전환화는 Processor 메서드를 추가하는 예입니다. 
+
+```java
+public ItemWriter<User> inactiveUserWriter() {
+    return ((List<? extends User> users) -> userRepository.saveAll(users));
+}
+```
+ItemWriter는 리스트 ㅏ입을 앞서 설정한 청크 단위로 받습니다. 청크 단위를 10으로 설정했기 때문에 users에게 휴면회원 10개가 주어지며 saveAll()메서드를 통해서 한번에 DB에 저장합니다.
+
+
+
+
 ## 참고
-* [처음으로 배우는 스프링 부트 2](https://kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9791162241264&orderClick=JAj)
+* [처음으로 배우는 스프링 부트 2](https://kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9791162241264&orderClick=JAj)를 정리한 글입니다.
