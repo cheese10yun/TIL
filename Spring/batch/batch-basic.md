@@ -19,6 +19,11 @@
     - [ItemWriter](#itemwriter)
 - [휴먼회원 배치 설계](#%ED%9C%B4%EB%A8%BC%ED%9A%8C%EC%9B%90-%EB%B0%B0%EC%B9%98-%EC%84%A4%EA%B3%84)
 - [휴먼회원 배치 구현](#%ED%9C%B4%EB%A8%BC%ED%9A%8C%EC%9B%90-%EB%B0%B0%EC%B9%98-%EA%B5%AC%ED%98%84)
+    - [Job 설정](#job-%EC%84%A4%EC%A0%95)
+    - [Step 설정](#step-%EC%84%A4%EC%A0%95)
+    - [Reader설정](#reader%EC%84%A4%EC%A0%95)
+    - [Processor 설정](#processor-%EC%84%A4%EC%A0%95)
+    - [Writer 설정](#writer-%EC%84%A4%EC%A0%95)
 - [참고](#%EC%B0%B8%EA%B3%A0)
 
 <!-- /TOC -->
@@ -103,53 +108,46 @@ public JobFlowBuilder flow(Step step){
 * JobBuilder는 직접적으로 Job을 생성하는 것이 아니라 별도의 구체적 빌더를 생성하여 변환하여 경우에 따라 Job 생성 방법이 모두 다를 수 있는 점을 유연하게 처리할 수 있습니다.
 
 ### JobInstance
-**JobInstance는 배치 처리에서 Job이 실행될 떄 하나의 Job 실행 단위입니다.** 만약 하루에 한 번 씩 배치의 Job이 실행된다면 어제와 오늘 실행 각각 Job을 JobInstance라고 부를 수 있습니다.
-
-각각의 JobInstance는 하나의 JobException을 갖는 것은아닙니다. 오늘 Job이 실행 했는데 실패했다면 다음날 동일한 JobInstance를 가지고 또 실행합니다. Job 실행이 실패하면 JobInstance가 끝난것으로 간주하지 않기 때문입니다. 그렇다면 JobInstance는 어제 실패한 JobExcution과 오늘의 성공한 JobExcution 두 개를 가지게 됩니다. **즉 JobExcution 는 여러 개 가질 수 있습니다.**
+* **JobInstance는 배치 처리에서 Job이 실행될 떄 하나의 Job 실행 단위입니다.** 만약 하루에 한 번 씩 배치의 Job이 실행된다면 어제와 오늘 실행 각각 Job을 JobInstance라고 부를 수 있습니다.
+* 각각의 JobInstance는 하나의 JobException을 갖는 것은아닙니다. 오늘 Job이 실행 했는데 실패했다면 다음날 동일한 JobInstance를 가지고 또 실행합니다. 
+* Job 실행이 실패하면 JobInstance가 끝난것으로 간주하지 않기 때문입니다. 그렇다면 JobInstance는 어제 실패한 JobExcution과 오늘의 성공한 JobExcution 두 개를 가지게 됩니다. **즉 JobExcution 는 여러 개 가질 수 있습니다.**
 
 ### JobExcution
-JobExcution은 JobIstance에 대한 한 번의 실행을 나타내는 객체입니다. 
-
-만약 오늘 Job이 실패해 내일 다시 동일한 Job을 실행하면 오늘/내일의 실행 모두 같은 JobInstance를 사용합니다.
-
-실제로 JobExcution 인터페이스를 보면 Job 실행에 대한 정보를 담고 있는 도메인 객체가 있습니다. JobExcution은 JobInstance, 배치 실행 상태, 시작 시간, 끝난 시간, 실패했을 때 메시지 등의 정보를 담고 있습니다. JobExcution 객체 안에 어떤 실행 정보를 포함 하고 있습니다.
+* JobExcution은 JobIstance에 대한 한 번의 실행을 나타내는 객체입니다. 
+* 만약 오늘 Job이 실패해 내일 다시 동일한 Job을 실행하면 오늘/내일의 실행 모두 같은 JobInstance를 사용합니다.
+* 실제로 JobExcution 인터페이스를 보면 Job 실행에 대한 정보를 담고 있는 도메인 객체가 있습니다. JobExcution은 JobInstance, 배치 실행 상태, 시작 시간, 끝난 시간, 실패했을 때 메시지 등의 정보를 담고 있습니다. JobExcution 객체 안에 어떤 실행 정보를 포함 하고 있습니다.
 
 ### JobParameters
-JobParameters는 Job이 실행될 때 필요한 파라미터들은 Map 타입으로 지정하는 객체 입니다.
-
-JobParameters는 JobInstance를 구분하는 기준이 되기도 합니다.
-
-JobParameters와 JobInstance는 1:1 관계입니다.
+* JobParameters는 Job이 실행될 때 필요한 파라미터들은 Map 타입으로 지정하는 객체 입니다.
+* JobParameters는 JobInstance를 구분하는 기준이 되기도 합니다.
+* JobParameters와 JobInstance는 1:1 관계입니다.
 
 ### Step
-Step은 실직적인 배치 처리를 정희하고 제어 하는데 필요한 모든 정보가 있는 도메인 객체입니다. Job을 처리하는 실질적인 단위로 쓰입니다. 모든 Job에는 1개 이상의 Step이 있어야 합니다.
+* Step은 실직적인 배치 처리를 정희하고 제어 하는데 필요한 모든 정보가 있는 도메인 객체입니다. Job을 처리하는 실질적인 단위로 쓰입니다.
+* 모든 Job에는 1개 이상의 Step이 있어야 합니다.
 
 #### StepExcution
-Job에 JobExcution Job실행 정보가 있다면 Step에는 StepExcution이라는 Step 실행 정보를 담는 객체가 있씁니다.
+* Job에 JobExcution Job실행 정보가 있다면 Step에는 StepExcution이라는 Step 실행 정보를 담는 객체가 있씁니다.
 
 ### JobRepository
-JobRepository는 배치 처리 정보를 담고 있는 매커니즘입니다. 어떤 Job이 실행되었으면 몇 번 실행되었고 언제 끝났는지 등 배치 처리에 대한 메타데이터를 저장합니다.
-
-예를들어 Job 하나가 실행되면 JobRepository에서는 배치 실행에 관련된 정보를 담고 있는 도메인 JobExcution을 생성합니다.
-
-JobRepository는 Step의 실행 정보를 담고 있는 StepExcution도 저장소에 저장하여 전체 메타데이터를 저장/관리하는 역할을 수행합니다.
+* JobRepository는 배치 처리 정보를 담고 있는 매커니즘입니다. 어떤 Job이 실행되었으면 몇 번 실행되었고 언제 끝났는지 등 배치 처리에 대한 메타데이터를 저장합니다.
+* 예를들어 Job 하나가 실행되면 JobRepository에서는 배치 실행에 관련된 정보를 담고 있는 도메인 JobExcution을 생성합니다.
+* JobRepository는 Step의 실행 정보를 담고 있는 StepExcution도 저장소에 저장하여 전체 메타데이터를 저장/관리하는 역할을 수행합니다.
 
 ### JobLauncher
-JobLauncher는 Job. JobParamerters와 함께 배치를 실행하는 인터페이스입니다. 
+* JobLauncher는 Job. JobParamerters와 함께 배치를 실행하는 인터페이스입니다. 
 
 ### ItemReader
-ItemReader는 Step의 대상이 되는 배치 데이터를 읽어오는 인터페이스입니다. File, Xml Db등 여러 타입의 데이터를 읽어올 수 있습니다.
+* ItemReader는 Step의 대상이 되는 배치 데이터를 읽어오는 인터페이스입니다. File, Xml Db등 여러 타입의 데이터를 읽어올 수 있습니다.
 
 ### ItemProcessor
-ItemProcessor는 ItemReader로 읽어 온 배치 데이터를 변환하는 역할을 수행합니다. 이 것을 분리하는 이유는 다음과 같습니다.
-
+* ItemProcessor는 ItemReader로 읽어 온 배치 데이터를 변환하는 역할을 수행합니다. 이 것을 분리하는 이유는 다음과 같습니다.
 * 비지니스 로직의 분리 : ItemWriter는 저장망 수행하고, ItemProcessor는 로직 처리만 수행해 역할을 명확하게 분리합니다.
 * 읽어온 배치 데이터와 씌여질 데이터의 타입이 다를 경우에 대응할 수 있기 때문입니다.
 
 ### ItemWriter
-ItemWriter는 배치 데이터를 저장합니다. 일반적으로 DB나 파일에 저장합니다.
-
-ItemWriter도 ItemReader와 비슷한 방식을 구현합니다. 제네릭으로 원하는 타입을 받고 write() 메서드는 List를 사용해서 저장한 타입의 리스트를 매게변수로 받습니다.
+* ItemWriter는 배치 데이터를 저장합니다. 일반적으로 DB나 파일에 저장합니다.
+* ItemWriter도 ItemReader와 비슷한 방식을 구현합니다. 제네릭으로 원하는 타입을 받고 write() 메서드는 List를 사용해서 저장한 타입의 리스트를 매게변수로 받습니다.
 
 
 ## 휴먼회원 배치 설계
@@ -172,6 +170,7 @@ ItemWriter도 ItemReader와 비슷한 방식을 구현합니다. 제네릭으로
 3. 휴면회원 Reader, Processor, Writer 설정
 
 
+### Job 설정
 ```java
 @Configuration
 public class InactiveUserJobConfig {
@@ -191,6 +190,7 @@ public class InactiveUserJobConfig {
 
 기본적인 Job설정은 완료 했습니다. Step 설정을 진행하겠습니다.
 
+### Step 설정
 ```java
 ...
 @Bean
@@ -207,6 +207,8 @@ public Step inactiveJobStep(StepBuilderFactory stepBuilderFactory) {
 * (2) 제네릭을 사용해서 `chunk()` 의 입력과 추력 타입을 User로 설정 했습니다. chunk의 인자값은 10으로 설정해서 **쓰기 시에 청크 단위로 writer() 메서드를 실행시킬 단위를 지정했습니다. 즉 커밋단위가 10개입니다.**
 * (3) step의 reader, proccsor, writer를 각각 설정했습니다.
 
+
+### Reader설정
 ```java
 @Bean
 @StepScope //(1)
@@ -243,6 +245,8 @@ QueueItemReader는 큐를 사용해서 자장하는 ItemReader 구현체입니�
 * (1) QueueItemReader를 사용해서 휴면회원으로 지정될 타깃 데이터를 한번에 불러와 큐에 담아 놓습니다.
 * (2) reade() 메서드를 사용할 때 큐의 `poll()`메서드를 통해서 큐에서 데이터를 하나씩 반환합니다.
 
+
+### Processor 설정
 ```java
 public ItemProcessor<User, User> inactiveUserProcessor() {
     return user -> user.setInactive();
@@ -250,6 +254,7 @@ public ItemProcessor<User, User> inactiveUserProcessor() {
 ```
 읽어온 타깃 데이터를 휴먼 회원으로 전환시키는 Processor입니다. reader에서 읽은 User를 휴면 상태로 전환화는 Processor 메서드를 추가하는 예입니다. 
 
+### Writer 설정
 ```java
 public ItemWriter<User> inactiveUserWriter() {
     return ((List<? extends User> users) -> userRepository.saveAll(users));
