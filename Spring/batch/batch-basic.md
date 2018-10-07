@@ -1,6 +1,6 @@
 
 ## 목차
-<!-- TOC -->
+TOC
 
 - [목차](#%EB%AA%A9%EC%B0%A8)
 - [스프링 부트 배치의 장점](#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EB%B0%B0%EC%B9%98%EC%9D%98-%EC%9E%A5%EC%A0%90)
@@ -24,9 +24,17 @@
     - [Reader설정](#reader%EC%84%A4%EC%A0%95)
     - [Processor 설정](#processor-%EC%84%A4%EC%A0%95)
     - [Writer 설정](#writer-%EC%84%A4%EC%A0%95)
+- [배치 심화](#%EB%B0%B0%EC%B9%98-%EC%8B%AC%ED%99%94)
+    - [다양한 ItemReader 구현 클래스](#%EB%8B%A4%EC%96%91%ED%95%9C-itemreader-%EA%B5%AC%ED%98%84-%ED%81%B4%EB%9E%98%EC%8A%A4)
+    - [다양한 ItemWriter 구현 클래스](#%EB%8B%A4%EC%96%91%ED%95%9C-itemwriter-%EA%B5%AC%ED%98%84-%ED%81%B4%EB%9E%98%EC%8A%A4)
+    - [JobParameter 사용하기](#jobparameter-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
+    - [테스트 시에만 H2 데이터베이스를 사용하도록 설정](#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%9C%EC%97%90%EB%A7%8C-h2-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8F%84%EB%A1%9D-%EC%84%A4%EC%A0%95)
+    - [청크 지향 프로세싱](#%EC%B2%AD%ED%81%AC-%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8B%B1)
+    - [배치 인터셉터 Listener 설정하기](#%EB%B0%B0%EC%B9%98-%EC%9D%B8%ED%84%B0%EC%85%89%ED%84%B0-listener-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
+    - [어노테이션 기반 Listener 설정하기](#%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98-%EA%B8%B0%EB%B0%98-listener-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
 - [참고](#%EC%B0%B8%EA%B3%A0)
 
-<!-- /TOC -->
+/TOC
 
 스프링 배치는 벡엔드의 배치처리 기능을 구현하는 데 사용하는 프레임워크입니다. 스프링 부트 배치는 스프링 배치 설정 요소들을 간편화시켜 스프링 배치를 빠르게 설정하는 데 도움을 줍니다.
 
@@ -262,7 +270,85 @@ public ItemWriter<User> inactiveUserWriter() {
 ```
 ItemWriter는 리스트 타입을 앞서 설정한 청크 단위로 받습니다. 청크 단위를 10으로 설정했기 때문에 users에게 휴면회원 10개가 주어지며 saveAll()메서드를 통해서 한번에 DB에 저장합니다.
 
+## 배치 심화
+* 다양한 ItemReader 구현 클래스
+* 다양한 ItemWriter 구현 클래스
+* JobParameter 사용하기
+* 테스트 시에만 H2 DB를 사용 하도록 설정하기
+* 청크 지향 프로세싱
+* 배치 인터셉터 Listener 설정하기
+* 어노테이션 기반 Listener 설정하기
 
+### 다양한 ItemReader 구현 클래스
+
+기존에는 QueueItemReader 객체를 사용 해서 모든 데이터를 한번에 와서 배치처치를 진행했습니다. **하지만 수백, 수천 개 이상의 데이터를 한번에 가져와서 메모리에 올려놓게되면 좋지 않습니다.** 이때 배치 프로젝트에서 제공하는 PagingItemRedaer 구현체를 사용 사용할 수있습니다. 구현체는 크게 JdbcPagingItemReader, JpaPagingItemRedaer, HibernatePagingItemRdaer가 있습니다. 해당 예쩨에서는 JpaPagingItemRedaer를 사용하겠습니다. 
+
+```java
+@Bean(destroyMethod="") //(1)
+@StepScope
+public JpaPagingItemReader<User> inactiveUserJpaReader(@Value("#{jobParameters[nowDate]}") Date nowDate) {
+    JpaPagingItemReader<User> jpaPagingItemReader = new JpaPagingItemReader<>();
+    jpaPagingItemReader.setQueryString("select u from User as u where u.createdDate < :createdDate and u.status = :status"); //(2)
+
+    Map<String, Object> map = new HashMap<>();
+    LocalDateTime now = LocalDateTime.ofInstant(nowDate.toInstant(), ZoneId.systemDefault());
+    map.put("createdDate", now.minusYears(1));
+    map.put("status", UserStatus.ACTIVE);
+
+    jpaPagingItemReader.setParameterValues(map); //(3)
+    jpaPagingItemReader.setEntityManagerFactory(entityManagerFactory); //(4)
+    jpaPagingItemReader.setPageSize(CHUNK_SIZE); //(5)
+    return jpaPagingItemReader;
+}
+```
+
+* (1) 스프링에서 destroyMethod를 사용해서 삭제할 빈을 자동으로 추적합니다. destroyMethod=""를 설정하면 warring 메세지를 제거할 수 있습니다.
+* (2) JpaPagingItemReader를 사용하면 쿼리를 직접 짜거 실행 하는 방법밖에는 없습니다.
+* (3) 쿼리리에서 사용된 updateDate, status 파라미터를 Mpa에 추가해서 사용할 파라미터를 설정합니다
+* (4 )트랜잭션을 관리해줄 entityManagerFactory를 설정합니다.
+* (5) 한번에 읽어올 크기를 CHUNK_SIZE 만큼 할당합니다.
+  
+### 다양한 ItemWriter 구현 클래스
+
+ItemReader와 마찬가지로 상황에맞는 여러 구현 클래스를 제공합니다. JPA를 사용하고 있음으로 JpaItemWriter를 적용합니다.
+
+```java
+private JpaItemWriter<User> inactiveUserWriter() {
+    JpaItemWriter<User> jpaItemWriter = new JpaItemWriter<>();
+    jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
+    return jpaItemWriter;
+}
+```
+### JobParameter 사용하기
+JobParameter를 사용해서 Step을 실행시킬 떄 동적으로 파라미터를 주입시킬 수 있습니다. 
+
+### 테스트 시에만 H2 데이터베이스를 사용하도록 설정 
+```yml
+```
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+public class DemoApplication {
+    ....
+}
+```
+`@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)` 어노테이션으로 간단하세 설정 가능합니다
+
+### 청크 지향 프로세싱
+<p align="center">
+  <img src="/assets/chun-process.png">
+</p>
+청크 지향 프로세싱은 트랜잭션 경꼐 내에서 청크 단위로 데이터를 읽고 생성하는 프로그래밍 기법입니다. 청크란 아이템이 트랜잭션에 커밋되는 수를 말합니다. read한 데이터 수가 지정한 청크 단위와 칠치하면 write를 수행하고 트랜잭션을 커밋합니다. Step 설정에서 chunk()로 커밋 단위를 지정했던 부분입니다. 즉 기존에도 계속 사용해온 방법이 청크 지향 프로세싱입니다. 
+
+청크 지향프러그래밍의 이점은 1000개 개의 데이터에 대해 배치 로직을 실행한다고 가정했을 때 청크로 나누지 않았을 떄는 하나만 실패해도 다른 성공한 999개의 데이터가 롤백됩니다. 그런데 청크 단위를 10으로 해서 배치처리를 하면 도중에 배치 처리에 실패하더라도 다른 청크는 영향을 받지 않습니다. 이러한 이유로 스프링 배치에 정크 단위로 프로그래밍을 지향합니다.
+
+### 배치 인터셉터 Listener 설정하기
+배치 흐름에서 전후 처리를 하는 Listener를 설정할 수 있습니다. 구체적으로 Job의 전후 처리 Step의 전후 처리 각 청크 단위의 전후 처리 등 세세한 과정 실행시 특정 로직을 할당해 제어할 수있습니다. 가장 대표적인 예로는 로깅 작업이 있습니다.
+
+### 어노테이션 기반 Listener 설정하기
+배치 인터셉터 인터페이스를 활용해서 사용하는 방법도 있고 에노테이션을 사용해서 활용하는 방법도 있습니다. 대표적으로 `@BefroeStep, @AsfterStep` 등이 있습니다. 해당 어노테이션으로 시작 전후에 로그를 남기는 설정도 가능합니다.
 
 
 ## 참고
