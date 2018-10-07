@@ -1,11 +1,11 @@
 
 ## 목차
-TOC
+<!-- TOC -->
 
-- [목차](#%EB%AA%A9%EC%B0%A8)
-- [스프링 부트 배치의 장점](#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EB%B0%B0%EC%B9%98%EC%9D%98-%EC%9E%A5%EC%A0%90)
-- [스프링 부트 배치 주의사항](#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EB%B0%B0%EC%B9%98-%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD)
-- [스프링 부트 배치 이해하기](#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EB%B0%B0%EC%B9%98-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0)
+- [목차](#목차)
+- [스프링 부트 배치의 장점](#스프링-부트-배치의-장점)
+- [스프링 부트 배치 주의사항](#스프링-부트-배치-주의사항)
+- [스프링 부트 배치 이해하기](#스프링-부트-배치-이해하기)
     - [Job](#job)
     - [JobInstance](#jobinstance)
     - [JobExcution](#jobexcution)
@@ -17,25 +17,24 @@ TOC
     - [ItemReader](#itemreader)
     - [ItemProcessor](#itemprocessor)
     - [ItemWriter](#itemwriter)
-- [휴먼회원 배치 설계](#%ED%9C%B4%EB%A8%BC%ED%9A%8C%EC%9B%90-%EB%B0%B0%EC%B9%98-%EC%84%A4%EA%B3%84)
-- [휴먼회원 배치 구현](#%ED%9C%B4%EB%A8%BC%ED%9A%8C%EC%9B%90-%EB%B0%B0%EC%B9%98-%EA%B5%AC%ED%98%84)
-    - [Job 설정](#job-%EC%84%A4%EC%A0%95)
-    - [Step 설정](#step-%EC%84%A4%EC%A0%95)
-    - [Reader설정](#reader%EC%84%A4%EC%A0%95)
-    - [Processor 설정](#processor-%EC%84%A4%EC%A0%95)
-    - [Writer 설정](#writer-%EC%84%A4%EC%A0%95)
-- [배치 심화](#%EB%B0%B0%EC%B9%98-%EC%8B%AC%ED%99%94)
-    - [다양한 ItemReader 구현 클래스](#%EB%8B%A4%EC%96%91%ED%95%9C-itemreader-%EA%B5%AC%ED%98%84-%ED%81%B4%EB%9E%98%EC%8A%A4)
-    - [다양한 ItemWriter 구현 클래스](#%EB%8B%A4%EC%96%91%ED%95%9C-itemwriter-%EA%B5%AC%ED%98%84-%ED%81%B4%EB%9E%98%EC%8A%A4)
-    - [JobParameter 사용하기](#jobparameter-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
-    - [테스트 시에만 H2 데이터베이스를 사용하도록 설정](#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%9C%EC%97%90%EB%A7%8C-h2-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8F%84%EB%A1%9D-%EC%84%A4%EC%A0%95)
-    - [청크 지향 프로세싱](#%EC%B2%AD%ED%81%AC-%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8B%B1)
-    - [배치 인터셉터 Listener 설정하기](#%EB%B0%B0%EC%B9%98-%EC%9D%B8%ED%84%B0%EC%85%89%ED%84%B0-listener-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
-    - [어노테이션 기반 Listener 설정하기](#%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98-%EA%B8%B0%EB%B0%98-listener-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
-- [참고](#%EC%B0%B8%EA%B3%A0)
+- [휴먼회원 배치 설계](#휴먼회원-배치-설계)
+- [휴먼회원 배치 구현](#휴먼회원-배치-구현)
+    - [Job 설정](#job-설정)
+    - [Step 설정](#step-설정)
+    - [Reader설정](#reader설정)
+    - [Processor 설정](#processor-설정)
+    - [Writer 설정](#writer-설정)
+- [배치 심화](#배치-심화)
+    - [다양한 ItemReader 구현 클래스](#다양한-itemreader-구현-클래스)
+    - [다양한 ItemWriter 구현 클래스](#다양한-itemwriter-구현-클래스)
+    - [JobParameter 사용하기](#jobparameter-사용하기)
+    - [테스트 시에만 H2 데이터베이스를 사용하도록 설정](#테스트-시에만-h2-데이터베이스를-사용하도록-설정)
+    - [청크 지향 프로세싱](#청크-지향-프로세싱)
+    - [배치 인터셉터 Listener 설정하기](#배치-인터셉터-listener-설정하기)
+    - [어노테이션 기반 Listener 설정하기](#어노테이션-기반-listener-설정하기)
+- [참고](#참고)
 
-/TOC
-
+<!-- /TOC -->
 스프링 배치는 벡엔드의 배치처리 기능을 구현하는 데 사용하는 프레임워크입니다. 스프링 부트 배치는 스프링 배치 설정 요소들을 간편화시켜 스프링 배치를 빠르게 설정하는 데 도움을 줍니다.
 
 ## 스프링 부트 배치의 장점
