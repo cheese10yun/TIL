@@ -20,6 +20,38 @@ AJAX가 널리 사용되면서 <script></script>로 둘러싸여 있는 스크�
 
 * **8181 에서 Ajax Call을 이용 8080 REST API를 호출 한다면 SOP를 위반해서 호출을 할 수 없다.** 이러한 문제를 해결하기 위해서 CORS 표쥰이 탄생
 
+## CORS 요청의 종류
+
+### Simple Request
+
+### Preflight Request
+
+### Request with Credential
+
+### Request without Credential
+
+## CORS 관련 HTTP Response Headers
+
+## CORS 관련 HTTP Response Headers
+* Access-Control-Allow-Origin
+* Access-Control-Expose-Headers
+* Access-Control-Max-Age
+* Access-Control-Allow-Credentials
+* Access-Control-Allow-Methods
+* Access-Control-Allow-Headers
+  
+## ORS 관련 HTTP Request Headers
+* Origin
+* Access-Control-Request-Method
+* Access-Control-Request-Headers
+* XDomainRequest
+
+
+* CORS를 쓰면 AJAX로도 Same Origin Policy의 제약을 넘어 다른 도메인의 자원을 사용할 수 있
+* CORS를 사용하려면
+    * 클라이언트에서 `Access-Control-**` 류의 HTTP Header를 서버에 보내야 하고,
+    * 서버도 `Access-Control-**` 류의 HTTP Header를 클라이언트에 회신하게 되어 있어야 한다.
+
 
 # 참고
 * [HomoEfficio : Cross Origin Resource Sharing - CORS](https://homoefficio.github.io/2015/07/21/Cross-Origin-Resource-Sharing/)
