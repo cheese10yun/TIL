@@ -20,7 +20,10 @@ AJAX가 널리 사용되면서 <script></script>로 둘러싸여 있는 스크�
 
 * **8181 에서 Ajax Call을 이용 8080 REST API를 호출 한다면 SOP를 위반해서 호출을 할 수 없다.** 이러한 문제를 해결하기 위해서 CORS 표쥰이 탄생
 
+
+
 ## CORS 요청의 종류
+**해당 글은 [Cross Origin Resource Sharing - CORS](https://homoefficio.github.io/2015/07/21/Cross-Origin-Resource-Sharing/)의 블로글 가져온 글입니다.**
 
 ### Simple Request
 아래의 3가지 조건을 모두 만족하면 Simple Request
