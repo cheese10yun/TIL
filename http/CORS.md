@@ -23,12 +23,34 @@ AJAX가 널리 사용되면서 <script></script>로 둘러싸여 있는 스크�
 ## CORS 요청의 종류
 
 ### Simple Request
+아래의 3가지 조건을 모두 만족하면 Simple Request
+
+* GET, HEAD, POST 중의 한 가지 방식을 사용해야 한다.
+* POST 방식일 경우 Content-type이 아래 셋 중의 하나여야 한다.
+    * application/x-www-form-urlencoded
+    * multipart/form-data
+    * text/plain
+* 커스텀 헤더를 전송하지 말아야 한다.
 
 ### Preflight Request
+Simple Request 조건에 해당하지 않으면 브라우저는 Preflight Request 방식으로 요청한다.
+
+따라서, Preflight Request는
+
+* GET, HEAD, POST 외의 다른 방식으로도 요청을 보낼 수 있고,
+* application/xml 처럼 다른 Content-type으로 요청을 보낼 수도 있으며,
+* 커스텀 헤더도 사용할 수 있다.
 
 ### Request with Credential
+HTTP Cookie와 HTTP Authentication 정보를 인식할 수 있게 해주는 요청
+
+요청 시 `xhr.withCredentials = true`를 지정해서 Credential 요청을 보낼 수 있고,
+서버는 Response Header에 반드시 `Access-Control-Allow-Credentials: true`를 포함해야 하고,
+`Access-Control-Allow-Origin` 헤더의 값에는 `*`가 오면 안되고 http://foo.origin과 같은 구체적인 도메인이 와야 한다.
 
 ### Request without Credential
+
+CORS 요청은 기본적으로 Non-Credential 요청이므로, `xhr.withCredentials = true`를 지정하지 않으면 Non-Credential 요청이다.
 
 ## CORS 관련 HTTP Response Headers
 
