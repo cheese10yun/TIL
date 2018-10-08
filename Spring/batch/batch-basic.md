@@ -32,6 +32,10 @@
     - [청크 지향 프로세싱](#청크-지향-프로세싱)
     - [배치 인터셉터 Listener 설정하기](#배치-인터셉터-listener-설정하기)
     - [어노테이션 기반 Listener 설정하기](#어노테이션-기반-listener-설정하기)
+- [재시도](#재시도)
+    - [스템 구성하기](#스템-구성하기)
+    - [재시도 템플릿](#재시도-템플릿)
+    - [AOP 기반 재시도](#aop-기반-재시도)
 - [참고](#참고)
 
 <!-- /TOC -->
@@ -349,6 +353,81 @@ public class DemoApplication {
 ### 어노테이션 기반 Listener 설정하기
 배치 인터셉터 인터페이스를 활용해서 사용하는 방법도 있고 에노테이션을 사용해서 활용하는 방법도 있습니다. 대표적으로 `@BefroeStep, @AsfterStep` 등이 있습니다. 해당 어노테이션으로 시작 전후에 로그를 남기는 설정도 가능합니다.
 
+## 재시도
+네트워크 접속이 끈ㄹ어지거나 장비가 다운되는 등 실패 시나리오는 다양합니다. 시스템은 언젠가 복구 될테니 다시 한번 시도는 해볼 가치는 있습니다.
+
+### 스템 구성하기
+```java
+@Bean
+public Step step1() {
+    return steps.get("user xxxxx")
+    .<User, User>chunk(10)
+        .faulTolerant()
+            .retryLimit(3).retry(XXXXXException.class)
+    .render(something())
+    .writer(something())
+    .build();
+}
+```
+자바 구성으로 재시도를 활성화 할 경우, 첫 번째 스텝은 오류를 허용하도록 만들어야 재시도 제한 횟수 및 재시도 대상 예외를 지정할 수 있습니다. 먼저 `faulTolerant()`로 오류 허용 스탭을 얻은후, `retryLimit()` 메서드로 재시도 제한 횟수를, `retry()` 메서드로 재시도 대상 예외를 발생합니다.
+
+### 재시도 템플릿
+* 스프링 배치가 제공하는 재시도 및 복구 서비스를 코드에 활용하는 다른 방법도 있습니다. 재시도 로직을 구현된 커스텀 ItemWriter<T>를 작성하거나 아예 전체 서비스 인터페이스에 재시도 기능을 입힐 수 있습니다.
+* 스프링 배치 RetryTemplate은 바로 이런 용도로 만들어진 클래스입니다. 비니지스 로직과 재시도 로직을 분리해서 마치 재시도 없이 한 번만 시도하는 것처럼 코드를 작성할 수 있개 해줍니다.
+* 재시도 -> 싪패 -> 복구 반복적인 과정을 간명한 하나의 API 메서드로 호출로 감싼 `RetryTemplate`는 여러 가지 유스 케이스를 지원합니다.
+
+```java
+public class RetryableUserRegistrationServiceItemWriter implements ItemWriter<UserRegistration> {
+    private static final Logger logger = LoggerFactory.getLogger(RetryableUserRegistrationServiceItemWriter.class);
+    private final UserRegistrationService userRegistrationService;
+    private final RetryTemplate retryTemplate;
+
+    public RetryableUserRegistrationServiceItemWriter(UserRegistrationService userRegistrationService, RetryTemplate retryTemplate) {
+        this.userRegistrationService = userRegistrationService;
+        this.retryTemplate = retryTemplate;
+    }
+
+    /**
+     * takes aggregated input from the reader and 'writes' them using a custom implementation.
+     */
+    public void write(List<?extends UserRegistration> items)
+        throws Exception {
+        for (final UserRegistration userRegistration : items) {
+            UserRegistration registeredUserRegistration = retryTemplate.execute(
+                    (RetryCallback<UserRegistration, Exception>) context -> userRegistrationService.registerUser(userRegistration));
+
+            logger.debug("Registered: {}", registeredUserRegistration);
+        }
+    }
+}
+
+  ....
+  @Bean
+    public RetryTemplate retryTemplate() {
+        RetryTemplate retryTemplate = new RetryTemplate();
+        retryTemplate.setBackOffPolicy(backOffPolicy());
+        return retryTemplate;
+    }
+
+    @Bean
+    public ExponentialBackOffPolicy backOffPolicy() {
+        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        backOffPolicy.setInitialInterval(1000);
+        backOffPolicy.setMaxInterval(10000);
+        backOffPolicy.setMultiplier(2);
+        return backOffPolicy;
+    }
+```
+* 재시도 시간 간격을 정하는 BackOffplicy는 RetryTemplate의 유용한 기능입니다. 실제로 실패 직후 재시도하는 시간 간격을 점점 늘려 여러 클라이언트가 같은 호출 할때 스텝이 잠기지 않도록 예방하는 수단으로 활용할 수있습니다.
+
+### AOP 기반 재시도
+스프링 배치가 제공하는 AOP 어드바이저를 이용해서 RetryTempate 처럼 사용할 수 있습니다. 프록시 전체에 재시 로직 어드바이스를 추가하면 RetryTempate이 빠진 본래 코드로 그대로 사용가능합니다.
+
+```java
+@Retryable(backoff = @Backoff(delay = 1000, maxDely = 10000, multiplier = 2))
+public User batchSomething(){....}
+```
+**구성 클래스에 반드시 @EnableRety 를추가 해야합니다.**
 
 ## 참고
 * [처음으로 배우는 스프링 부트 2](https://kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9791162241264&orderClick=JAj)를 정리한 글입니다.
