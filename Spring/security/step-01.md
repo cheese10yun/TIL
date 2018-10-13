@@ -1,7 +1,7 @@
 # Spring Security Properties 기반으로 간단 설정
 <!-- TOC -->
 
-- [Spring Security Properties 기반으로 간단 설정](#spring-security-properties-%EA%B8%B0%EB%B0%98%EC%9C%BC%EB%A1%9C-%EA%B0%84%EB%8B%A8-%EC%84%A4%EC%A0%95)
+- [Spring Security Properties 기반으로 간단 설정](#spring-security-properties-기반으로-간단-설정)
 - [Lesson 2: A Basic Security Java Config](#lesson-2-a-basic-security-java-config)
 - [Lesson 3: URL Authorization](#lesson-3-url-authorization)
 - [Lesson 4: Building a Login Form](#lesson-4-building-a-login-form)
@@ -40,7 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
-
 * properties 설정으로 user의 name, password 간단 설정
 * SecurityConfig 에서 properties에 등록된 user security 허용 설정
 * security 5.0 부터 (정확하진 않음) password encoder 설정이 필요함 간단하게 위회 하는 방법은 앞에 {noop} 추가하면 됨 password 설정 할 경우 `{noop}pass`
@@ -65,6 +64,7 @@ protected void configure(HttpSecurity http) throws Exception {
     //@formatter:on
 }
 ```
+* URL 접근 보안은 `authorizeRequests()` 부터 시작되며 여러 가지 `matchers()`로 매치 규칙을 지정합니다.
 * hasRole 메서드는 앞에 ROLE_ 으로 시작 해야 true 리턴 위처럼 하면 안되고 ROLE_ADMIN으로 설정 해야함
 * hasAuthority 메섣는 ROLE 으로 시작 안해도됨
 * hasAnyAuthority 복수개로 연결 가능 hasAnyRole 메서드도 가능
@@ -124,7 +124,7 @@ protected void configure(HttpSecurity http) throws Exception {
 }
 ```
 * 아래 HTML 처럼 @{/doLogout} 지정
-* CSRF가 활성화되면 GET은 로그 아웃에 작덩하지 않고 POST만 동작함
+* CSRF가 활성화되면 GET은 로그 아웃에 작덩하지 않고 POST만 동작 시켜야 보안상 좋음
 
 다음과 같이 더 디테일 하게 설정 할 수있음
 * 로그아웃할 시 인증이 클리어  :: clearAuthentication
