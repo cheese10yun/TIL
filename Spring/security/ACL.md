@@ -158,13 +158,6 @@ class TodoServiceImpl implements TodoService {
 
     @Override
     @PreAuthorize("hasAuthority('USER')")
-    @PostFilter("hasAnyAuthority('ADMIN') or hasPermission(filterObject, 'read')")
-    public List<Todo> listTodos() {
-        return todoRepository.findAll();
-    }
-
-    @Override
-    @PreAuthorize("hasAuthority('USER')")
     public void save(Todo todo) {
 
         this.todoRepository.save(todo);
