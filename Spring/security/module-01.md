@@ -1,6 +1,9 @@
+# Secure a Simple Spring MVC Application
+
 # Spring Security Properties 기반으로 간단 설정
 <!-- TOC -->
 
+- [Secure a Simple Spring MVC Application](#secure-a-simple-spring-mvc-application)
 - [Spring Security Properties 기반으로 간단 설정](#spring-security-properties-기반으로-간단-설정)
 - [Lesson 2: A Basic Security Java Config](#lesson-2-a-basic-security-java-config)
 - [Lesson 3: URL Authorization](#lesson-3-url-authorization)
