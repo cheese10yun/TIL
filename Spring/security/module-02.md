@@ -10,6 +10,8 @@
     - [Verification Token](#verification-token)
     - [이메일 인증](#이메일-인증)
 - [Lesson 4: Deal with “I forgot my password”](#lesson-4-deal-with-i-forgot-my-password)
+    - [비밀번호 재설정을 위한 이메일 발송](#비밀번호-재설정을-위한-이메일-발송)
+    - [비밀번호 재설설정](#비밀번호-재설설정)
 - [Lesson 5: Doing Security Questions Right (NEW)](#lesson-5-doing-security-questions-right-new)
 - [Lesson 6: Ensure Password Strength during Registration - part 1 (NEW)](#lesson-6-ensure-password-strength-during-registration---part-1-new)
 - [Lesson 6: Ensure Password Strength during Registration - part 2 (NEW)](#lesson-6-ensure-password-strength-during-registration---part-2-new)
@@ -148,9 +150,82 @@ ModelAndView confirmRegistration(
 
 
 # Lesson 4: Deal with “I forgot my password”
+```java
+...
+http
+    .authorizeRequests()
+        .antMatchers(
+            "/forgotPassword*",
+            ...
+        ).permitAll()
+```
+* `forgotPassword` URL 허용
+
+## 비밀번호 재설정을 위한 이메일 발송
+```java
+@RequestMapping(value = "/user/resetPassword", method = RequestMethod.POST)
+@ResponseBody
+public ModelAndView resetPassword(
+  HttpServletRequest request, 
+  @RequestParam("email") String userEmail, 
+  RedirectAttributes redirectAttributes) {
+    User user = userService.findUserByEmail(userEmail);
+    if (user != null) {
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordTokenRepository.save(myToken);
+        sendResetEmail(token, user);
+    }
+    redirectAttributes.addFlashAttribute("message", 
+      "You should receive an Password Reset Email shortly");
+    return new ModelAndView("redirect:/login");
+}
+```
+* `findUserByEmail(userEmail)` 메서드를 통해서 비밀번호 재설정을 대상인 유저 조회
+* 조회된 유저에게 `token` 발행
+* `new ModelAndView("redirect:/login")` 으로 로그인 페이지로 리다이렉션
+
+## 비밀번호 재설설정
+* 사용자가 "비밀번호 재설정" 이메일을 가져와 고유 링크를 클릭하면 비밀번호를 변경할 수있는 간단한 페이지로 이동합니다. 먼저 해당 페이지를 설정하고 표시 할 논리를 설정합니다.
+
+```java
+@RequestMapping(value = "/user/resetPassword", method = RequestMethod.GET)
+public ModelAndView showChangePasswordPage(
+  @RequestParam("id") long id, 
+  @RequestParam("token") String token, 
+RedirectAttributes redirectAttributes) {
+    User user = passwordTokenRepository.findByToken(token).getUser();
+    Authentication auth = new UsernamePasswordAuthenticationToken(
+      user, null, userDetailsService.loadUserByUsername(user.getEmail()).getAuthorities());
+    SecurityContextHolder.getContext().setAuthentication(auth);
+    return new ModelAndView("resetPassword");
+}
+```
+* `이메일로 전송된 고유 URL을 클릭했을 경우의 컨트롤러`
+* `findByToken(token).getUser()` 메서드로 위에서 발급한 토큰 기반으로 유저 조회
+* `auth` 객체에 해당 유저 바인딩
+* `SecurityContextHolder`객체에 해당 유저 바인딩 (로컬스레드에 해당 유저 바인딩)
+
+```java
+@RequestMapping(value = "/user/savePassword", method = RequestMethod.POST)
+@ResponseBody
+public ModelAndView savePassword(
+  @RequestParam("password") String password, 
+  @RequestParam("passwordConfirmation") String passwordConfirmation, 
+  RedirectAttributes redirectAttributes) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.changeUserPassword(user, password);
+        redirectAttributes.addFlashAttribute("message", "Password reset successfully");
+        return new ModelAndView("redirect:/login");
+    }
+```
+* 위에서 설정한 `SecurityContextHolder` 기반으로 `user` 조회(로컬스레드에 있는 유저를 가져옴)
+* `changeUserPassword(user, password)` 메서드로 비밀번호 재설정
+* `ModelAndView("redirect:/login")` 로그인 페이지로 리다이렉션
+* 로그인 페이지로 이동이후 변경된 패스워드로 로그인
 
 # Lesson 5: Doing Security Questions Right (NEW)
 
-#  Lesson 6: Ensure Password Strength during Registration - part 1 (NEW)
+# Lesson 6: Ensure Password Strength during Registration - part 1 (NEW)
 
 # Lesson 6: Ensure Password Strength during Registration - part 2 (NEW)
