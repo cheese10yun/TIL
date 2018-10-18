@@ -71,8 +71,6 @@
 </p>
 
 ## 보안 필터 체인의 주요 구성 요소
-![security-authentication-filter](/assets/security-authentication-filter.png)
-
 <p align = "center">
   <img src = "/assets/security-authentication-filter.png">
 </p>
