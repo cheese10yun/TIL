@@ -56,8 +56,6 @@ HTTP Cookie와 HTTP Authentication 정보를 인식할 수 있게 해주는 요�
 CORS 요청은 기본적으로 Non-Credential 요청이므로, `xhr.withCredentials = true`를 지정하지 않으면 Non-Credential 요청이다.
 
 ## CORS 관련 HTTP Response Headers
-
-## CORS 관련 HTTP Response Headers
 * Access-Control-Allow-Origin
 * Access-Control-Expose-Headers
 * Access-Control-Max-Age
