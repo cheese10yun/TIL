@@ -5,6 +5,9 @@
 - [목차](#목차)
 - [Lesson 1: A Custom Authentication Provider](#lesson-1-a-custom-authentication-provider)
 - [Lesson 2: Multiple Providers and the Authentication Manager](#lesson-2-multiple-providers-and-the-authentication-manager)
+    - [Multiple Auth Providers](#multiple-auth-providers)
+    - [A New Auth Manager](#a-new-auth-manager)
+    - [인증 관리자 구성](#인증-관리자-구성)
 - [Lesson 3: In-Memory, JDBC and Hibernate/JPA User Storage](#lesson-3-in-memory-jdbc-and-hibernatejpa-user-storage)
 - [Lesson 4: Tracking Logged-in Users (NEW)](#lesson-4-tracking-logged-in-users-new)
 
@@ -21,6 +24,31 @@
 * 제 3 자 인증 서비스와의 진정한 통합을 위해 - 더 많은 정보를 가지고 작업 할 수 있습니다. 따라서 실제 발생한 문제를 기반으로 매우 구체적인 예외를 throw해야합니다.
 
 ## Lesson 2: Multiple Providers and the Authentication Manager
+
+### Multiple Auth Providers
+
+```java
+DaoAuthenticationProvider daoAuthProvider = new DaoAuthenticationProvider();
+daoAuthProvider.setUserDetailsService(userDetailsService);
+auth.authenticationProvider(daoAuthProvider).authenticationProvider(customAuthenticationProvider);
+
+```
+
+* config (configureGlobal)에 두 번째 공급자를 정합니다.
+* 이제 2 개의 provider를 설정 할 수 있습니다
+
+### A New Auth Manager
+
+```java
+auth.parentAuthenticationManager(
+  new ProviderManager(Lists.newArrayList(customAuthenticationProvider)));
+```
+
+### 인증 관리자 구성
+```java
+auth.eraseCredentials(false).userDetailsService(userDetailsService);
+```
+
 
 
 ## Lesson 3: In-Memory, JDBC and Hibernate/JPA User Storage
