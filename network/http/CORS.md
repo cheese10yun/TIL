@@ -78,6 +78,19 @@ CORS 요청은 기본적으로 Non-Credential 요청이므로, `xhr.withCredenti
     * 서버도 `Access-Control-**` 류의 HTTP Header를 클라이언트에 회신하게 되어 있어야 한다.
 
 
+## 교차 출저 자원 공유 정책
+
+<p align = "center">
+    <img src = "/assets/cors-.png">
+</p>
+
+URL | 결과
+----|---
+http://spring.com/find/task | 성공
+http://spring.com:8080 | 실패(포트 다름)
+https://spring.com | 실패(프로토콜 다름)
+http://subspring.com | 실패(호스트 다름)
+
 # 참고
 * [HomoEfficio : Cross Origin Resource Sharing - CORS](https://homoefficio.github.io/2015/07/21/Cross-Origin-Resource-Sharing/)
 * [백기선의 스프링부트](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8/)
