@@ -8,6 +8,7 @@
     - [The Authorization Actors](#the-authorization-actors)
 - [Lesson 2: The Topology of Roles and Privileges - Part 1](#lesson-2-the-topology-of-roles-and-privileges---part-1)
 - [Lesson 2: The Topology of Roles and Privileges - Part 2](#lesson-2-the-topology-of-roles-and-privileges---part-2)
+- [Role, Authority 차이](#role-authority-차이)
 - [Lesson 3: Secure Method Invocations with AOP](#lesson-3-secure-method-invocations-with-aop)
 - [Lesson 4: A Custom AccessDecisionVoter](#lesson-4-a-custom-accessdecisionvoter)
 
@@ -38,6 +39,12 @@ AccessDecisionVoter 인터페이스를 구현하며 유저의 리소스 접근 �
 ## Lesson 2: The Topology of Roles and Privileges - Part 1
 
 ## Lesson 2: The Topology of Roles and Privileges - Part 2
+
+## Role, Authority 차이
+
+* ROLE은 역할이고, Authority는 권한으로 표현의 차이임
+* ROLE은 ADMIN, Authority 는 ROLE_ADMIN 으로 표시
+* ROLE이 ADMIN 이지만 Authority에게 READE, WRITE 권함만 줄 수 있고, SUPERADMIN는 ROLE이 SUPERADMIN 이지만 READE, WRITE, DELETE 권한을 줄 수 있습니다.
 
 ## Lesson 3: Secure Method Invocations with AOP
 
