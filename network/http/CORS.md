@@ -56,8 +56,6 @@ HTTP Cookie와 HTTP Authentication 정보를 인식할 수 있게 해주는 요�
 CORS 요청은 기본적으로 Non-Credential 요청이므로, `xhr.withCredentials = true`를 지정하지 않으면 Non-Credential 요청이다.
 
 ## CORS 관련 HTTP Response Headers
-
-## CORS 관련 HTTP Response Headers
 * Access-Control-Allow-Origin
 * Access-Control-Expose-Headers
 * Access-Control-Max-Age
@@ -77,6 +75,19 @@ CORS 요청은 기본적으로 Non-Credential 요청이므로, `xhr.withCredenti
     * 클라이언트에서 `Access-Control-**` 류의 HTTP Header를 서버에 보내야 하고,
     * 서버도 `Access-Control-**` 류의 HTTP Header를 클라이언트에 회신하게 되어 있어야 한다.
 
+
+## 교차 출저 자원 공유 정책
+
+<p align = "center">
+    <img src = "/assets/cors-.png">
+</p>
+
+URL | 결과
+----|---
+http://spring.com/find/task | 성공
+http://spring.com:8080 | 실패(포트 다름)
+https://spring.com | 실패(프로토콜 다름)
+http://subspring.com | 실패(호스트 다름)
 
 # 참고
 * [HomoEfficio : Cross Origin Resource Sharing - CORS](https://homoefficio.github.io/2015/07/21/Cross-Origin-Resource-Sharing/)
