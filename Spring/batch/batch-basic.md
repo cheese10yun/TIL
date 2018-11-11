@@ -32,6 +32,8 @@
     - [청크 지향 프로세싱](#청크-지향-프로세싱)
     - [배치 인터셉터 Listener 설정하기](#배치-인터셉터-listener-설정하기)
     - [어노테이션 기반 Listener 설정하기](#어노테이션-기반-listener-설정하기)
+    - [JobParameter 사용하기](#jobparameter-사용하기-1)
+    - [Step의 흐름을 제어하는 Flow](#step의-흐름을-제어하는-flow)
 - [재시도](#재시도)
     - [스템 구성하기](#스템-구성하기)
     - [재시도 템플릿](#재시도-템플릿)
@@ -349,6 +351,59 @@ public class DemoApplication {
 
 ### 어노테이션 기반 Listener 설정하기
 배치 인터셉터 인터페이스를 활용해서 사용하는 방법도 있고 에노테이션을 사용해서 활용하는 방법도 있습니다. 대표적으로 `@BefroeStep, @AsfterStep` 등이 있습니다. 해당 어노테이션으로 시작 전후에 로그를 남기는 설정도 가능합니다.
+
+### JobParameter 사용하기
+JapParameter를 사용해 Step을 실행시킬 때 동적으로 파라미터를 주입시클 수 있습니다.
+
+### Step의 흐름을 제어하는 Flow
+
+Step의 가장 기본적은 흐름은 `읽기-처리-쓰기` 입니다. 여기서 세부적인 조건에 따라서 Step의 실행 여부를 정할 수 있습니다. 이런 흐름을 제어하는 `Flow` 제공 합니다.
+
+![batch-flow](/assets/batch-flow.png)
+
+흐름에 조건에 해당하는 부분을 `JobExecutionDecider` 인터페이스를 사용해 구현 할 수 있습니다. `JobExecutionDecider` 인터페이스는 `decide()` 메서드 하나만 제공합니다.
+
+```java
+public interface JobExecutionDecider {
+    FlowExecutionStatus decide(JobExecution jobExecution, @Nullable StepExecution stepExecution);
+}
+
+public Class xxxJobExecutionDecider implements  JobExecutionDecider {
+
+    @Override
+    public FlowExecutionStatus decide(JobExecution jobExecution, @Nullable StepExecution stepExecution){
+        if(특정 조건...){ // (1)
+            return FlowExecutionsStatus.COMPLETED; // (2)
+        }
+        return FlowExecutionsStatus.FAILED; // (3)
+        
+    }
+}
+```
+* (1) 특정 조건에 대한 로직
+* (2) 조건에 만족하고 JobStep을 실행 시킬 경우 `COMPLETED` 리턴
+* (3) 조건에 만족하지 않고 JobStep을 **실행 하지않을 경우**  `FAILED` 리턴
+
+`Flow` 조건으로 사용될 경우 InactiveJobExceutionDecider 클래스를 구현 했습니다. 이를 사용할 Flow를 구현 해야합니다. `Step` 메서드가아닌 `Flow`를 주압 받고 주입받은 `Flow`를 빈으로 등록해야합니다.
+
+```java
+@Bean
+public Flow xxxJobFlow(Step xxxJobStep){
+    FlowBuilder<Flow> flowBuilder = new FlowBuilder<>("xxxJobFlow"); // (1)
+
+    return flowBuilder
+        .start(new xxxJobExcetuinDeicder()) // (2)
+        .on(FlowExecutionStatus.FAILED.getName()).end() // (3)
+        .on(FlowExecutionStatus.COMPLETED.getName()).to(xxxJobStep).end(); // (4)
+}
+```
+* (1) `FlowBuilder`를 시용해서 Flow 객체를 생성합니다.
+* (2) 위에서 작성한 `xxxJobExecutionDecider` 클래스를 `start()` 으로 설정해 맨 처음 시작하도록 합니다.
+* (3) `xxxJobExecutionDecider` 클래스의 decide() 메서드를 통해 리턴 값이 `FAILED` 일 경우 `end()` 메서드를 사용해서 끝나도록 설정합니다.
+* (4) `xxxJobExecutionDecider` 클래스의 decide() 메서드를 통해 리턴 값이 `COMPLETED` 일 경우 기존에 설정한 `xxxJobStep`을 실행하도록 설정합니다.
+
+
+
 
 ## 재시도
 네트워크 접속이 끊어지거나 장비가 다운되는 등 실패 시나리오는 다양합니다. 시스템은 언젠가 복구 될테니 다시 한번 시도는 해볼 가치는 있습니다.
