@@ -97,5 +97,5 @@ SSL은 암호화된 데이터를 전송하기 위해서 공개키와 대칭키�
 
 
 ## 출저
-* [생활코딩 HTTPS]()
-* [그림으로 배우는 HTTP Network]()
+* [생활코딩 HTTPS](https://opentutorials.org/course/228/4894)
+* [그림으로 배우는 HTTP Network](http://www.yes24.com/24/viewer/preview/15894097)
