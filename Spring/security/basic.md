@@ -55,7 +55,9 @@
 
 ## 스프링 시큐리티와 보안 3요소 의 매칭
 
-![security-3](/assets/security-3.png)
+<p align = "center">
+  <img src = "/assets/security-3.png">
+</p>
 
 ## Authentication과 SecurityContext
 * Authentication 용도
