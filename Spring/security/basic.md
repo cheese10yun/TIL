@@ -75,9 +75,53 @@
   <img src = "/assets/security-authentication-filter.png">
 </p>
 
+## Security Authentication
+
+![](/assets/security-flow.png)
+
+* 필터를 통해서 request가 들어옴
+  * Security 가장 앞단에 있는 것은  username password Authentication 필터, CORS 필터 등이 있음
+* 필터를 거처 인증 요청 객체러 변환됨
+* 인증 요청 객체로 만들어 Provider Manager로 전달됨
+  * 이터레이터를 돌면서 클래스에 맞는 Provider 인증처리 진행
+  * 인증된 객체 리턴
+* isAuthentication의 true가 담겨서 리턴
+* SecirtyContext Holder에 LocalThread에 담겨서 필요한 순간에 뿌려줄 수 있게됨
+
+### AuthenticationManager : AuthenticationProvider 주머니
+* Builder 패턴으로 구현
+* 등록된 Authenticaion Provider들에 접근하는 유일한 객체
+* 단순한 인터페이스에 불과하다. 내장 구현체: ProviderManager
+* AuthenticationManager를 구현해서 쓰지말자. Pivtal 기술자 보다 더 만들 자신 없으면
+* **구현해서 쓰라고 넣어준 인터페이스 아니다. 직접 구현하지 말라는 것이다.**
+
+### AuthenticationProvider: 진짜 인증이 일어나는 곳
+* `인증전` 객체를 받아 인증 가능 여부를 확인한후, 예외를 던지던 `인증후` 객체를 만들어 돌려준다.
+* 구현하라고 넣어준 인터페이스이다.
+* 필요에 맞게 정교하게 구현하고 인증 관리자에게 등록시키자.
+
+### 인증 객체는 ?
+Authentication 클래스의 모든 서브 클래스
+
+* UsernamePasswordAuthenticationToken 
+  * 기본적으로 유저네임과 비밀번호를 받는 방식
+  * 인증전 객체이다.
+  * 인증이 완료된 객체는 authroities 객체가 담겨있다.
+
+### 결국 우리가 구현해야 할것
+* 요청을 받아낼 필터(AbstractAuthenticaionFilter)
+* Manager에 등록시킬 Auth Provider
+* 인증 정보를 담을 DTO
+* 각 인증에 따른 추가 구현체, 기본저긍로 성공/실패 핸들러.
+* 소셜 인증의 경우 각 소셜 공급자 구경에 맞는 DTO와 Http Request
+* 인증 시도 / 인증 성송시에 각각 사용할 Authentication 객체
+
+
+
 
 
 
 ## 참고
   * [스프링5 레시피](http://www.hanbit.co.kr/store/books/look.php?p_code=B3859466837)
   * [스프링 시큐리티 구조 이해](https://www.slideshare.net/madvirus/ss-36809454)
+  * [봄이네집 스프링 - (1) Spring Security - Auth0 JWT Library](https://www.youtube.com/watch?v=SMZm2aqI_dQ)
