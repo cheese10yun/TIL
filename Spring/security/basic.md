@@ -18,6 +18,7 @@
   - [AuthenticationProvider: 진짜 인증이 일어나는 곳](#authenticationprovider-%EC%A7%84%EC%A7%9C-%EC%9D%B8%EC%A6%9D%EC%9D%B4-%EC%9D%BC%EC%96%B4%EB%82%98%EB%8A%94-%EA%B3%B3)
   - [인증 객체는 ?](#%EC%9D%B8%EC%A6%9D-%EA%B0%9D%EC%B2%B4%EB%8A%94)
   - [결국 우리가 구현해야 할것](#%EA%B2%B0%EA%B5%AD-%EC%9A%B0%EB%A6%AC%EA%B0%80-%EA%B5%AC%ED%98%84%ED%95%B4%EC%95%BC-%ED%95%A0%EA%B2%83)
+- [Configure (HttpSecurity http) 정리](#configure-httpsecurity-http-%EC%A0%95%EB%A6%AC)
 - [참고](#%EC%B0%B8%EA%B3%A0)
 
 ## 용어 정리
@@ -139,6 +140,17 @@ Authentication 클래스의 모든 서브 클래스
 * 인증 시도 / 인증 성송시에 각각 사용할 Authentication 객체
 
 
+
+## Configure (HttpSecurity http) 정리
+
+* authorizeRequests 
+  *  가장 기본적인 예는 "ROLE_USER"역할이 필요하도록 모든 URL을 구성하는 것입니다. 아래의 구성은 모든 URL에 대한 인증을 요구하며 "admin"및 "user"사용자 모두에게 액세스 권한을 부여합니다.
+  *  인증 매커니즘을 요청한 HttpServletRequest 기반으로 설정합니다.
+* antMachers() : 요청 패턴을 리스트 형식으로 설정합니다.
+* permitAll() : 설정한 리퀘스트 패턴을 누구나 접근할 수 있도록 허용합니다.
+* anyRequest() : 설정한 요청 이외의 리퀘스트 요청을 표현합니다.
+* authenticated() : 해당 요청은 인증된 사용자만 할 수 있습니다.
+* authenticationEntiyPoint(new LoginUrlAuthenticationEntryPoint("/login")) : 인증된 진입 지점입니다. 인증되지 않은 사용자가 허용되지 않은 경로 리퀘쓰트를 오쳥할 경우 `/login` 으로 이동됩니다.
 
 
 
