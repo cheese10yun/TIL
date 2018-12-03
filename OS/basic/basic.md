@@ -103,3 +103,9 @@
     * 시분할 시스템 기반
 
   
+## 프로세스 상태
+
+![](/assets/process-flow.png)
+* running state: 현재 CPU에서 실행 상태
+* ready state: CPU에서 실행 가능 상태 (실행 대기 상태)
+* block state: 특정 이벤트 발생 대기 상태
