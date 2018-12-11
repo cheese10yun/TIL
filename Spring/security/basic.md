@@ -111,6 +111,9 @@
 * isAuthentication의 true가 담겨서 리턴
 * SecirtyContext Holder에 LocalThread에 담겨서 필요한 순간에 뿌려줄 수 있게됨
 
+
+![](/draw/spring-security.png)
+
 ### AuthenticationManager : AuthenticationProvider 주머니
 * Builder 패턴으로 구현
 * 등록된 Authenticaion Provider들에 접근하는 유일한 객체
