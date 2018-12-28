@@ -2781,7 +2781,7 @@ class HelloController {
 }
 
 @Service
-Class HelloService {
+class HelloService {
     @PersistenceContext //엔티티 매니저 주입
     private EntityManager em;
 
