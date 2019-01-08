@@ -58,6 +58,7 @@ public class HastTable {
     public Node searchKey(LinkedList<Node> list, String key) {
         if (list == null) return null;
 
+        // 해당 인덱스의 링크드 리스트를 전체 순회하면서 키값을 찾는다.
         for (Node node : list) {
             if (node.key.equals(key)) {
                 return node;
@@ -67,9 +68,11 @@ public class HastTable {
     }
 
     public void put(String key, String vale) {
-        int hashCode = getHastCode(key);
-        int index = convertToIndex(hashCode);
+        final int hashCode = getHastCode(key);
+        final int index = convertToIndex(hashCode);
         LinkedList<Node> list = data[index];
+
+        // list가 없다면 링크드 리스트<Node>를 만들고 배열 인덱스에 링크드 리스트를 넣는다
         if (list == null) {
             list = new LinkedList<>();
             data[index] = list;
@@ -77,8 +80,10 @@ public class HastTable {
 
         final Node node = searchKey(list, key);
         if (node == null) {
+            //노드를 찾을 수 없으면 마지막 노드에 추가한다
             list.addLast(new Node(key, vale));
         } else {
+            //노드가 있다면 새롭게 value 값을 업데이트 한다
             node.setValue(vale);
         }
     }
@@ -121,7 +126,6 @@ public class HastTable {
     }
 }
 ```
-
 
 ## 출저
 * [[자료구조 알고리즘] 해쉬테이블(Hash Table)에 대해 알아보고 구현하기](https://www.youtube.com/watch?v=Vi0hauJemxA&feature=youtu.be)
