@@ -32,6 +32,96 @@
 * hashCode % array-size
 * hashCode가 골고루 분배되지 안항 좋은 알고리즘은 아니다.
 
+## Sample Code
+
+```java
+public class HastTable {
+
+    private final LinkedList<Node>[] data;
+
+    public HastTable(int size) {
+        this.data = new LinkedList[size];
+    }
+
+    public int getHastCode(String key) {
+        int hashCode = 0;
+        for (char c : key.toCharArray()) {
+            hashCode += c;
+        }
+        return hashCode;
+    }
+
+    public int convertToIndex(int hashCode) {
+        return hashCode % data.length;
+    }
+
+    public Node searchKey(LinkedList<Node> list, String key) {
+        if (list == null) return null;
+
+        for (Node node : list) {
+            if (node.key.equals(key)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    public void put(String key, String vale) {
+        int hashCode = getHastCode(key);
+        int index = convertToIndex(hashCode);
+        LinkedList<Node> list = data[index];
+        if (list == null) {
+            list = new LinkedList<>();
+            data[index] = list;
+        }
+
+        final Node node = searchKey(list, key);
+        if (node == null) {
+            list.addLast(new Node(key, vale));
+        } else {
+            node.setValue(vale);
+        }
+    }
+
+    public String get(String key) {
+        final int hashCode = getHastCode(key);
+        final int index = convertToIndex(hashCode);
+        final LinkedList<Node> list = data[index];
+        final Node node = searchKey(list, key);
+
+        return node == null ? "Not found" : node.getValue();
+    }
+
+
+    class Node {
+
+        private String key;
+        private String value;
+
+        public Node(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+}
+```
+
 
 ## 출저
 * [[자료구조 알고리즘] 해쉬테이블(Hash Table)에 대해 알아보고 구현하기](https://www.youtube.com/watch?v=Vi0hauJemxA&feature=youtu.be)
