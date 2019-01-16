@@ -1,5 +1,5 @@
 # TIL
-* 개인 위키로 사용
+* 개인 위키로 사용, 
 * 공부한 것들을 정리 합니다.
 
 ## 목차
@@ -16,6 +16,7 @@
   * [Batch 기초]()
 * Boot
   * [Spring Boot 기초]()
+  * [백기선의 스프링 부트 정리]()
 * JPA
   * [자바 ORM표준 JPA프로그래밍]()
 * MVC
@@ -81,7 +82,7 @@
 * [Social Login]()
 * [TDD]()
 
-### Pop IT 포스팅
+### POP it 포스팅
 * [Spring 내가 생각하는 캡슐화 part 1]()
 * [Spring 내가 생각하는 캡슐화 part 2]()
 * [GitHub로 프로젝트 관리하기 Part1 - 이슈 발급 부터 코드리뷰]()
@@ -100,15 +101,20 @@
 * [실무에서 Lombok 사용법]()
 
 ### OOP
-
-
-## 목차
-* **Blog [Yun Blog](https://cheese10yun.github.io/) 블로그 초안 작성**
-* [Node.JS 정리](https://github.com/cheese10yun/TIL/tree/master/Node)
-* [Spring 정리](https://github.com/cheese10yun/TIL/tree/master/Spring)
-* [강의 - 온라인, 오프라인 강의 정리](https://github.com/cheese10yun/TIL/tree/master/%EA%B0%95%EC%9D%98)
-* [도서 - 도서 공부한것들 정리](https://github.com/cheese10yun/TIL/tree/master/%EB%8F%84%EC%84%9C)
-* [ETC](https://github.com/cheese10yun/TIL/tree/master/ETC)
-* [Network](https://github.com/cheese10yun/TIL/tree/master/network)
-* [Popit - 포스팅 정리](https://github.com/cheese10yun/TIL/tree/master/Popit)
-* [draw - 설명을 위한 그림](https://github.com/cheese10yun/TIL/tree/master/draw)
+* [객체지향의 사실과 오해 정리]()
+* [개발자가 반드시 정복해야할 객체지향과 디자인 패턴 정리]()
+* [JAVA 객체지향 디자인 패턴 정리]()
+* [객체지향 프로그래밍 입문]()
+* SOLID
+  * 기초 이론
+    * [SRP]()
+    * [OPC]()
+    * [LSP]()
+    * [ISP]()
+    * [DIP]()
+  * 실전 예제
+    * [SRP]()
+    * [OPC]()
+    * [LSP]()
+    * [ISP]()
+    * [DIP]()
