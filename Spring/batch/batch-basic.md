@@ -1,46 +1,45 @@
-
 ## 목차
-<!-- TOC -->
+- [목차](#%EB%AA%A9%EC%B0%A8)
+- [스프링 부트 배치의 장점](#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EB%B0%B0%EC%B9%98%EC%9D%98-%EC%9E%A5%EC%A0%90)
+- [스프링 부트 배치 주의사항](#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EB%B0%B0%EC%B9%98-%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD)
+- [스프링 부트 배치 이해하기](#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EB%B0%B0%EC%B9%98-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0)
+  - [Job](#job)
+  - [JobInstance](#jobinstance)
+  - [JobExcution](#jobexcution)
+  - [JobParameters](#jobparameters)
+  - [Step](#step)
+    - [StepExcution](#stepexcution)
+  - [JobRepository](#jobrepository)
+  - [JobLauncher](#joblauncher)
+  - [ItemReader](#itemreader)
+  - [ItemProcessor](#itemprocessor)
+  - [ItemWriter](#itemwriter)
+- [휴먼회원 배치 설계](#%ED%9C%B4%EB%A8%BC%ED%9A%8C%EC%9B%90-%EB%B0%B0%EC%B9%98-%EC%84%A4%EA%B3%84)
+- [휴먼회원 배치 구현](#%ED%9C%B4%EB%A8%BC%ED%9A%8C%EC%9B%90-%EB%B0%B0%EC%B9%98-%EA%B5%AC%ED%98%84)
+  - [Job 설정](#job-%EC%84%A4%EC%A0%95)
+  - [Step 설정](#step-%EC%84%A4%EC%A0%95)
+  - [Reader설정](#reader%EC%84%A4%EC%A0%95)
+  - [Processor 설정](#processor-%EC%84%A4%EC%A0%95)
+  - [Writer 설정](#writer-%EC%84%A4%EC%A0%95)
+- [배치 심화](#%EB%B0%B0%EC%B9%98-%EC%8B%AC%ED%99%94)
+  - [다양한 ItemReader 구현 클래스](#%EB%8B%A4%EC%96%91%ED%95%9C-itemreader-%EA%B5%AC%ED%98%84-%ED%81%B4%EB%9E%98%EC%8A%A4)
+  - [다양한 ItemWriter 구현 클래스](#%EB%8B%A4%EC%96%91%ED%95%9C-itemwriter-%EA%B5%AC%ED%98%84-%ED%81%B4%EB%9E%98%EC%8A%A4)
+  - [JobParameter 사용하기](#jobparameter-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
+  - [테스트 시에만 H2 데이터베이스를 사용하도록 설정](#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%8B%9C%EC%97%90%EB%A7%8C-h2-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8F%84%EB%A1%9D-%EC%84%A4%EC%A0%95)
+  - [청크 지향 프로세싱](#%EC%B2%AD%ED%81%AC-%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8B%B1)
+  - [배치 인터셉터 Listener 설정하기](#%EB%B0%B0%EC%B9%98-%EC%9D%B8%ED%84%B0%EC%85%89%ED%84%B0-listener-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
+  - [어노테이션 기반 Listener 설정하기](#%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98-%EA%B8%B0%EB%B0%98-listener-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
+  - [JobParameter 사용하기](#jobparameter-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-1)
+  - [Step의 흐름을 제어하는 Flow](#step%EC%9D%98-%ED%9D%90%EB%A6%84%EC%9D%84-%EC%A0%9C%EC%96%B4%ED%95%98%EB%8A%94-flow)
+- [재시도](#%EC%9E%AC%EC%8B%9C%EB%8F%84)
+  - [스템 구성하기](#%EC%8A%A4%ED%85%9C-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0)
+  - [재시도 템플릿](#%EC%9E%AC%EC%8B%9C%EB%8F%84-%ED%85%9C%ED%94%8C%EB%A6%BF)
+  - [AOP 기반 재시도](#aop-%EA%B8%B0%EB%B0%98-%EC%9E%AC%EC%8B%9C%EB%8F%84)
+- [Spring Batch Table](#spring-batch-table)
+  - [BATCH_JOB_INSTANCE](#batchjobinstance)
+  - [BATCH_JOB_EXECUTION](#batchjobexecution)
+- [참고](#%EC%B0%B8%EA%B3%A0)
 
-- [목차](#목차)
-- [스프링 부트 배치의 장점](#스프링-부트-배치의-장점)
-- [스프링 부트 배치 주의사항](#스프링-부트-배치-주의사항)
-- [스프링 부트 배치 이해하기](#스프링-부트-배치-이해하기)
-    - [Job](#job)
-    - [JobInstance](#jobinstance)
-    - [JobExcution](#jobexcution)
-    - [JobParameters](#jobparameters)
-    - [Step](#step)
-        - [StepExcution](#stepexcution)
-    - [JobRepository](#jobrepository)
-    - [JobLauncher](#joblauncher)
-    - [ItemReader](#itemreader)
-    - [ItemProcessor](#itemprocessor)
-    - [ItemWriter](#itemwriter)
-- [휴먼회원 배치 설계](#휴먼회원-배치-설계)
-- [휴먼회원 배치 구현](#휴먼회원-배치-구현)
-    - [Job 설정](#job-설정)
-    - [Step 설정](#step-설정)
-    - [Reader설정](#reader설정)
-    - [Processor 설정](#processor-설정)
-    - [Writer 설정](#writer-설정)
-- [배치 심화](#배치-심화)
-    - [다양한 ItemReader 구현 클래스](#다양한-itemreader-구현-클래스)
-    - [다양한 ItemWriter 구현 클래스](#다양한-itemwriter-구현-클래스)
-    - [JobParameter 사용하기](#jobparameter-사용하기)
-    - [테스트 시에만 H2 데이터베이스를 사용하도록 설정](#테스트-시에만-h2-데이터베이스를-사용하도록-설정)
-    - [청크 지향 프로세싱](#청크-지향-프로세싱)
-    - [배치 인터셉터 Listener 설정하기](#배치-인터셉터-listener-설정하기)
-    - [어노테이션 기반 Listener 설정하기](#어노테이션-기반-listener-설정하기)
-    - [JobParameter 사용하기](#jobparameter-사용하기-1)
-    - [Step의 흐름을 제어하는 Flow](#step의-흐름을-제어하는-flow)
-- [재시도](#재시도)
-    - [스템 구성하기](#스템-구성하기)
-    - [재시도 템플릿](#재시도-템플릿)
-    - [AOP 기반 재시도](#aop-기반-재시도)
-- [참고](#참고)
-
-<!-- /TOC -->
 스프링 배치는 벡엔드의 배치처리 기능을 구현하는 데 사용하는 프레임워크입니다. 스프링 부트 배치는 스프링 배치 설정 요소들을 간편화시켜 스프링 배치를 빠르게 설정하는 데 도움을 줍니다.
 
 ## 스프링 부트 배치의 장점
@@ -69,11 +68,11 @@
 배치 처리는 읽기 -> 처리 -> 쓰기 흐름을 갖습니다. 다음 그림은 스프링에서 이러한 배치 처리를 어떻게 구현 했는지 배치 처리와 관련된 객체의 관계를 보여줍니다.
 
 <p align="center">
-  <img src="/assets/batch-obejct-relrationship.png">
+  <img src="https://github.com/cheese10yun/TIL/raw/master/assets/batch-obejct-relrationship.png">
 </p>
 
 * Job과 Step은 1:M
-* Step과 ItemReader, ItemProcessor, ItemWriter 1:1 
+* Step과 ItemReader, ItemProcessor, ItemWriter 1:1
 * Job이라는 하나의 큰 일감(Job)에 여러 단계(Step)을 두고, 각 단계를 배치의 기본 흐름대로 구성합니다.
 
 ### Job
@@ -122,11 +121,11 @@ public JobFlowBuilder flow(Step step){
 
 ### JobInstance
 * **JobInstance는 배치 처리에서 Job이 실행될 때 하나의 Job 실행 단위입니다.** 만약 하루에 한 번 씩 배치의 Job이 실행된다면 어제와 오늘 실행 각각 Job을 JobInstance라고 부를 수 있습니다.
-* 각각의 JobInstance는 하나의 JobException을 갖는 것은아닙니다. 오늘 Job이 실행 했는데 실패했다면 다음날 동일한 JobInstance를 가지고 또 실행합니다. 
+* 각각의 JobInstance는 하나의 JobException을 갖는 것은아닙니다. 오늘 Job이 실행 했는데 실패했다면 다음날 동일한 JobInstance를 가지고 또 실행합니다.
 * Job 실행이 실패하면 JobInstance가 끝난것으로 간주하지 않기 때문입니다. 그렇다면 JobInstance는 어제 실패한 JobExcution과 오늘의 성공한 JobExcution 두 개를 가지게 됩니다. **즉 JobExcution 는 여러 개 가질 수 있습니다.**
 
 ### JobExcution
-* JobExcution은 JobIstance에 대한 한 번의 실행을 나타내는 객체입니다. 
+* JobExcution은 JobIstance에 대한 한 번의 실행을 나타내는 객체입니다.
 * 만약 오늘 Job이 실패해 내일 다시 동일한 Job을 실행하면 오늘/내일의 실행 모두 같은 JobInstance를 사용합니다.
 * 실제로 JobExcution 인터페이스를 보면 Job 실행에 대한 정보를 담고 있는 도메인 객체가 있습니다. JobExcution은 JobInstance, 배치 실행 상태, 시작 시간, 끝난 시간, 실패했을 때 메시지 등의 정보를 담고 있습니다. JobExcution 객체 안에 어떤 실행 정보를 포함 하고 있습니다.
 
@@ -148,7 +147,7 @@ public JobFlowBuilder flow(Step step){
 * JobRepository는 Step의 실행 정보를 담고 있는 StepExcution도 저장소에 저장하여 전체 메타데이터를 저장/관리하는 역할을 수행합니다.
 
 ### JobLauncher
-* JobLauncher는 Job. JobParamerters와 함께 배치를 실행하는 인터페이스입니다. 
+* JobLauncher는 Job. JobParamerters와 함께 배치를 실행하는 인터페이스입니다.
 
 ### ItemReader
 * ItemReader는 Step의 대상이 되는 배치 데이터를 읽어오는 인터페이스입니다. File, Xml Db등 여러 타입의 데이터를 읽어올 수 있습니다.
@@ -165,7 +164,7 @@ public JobFlowBuilder flow(Step step){
 
 ## 휴먼회원 배치 설계
 <p align="center">
-  <img src="/assets/bach-process.png">
+  <img src="https://github.com/cheese10yun/TIL/raw/master/assets/bach-process.png">
 </p>
 
 **가입한 회원 중 1년이 지나도록 상태 변화가 없는 회원을 휴면회원으로 전환하는 배치 처리**
@@ -199,7 +198,7 @@ public class InactiveUserJobConfig {
 
 * (1) Job 생성을 직관적이고 편리하게 도와주는 빌더 JobBuilderFactory를 주입받습니다.
 * (2) inactiveUserJob 이라는 JobBuilder를 생성하며 `preventRestart()` 설정을 통해 재실행을 막았습니다.
-* (3) `start(inactiveJobStep)`은 파라미터에서 주입받은 휴먼회원 관련 Step인 inactiveJobStep을 제일 먼저 실행하도록 설정하는 부분입니다. 
+* (3) `start(inactiveJobStep)`은 파라미터에서 주입받은 휴먼회원 관련 Step인 inactiveJobStep을 제일 먼저 실행하도록 설정하는 부분입니다.
 
 기본적인 Job설정은 완료 했습니다. Step 설정을 진행하겠습니다.
 
@@ -265,7 +264,7 @@ public ItemProcessor<User, User> inactiveUserProcessor() {
     return user -> user.setInactive();
 }
 ```
-읽어온 타깃 데이터를 휴먼 회원으로 전환시키는 Processor입니다. reader에서 읽은 User를 휴면 상태로 전환화는 Processor 메서드를 추가하는 예입니다. 
+읽어온 타깃 데이터를 휴먼 회원으로 전환시키는 Processor입니다. reader에서 읽은 User를 휴면 상태로 전환화는 Processor 메서드를 추가하는 예입니다.
 
 ### Writer 설정
 ```java
@@ -286,7 +285,7 @@ ItemWriter는 리스트 타입을 앞서 설정한 청크 단위로 받습니다
 
 ### 다양한 ItemReader 구현 클래스
 
-기존에는 QueueItemReader 객체를 사용 해서 모든 데이터를 한번에 와서 배치처치를 진행했습니다. **하지만 수백, 수천 개 이상의 데이터를 한번에 가져와서 메모리에 올려놓게되면 좋지 않습니다.** 이때 배치 프로젝트에서 제공하는 PagingItemRedaer 구현체를 사용 사용할 수있습니다. 구현체는 크게 JdbcPagingItemReader, JpaPagingItemRedaer, HibernatePagingItemRdaer가 있습니다. 해당 예쩨에서는 JpaPagingItemRedaer를 사용하겠습니다. 
+기존에는 QueueItemReader 객체를 사용 해서 모든 데이터를 한번에 와서 배치처치를 진행했습니다. **하지만 수백, 수천 개 이상의 데이터를 한번에 가져와서 메모리에 올려놓게되면 좋지 않습니다.** 이때 배치 프로젝트에서 제공하는 PagingItemRedaer 구현체를 사용 사용할 수있습니다. 구현체는 크게 JdbcPagingItemReader, JpaPagingItemRedaer, HibernatePagingItemRdaer가 있습니다. 해당 예쩨에서는 JpaPagingItemRedaer를 사용하겠습니다.
 
 ```java
 @Bean(destroyMethod="") //(1)
@@ -312,7 +311,7 @@ public JpaPagingItemReader<User> inactiveUserJpaReader(@Value("#{jobParameters[n
 * (3) 쿼리리에서 사용된 updateDate, status 파라미터를 Mpa에 추가해서 사용할 파라미터를 설정합니다
 * (4 )트랜잭션을 관리해줄 entityManagerFactory를 설정합니다.
 * (5) 한번에 읽어올 크기를 CHUNK_SIZE 만큼 할당합니다.
-  
+
 ### 다양한 ItemWriter 구현 클래스
 
 ItemReader와 마찬가지로 상황에맞는 여러 구현 클래스를 제공합니다. JPA를 사용하고 있음으로 JpaItemWriter를 적용합니다.
@@ -325,9 +324,9 @@ private JpaItemWriter<User> inactiveUserWriter() {
 }
 ```
 ### JobParameter 사용하기
-JobParameter를 사용해서 Step을 실행시킬 때 동적으로 파라미터를 주입시킬 수 있습니다. 
+JobParameter를 사용해서 Step을 실행시킬 때 동적으로 파라미터를 주입시킬 수 있습니다.
 
-### 테스트 시에만 H2 데이터베이스를 사용하도록 설정 
+### 테스트 시에만 H2 데이터베이스를 사용하도록 설정
 ```java
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -340,9 +339,9 @@ public class DemoApplication {
 
 ### 청크 지향 프로세싱
 <p align="center">
-  <img src="/assets/chun-process.png">
+  <img src="https://github.com/cheese10yun/TIL/raw/master/assets/chun-process.png">
 </p>
-청크 지향 프로세싱은 트랜잭션 경계 내에서 청크 단위로 데이터를 읽고 생성하는 프로그래밍 기법입니다. 청크란 아이템이 트랜잭션에 커밋되는 수를 말합니다. read한 데이터 수가 지정한 청크 단위와 칠치하면 write를 수행하고 트랜잭션을 커밋합니다. Step 설정에서 chunk()로 커밋 단위를 지정했던 부분입니다. 즉 기존에도 계속 사용해온 방법이 청크 지향 프로세싱입니다. 
+청크 지향 프로세싱은 트랜잭션 경계 내에서 청크 단위로 데이터를 읽고 생성하는 프로그래밍 기법입니다. 청크란 아이템이 트랜잭션에 커밋되는 수를 말합니다. read한 데이터 수가 지정한 청크 단위와 칠치하면 write를 수행하고 트랜잭션을 커밋합니다. Step 설정에서 chunk()로 커밋 단위를 지정했던 부분입니다. 즉 기존에도 계속 사용해온 방법이 청크 지향 프로세싱입니다.
 
 청크 지향프러그래밍의 이점은 1000개 개의 데이터에 대해 배치 로직을 실행한다고 가정했을 때 청크로 나누지 않았을 때는 하나만 실패해도 다른 성공한 999개의 데이터가 롤백됩니다. 그런데 청크 단위를 10으로 해서 배치처리를 하면 도중에 배치 처리에 실패하더라도 다른 청크는 영향을 받지 않습니다. 이러한 이유로 스프링 배치에 정크 단위로 프로그래밍을 지향합니다.
 
@@ -360,7 +359,7 @@ JapParameter를 사용해 Step을 실행시킬 때 동적으로 파라미터를 
 Step의 가장 기본적은 흐름은 `읽기-처리-쓰기` 입니다. 여기서 세부적인 조건에 따라서 Step의 실행 여부를 정할 수 있습니다. 이런 흐름을 제어하는 `Flow` 제공 합니다.
 
 <p align="center">
-  <img src="/assets/batch-flow.png">
+  <img src="https://github.com/cheese10yun/TIL/raw/master/assets/batch-flow.png">
 </p>
 
 흐름에 조건에 해당하는 부분을 `JobExecutionDecider` 인터페이스를 사용해 구현 할 수 있습니다. `JobExecutionDecider` 인터페이스는 `decide()` 메서드 하나만 제공합니다.
@@ -378,7 +377,7 @@ public Class xxxJobExecutionDecider implements  JobExecutionDecider {
             return FlowExecutionsStatus.COMPLETED; // (2)
         }
         return FlowExecutionsStatus.FAILED; // (3)
-        
+
     }
 }
 ```
@@ -483,5 +482,76 @@ public User batchSomething(){....}
 ```
 **구성 클래스에 반드시 @EnableRety 를추가 해야합니다.**
 
+## Spring Batch Table
+
+<p align="center">
+  <img src="https://github.com/cheese10yun/TIL/raw/master/assets/meta-data-erd.png">
+</p>
+
+### BATCH_JOB_INSTANCE
+
+```sql
+CREATE TABLE `BATCH_JOB_INSTANCE` (
+  `JOB_INSTANCE_ID` bigint(20) NOT NULL,
+  `VERSION` bigint(20) DEFAULT NULL,
+  `JOB_NAME` varchar(100) NOT NULL,
+  `JOB_KEY` varchar(32) NOT NULL,
+  PRIMARY KEY (`JOB_INSTANCE_ID`),
+  UNIQUE KEY `JOB_INST_UN` (`JOB_NAME`,`JOB_KEY`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+* JOB_INSTANCE_ID
+    * BATCH_JOB_INSTANCE 테이블의 PK
+* JOB_NAME
+    * 수행한 Batch Job Name
+
+**BATCH_JOB_INSTANCE 테이블은 Job Parameter에 따라 생성됩니다.**
+
+Job Parameter는 Spring Batch가 실행될때 외부에서 받을 수 있는 파라미터 입니다. 
+
+**같은 Batch Job 이라도 Job Parameter가 다르면 다른 BATCH_JOB_INSTANCE 에 기록됩니다.**
+
+### BATCH_JOB_EXECUTION
+```sql
+CREATE TABLE `BATCH_STEP_EXECUTION` (
+  `STEP_EXECUTION_ID` bigint(20) NOT NULL,
+  `VERSION` bigint(20) NOT NULL,
+  `STEP_NAME` varchar(100) NOT NULL,
+  `JOB_EXECUTION_ID` bigint(20) NOT NULL,
+  `START_TIME` datetime NOT NULL,
+  `END_TIME` datetime DEFAULT NULL,
+  `STATUS` varchar(10) DEFAULT NULL,
+  `COMMIT_COUNT` bigint(20) DEFAULT NULL,
+  `READ_COUNT` bigint(20) DEFAULT NULL,
+  `FILTER_COUNT` bigint(20) DEFAULT NULL,
+  `WRITE_COUNT` bigint(20) DEFAULT NULL,
+  `READ_SKIP_COUNT` bigint(20) DEFAULT NULL,
+  `WRITE_SKIP_COUNT` bigint(20) DEFAULT NULL,
+  `PROCESS_SKIP_COUNT` bigint(20) DEFAULT NULL,
+  `ROLLBACK_COUNT` bigint(20) DEFAULT NULL,
+  `EXIT_CODE` varchar(2500) DEFAULT NULL,
+  `EXIT_MESSAGE` varchar(2500) DEFAULT NULL,
+  `LAST_UPDATED` datetime DEFAULT NULL,
+  PRIMARY KEY (`STEP_EXECUTION_ID`),
+  KEY `JOB_EXEC_STEP_FK` (`JOB_EXECUTION_ID`),
+  CONSTRAINT `JOB_EXEC_STEP_FK` FOREIGN KEY (`JOB_EXECUTION_ID`) REFERENCES `BATCH_JOB_EXECUTION` (`JOB_EXECUTION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+* `JOB_EXECUTION_ID` 칼럼은 `BATCH_JOB_INSTANCE` 테이블의 PK를 참조 하고 있습니다.
+* `BATCH_STEP_EXECUTION` 와 `BATCH_JOB_INSTANCE`는 부모 자식관계입니다.
+* BATCH_STEP_EXECUTION는 자신의 부모 BATCH_JOB_INSTANCE 성공/실패 내역을 모두 갖고 있습니다.
+* 
+
+<p align="center">
+  <img src="https://github.com/cheese10yun/TIL/raw/master/assets/job-job-instance-job-execution.png">
+</p>
+
+* `Job`: 특정 잡, 2달이상 로그인안한 유저 휴먼 회원 처리 등
+* `Job Instance`: Job Parameter를 실행한 Job(Job Parameter 단위로 생성)
+* `Job Execution`: Job Parameter로 실행한 Job의 실행, 1번 째 시도 혹은 그 다음 등
+
 ## 참고
 * [처음으로 배우는 스프링 부트 2](https://kyobobook.co.kr/product/detailViewKor.laf?mallGb=KOR&ejkGb=KOR&barcode=9791162241264&orderClick=JAj)를 정리한 글입니다.
+* [기억보단 기록을 - spring-batch-in-action](https://github.com/jojoldu/spring-batch-in-action/blob/master/3_%EB%A9%94%ED%83%80%ED%85%8C%EC%9D%B4%EB%B8%94%EC%97%BF%EB%B3%B4%EA%B8%B0.md)
