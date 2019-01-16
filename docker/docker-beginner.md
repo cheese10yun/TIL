@@ -67,6 +67,9 @@
 	- [이미지 빌드](#%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%B9%8C%EB%93%9C)
 - [막정리](#%EB%A7%89%EC%A0%95%EB%A6%AC)
 - [접속](#%EC%A0%91%EC%86%8D)
+- [Docker 명령어](#docker-%EB%AA%85%EB%A0%B9%EC%96%B4)
+- [docker compose](#docker-compose)
+- [도커 용량 이상](#%EB%8F%84%EC%BB%A4-%EC%9A%A9%EB%9F%89-%EC%9D%B4%EC%83%81)
 
 ## 도커소개
 
@@ -728,3 +731,44 @@ docker ps -a
 docker exec -it  c456623003b1 /bin/bash
 
 c456623003b1 = container id
+
+
+## Docker 명령어
+
+* docker start
+* docker stop
+* docker restar
+* docker pause
+* docker unpause
+* docker wait
+* docker kill
+* docker attach
+* docker exec
+
+## docker compose
+
+```
+sudo pip install docker-compose
+```
+* 에로 생겼을 경우
+
+* docker-compose up -d
+
+* docker-compose exec database bash
+
+
+## 도커 용량 이상
+```
+~ / Library / Containers / com.docker.docker
+```
+* 도커 파일 너무 크게 먹는 이슈
+* 그 동안 설치했던 이미지들이 완전히 삭제 되지 않는 거같음
+* 위의 경로에 데이터들이 남아있음
+
+```
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
+docker volume rm $(docker volume ls |awk '{print $2}')
+rm -rf ~/Library/Containers/com.docker.docker/Data/*
+```
+* [link](https://github.com/docker/for-mac/issues/371)
