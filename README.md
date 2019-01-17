@@ -102,7 +102,7 @@
 * [실무에서 Lombok 사용법](https://github.com/cheese10yun/TIL/blob/master/Popit/lombok.md)
 
 ### OOP
-* [객체지향의 사실과 오해 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B1%84%EC%A7%80%ED%96%A5%EC%9D%98%EC%82%AC%EC%8B%A4%EA%B3%BC%EC%98%A4%ED%95%B4.md)
+* [객체지향의 고과 오해 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B1%84%EC%A7%80%ED%96%A5%EC%9D%98%EC%82%AC%EC%8B%A4%EA%B3%BC%EC%98%A4%ED%95%B4.md)
 * [개발자가 반드시 정복해야할 객체지향과 디자인 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EB%B0%98%EB%93%9C%EC%8B%9C-%EC%A0%95%EB%B3%B5%ED%95%B4%EC%95%BC%ED%95%A0-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%EA%B3%BC-%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4.md)
 * [JAVA 객체지향 디자인 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/JAVA-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4.md)
 * [객체지향 프로그래밍 입문](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B2%B4-%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%9E%85%EB%AC%B8.md)
