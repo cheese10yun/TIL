@@ -1,5 +1,13 @@
 > 출저 [처음으로 배우는 스프링 부트 2](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791162241264&orderClick=LAA&Kc=)을 보고 정리한 포스팅입니다.
 
+| 어노테이션           | 설명                   | Bean         |
+|-----------------|----------------------|--------------|
+| @SpringBootTest | 통합 테스트, 전체           | Bean 전체      |
+| @WebMvcTest     | 단위 테스트, Mvc 테스트      | MVC 관련된 Bean |
+| @DataJpaTest    | 단위 테스트, Jpa 테스트      | JPA 관련 Bean  |
+| @RestClientTest | 단위 테스트, Rest API 테스트 | 일부 Bean      |
+| @JsonTest       | 단위 테스트, Json 테스트     | 일부 Bean      |
+
 # Spring Boot Test
 
 * `@SpringBootTest`는 통합 테스트를 제공하는 기본적인 스프링 부트 테스트 어노테이션입니다.
