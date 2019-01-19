@@ -1,23 +1,17 @@
-# SOLID 강의
 [Youtube](https://www.youtube.com/user/codetemplate/videos)
 백명석님의 SOLD 강의 부분 정리
 
 # 목차
-<!-- TOC -->
-
-- [SOLID 강의](#solid-%EA%B0%95%EC%9D%98)
 - [목차](#%EB%AA%A9%EC%B0%A8)
 - [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)](#design-smells-%EB%82%98%EC%81%9C-%EB%94%94%EC%9E%90%EC%9D%B8%EC%97%90-%EB%82%98%ED%83%80%EB%82%98%EB%8A%94-3-%EA%B0%80%EC%A7%80-%EB%83%84%EC%83%88)
-    - [Rigidity](#rigidity)
-    - [Fragility](#fragility)
-    - [Immobility](#immobility)
-    - [What is OO ?](#what-is-oo)
+  - [Rigidity](#rigidity)
+  - [Fragility](#fragility)
+  - [Immobility](#immobility)
+  - [What is OO ?](#what-is-oo)
 - [OCP](#ocp)
-    - [확장 이란 ?](#%ED%99%95%EC%9E%A5-%EC%9D%B4%EB%9E%80)
-    - [변경 이란 ?](#%EB%B3%80%EA%B2%BD-%EC%9D%B4%EB%9E%80)
+  - [확장 이란 ?](#%ED%99%95%EC%9E%A5-%EC%9D%B4%EB%9E%80)
+  - [변경 이란 ?](#%EB%B3%80%EA%B2%BD-%EC%9D%B4%EB%9E%80)
 - [DIP](#dip)
-
-<!-- /TOC -->
 
 # Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)
 
@@ -72,7 +66,6 @@ OCP를 하기 위해서는 이런것을 하기 위해서 Abstraction, Inversion�
 * **상위 레벨의 정책은 하위 레벨의 상세합에 의존하면 안된다.**
 * **상위 레빌의 모듈을 하위 레벌의 부터 보호하는것**
 * 이것은 OCP와 연관이 크다.
-* 
 
 
 

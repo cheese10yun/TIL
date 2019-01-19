@@ -1,14 +1,10 @@
 ## 목차
-<!-- TOC -->
-
-- [목차](#목차)
+- [목차](#%EB%AA%A9%EC%B0%A8)
 - [Lesson 2: The Data Structure of ACL](#lesson-2-the-data-structure-of-acl)
-    - [퍼미션(Permission, 인가 받은 권한)](#퍼미션permission-인가-받은-권한)
-    - [보안 식별자(SID, Security IDentity)](#보안-식별자sid-security-identity)
-    - [ACL 데이터 구조](#acl-데이터-구조)
+  - [퍼미션(Permission, 인가 받은 권한)](#%ED%8D%BC%EB%AF%B8%EC%85%98permission-%EC%9D%B8%EA%B0%80-%EB%B0%9B%EC%9D%80-%EA%B6%8C%ED%95%9C)
+  - [보안 식별자(SID, Security IDentity)](#%EB%B3%B4%EC%95%88-%EC%8B%9D%EB%B3%84%EC%9E%90sid-security-identity)
+  - [ACL 데이터 구조](#acl-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0)
 - [Lesson 3: ACL with Spring Security - part 1](#lesson-3-acl-with-spring-security---part-1)
-
-<!-- /TOC -->
 
 ## Lesson 2: The Data Structure of ACL
 
