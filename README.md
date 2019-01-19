@@ -44,11 +44,14 @@
   * [Servlet 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/servlet/basic.md)
 * Test
   * [Spring Test 종류](https://github.com/cheese10yun/TIL/blob/master/Spring/test/test-basic.md)
+  * [Spring Boot Test 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/test/boot-test-basic.md)
 * Transaction
   * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
 * [MSA](https://github.com/cheese10yun/TIL/blob/master/Spring/msa.md)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
+* 토비의 스프링
+  * [2장 테스트]()
 
 ### Java
 * [데이터 타입](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%EB%B6%84%EB%A5%98.md)
