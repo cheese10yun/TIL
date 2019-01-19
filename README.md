@@ -131,7 +131,7 @@
     * [LSP 예정]()
     * [ISP 예정]()
     * [DIP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/DIP.md)
-* [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새](https://github.com/cheese10yun/TIL/blob/master/OOP/Design-Smells.md)
+* [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)](https://github.com/cheese10yun/TIL/blob/master/OOP/Design-Smells.md)
 
 
 ### 도서
@@ -144,7 +144,7 @@
 * [Do it 자료구조와함께배우는알고리즘입문](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/Do-it-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80%ED%95%A8%EA%BB%98%EB%B0%B0%EC%9A%B0%EB%8A%94%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9E%85%EB%AC%B8.md)
 
 ### AWS
-* [AWS CLI 설정]()
+* [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
 
 ### ETC
 * [Bitbucket](https://github.com/cheese10yun/TIL/blob/master/ETC/bitbucket-beginner.md)
