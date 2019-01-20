@@ -1,10 +1,8 @@
-# TIL
-* 개인 위키로 사용, 
-* 공부한 것들을 정리 합니다.
+# Today I Learned(TIL) Wiki
+[![Blog](https://img.shields.io/badge/Blog-cheese10yun.github.io-green.svg)](https://cheese10yun.github.io/)
 
-## 목차
 
-### Spring
+## Spring
 * AOP
   * [AOP - 용어 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/aop/AOP-basic.md)
   * [AOP - Proxy](https://github.com/cheese10yun/TIL/blob/master/Spring/aop/AOP-proxiy.md)
@@ -19,6 +17,7 @@
   * [백기선의 스프링 부트 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/boot/%EB%B0%B1%EA%B8%B0%EC%84%A0%EC%9D%98-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8.md)
 * JPA
   * [자바 ORM표준 JPA프로그래밍](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/%EC%9E%90%EB%B0%94ORM%ED%91%9C%EC%A4%80JPA%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
+  * [페이징 API](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/JPA-Paging-API.md)
 * MVC
   * [MVC 요청 Flow](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/mvc-flow.md)
   * [TaskExecutor 비동기 처리](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/TaskExecutor-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC.md)
@@ -53,7 +52,7 @@
 * 토비의 스프링
   * [2장 테스트]()
 
-### Java
+## Java
 * [데이터 타입](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%EB%B6%84%EB%A5%98.md)
 * [Thread](https://github.com/cheese10yun/TIL/blob/master/JAVA/thread.md)
 * [인터페이스](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md)
@@ -64,15 +63,15 @@
 * [자바8인액션 정리](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9E%90%EB%B0%948-%EC%9D%B8%EC%95%A1%EC%85%98.md)
 
 
-### 운영체제
+## 운영체제
 * [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/basic.md)
 * [운영체제와 정보기술의 원리 정리](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%EC%99%80%EC%A0%95%EB%B3%B4%EA%B8%B0%EC%8A%AC%EC%9D%98%EC%9B%90%EB%A6%AC.md)
 
-### 데이터베이스
+## 데이터베이스
 * [데이터베이스 첫걸음 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%B2%AB%EA%B1%B8%EC%9D%8C.md)
 * [정규화](https://github.com/cheese10yun/TIL/blob/master/Database/%EC%A0%95%EA%B7%9C%ED%99%94.md)
 
-### 네트워크
+## 네트워크
 * [OSI 7 계층](https://github.com/cheese10yun/TIL/blob/master/network/OSI-7%EA%B3%84%EC%B8%B5.md)
 * [Cookie](https://github.com/cheese10yun/TIL/blob/master/network/http/cookie.md)
 * [CORS](https://github.com/cheese10yun/TIL/blob/master/network/http/CORS.md)
@@ -81,10 +80,10 @@
 * [REST API](https://github.com/cheese10yun/TIL/blob/master/network/http/REST.md)
 * [OAuth2](https://github.com/cheese10yun/TIL/blob/master/network/http/OAuth2.md)
 
-### 도커
+## 도커
 * [도커 기초](https://github.com/cheese10yun/TIL/blob/master/docker/docker-beginner.md)
 
-### Node
+## Node
 * [Apex](https://github.com/cheese10yun/TIL/blob/master/Node/Apex.md)
 * [Claudia](https://github.com/cheese10yun/TIL/blob/master/Node/Claudia.md)
 * [Serverless](https://github.com/cheese10yun/TIL/blob/master/Node/serverless.md)
@@ -100,7 +99,7 @@
 * [Social Login](https://github.com/cheese10yun/TIL/blob/master/Node/social_login.md)
 * [TDD](https://github.com/cheese10yun/TIL/blob/master/Node/TDD.md)
 
-### POP it 포스팅
+## POP it 포스팅
 * [Spring 내가 생각하는 캡슐화 part 1](https://github.com/cheese10yun/TIL/blob/master/Popit/encapsulation-part-1.md)
 * [Spring 내가 생각하는 캡슐화 part 2](https://github.com/cheese10yun/TIL/blob/master/Popit/encapsulation-part-2.md)
 * [GitHub로 프로젝트 관리하기 Part1 - 이슈 발급 부터 코드리뷰](https://github.com/cheese10yun/TIL/blob/master/Popit/GitHub%EB%A1%9C%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0%20Part1.md)
@@ -118,7 +117,7 @@
 * [Spring REST Docs API 문서를 자동화 해보자](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-rest-docs.md)
 * [실무에서 Lombok 사용법](https://github.com/cheese10yun/TIL/blob/master/Popit/lombok.md)
 
-### OOP
+## OOP
 * [객체지향의 사실과 오해 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B1%84%EC%A7%80%ED%96%A5%EC%9D%98%EC%82%AC%EC%8B%A4%EA%B3%BC%EC%98%A4%ED%95%B4.md)
 * [개발자가 반드시 정복해야할 객체지향과 디자인 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EB%B0%98%EB%93%9C%EC%8B%9C-%EC%A0%95%EB%B3%B5%ED%95%B4%EC%95%BC%ED%95%A0-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%EA%B3%BC-%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4.md)
 * [JAVA 객체지향 디자인 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/JAVA-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4.md)
@@ -139,7 +138,7 @@
 * [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)](https://github.com/cheese10yun/TIL/blob/master/OOP/Design-Smells.md)
 
 
-### 도서
+## 도서
 * [DDD Start 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/DDD-START.md)
 * [스프링5 레시피 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8A%A4%ED%94%84%EB%A7%815%EB%A0%88%EC%8B%9C%ED%94%BC.md)
 * [자바 8 인 액션 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%9E%90%EB%B0%948-%EC%9D%B8%EC%95%A1%EC%85%98.md)
@@ -148,10 +147,10 @@
 * [Vue2.js 프로그래밍 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/vue.js2-programing.md)
 * [Do it 자료구조와함께배우는알고리즘입문](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/Do-it-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80%ED%95%A8%EA%BB%98%EB%B0%B0%EC%9A%B0%EB%8A%94%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9E%85%EB%AC%B8.md)
 
-### AWS
+## AWS
 * [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
 
-### ETC
+## ETC
 * [Bitbucket](https://github.com/cheese10yun/TIL/blob/master/ETC/bitbucket-beginner.md)
 * [MySQL 비밀번호 초기화](https://github.com/cheese10yun/TIL/blob/master/ETC/mysql-%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8%EC%B4%88%EA%B8%B0%ED%99%94.md)
 * [Redis 기초](https://github.com/cheese10yun/TIL/blob/master/ETC/redis-beginner.md)
