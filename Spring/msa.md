@@ -16,7 +16,7 @@
 * 스프링 클라우드 컨피그 서버 : 버전 관리 리포지토리로 백업 된 중앙 집중식 구성을 지원한다.
 * 스프링 클라우드 컨피그 클라어은트: 애플리케이션이 스프링 클라우드 컨피그 서버에 연결하도록 지원한다.
 
-![msa-config-server](/assets/msa-config-server.png)
+![msa-config-server](https://github.com/cheese10yun/spring-msa-demo/raw/master/assets/msa-config-server.png)
 
 ## Cloud Bus
 스프링 클라우드 버스는 마이크로서비스를 카프카 및 래빗MQ 같은 경량 메시지 브로커에 연결한다
@@ -28,6 +28,6 @@
 
 ### 스프링 클라우드 버스를 사용해 구성 변경 전파
 해결 책은 스프링 클라우드 버스를 사용해 래빗MQ와 같은 메시지 브로커를 통해 구성 변경 사항을 여러 인스턴스에 전달하는 것이다.
-![msa-cloud-bus](/assets/msa-cloud-bus.png)
+![msa-cloud-bus](https://github.com/cheese10yun/spring-msa-demo/raw/master/assets/msa-cloud-bus.png)
 
 마이크로서비스 인스턴스 중 하나에 새로 고침이 호출되면, 스프링 클라우드 버스는 모든 마이크로 서비스 인스턴스에 변경 이벤트를 전달한다. 마이크로서비스는 인스턴스는 변경 이벤트 수신 시 구성 서버에 업데이트된 구성을 요청한다.
