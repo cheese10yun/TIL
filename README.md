@@ -18,6 +18,7 @@
 * JPA
   * [자바 ORM표준 JPA프로그래밍](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/%EC%9E%90%EB%B0%94ORM%ED%91%9C%EC%A4%80JPA%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
   * [페이징 API](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/JPA-Paging-API.md)
+  * [QueryDsl 기초 설정](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/Querydsl-%EC%84%A4%EC%A0%95.md)
 * MVC
   * [MVC 요청 Flow](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/mvc-flow.md)
   * [TaskExecutor 비동기 처리](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/TaskExecutor-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC.md)
@@ -116,6 +117,7 @@
 * [Spring Security OAuth2 소셜 인증 데이터베이스 저장](https://github.com/cheese10yun/TIL/blob/master/Popit/Spring-Security-OAuth2-Social-Dtabase.md)
 * [Spring REST Docs API 문서를 자동화 해보자](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-rest-docs.md)
 * [실무에서 Lombok 사용법](https://github.com/cheese10yun/TIL/blob/master/Popit/lombok.md)
+* [Spring Boot + JPA 페이징 API 만들기](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-jpa-best-12.md)
 
 ## OOP
 * [객체지향의 사실과 오해 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B1%84%EC%A7%80%ED%96%A5%EC%9D%98%EC%82%AC%EC%8B%A4%EA%B3%BC%EC%98%A4%ED%95%B4.md)
