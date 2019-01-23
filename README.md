@@ -151,6 +151,7 @@
 
 ## AWS
 * [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
+* [AWS 대표 서비스 정리](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-Service.md)
 
 ## ETC
 * [Bitbucket](https://github.com/cheese10yun/TIL/blob/master/ETC/bitbucket-beginner.md)
