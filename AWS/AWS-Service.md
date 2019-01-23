@@ -22,6 +22,7 @@
   - [AWS 계정의 종류](#aws-%EA%B3%84%EC%A0%95%EC%9D%98-%EC%A2%85%EB%A5%98)
   - [AWS 계정](#aws-%EA%B3%84%EC%A0%95)
   - [IAM 사용자](#iam-%EC%82%AC%EC%9A%A9%EC%9E%90)
+    - [IAM 구조](#iam-%EA%B5%AC%EC%A1%B0)
 - [보안도구](#%EB%B3%B4%EC%95%88%EB%8F%84%EA%B5%AC)
   - [지속적 보안 평가 도구 Inspector](#%EC%A7%80%EC%86%8D%EC%A0%81-%EB%B3%B4%EC%95%88-%ED%8F%89%EA%B0%80-%EB%8F%84%EA%B5%AC-inspector)
   - [무료 서버 인증 발행도구 Ceritificate Manager](#%EB%AC%B4%EB%A3%8C-%EC%84%9C%EB%B2%84-%EC%9D%B8%EC%A6%9D-%EB%B0%9C%ED%96%89%EB%8F%84%EA%B5%AC-ceritificate-manager)
@@ -131,6 +132,14 @@ AWS에는 AWS 계정과 IAM 사용자라고 불리는 두 종류의 계정이 �
 ## IAM 사용자
 IAM 사용자는 AWS 각 이용자가 콘솔에 로그인하거나 API를 이용해 작업할 때 사용하는 계정입니다. 각 IAM 사용자의 권한을 정확하게 제한하는 것이 AWS를 더욱 안전하게 사용할 수 있습니다.
 
+### IAM 구조
+
+이름      | 설명
+--------|---------------------------------------------------------------
+IAM 사용자 | IAM 사용자는 그 이름그대로 AWS의 사용자
+IAM 그룹  | IAM 그룹은 IAM 사용자를 모아놓은것, 일반적으로 역할별로 그룹을 만들어 사용자는 복수의 그룹에 속할수 있음
+IAM 정책  | IAM 정책은 권한을 기술하는 규칙
+
 # 보안도구
 
 ## 지속적 보안 평가 도구 Inspector
@@ -166,10 +175,3 @@ CloudWatch Logs에는 로그 수집과 모니터링이라는 두 가지 기능�
 
 ### CloudWatch Events의 로그 기둥
 CloudWatch Events는 이벤트를 감지하고 지정된 규칙에 따라 처리하는 서비스입니다. 규칙에는 5분 간격이나 특정 일시 등의 스케줄, DnamoDB 테이블의 생성 삭제 등 AWS 리소스에 발생한 변경을 지정하는 것이 가능합니다.
-
-
-
-
-
-
-
