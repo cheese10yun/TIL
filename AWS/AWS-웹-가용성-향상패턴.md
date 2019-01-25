@@ -1,5 +1,19 @@
 > 출저 [AWS 시스템 설계와 마이그레이션](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791158391201&orderClick=LAG&Kc=)을 보고 정리한 내용입니다.
 
+# 목차
+- [목차](#%EB%AA%A9%EC%B0%A8)
+- [윕 가용성 향상 패턴](#%EC%9C%95-%EA%B0%80%EC%9A%A9%EC%84%B1-%ED%96%A5%EC%83%81-%ED%8C%A8%ED%84%B4)
+  - [ELB](#elb)
+  - [ELB 자체의 확장 : 스케일링](#elb-%EC%9E%90%EC%B2%B4%EC%9D%98-%ED%99%95%EC%9E%A5--%EC%8A%A4%EC%BC%80%EC%9D%BC%EB%A7%81)
+  - [상태 확인 기능](#%EC%83%81%ED%83%9C-%ED%99%95%EC%9D%B8-%EA%B8%B0%EB%8A%A5)
+  - [상태 유지 세션](#%EC%83%81%ED%83%9C-%EC%9C%A0%EC%A7%80-%EC%84%B8%EC%85%98)
+  - [Auto Scaling](#auto-scaling)
+    - [Scaling 정책/계획](#scaling-%EC%A0%95%EC%B1%85%EA%B3%84%ED%9A%8D)
+      - [수동 스케일](#%EC%88%98%EB%8F%99-%EC%8A%A4%EC%BC%80%EC%9D%BC)
+      - [자동 스케일링](#%EC%9E%90%EB%8F%99-%EC%8A%A4%EC%BC%80%EC%9D%BC%EB%A7%81)
+      - [스케줄 기반](#%EC%8A%A4%EC%BC%80%EC%A4%84-%EA%B8%B0%EB%B0%98)
+      - [규칙 기반](#%EA%B7%9C%EC%B9%99-%EA%B8%B0%EB%B0%98)
+
 # 윕 가용성 향상 패턴
 
 웹 서비스, 업무용 시스템에 관계 없이 시스템은 요청이 쇄도하는 `피크 시간`이 있습니다. 피크 시간은 시스템 특성 계정, 요일 등의 시작적욘 요인 이나 돌발적인 요인등 다양한 요인이 얽혀 날마다 변화하기 때문에 예사아힉 어렵고, 설계 시 엔지니어들을 고민하게 만드는 요인입니다.
