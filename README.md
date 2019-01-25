@@ -152,8 +152,8 @@
 ## AWS
 * [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
 * [AWS 대표 서비스 정리](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-Service.md)
-* [AWS 웹 가용성 향상 패턴]()
-* [AWS 콘텐츠 캐시 패턴]()
+* [AWS 웹 가용성 향상 패턴](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-%EC%9B%B9-%EA%B0%80%EC%9A%A9%EC%84%B1-%ED%96%A5%EC%83%81%ED%8C%A8%ED%84%B4.md)
+* [AWS 콘텐츠 캐시 패턴](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-%EC%BD%98%ED%85%90%EC%B8%A0-%EC%BA%90%EC%8B%9C-%ED%8C%A8%ED%84%B4.md)
 
 ## ETC
 * [Bitbucket](https://github.com/cheese10yun/TIL/blob/master/ETC/bitbucket-beginner.md)
