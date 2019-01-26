@@ -50,19 +50,9 @@
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
 * [MSA](https://github.com/cheese10yun/TIL/blob/master/Spring/msa.md)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
-* 토비의 스프링
-  * [2장 테스트]()
-
-## Java
-* [데이터 타입](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%EB%B6%84%EB%A5%98.md)
-* [Thread](https://github.com/cheese10yun/TIL/blob/master/JAVA/thread.md)
-* [인터페이스](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md)
-* [Effective Java](https://github.com/cheese10yun/TIL/blob/master/JAVA/Effective-java.md)
-* [Hash Table](https://github.com/cheese10yun/TIL/blob/master/JAVA/hash-table.md)
-* [자바 메모리](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9E%90%EB%B0%94-%EB%A9%94%EB%AA%A8%EB%A6%AC.md)
-* [제네릭](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%A0%9C%EB%84%A4%EB%A6%AD.md)
-* [자바8인액션 정리](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9E%90%EB%B0%948-%EC%9D%B8%EC%95%A1%EC%85%98.md)
-
+* 토비의 스프링 정리
+  * [2장 테스트](https://github.com/cheese10yun/TIL/blob/master/Spring/%ED%86%A0%EB%B9%84/%ED%86%A0%EB%B9%84%EC%9D%98%EC%8A%A4%ED%94%84%EB%A7%81-2%EC%9E%A5-%ED%85%8C%EC%8A%A4%ED%8A%B8.md)
+* [스프링5 레시피 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8A%A4%ED%94%84%EB%A7%815%EB%A0%88%EC%8B%9C%ED%94%BC.md)
 
 ## 운영체제
 * [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/basic.md)
@@ -81,8 +71,39 @@
 * [REST API](https://github.com/cheese10yun/TIL/blob/master/network/http/REST.md)
 * [OAuth2](https://github.com/cheese10yun/TIL/blob/master/network/http/OAuth2.md)
 
+## OOP
+* [객체지향의 사실과 오해 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B1%84%EC%A7%80%ED%96%A5%EC%9D%98%EC%82%AC%EC%8B%A4%EA%B3%BC%EC%98%A4%ED%95%B4.md)
+* [개발자가 반드시 정복해야할 객체지향과 디자인 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EB%B0%98%EB%93%9C%EC%8B%9C-%EC%A0%95%EB%B3%B5%ED%95%B4%EC%95%BC%ED%95%A0-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%EA%B3%BC-%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4.md)
+* [JAVA 객체지향 디자인 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/JAVA-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4.md)
+* [객체지향 프로그래밍 입문](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B2%B4-%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%9E%85%EB%AC%B8.md)
+* SOLID
+  * 기초 이론
+    * [SRP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/SRP.md)
+    * [OPC](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/OCP.md)
+    * [LSP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/LSP.md)
+    * [ISP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/ISP.md)
+    * [DIP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/DIP.md)
+  * 실전 예제
+    * [SRP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/SRP.md)
+    * [OPC](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/OCP.md)
+    * [LSP 예정]()
+    * [ISP 예정]()
+    * [DIP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/DIP.md)
+* [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)](https://github.com/cheese10yun/TIL/blob/master/OOP/Design-Smells.md)
+
+
 ## 도커
 * [도커 기초](https://github.com/cheese10yun/TIL/blob/master/docker/docker-beginner.md)
+
+## Java
+* [데이터 타입](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%EB%B6%84%EB%A5%98.md)
+* [Thread](https://github.com/cheese10yun/TIL/blob/master/JAVA/thread.md)
+* [인터페이스](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md)
+* [Effective Java](https://github.com/cheese10yun/TIL/blob/master/JAVA/Effective-java.md)
+* [Hash Table](https://github.com/cheese10yun/TIL/blob/master/JAVA/hash-table.md)
+* [자바 메모리](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9E%90%EB%B0%94-%EB%A9%94%EB%AA%A8%EB%A6%AC.md)
+* [제네릭](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%A0%9C%EB%84%A4%EB%A6%AD.md)
+* [자바8인액션 정리](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9E%90%EB%B0%948-%EC%9D%B8%EC%95%A1%EC%85%98.md)
 
 ## Node
 * [Apex](https://github.com/cheese10yun/TIL/blob/master/Node/Apex.md)
@@ -119,31 +140,9 @@
 * [실무에서 Lombok 사용법](https://github.com/cheese10yun/TIL/blob/master/Popit/lombok.md)
 * [Spring Boot + JPA 페이징 API 만들기](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-jpa-best-12.md)
 
-## OOP
-* [객체지향의 사실과 오해 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B1%84%EC%A7%80%ED%96%A5%EC%9D%98%EC%82%AC%EC%8B%A4%EA%B3%BC%EC%98%A4%ED%95%B4.md)
-* [개발자가 반드시 정복해야할 객체지향과 디자인 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EB%B0%98%EB%93%9C%EC%8B%9C-%EC%A0%95%EB%B3%B5%ED%95%B4%EC%95%BC%ED%95%A0-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%EA%B3%BC-%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4.md)
-* [JAVA 객체지향 디자인 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/JAVA-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4.md)
-* [객체지향 프로그래밍 입문](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B2%B4-%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%9E%85%EB%AC%B8.md)
-* SOLID
-  * 기초 이론
-    * [SRP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/SRP.md)
-    * [OPC](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/OCP.md)
-    * [LSP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/LSP.md)
-    * [ISP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/ISP.md)
-    * [DIP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/DIP.md)
-  * 실전 예제
-    * [SRP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/SRP.md)
-    * [OPC](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/OCP.md)
-    * [LSP 예정]()
-    * [ISP 예정]()
-    * [DIP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/DIP.md)
-* [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)](https://github.com/cheese10yun/TIL/blob/master/OOP/Design-Smells.md)
-
 
 ## 도서
 * [DDD Start 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/DDD-START.md)
-* [스프링5 레시피 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8A%A4%ED%94%84%EB%A7%815%EB%A0%88%EC%8B%9C%ED%94%BC.md)
-* [자바 8 인 액션 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%9E%90%EB%B0%948-%EC%9D%B8%EC%95%A1%EC%85%98.md)
 * [Clean Code 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/clean-code.md)
 * [JavaScript Patterns 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/javascript-patterns.md)
 * [Vue2.js 프로그래밍 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/vue.js2-programing.md)
@@ -154,6 +153,7 @@
 * [AWS 대표 서비스 정리](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-Service.md)
 * [AWS 웹 가용성 향상 패턴](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-%EC%9B%B9-%EA%B0%80%EC%9A%A9%EC%84%B1-%ED%96%A5%EC%83%81%ED%8C%A8%ED%84%B4.md)
 * [AWS 콘텐츠 캐시 패턴](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-%EC%BD%98%ED%85%90%EC%B8%A0-%EC%BA%90%EC%8B%9C-%ED%8C%A8%ED%84%B4.md)
+* [AWS DB 가용성 패턴]()
 
 ## ETC
 * [Bitbucket](https://github.com/cheese10yun/TIL/blob/master/ETC/bitbucket-beginner.md)
