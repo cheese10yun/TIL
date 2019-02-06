@@ -155,7 +155,7 @@
 * [AWS 콘텐츠 캐시 패턴](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-%EC%BD%98%ED%85%90%EC%B8%A0-%EC%BA%90%EC%8B%9C-%ED%8C%A8%ED%84%B4.md)
 * [AWS DB 가용성 패턴](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-DB-%EA%B0%80%EC%9A%A9%EC%84%B1-%ED%8C%A8%ED%84%B4.md)
 * [AWS 인 메모리 캐시 패턴](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-%EC%9D%B8-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EC%BA%90%EC%8B%9C-%ED%8C%A8%ED%84%B4.md)
-* [AWS 인프라 구축 자동화]()
+* [AWS 인프라 구축 자동화](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%B6%95-%EC%9E%90%EB%8F%99%ED%99%94.md)
 
 
 ## ETC
