@@ -257,7 +257,7 @@ JPA를 사용하면 @ManyToOne, @OneToOne과 같은 애노테이션을 시용해
 응집도가 떨어지고 코드 중복이 발생하여 결과적으로 코드 변경을 어렵게 만든다. 소프트웨어의 중요한 경쟁 요고 중 하나는 변경의 용이성이다. 그러한 것을 어렵게 만드는 것은 소프트웨어의 가치를 떨어진다는 것을 뜻한다.
 
 ## 응용 서비스 구현
-응용 서비스는 포현 영역과 도메인 영역을 연결하는 매개체 역할을 하는데 이는 디자인 패턴에서 파사드와 같은 역할을 한다. 
+응용 서비스는 포현 영역과 도메인 영역을 연결하는 매개체 역할을 하는데 이는 디자인 패턴에서 파사드와 같은 역할을 한다.
 
 ### 응용 서비스의 크기
 회원 도메인을 생각해보자. 응용 서비스는 회원 가입하기, 회원 탈퇴하기, 회원 암호 변경하기, 비밀번호 초기화하기 같은 기능을 구현하기 위해 도메인 모델을 사용하게 된다. 이 경우, 응용 서비스는 보통 다음 두가지 방법 중 한가지 방식으로 구현한다.
@@ -279,6 +279,60 @@ public class MemberService {
 구분되는 기능별로 서비스 클래스를 구현하는 방식은 한 응용 서비스 클래스에서 한 개 내지 2~3개의 기능을 구현한다. 이 방식을 사용하면 클래스 개수는 많아지지지만 한 클래스에 관련된 기능을 모두구현하는 것과 비교해서 코드 품질을 일정 수준으로 유지하는데 도움이 된다. 또한, 각각 클래스 별로 필요한 의존 객체만 포함함으로 다른 기능을 구현한 코드에 영향을 받지 않는다. 
 
 각 기능마다 동일한 로직을 구현할 경우 여러 클래스에 중복해서 동일한 코드를 구현할 가능성이 있다. 이런 경우 XXXServiceHelper 와 같은 클래스에 로직을 구현해서 코드가 중복되는 것을 방지할 수 있다.
+
+> 개인적 의견
+
+XXXService 이러한 서비스 클래스는 안티패턴이라고 생각한다. 서비스의 크기는 작아야 그 객체가 갖는 의존성, 책임 등이 작아진다. 이는 테스트 코드작성시에도 많은 도움이 된다.
+
+무엇보다 XXXService가 안티패턴인 이유는 다형성을 만족시키기 힘들다. **객체의 책임이 모여 역할이 되고 이 역할은 대체를 의미한다.** 
+
+비밀번호 변경 기능은 크게 2가지 정도가 있다. 
+
+1. 비밀번호 기반으로 비밀번호를 변경하는 기능
+2. 비밀번호를 잊어 버렸을 경우 제 3의 인증 방법을 통해서 비밀번호를 변경하는 기능
+
+만약 이 기능을 MemberService에 기능이 구현 했을 때는 메서드로 위의 두 가지 기능을 구현할 것이다.
+
+이는 MemberService가 점점 책임이 많아 지는 것이며 책임이 많아 지는 경우 그 역할의 대체성을 상실하게 된다. 대체성을 상실하게 되면 DIP, OCP를 적용할 수 없으며 이는 유지보수하기 어려운 코드가 된다.
+
+```java
+public interface ChangePasswordService {
+    public void change(MemberId id, PasswordDto.ChangeRequest dto);
+}
+
+public class ByAuthChangePasswordService implements ChangePasswordService {
+    private MemberFindService memberFindService;
+
+    @Override
+    public void change(MemberId id, PasswordDto.ChangeRequest dto) {
+        if (dto.getAuthCode().equals("인증 코드가 적합한지 로직 추가...")) {
+            final Member member = memberFindService.findById(id);
+            final String newPassword = dto.getNewPassword().getValue();
+            member.changePassword(newPassword);
+            // 필요로직...
+        }
+    }
+}
+
+public class ByPasswordChangePasswordService implements ChangePasswordService {
+    private MemberFindService memberFindService;
+
+    @Override
+    public void change(MemberId id, PasswordDto.ChangeRequest dto) {
+        if (dto.getPassword().equals("비밀번호가 일치하는지 판단 로직...")) {
+            final Member member = memberFindService.findById(id);
+            final String newPassword = dto.getNewPassword().getValue();
+            member.changePassword(newPassword);
+        }
+    }
+}
+```
+이렇게 되면 **비밀번호 변경이라는 책임을 갖게되고 이런 책임으로 비밀번호 변경 역할을 갖게 되는 것이다. 여기서 중요한것은 이 역할이 대체된다는 것이다.**
+
+비밀번호 변경이라는 역할 ChangePasswordService이 있고 이 역할은 대체 가능하다. 비밀번호 기반으로 비밀번호를 변경하는 ByPasswordChangePasswordService 역할로 대체 가능, 다른 인증수단으로 비밀번호를 변경하는 ByAuthChangePasswordService 역할로 대체 가능하다.
+
+MemberService라는 곳에 모든 로직이 담겨있다면 MemberService의 책임이 너무 많고 이 책임을 대체할 수 있는 역할을 만들지 못한다.
+
 
 ### 응용 서비스의 인테페이스와 클래스
 인터페이스가 필여한 몇가지 상황이 있는데 그중 하나는 구현 클래스가 여러 개인 경우이다. 구현 클래스가 다수 존재하거나 런타임에 구현 객체를 교체해야할 경우 인터페이스를 유용하게 사용할 수있다.
