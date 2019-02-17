@@ -60,3 +60,132 @@
    * `@ResponseBody`가 있다면 Convter를 이용해서 응답 본문을 만든다.
 7. 최종적으로 응답을 보낸다.
 
+
+## DispatherServlet 구성 요소
+
+* DispatcherSerlvet의 기본 전략
+  * DispachersServlet.propertes 설정을 따라간다.
+* MutilpartResolver
+  * 파일 업로드 요청 처리에 필요한 인터페이스
+  * HttpServletRequest를 MutilpartHttpServletRequest로 변환해주어 요청이 담고 있는 Fild을 꺼낼수 있는 API 제공
+* LocaleReslver
+  * 클라이언트의 위치 정보를 파악하는 인터페이스
+  * 기본 전략은 요청 accept-language를 보고 판단.
+* HanderMapping
+  * 요청을 처리할 핸들러를 찾는 인터페이스
+* HandlerAdapter
+  * HandlerMapping이 찾아낸 핸들러를 처리하는 인터페이스
+  * 스프링 MVC 확장력의 핵심
+* HanderAdapter
+  * HanlderMapping이 찾아낸 "핸들러" 처리하는 인터페이스
+* ViewResolver
+  * 뷰 이름에 해당하는 뷰를 찾아내는 인터페이스
+* FlashMapManager
+  * FlashMap 인스턴스를 가져오고 저장하는 인터페이스
+  * FlashMap은 주로 리다이렉션을 사용할 때 요청 매개변수를 사용하지 않고 데이터를 전달하고 정리할 때 사용한다.
+  * redirect:/events
+
+
+# MVC 설정
+* `WebMvcConfigurationSupport.class` 
+* `WebMvcAutoConfiguration.class`
+* 설정을 기본 설정이다
+
+## 스프링 부트 MVC 설정
+
+* 스프링 부트의 **주관**이 적용된 자동  설정이 동작한다.
+  * JSP 보다 Thymeleaf 선호
+  * JSON 지원
+  * 정적 리소스 지원 (+ 웰컴 페이지, 파비콘 등 지원)
+    * resourceHanderMapping을 기본으로 제공
+* 스프링 MVC 커스터마이징 
+  * application.properties
+  * @Configuration + Implements WebMvcConfigurer: 스프링 부트의 스프링 MVC 자동설정 + 추가 설정
+  * @Configuration + @EnableWebMvc + Imlements WebMvcConfigurer: 스프링 부트의 스프링 MVC 자동설정 사용하지 않음.
+
+
+## WebMvcConfigurer 설정
+
+### Formatter
+
+
+```java
+public class PersonFormatter  implements Formatter<Person> {
+
+    @Override
+    public Person parse(String name, Locale locale) {
+        return new Person(name, name);
+    }
+
+    @Override
+    public String print(Person person, Locale locale) {
+        return person.toString();
+    }
+}
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new PersonFormatter());
+    }
+}
+
+@RestController
+@RequestMapping("/sample")
+public class SampleApi {
+
+    @GetMapping("/{name}")
+    public Person sample(@PathVariable("name") Person person) {
+        return person;
+    }
+}
+```
+* Formatter를 등록하면 `PathVariable` 어노테이션으로 받을 수 있다.
+
+
+### handlerIntercepter
+
+* preHandle을 통해서 전처리 가능
+* postHandler을 통해 후처리 가능
+* afterComplection 완전히 끝난 이후
+
+
+```java
+    /**
+     * preHandle 1 -> 요청 전처리
+     * preHandle 2 -> 요청 전처리
+     * postHandler 2-> 요청 후처리
+     * postHandler 1-> 요청 후처리
+     * 뷰 랜더링
+     * afterCompletion 2 -> 
+     * afterCompletion 1 -> 
+     */
+
+@GetMapping("/{name}")
+public Person sample(@PathVariable("name") Person person) {
+    return person;
+}
+```
+
+boolean preHandle(request, response, handler)
+* 핸들러 실행하기 전에 호출 됨
+* **핸들러**에 대한 정보를 사용할 수 있기 때문에 서블릿 필터에 비해 보다 세밀한 로직을 구현할 수 있다.
+* 리턴값으로 계속 다음 인터셉터 또는 핸들러로 요청,응답을 전달할지(true) 응답 처리가 이곳에서 끝났는지(false) 알린다.
+
+void postHandle(request, response, modelAndView)
+* 핸들러 실행이 끝나고 아직 뷰를 랜더링 하기 이전에 호출 됨
+* **뷰**에 전달할 추가적이거나 여러 핸들러에 공통적인 모델 정보를 담는데 사용할 수도 있다.
+* 이 메소드는 인터셉터 역순으로 호출된다.
+* 비동기적인 요청 처리 시에는 호출되지 않는다.
+
+void afterCompletion(request, response, handler, ex)
+* 요청 처리가 완전히 끝난 뒤(뷰 랜더링 끝난 뒤)에 호출 됨
+* preHandler에서 true를 리턴한 경우에만 호출 됨
+* 이 메소드는 인터셉터 역순으로 호출된다.
+* 비동기적인 요청 처리 시에는 호출되지 않는다.
+
+vs 서블릿 필터
+* 서블릿 보다 구체적인 처리가 가능하다.
+* 서블릿은 보다 일반적인 용도의 기능을 구현하는데 사용하는게 좋다. 반대로 스프링에 특화된 기능을 구현해야 할 떄는 `handlerIntercepter`으로 처리한다
