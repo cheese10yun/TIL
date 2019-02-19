@@ -153,6 +153,37 @@ public class SampleApi {
 
 
 ```java
+
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SimpleInterceptor()).order(0);
+        registry.addInterceptor(new SecondeInterceptor()).order(1);
+    }
+}
+
+public class SimpleInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("pre handler 1");
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        System.out.println("post handler 1");
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        System.out.println("after completion 1");
+    }
+}
+
     /**
      * preHandle 1 -> 요청 전처리
      * preHandle 2 -> 요청 전처리
@@ -168,6 +199,8 @@ public Person sample(@PathVariable("name") Person person) {
     return person;
 }
 ```
+* **postHandler, afterCompletion 순서는 preHandle와 반대이다.**
+* `new SimpleInterceptor()).order(0)` 우선순위를 설정을 통해서 조절할 수 있다. (낮을 수록 우선순위가 높다. 음수도 가능하다)
 
 boolean preHandle(request, response, handler)
 * 핸들러 실행하기 전에 호출 됨
