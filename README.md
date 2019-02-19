@@ -46,6 +46,7 @@
 * Test
   * [Spring Test 종류](https://github.com/cheese10yun/TIL/blob/master/Spring/test/test-basic.md)
   * [Spring Boot Test 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/test/boot-test-basic.md)
+  * [Spring Test 가이드](https://github.com/cheese10yun/TIL/blob/master/Spring/test/spring-guide-test.md)
 * Transaction
   * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
@@ -104,6 +105,7 @@
 * [Hash Table](https://github.com/cheese10yun/TIL/blob/master/JAVA/hash-table.md)
 * [자바 메모리](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9E%90%EB%B0%94-%EB%A9%94%EB%AA%A8%EB%A6%AC.md)
 * [제네릭](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%A0%9C%EB%84%A4%EB%A6%AD.md)
+* [람다 기초](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EB%9E%8C%EB%8B%A4%EC%8B%9D-%EA%B8%B0%EC%B4%88.md)
 * [자바8인액션 정리](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9E%90%EB%B0%948-%EC%9D%B8%EC%95%A1%EC%85%98.md)
 
 ## Node
