@@ -153,8 +153,6 @@ public class SampleApi {
 
 
 ```java
-
-
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -222,3 +220,87 @@ void afterCompletion(request, response, handler, ex)
 vs 서블릿 필터
 * 서블릿 보다 구체적인 처리가 가능하다.
 * 서블릿은 보다 일반적인 용도의 기능을 구현하는데 사용하는게 좋다. 반대로 스프링에 특화된 기능을 구현해야 할 떄는 `handlerIntercepter`으로 처리한다
+
+### ResourceHanlder
+
+이미지, 자바스크립트, CSS, HTML 파일과 같은 정적인 리소스를 처리하는 핸들러 등록하는 방법
+
+* Default Servlet
+  * 서블릿 컨테이너가 기본으로 제공하는 서블릿으로 정적인 리소스를 처리할 때 사용한다
+
+* 스프링 MVC 리소스 핸들러 매핑 등록
+*  가장 낮은 우선 순위로 등록
+   *  우리가 직접만든 핸들러가 우선순위가 더 높아야 하기 때문에 우선순위가 낮아야한다.
+   *  핸뜰러 매핑이 "/" 이하 요청을 처리하도록 하고
+   *  최정적으로 리스스 핸들러가 처리하도록 한다.
+
+* 리소스 핸들러 설정
+  * 어떤 요청 패턴을 지원할 것인가?
+  * 어디서 리소스를 찾을 것인가?
+
+### Http Message Converter
+
+
+* 요청 본문에서 메시지를 읽어들이거나(@RequestBody), 응답 본문에 메시지를 작성할 때(@ResponseBody) 사용한다.
+
+```java
+// 이렇게 등록하게 된 경우 스프링 부트에서 지정하는 WebMvcAutoConfiguration 기본 설정에서 등록한 http message converter를 덮어 씌어서 기존에 있는 컨버터를 삭제하고 추가한것으로 덮어 씌어진다. 사용하지 않는 것이 좋아 보인다.
+@Override
+public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+
+}
+
+// 이렇게 등록하면 기존에 있는 메시지 컨버터에 추가만 하는 형식이라서 안전하다.
+@Override
+public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+
+}
+```
+
+#### 기본 HTTP 메시지 컨버터
+* 바이트 배열 컨버터
+* 문자열 컨버터
+* Resource 컨버터
+* Form 컨버터 (폼 데이터 to/from MultiValueMap<String, String>)
+* (JAXB2 컨버터)
+* (Jackson2 컨버터)
+* (Jackson 컨버터)
+* (Gson 컨버터)
+* (Atom 컨버터)
+* (RSS 컨버터)
+
+#### 설정 방법
+* 기본으로 등록해주는 컨버터에 새로운 컨버터 추가하기: extendMessageConverters
+* 기본으로 등록해주는 컨버터는 다 무시하고 새로 컨버터 설정하기: configureMessageConverters
+* 의존성 추가로 컨버터 등록하기 (가장 일반적이다.)
+  * 메이븐 또는 그래들 설정에 의존성을 추가하면 그에 따른 컨버터가 자동으로 등록 된다.
+  * WebMvcConfigurationSupport 기본 설정을 따라 간다.
+  * HttpMessageConverter로 @Bean을 등록한다(굳이 커스텀 해야 한다면 이게 제일 좋아 보인다.)
+
+
+### 그밖에 WebMvcConfigurer 설정
+
+* CROS 설정
+* 리턴 값 핸들러 설정 : 스프링 MVC가 제공하는 기본 리턴 값 핸들러 이외에 리턴 핸들러를 추가 할 수 있다.
+* 아큐먼트 리졸버 설정 : 스프링 MVC가 제공하는 기본 아규먼트 리졸버 이외에 커스텀한 아규먼트 리졸버를 추가하고 싶을 때 설정한다.
+* 뷰 리졸버 설정 : 핸들러에서 리턴하는 뷰 에대한 리졸버이다. 타임리프, JSP 등 다양하게 있다.
+* Content Negotiation 설정 : 요청 본문 또는 응답 본문을 어떤 (MIME) 타입으로 보내야 하는지 결정하는 전략을 설정한다
+
+
+### MVC 설정 마무리
+
+> 출저 배기선님 스프링 웹 MVC 공개 자료
+
+@EnableWebMvc
+- 애노테이션 기반의 스프링 MVC 설정 간편화
+- WebMvcConfigurer가 제공하는 메소드를 구현하여 커스터마이징할 수 있다.
+
+스프링 부트
+- 스프링 부트 자동 설정을 통해 다양한 스프링 MVC 기능을 아무런 설정 파일을 만들지 않아도 제공한다.
+- WebMvcConfigurer가 제공하는 메소드를 구현하여 커스터마이징할 수 있다.
+- @EnableWebMvc를 사용하면 스프링 부트 자동 설정을 사용하지 못한다.
+
+스프링 MVC 설정 방법
+- 스프링 부트를 사용하는 경우에는 application.properties 부터 시작.
+- WebMvcConfigurer로 시작
+- @Bean으로 MVC 구성 요소 직접 등록
