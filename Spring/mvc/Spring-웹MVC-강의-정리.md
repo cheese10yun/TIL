@@ -304,3 +304,116 @@ public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
 - 스프링 부트를 사용하는 경우에는 application.properties 부터 시작.
 - WebMvcConfigurer로 시작
 - @Bean으로 MVC 구성 요소 직접 등록
+
+# MVC 활용
+
+
+## 요청 맵핑하기 6부 커스텀 애노테이션
+> 출저 : 백기선의 스프링 웹 MVC
+
+@RequestMapping 애노테이션을 메타 애노테이션으로 사용하기
+* @GetMapping 같은 커스텀한 애노테이션을 만들 수 있다.
+
+메타(Meta) 애노테이션
+* 애노테이션에 사용할 수 있는 애노테이션
+* 스프링이 제공하는 대부분의 애노테이션은 메타 애노테이션으로 사용할 수 있다.
+
+조합(Composed) 애노테이션
+* 한개 혹은 여러 메타 애노테이션을 조합해서 만든 애노테이션
+* 코드를 간결하게 줄일 수 있다.
+* 보다 구체적인 의미를 부여할 수 있다.
+
+@Retention
+* 해당 애노테이션 정보를 언제까지 유지할 것인가.
+* Source: 소스 코드까지만 유지. 즉, 컴파일 하면 해당 애노테이션 정보는 사라진다는 이야기.
+* Class: 컴파인 한 .class 파일에도 유지. 즉 런타임 시, 클래스를 메모리로 읽어오면 해당 정보는 사라진다.
+* Runtime: 클래스를 메모리에 읽어왔을 때까지 유지! 코드에서 이 정보를 바탕으로 특정 로직을 실행할 수 있다.
+
+@Target
+* 해당 애노테이션을 어디에 사용할 수 있는지 결정한다.
+
+@Documented
+* 해당 애노테이션을 사용한 코드의 문서에 그 애노테이션에 대한 정보를 표기할지 결정한다.
+
+메타 애노테이션
+* https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-meta-annotations
+* https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/annotation/AliasFor.html
+
+## 핸들러 메소드 6부 @Validated
+
+> 출저 : 백기선의 스프링 웹 MVC
+
+* 스프링 MVC 핸들러 메소드 아규먼트에 사용할 수 있으며 validation group이라는 힌트를 사용할 수 있다.
+* @Valid 애노테이션에는 그룹을 지정할 방법이 없다.
+* @Validated는 스프링이 제공하는 애노테이션으로 그룹 클래스를 설정할 수 있다.
+
+
+## 핸들러 메소드 12부: Flash Attributes
+> 출저 : 백기선의 스프링 웹 MVC
+
+주로 리다이렉트시에 데이터를 전달할 때 사용한다.
+* 데이터가 URI에 노출되지 않는다.
+* 임의의 객체를 저장할 수 있다.
+*  보통 HTTP 세션을 사용한다.
+
+리다이렉트 하기 전에 데이터를 HTTP 세션에 저장하고 리다이렉트 요청을 처리 한 다음 그 즉시 제거한다.
+
+RedirectAttributes를 통해 사용할 수 있다.
+
+
+## 핸들러 메소드 15부: @RequestBody & HttpEntity
+> 출저 : 백기선의 스프링 웹 MVC
+
+@RequestBody
+* 요청 본문(body)에 들어있는 데이터를 HttpMessageConveter를 통해 변환한 객체로 받아올 수 있다.
+* @Valid 또는 @Validated를 사용해서 값을 검증 할 수 있다.
+* BindingResult 아규먼트를 사용해 코드로 바인딩 또는 검증 에러를 확인할 수 있다.
+
+HttpMessageConverter
+* 스프링 MVC 설정 (WebMvcConfigurer)에서 설정할 수 있다.
+* configureMessageConverters: 기본 메시지 컨버터 대체
+* extendMessageConverters: 메시지 컨버터에 추가
+* 기본 컨버터
+  * WebMvcConfigurationSupport.addDefaultHttpMessageConverters
+
+HttpEntity
+* @RequestBody와 비슷하지만 추가적으로 요청 헤더 정보를 사용할 수 있다.
+
+
+## 모델: @ModelAttribute 또 다른 사용법
+> 출저 : 백기선의 스프링 웹 MVC
+
+@ModelAttribute의 다른 용법
+* @RequestMapping을 사용한 핸들러 메소드의 아규먼트에 사용하기 (이미 살펴 봤습니다.)
+* @Controller 또는 @ControllerAdvice (이 애노테이션은 뒤에서 다룹니다.)를 사용한 클래스에서 모델 정보를 초기화 할 때 사용한다.
+* @RequestMapping과 같이 사용하면 해당 메소드에서 리턴하는 객체를 모델에 넣어 준다.
+RequestToViewNameTranslator
+
+## 예외 처리 핸들러: @ExceptionHandler
+> 출저 : 백기선의 스프링 웹 MVC
+
+특정 예외가 발생한 요청을 처리하는 핸들러 정의
+* 지원하는 메소드 아규먼트 (해당 예외 객체, 핸들러 객체, ...)
+* 지원하는 리턴 값
+* REST API의 경우 응답 본문에 에러에 대한 정보를 담아주고, 상태 코드를 설정하려면 ResponseEntity를 주로 사용한다.
+
+참고
+* [Spring Document](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-exceptionhandler)
+
+
+## 전역 컨트롤러: @(Rest)ControllerAdvice
+> 출저 : 백기선의 스프링 웹 MVC
+
+예외 처리, 바인딩 설정, 모델 객체를 모든 컨트롤러 전반에 걸쳐 적용하고 싶은 경우에 사용한다.
+* @ExceptionHandler
+* @InitBinder
+* @ModelAttributes
+
+적용할 범위를 지정할 수도 있다.
+* 특정 애노테이션을 가지고 있는 컨트롤러에만 적용하기
+* 특정 패키지 이하의 컨트롤러에만 적용하기
+* 특정 클래스 타입에만 적용하기
+
+참고
+* [Spring Document](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-controller-advice)
+
