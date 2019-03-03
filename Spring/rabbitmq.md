@@ -1,5 +1,5 @@
 # 스프링 부트 2.0 마이크로서비스와 리액티브 프로그래밍 정리
-해당 자료는 [스프링 부트 2.0 마이크로서비스와 리액티브 프로그래밍](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791161752624&orderClick=LAA&Kc=)을 보고 정리한 자료입니다.
+> 출저 [스프링 부트 2.0 마이크로서비스와 리액티브 프로그래밍](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791161752624&orderClick=LAA&Kc=)을 보고 정리한 자료입니다.
 
 ## Rabbmit MQ란 ?
 래빗MQ는 오픈소스 AMQP 브로커다. AMQP는 유선을 통해 전송되는 메시지 형식을 포함하는 개발형 프로토컬이며, JMS와 같은 다른 메시징 솔루션에 비해 인기가 높다.
@@ -41,3 +41,49 @@ public void save(Comment comment){
 스프링 AMQP 메시지 객체를 제공하기 위해 메서드 시그니처를 선언했다면 바이트 배열을 풀수 있을 것이다. **그러나 스프링 AMQP는 도메인 객체를 직렬화하는 기능이 제한돼 있다. 아무런 노력을 기울리지 않고도 간단한 문자열과 직렬화 처리할 수 있다.**
 
 
+# RabbitMQ와 AMQP 기본
+
+> 출저 [RabbitMQ와 Spring AMQP를 이용한 간단한 작업 큐 만들기](http://blog.naver.com/PostView.nhn?blogId=tmondev&logNo=220419853534&parentCategoryNo=&categoryNo=6&viewDate=&isShowPopularPosts=false&from=postView)를 보고 정리한 내용입니다.
+
+
+## AMQP
+프로그래밍에서 MQ는 프로세스 또는 프로그램 인스턴스가 데이터를 서로 교환할 때 사용하는 방법을 말한다. 이러한 MQ를 오픈소스에 기반한 표준 프로토콜이 AMQP이다. AMQP 자체가 프로토콜을 의미하기 때문에 이 프로토콜을 구현한 MQ 제품들은 여러가지가 있으며 그 중하나가 RabbitMQ이다.
+
+### AMQP의 구성요소와 라우팅 알고리즘
+![](/draw/rabbitmq.png)
+
+* AMQP의 라우팅 모델은 Exchange, Queue, Binding으로 구성된다.
+
+| 이름       | 설명                                             |
+|----------|------------------------------------------------|
+| Exchange | Publisher(Producer)로부터 수신한 메시지를 큐에 분배하는 라우터 역할 |
+| Queue    | 메시지를 메모리나 디스크에 저장했다가 Cusomer에게 메시지를 전달하는 역할    |
+| Binding  | Exchange와 Queue의 관계를 정의한 것                     |
+
+
+### Exchagne Type
+Exchagne Type은 메시지를 어떤 방법으로 라우팅할지 결정하는 일종의 알고리즘 말하며 AMQP에서는 다음과 같은 Exchange Type을 정의하고 있다.
+
+| Exchagne Type    | 정의                                                                                                                                        |
+|------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| Direct exchagne  | Exchagne에 바인된 Queue중에 메시지의 라우팅 키와 매핑되어 있는 Queue로 메시지를 전달한다. 1:1 관계로 Unicast 방식에 접합하며, 주로 라운드 로빈 방식으로 여러 workers(Cusumer)간 Task를 분리에 사용된다. |
+| Fanout Exchagne  | 메시지의 라우팅 키를 무시하고 Exchagne에 바인딩된 모든 Queue에 메시지를 전달한다. 1:N 관계로 메시지를 브로드캐스트하는 용도로 사용된다.                                                      |
+| Topic Exchagne   | Exchagne에 바인딩 된 Queue 중에서 메시지의 라우팅 키가 패턴에 맞는 Queue에세 모두 메시지를 전달한다. Mulicast 방섹에 접합하다.                                                     |
+| Headers Exchagne | 라우팅 키 대신에 메시지 헤더에 여러 속성들을 더해 속성들이 매칭되는 큐에 메시지를 전달한다.                                                                                      |
+
+
+## Rabbit MQ
+RabbitMQ는 AMQP를 구현한 오픈소스 메시지 소프트웨어 Pulisher(Producer)로부터 메시지를 받아 Cunsumer에게 라우트하는 것이 주된 역할이다.
+
+> 출저 [RabibitMQ Tutorials]([http://blog.naver.com/PostView.nhn?blogId=tmondev&logNo=220419853534&parentCategoryNo=&categoryNo=6&viewDate=&isShowPopularPosts=false&from=postView](http://www.rabbitmq.com/getstarted.htm))
+
+
+![](/draw/rabbitmq-turorial.png)
+
+### Rabbit MQ Exchagne Type
+이름              | RabbitMQ 이름
+----------------|---------------------------------------
+Direct Exchange | (Empty string) and amq.direct
+Fanout Exchange | anq.fanout
+Topic Exchange  | amq.topic
+Header Exchange | amq.match(and amq.headers in RabbitMQ)
