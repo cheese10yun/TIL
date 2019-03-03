@@ -52,6 +52,7 @@
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
 * [MSA](https://github.com/cheese10yun/TIL/blob/master/Spring/msa.md)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
+* [RabbitMQ](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
 * 토비의 스프링 정리
   * [2장 테스트](https://github.com/cheese10yun/TIL/blob/master/Spring/%ED%86%A0%EB%B9%84/%ED%86%A0%EB%B9%84%EC%9D%98%EC%8A%A4%ED%94%84%EB%A7%81-2%EC%9E%A5-%ED%85%8C%EC%8A%A4%ED%8A%B8.md)
 * [스프링5 레시피 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8A%A4%ED%94%84%EB%A7%815%EB%A0%88%EC%8B%9C%ED%94%BC.md)
