@@ -45,7 +45,7 @@
   * [Servlet 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/servlet/basic.md)
 * Test
   * [Spring Test 종류](https://github.com/cheese10yun/TIL/blob/master/Spring/test/test-basic.md)
-  * [Spring Boot Test 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/test/boot-test-basic.md)
+  * [Spring Boot Test Sample Code](https://github.com/cheese10yun/TIL/blob/master/Spring/test/boot-test-basic.md)
   * [Spring Test 가이드](https://github.com/cheese10yun/TIL/blob/master/Spring/test/spring-guide-test.md)
 * Transaction
   * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
