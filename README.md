@@ -3,6 +3,8 @@
 
 
 ## Spring
+* IoC
+  * [의존성 주입 DI 기초]()
 * AOP
   * [AOP - 용어 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/aop/AOP-basic.md)
   * [AOP - Proxy](https://github.com/cheese10yun/TIL/blob/master/Spring/aop/AOP-proxiy.md)
