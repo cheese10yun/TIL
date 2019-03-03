@@ -50,9 +50,18 @@
 * Transaction
   * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
+* OAuth2
+  * [소셜 연동 (Google, FaceBook)](https://github.com/cheese10yun/spring-security-oauth2-social)
+  * [OAtuh2 인증서버 구현하기](https://github.com/cheese10yun/springboot-oauth2)
+* [Rest Docs : REST API 문서 만들기](https://github.com/cheese10yun/springboot-restdocs)
+* [Slack Notification](https://github.com/cheese10yun/spring-boot-slack-notificaion)
 * [MSA](https://github.com/cheese10yun/TIL/blob/master/Spring/msa.md)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
 * [RabbitMQ](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
+* [Jackson 어노테이션 정리](https://github.com/cheese10yun/blog-sample/tree/master/jackson)
+* [Lombok 사용팁 정리](https://github.com/cheese10yun/blog-sample/tree/master/lombok)
+* [Spring Jpa Best Practices](https://github.com/cheese10yun/spring-jpa-best-practices)
+* [스프링 실전 가이드](https://github.com/cheese10yun/spring-guide)
 * 토비의 스프링 정리
   * [2장 테스트](https://github.com/cheese10yun/TIL/blob/master/Spring/%ED%86%A0%EB%B9%84/%ED%86%A0%EB%B9%84%EC%9D%98%EC%8A%A4%ED%94%84%EB%A7%81-2%EC%9E%A5-%ED%85%8C%EC%8A%A4%ED%8A%B8.md)
 * [스프링5 레시피 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8A%A4%ED%94%84%EB%A7%815%EB%A0%88%EC%8B%9C%ED%94%BC.md)
@@ -124,6 +133,7 @@
 * [Redis](https://github.com/cheese10yun/TIL/blob/master/Node/Redis.md)
 * [Social Login](https://github.com/cheese10yun/TIL/blob/master/Node/social_login.md)
 * [TDD](https://github.com/cheese10yun/TIL/blob/master/Node/TDD.md)
+* [카카오 봇 만들기](https://github.com/cheese10yun/KaKaoBot-Node)
 
 ## POP it 포스팅
 * [Spring 내가 생각하는 캡슐화 part 1](https://github.com/cheese10yun/TIL/blob/master/Popit/encapsulation-part-1.md)
