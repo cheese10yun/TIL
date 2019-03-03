@@ -8,10 +8,6 @@
 * AOP
   * [AOP - 용어 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/aop/AOP-basic.md)
   * [AOP - Proxy](https://github.com/cheese10yun/TIL/blob/master/Spring/aop/AOP-proxiy.md)
-* Basic
-  * [의존성 주입 방법](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/%EC%9D%98%EC%A1%B4%EC%84%B1%EC%A3%BC%EC%9E%85-%EB%B0%A9%EB%B2%95.md)
-  * [IoC](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/IoC.md)
-  * [Class Loader](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/class-loader.md)
 * Batch
   * [Batch 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/batch/batch-basic.md)
 * Boot
@@ -53,6 +49,7 @@
 * Transaction
   * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
+* [Class Loader](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/class-loader.md)
 * OAuth2
   * [소셜 연동 (Google, FaceBook)](https://github.com/cheese10yun/spring-security-oauth2-social)
   * [OAtuh2 인증서버 구현하기](https://github.com/cheese10yun/springboot-oauth2)
