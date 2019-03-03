@@ -1,4 +1,5 @@
-  
+> [스프링5 레시피](http://www.hanbit.co.kr/store/books/look.php?p_code=B3859466837)을 보고 정리한 글입니다.
+
 서블릿 API 초창기 시절에는 구현 컨테이너 대부분이 요청당 스레드 하나만 사용했습니다. **컨테이너가 요청을 받아 처리를 끄탠고 클라이언트 에게 응답을 돌려주기 전까지 스레드는 항상 블로킹 상태였습니다.**
 
 서블릿 3 명세부터 HTTP 요청을 비동기로 처리할 길이 열리면서 최초 HTTP요청을 접수했던 스레드를 해제할 수 있게 되었습니다.
@@ -84,10 +85,3 @@ public class ReservationQueryController {
 ```
 * `reservationService.query(courtName)` 메서드를 서버를 브로킹 하지 않은 상태로 호출할 수 있습니다.
 * 특정 스레드가 요청을 도맡아 처리하다가 해제 되고 다른 스레드가 이어 받아 결괄르 반환합니다. 마지막 요청이 다시 DispatchrServlet에 전송되고 또 다른 스레드가 결과를 받아 처리합니다.
-  
-
-
-
-
-  ## 참고
-  * [스프링5 레시피](http://www.hanbit.co.kr/store/books/look.php?p_code=B3859466837)
