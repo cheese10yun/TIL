@@ -11,8 +11,6 @@
 * Batch
   * [Batch 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/batch/batch-basic.md)
 * Boot
-  * [Spring Boot 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/boot/start-srping-boot.md)
-  * [백기선의 스프링 부트 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/boot/%EB%B0%B1%EA%B8%B0%EC%84%A0%EC%9D%98-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8.md)
 * JPA
   * [자바 ORM표준 JPA프로그래밍](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/%EC%9E%90%EB%B0%94ORM%ED%91%9C%EC%A4%80JPA%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
   * [페이징 API](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/JPA-Paging-API.md)
