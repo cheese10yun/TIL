@@ -7,7 +7,7 @@
   - [Rigidity](#rigidity)
   - [Fragility](#fragility)
   - [Immobility](#immobility)
-  - [What is OO ?](#what-is-oo)
+  - [What is OOP ?](#what-is-oop)
 - [OCP](#ocp)
   - [확장 이란 ?](#%ED%99%95%EC%9E%A5-%EC%9D%B4%EB%9E%80)
   - [변경 이란 ?](#%EB%B3%80%EA%B2%BD-%EC%9D%B4%EB%9E%80)
@@ -37,16 +37,16 @@
 * 로그인 모듈이 특정 DB에 schema를 사용하고, 특정 UI skin을 사용하지 않은 경우
   
 
-## What is OO ?
-* OO는 실제 시계를 똑같이 모델링 하는 것
+## What is OOP ?
+* OOP는 실제 시계를 똑같이 모델링 하는 것
 *  Inheritance, Encapsulation, Polymorphism는 OO의 핵심이 아니라 메커니즘
 * **OOP의 핵심**
-    * IoC를 통해 상위 레벨의 모듈을 하위 레벨의 모듈로 부터 보호하는것
-    * Inverted structure tends not to rot
+  * IoC를 통해 상위 레벨의 모듈을 하위 레벨의 모듈로 부터 보호하는것
+  * Inverted structure tends not to rot
 * OOD
-    * Dependency Management - Dependency를 잘 관리하는 것이다.
-        * Dependency Management를 잘하기 위해서는 SOLID를 해야한다.
-    * 상위 수준의 정책과 하위 수준의 세부 정책을 분리하고 그것을 역전 시키는 것이 중요
+  * Dependency Management - Dependency를 잘 관리하는 것이다.
+    * Dependency Management를 잘하기 위해서는 SOLID를 해야한다.
+  * 상위 수준의 정책과 하위 수준의 세부 정책을 분리하고 그것을 역전 시키는 것이 중요
 
 # OCP
 
