@@ -71,7 +71,8 @@
 
 ## 데이터베이스
 * [데이터베이스 첫걸음 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%B2%AB%EA%B1%B8%EC%9D%8C.md)
-* [정규화](https://github.com/cheese10yun/TIL/blob/master/Database/%EC%A0%95%EA%B7%9C%ED%99%94.md)
+* [관계형 데이터베이스 실전 입문 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EA%B4%80%EA%B3%84%ED%98%95_%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4_%EC%8B%A4%EC%A0%84_%EC%9E%85%EB%AC%B8.md)
+* [정규화 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EC%A0%95%EA%B7%9C%ED%99%94.md)
 
 ## 네트워크
 * [OSI 7 계층](https://github.com/cheese10yun/TIL/blob/master/network/OSI-7%EA%B3%84%EC%B8%B5.md)
