@@ -104,8 +104,8 @@
 * [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)](https://github.com/cheese10yun/TIL/blob/master/OOP/Design-Smells.md)
 
 
-## 도커
-* [도커 기초](https://github.com/cheese10yun/TIL/blob/master/docker/docker-beginner.md)
+## Docker
+* [Docker 기초](https://github.com/cheese10yun/TIL/blob/master/docker/docker-beginner.md)
 
 ## Java
 * [데이터 타입](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%EB%B6%84%EB%A5%98.md)
