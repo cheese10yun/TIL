@@ -126,3 +126,17 @@ Ragne: bytes = -3000, 5000-7000
 * Accept-Encoding
 * Accept-Language
 * Content-Language
+
+# Clinet -> Server
+
+
+## Client
+* 웹브라우저 
+  * 사용자가 URL을 입력한다.
+  * URL은 웹 브라우저가 해석하여 HTTP 메시지를 만들고, Socket 라이브러리에게 건네 준다.
+  * Sokect 라이버러리는 받은 HTTP 메시지를 송신 데이터로 프로토콜 스택으로 건네 준다
+* 프로토콜 스택 (TCP/IP)
+  * TCP는 송신 데이터를 패킷길이의 길이에 맞게 분할하고, TCP MAC 주소를 주사하여 MAC 헤더도 부가하고나서 LAN 드라이버에게 건네줍니다.
+* LAN
+  * LAN 드라이버는 IP에서 송신 패킷을 받고 이것을 ...
+  * 물리 계층을 통해서 서버로 전달합니다.(수많ㄹ은 과정 생략)
