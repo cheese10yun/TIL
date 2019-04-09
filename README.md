@@ -83,6 +83,9 @@
 * [REST API](https://github.com/cheese10yun/TIL/blob/master/network/http/REST.md)
 * [OAuth2](https://github.com/cheese10yun/TIL/blob/master/network/http/OAuth2.md)
 
+## 컴퓨터 구조
+* [컴퓨터 구조 기초](https://github.com/cheese10yun/TIL/blob/master/ca/ca-basic.md)
+
 ## OOP
 * [객체지향의 사실과 오해 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%EC%9D%98%EC%82%AC%EC%8B%A4%EA%B3%BC%EC%98%A4%ED%95%B4.md)
 * [개발자가 반드시 정복해야할 객체지향과 디자인 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/OOP/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EB%B0%98%EB%93%9C%EC%8B%9C-%EC%A0%95%EB%B3%B5%ED%95%B4%EC%95%BC%ED%95%A0-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%EA%B3%BC-%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4.md)
@@ -102,7 +105,6 @@
     * [ISP 예정]()
     * [DIP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/DIP.md)
 * [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)](https://github.com/cheese10yun/TIL/blob/master/OOP/Design-Smells.md)
-
 
 ## Docker
 * [Docker 기초](https://github.com/cheese10yun/TIL/blob/master/docker/docker-beginner.md)
@@ -154,7 +156,6 @@
 * [실무에서 Lombok 사용법](https://github.com/cheese10yun/TIL/blob/master/Popit/lombok.md)
 * [Spring Boot + JPA 페이징 API 만들기](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-jpa-best-12.md)
 
-
 ## 도서
 * [DDD Start 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/DDD-START.md)
 * [Clean Code 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/clean-code.md)
@@ -166,8 +167,6 @@
 * [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
 * [AWS 대표 서비스 정리](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-Service.md)
 * [AWS 서비스 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-%EC%84%9C%EB%B9%84%EC%8A%A4-%ED%8C%A8%ED%84%B4-%EC%A0%95%EB%A6%AC.md)
-
-
 
 ## ETC
 * [Bitbucket](https://github.com/cheese10yun/TIL/blob/master/ETC/bitbucket-beginner.md)
