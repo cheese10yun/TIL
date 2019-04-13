@@ -1,5 +1,20 @@
 # 컴퓨터 구조
 
+# 목차
+- [컴퓨터 구조](#%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%A1%B0)
+- [목차](#%EB%AA%A9%EC%B0%A8)
+- [컴퓨터의 구성요소 및 역할](#%EC%BB%B4%ED%93%A8%ED%84%B0%EC%9D%98-%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C-%EB%B0%8F-%EC%97%AD%ED%95%A0)
+  - [컴퓨터의 구성 요소](#%EC%BB%B4%ED%93%A8%ED%84%B0%EC%9D%98-%EA%B5%AC%EC%84%B1-%EC%9A%94%EC%86%8C)
+  - [구성요서별 역할](#%EA%B5%AC%EC%84%B1%EC%9A%94%EC%84%9C%EB%B3%84-%EC%97%AD%ED%95%A0)
+    - [프로레서 역할](#%ED%94%84%EB%A1%9C%EB%A0%88%EC%84%9C-%EC%97%AD%ED%95%A0)
+      - [CPU](#cpu)
+      - [GPU](#gpu)
+      - [프로세스의 동작 과정](#%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%EC%9D%98-%EB%8F%99%EC%9E%91-%EA%B3%BC%EC%A0%95)
+    - [메모리 역할](#%EB%A9%94%EB%AA%A8%EB%A6%AC-%EC%97%AD%ED%95%A0)
+    - [입력 장치 역할](#%EC%9E%85%EB%A0%A5-%EC%9E%A5%EC%B9%98-%EC%97%AD%ED%95%A0)
+    - [출력 장치](#%EC%B6%9C%EB%A0%A5-%EC%9E%A5%EC%B9%98)
+
+
 # 컴퓨터의 구성요소 및 역할
 
 ## 컴퓨터의 구성 요소
