@@ -162,6 +162,7 @@
 * [JavaScript Patterns 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/javascript-patterns.md)
 * [Vue2.js 프로그래밍 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/vue.js2-programing.md)
 * [Do it 자료구조와함께배우는알고리즘입문](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/Do-it-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80%ED%95%A8%EA%BB%98%EB%B0%B0%EC%9A%B0%EB%8A%94%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9E%85%EB%AC%B8.md)
+* [어떻게공부할것인가](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%96%B4%EB%96%BB%EA%B2%8C%EA%B3%B5%EB%B6%80%ED%95%A0%EA%B2%83%EC%9D%B8%EA%B0%80.md)
 
 ## AWS
 * [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
