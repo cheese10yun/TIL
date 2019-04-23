@@ -1,3 +1,6 @@
+> 스프링 5 레시피를 보고 정리한 내용입니다.
+
+
 # 트랜잭션
 
 트랜잭션이란 쉽게 말해 연속된 여러 액션을 한 단위의 작업으로 뭉뚱그린 겁니다. 이 액션 뭉치는 전체가 완전히 끝나든지, 아니면 아무런 영향도 미치치 않아야 합니다. 모든 액션이 제대로 잘 끝나면 트랜잭션을 영구 커밋되지만 하나라도 잘됫되면 애초에 아무 일도 없던 거처럼 초기 상태로 롤뱁됩니다.
@@ -67,3 +70,118 @@
 
 # 참고
 * 스프링 레시피5
+
+
+# 심화 정리
+
+## Code
+
+```java
+public class JdbcBookShop extedns JdbcDaoSupport {
+    
+    @Transactional
+    public void increaseStock(String isbn, int stock){
+        String threadName = Thread.currentThread().getName();
+        System.out.println(threadName + "- Prepareto increase book stock");
+
+        getJdbcTemplate().update("update book_stock set stcok = stock +? where isbn =?", stock, isbn);
+
+        System.out.println(threadName + "- Book stock increased by" + stock);
+        sleep(threadName);
+
+        System.out.println(threadName + "- Book stock rolled back");
+        throw new RuntimeException("Increased by mistake");
+    }
+
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    public int checkStock(String isbn){
+        String threadName = Thread.currentThread().getName();
+        System.out.println(threadName + "- Prepare to check book stock");
+
+        int stock = getJdbcTemplate().queryForObejct("select stcok from book_stock where isbn = ?", Interger.class, isbn);
+
+        System.out.println(threadName + "- Book stock is "+ stock);
+        sleep(threadName);
+
+        return stock;
+    }
+
+    private void sleep(String threadName) {
+        System.out.println(threadName + " - Sleeping");
+
+        try {
+        Thread.sleep(10000);
+        } catch (InterruptedException e) {
+        }
+
+        System.out.println(threadName + " - Wake up");
+    }
+}
+```
+* 동시성을 시뮬레이션 하기 위해 여러 스레드로 실행
+* SQL문이 실행될 때ㅏ다 강제로 스레드를 10초간 sleep
+* increase() 메서드는 마지막 RuntimeException을 던지면서 트랜잭션이 롤백 진행
+
+
+## READ_UNCOMMITTED, READ_COMMITTED 격리 수준
+READ_UNCOMMITTED는 한 트랜잭션이 다른 트랜잭션이 아직 커밋하기 전에 번경한 내용을 읽을 수 있는 가장 하위 수준의 격리 수준입니다.
+
+
+```java
+@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+```
+
+### Test
+```java
+public class Main {
+
+    public staic void main(String[] args){
+        final BookShop bookShop = context.getBean(BookShop.class);
+
+        Thread thread1 = new Thread(()->{
+            try {
+                bookShop.increaseStock("0001", 5);
+            } catch (RuntimeException e) {}
+        }, "Thread1");
+
+
+        Thread thread2 = new Thread(()->{
+            bookShop.checkStock("0001");
+        }, "Thread2");
+
+
+        thread1.start();
+        try {
+            Thread.sleep(5000);
+        } catch (Exception e) {}
+
+        thread2.start();
+
+    }
+}
+```
+
+```
+Thread 1 Book stock 증가 준비중
+Thread 1 Book stock 5 wmdrk
+Thread 1 스레드 sleep
+Thread 2 Book stock 제고 확인
+Thread 2 Book stock 재고 15개
+Thread 2 Sleeping
+Thread 1 Wake Up
+Thread 1 Book stock rolled back
+Thread 2 Wake Up
+```
+
+
+1. 스레드 1이 도서 재고를 늘리고 잠듭니다. (아직 트랜잭션 롤백이전)
+2. 스레드2 도서 재고 확인 **(격리 수준이 READ_UNCOMMITTED 이므로 스레드2는 스레드1의 트랜잭션이 아직 변경 후 커밋하지 않은 재고의 값을 읽어옴)**
+3. 스레드 1이 wake up 되면서 Exception 발생 하여 롤백
+4. **스레드2가 읽은 재곳값 15는 더이상 유효하지 않음** 이런 증상을 오염된 읽기 Duty Read 라고 한다.
+
+이러한 문제는 격리 수준을 READ_COMMITTED로 한 단계 올리면 해결됩니다. 
+
+스레드2는 스레드 1이 트랜잭션을 롤백하기 전까지 재곳값을 읽을 수 없습니다. **오염된 읽기는 한 트랜잭션이 아직 커밋하지 않은 갓을 다른 트랜잭션이 읽지 못하게 차단함으로써 방지 할 수 있습니다.**
+
+READ_COMMITED 격리 수준을 지원하는 DB는 수정은 되었지만 **아직 커밋하지 않은 로우에 수정 잠금을 걸어둔 사앹입니다.** 결국 다른 트랜잭션이 이 **트랜잭션이 커밋/롤백 되고 수정 잠굼이 풀릴 때 까지 기다렸다가 읽을 수 밖에 없습니다.**
+
