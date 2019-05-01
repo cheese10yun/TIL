@@ -137,6 +137,10 @@
 * [TDD](https://github.com/cheese10yun/TIL/blob/master/Node/TDD.md)
 * [카카오 봇 만들기](https://github.com/cheese10yun/KaKaoBot-Node)
 
+## Vue
+* [Vue 기초](https://github.com/cheese10yun/TIL/blob/master/vue/vue-beginner.md)
+* [Vue2.js 프로그래밍 정리](https://github.com/cheese10yun/TIL/blob/master/vue/vue.js2-programing.md)
+
 ## POP it 포스팅
 * [Spring 내가 생각하는 캡슐화 part 1](https://github.com/cheese10yun/TIL/blob/master/Popit/encapsulation-part-1.md)
 * [Spring 내가 생각하는 캡슐화 part 2](https://github.com/cheese10yun/TIL/blob/master/Popit/encapsulation-part-2.md)
@@ -160,7 +164,6 @@
 * [DDD Start 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/DDD-START.md)
 * [Clean Code 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/clean-code.md)
 * [JavaScript Patterns 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/javascript-patterns.md)
-* [Vue2.js 프로그래밍 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/vue.js2-programing.md)
 * [Do it 자료구조와함께배우는알고리즘입문](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/Do-it-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80%ED%95%A8%EA%BB%98%EB%B0%B0%EC%9A%B0%EB%8A%94%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9E%85%EB%AC%B8.md)
 * [어떻게공부할것인가](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%96%B4%EB%96%BB%EA%B2%8C%EA%B3%B5%EB%B6%80%ED%95%A0%EA%B2%83%EC%9D%B8%EA%B0%80.md)
 * [실용주의 프로그래머](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8B%A4%EC%9A%A9%EC%A3%BC%EC%9D%98%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8.md)
@@ -176,5 +179,4 @@
 * [MySQL 비밀번호 초기화](https://github.com/cheese10yun/TIL/blob/master/ETC/mysql-%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8%EC%B4%88%EA%B8%B0%ED%99%94.md)
 * [Redis 기초](https://github.com/cheese10yun/TIL/blob/master/ETC/redis-beginner.md)
 * [TimeZone 설정](https://github.com/cheese10yun/TIL/blob/master/ETC/time-zone-setting.md)
-* [Vue 기초](https://github.com/cheese10yun/TIL/blob/master/ETC/vue-beginner.md)
 * [Gollum WIKI](https://github.com/cheese10yun/TIL/blob/master/ETC/Gollum.md)
