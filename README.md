@@ -105,6 +105,7 @@
     * [ISP 예정]()
     * [DIP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/DIP.md)
 * [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)](https://github.com/cheese10yun/TIL/blob/master/OOP/Design-Smells.md)
+* [GoF의 디자인패턴](https://github.com/cheese10yun/TIL/blob/master/OOP/GOF_%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4.md)
 
 ## Docker
 * [Docker 기초](https://github.com/cheese10yun/TIL/blob/master/docker/docker-beginner.md)
@@ -169,7 +170,6 @@
 * [Do it 자료구조와함께배우는알고리즘입문](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/Do-it-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80%ED%95%A8%EA%BB%98%EB%B0%B0%EC%9A%B0%EB%8A%94%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9E%85%EB%AC%B8.md)
 * [어떻게공부할것인가](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%96%B4%EB%96%BB%EA%B2%8C%EA%B3%B5%EB%B6%80%ED%95%A0%EA%B2%83%EC%9D%B8%EA%B0%80.md)
 * [실용주의 프로그래머](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8B%A4%EC%9A%A9%EC%A3%BC%EC%9D%98%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8.md)
-* [GoF의 디자인패턴](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/GOF_%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4.md)
 
 ## AWS
 * [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
