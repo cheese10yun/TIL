@@ -160,6 +160,7 @@
 * [Spring REST Docs API 문서를 자동화 해보자](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-rest-docs.md)
 * [실무에서 Lombok 사용법](https://github.com/cheese10yun/TIL/blob/master/Popit/lombok.md)
 * [Spring Boot + JPA 페이징 API 만들기](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-jpa-best-12.md)
+* [Spring Guide - Domain 객체 가이드](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-guide-domain.md)
 
 ## 도서
 * [DDD Start 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/DDD-START.md)
