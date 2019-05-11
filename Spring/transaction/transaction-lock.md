@@ -169,5 +169,5 @@ public class OrderController {
 }
 ```
 
-### 비선전 트랜잭션 충돌 문제 해결 Flow
+### 비선점 트랜잭션 충돌 문제 해결 Flow
 ![](../../assets/transacion-thread-desc2.png)
