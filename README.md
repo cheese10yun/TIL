@@ -46,6 +46,7 @@
 * Transaction
   * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
+  * [Lock - 트랜잭션 선점 잠금, 비선점 잠금](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-lock.md)
 * [Class Loader](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/class-loader.md)
 * Spring Boot
   * [Spring Boot 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/boot/spring-boot-basic.md)
