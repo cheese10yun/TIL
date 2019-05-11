@@ -135,7 +135,7 @@ JPA는 버전을 이용한 비선점 잠금을 기능을 지원한다. 다음과
 @Table(name = "purchase_order")
 public class Order {
     ...
-    @VVersion
+    @Version
     private long version;
 }
 ```
