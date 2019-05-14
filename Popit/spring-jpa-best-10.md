@@ -128,7 +128,7 @@ public class SampleProperties {
     private double amount;
 
     // getter, setter 
-    // properties 사용할 떄는 SampleProperties 객체를 사용함, 데이터의 응집력, 캡슐화가 높아짐
+    // properties 사용할 때는 SampleProperties 객체를 사용함, 데이터의 응집력, 캡슐화가 높아짐
 }
 ```
 

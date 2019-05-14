@@ -2,7 +2,7 @@
 
 
 ```java
-//배열 순환할 떄 한동안 많이 사용한 숙어
+//배열 순환할 때 한동안 많이 사용한 숙어
 for (int i = 0; i < a.lenth; i++){
     doSomethis(a[i]);
 }
@@ -11,7 +11,7 @@ for (int i = 0; i < a.lenth; i++){
 * 그리고 그런 오류는 컴파일 과정에서 탐지되지 않는다.
 
 ```java
-// 컬렉션이나 배열을 순회할 떄는 이 숙어를 따르라
+// 컬렉션이나 배열을 순회할 때는 이 숙어를 따르라
 for(Elment e : elemtes){
     doSomething(e);
 }

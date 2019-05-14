@@ -46,7 +46,7 @@ public class LSP {
 * LSP
   - OCP를 받쳐주는 polymorphism에 관한 원칙을 제공
   - LSP가 위반되면 OCP도 위반됨
-  - LSP를 위반하면 subtype이 추가될떄 마다 클라이언트들이 수정되어야함
+  - LSP를 위반하면 subtype이 추가될때 마다 클라이언트들이 수정되어야함
   - InstanceOf/downcasting을 사용하는 것이 전형적인 LSP위반의 징조
 
 ## 나의 정리

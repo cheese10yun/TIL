@@ -11,7 +11,7 @@
 # Spring Boot Test
 
 * `@SpringBootTest`는 통합 테스트를 제공하는 기본적인 스프링 부트 테스트 어노테이션입니다.
-* * 애플리케이션이 실행 될 떄의 설정을 임의로 바꾸어 테스트를 진행할 수 있으며 **여러 단위 테스트를 하나의 통합된 테스트로 수행할 때 접합합니다.**
+* * 애플리케이션이 실행 될 때의 설정을 임의로 바꾸어 테스트를 진행할 수 있으며 **여러 단위 테스트를 하나의 통합된 테스트로 수행할 때 접합합니다.**
 * `@SpringBootTest`는 만능입니다. 실제 구동되는 애플리케이션과 똑같이 애플리케이션 컨텍스트를 도르하여 테스트하기 때문에 하고 싶은 테스트를 모두수행할 수 있습니다.
 * 애플리케이션의 설정을 모두 로드하기 때문에 애플리케이션 규모가 클수록 느려집니다. 이렇게되면 단위 테스트라는 의미가 희석됩니다.
 * Test Scope Dependencies 아래의 의존성을 자동으로 갖는다.
@@ -68,7 +68,7 @@ public class TestApplicationTests {
 * MVC를 위한 테스트, 웹에서 테스트하기 힘든 컨트롤러를 테스트하는데 적합하다.
 * 웹상에서 요청과 응답에 대한 테스트 진행
 * 시쿠리티 혹은 필터까지 자동으로 테스트하며 수동으로 추가/삭제 가능
-* @WebMvcTest 어노테이션을 사용하면 MVC 관련된 설정인 @Controller, @ControllerAdvice, @JsonCompoent와 Filter, WebMvcConfiguer, HandlerMetohdAgumentResolver만 로드되기 때문에 @SpringBootTest 어노테이션 보다 가볍게 테스트할수 있습니다. 
+* @WebMvcTest 어노테이션을 사용하면 MVC 관련된 설정인 @Controller, @ControllerAdvice, @JsonCompoent와 Filter, WebMvcConfiguer, HandlerMetohdAgumentResolver만 로드되기 때문에 @SpringBootTest 어노테이션 보다 가볍게 테스트할수 있습니다.
 
 
 ## Sample Code

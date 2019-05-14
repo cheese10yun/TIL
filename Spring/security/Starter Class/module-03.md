@@ -14,7 +14,7 @@
 <!-- /TOC -->
 
 # Lesson 1: A Simple Remember Me Flow
-* 메번 사이트에 방분할 떄마다 로그인을 해야하는 문제를 해결 하기 위한 방법
+* 메번 사이트에 방분할 때마다 로그인을 해야하는 문제를 해결 하기 위한 방법
 * Remember Me Token을 쿠키에 저장
 
 ```java

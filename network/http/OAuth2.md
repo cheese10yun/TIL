@@ -15,7 +15,7 @@
 ## OAuth2 승인 방식의 종류
 
 * Authorization Code Grant Type  : 권한 부여 코드 승인 타입
-클라이언트가 다른 사용자 대신 특정 리소스에 접근을 요청할 떄 사용됩니다. 리스소 접근을 위한 사용자 명과 비밀번호, 권한 서버에 요청해서 받은 권한 코드를 함ㄲ 활용하여 리소스에 대한 엑세스 토큰을 받는 방식입니다.
+클라이언트가 다른 사용자 대신 특정 리소스에 접근을 요청할 때 사용됩니다. 리스소 접근을 위한 사용자 명과 비밀번호, 권한 서버에 요청해서 받은 권한 코드를 함ㄲ 활용하여 리소스에 대한 엑세스 토큰을 받는 방식입니다.
 * Implicit Grant Type : 암시적 승인
 권한 부여 코드 승인 타입과 다르게 권한 코드 교환 단계 없이 엑세스 토큰을 즉시 반환받아 이를 인증에 이용하는 방식입니다.
 * Resource Owner Password Credentials Grant Type : 리소스 소유자 암호 자격 증명 타입
@@ -58,7 +58,7 @@
 ![Client Credentials Grant Type](/assets/Client%20Credentials%20Grant%20Type.png)
 
 * (1) Access Token 정보를 요청합니다.
-* (3) Access Token 정보를 응답합니다. 이때 Refresh Token 정보는 응답하지 않는 것을 권장합니다. 별다른 인증 절차가 없기 떄문에 Refresh Token 까지 넘기지 않는 것이라고 생각합니다.
+* (3) Access Token 정보를 응답합니다. 이때 Refresh Token 정보는 응답하지 않는 것을 권장합니다. 별다른 인증 절차가 없기 때문에 Refresh Token 까지 넘기지 않는 것이라고 생각합니다.
 * (4) Access Token 기반으로 Resource Server와 통신합니다.
 
 

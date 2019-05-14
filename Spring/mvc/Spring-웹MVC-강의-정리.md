@@ -219,7 +219,7 @@ void afterCompletion(request, response, handler, ex)
 
 vs 서블릿 필터
 * 서블릿 보다 구체적인 처리가 가능하다.
-* 서블릿은 보다 일반적인 용도의 기능을 구현하는데 사용하는게 좋다. 반대로 스프링에 특화된 기능을 구현해야 할 떄는 `handlerIntercepter`으로 처리한다
+* 서블릿은 보다 일반적인 용도의 기능을 구현하는데 사용하는게 좋다. 반대로 스프링에 특화된 기능을 구현해야 할 때는 `handlerIntercepter`으로 처리한다
 
 ### ResourceHanlder
 
