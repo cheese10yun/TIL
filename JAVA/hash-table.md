@@ -18,7 +18,7 @@
   * different keys -> Same Code : 다른 key값이지만 동일한 hash code를 갖는 경우
   * different code -> Same Index : 다른 code 지만 동일한 Index를 갖는 경우
   * Collision이 많이 발생하면 O(1) -> O(N) 성능이 변할 수도 있음
-  * key 값은 무한한 값인 반면에 hash code는 정수게 만큼 제공되므로 중복되는 키를 피할 수는 없다.
+  * key 값은 무한한 값인 반면에 hash code는 정수의 갯수만큼 제공되므로 중복되는 키를 피할 수는 없다.
   
 
 
@@ -30,7 +30,7 @@
 ![](/assets/hast-table-convent.png)
 
 * hashCode % array-size
-* hashCode가 골고루 분배되지 안항 좋은 알고리즘은 아니다.
+* hashCode가 골고루 분배되지 않아 좋은 알고리즘은 아니다.
 
 ## Sample Code
 
