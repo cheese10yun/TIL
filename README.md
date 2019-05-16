@@ -58,7 +58,7 @@
 * [Slack Notification](https://github.com/cheese10yun/spring-boot-slack-notificaion)
 * [MSA](https://github.com/cheese10yun/TIL/blob/master/Spring/msa.md)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
-* [RabbitMQ](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
+* [RabbitMQ - 간단 정리 및 기초 활용법](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
 * [Jackson 어노테이션 정리](https://github.com/cheese10yun/blog-sample/tree/master/jackson)
 * [Lombok 사용팁 정리](https://github.com/cheese10yun/blog-sample/tree/master/lombok)
 * [Spring Jpa Best Practices](https://github.com/cheese10yun/spring-jpa-best-practices)
