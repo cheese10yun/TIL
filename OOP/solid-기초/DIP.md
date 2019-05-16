@@ -12,7 +12,7 @@
 ![](https://i.imgur.com/dLqcuKG.png)
 
 * 절차
-	- A와 B 사이에 polumorphic Interface를 산입
+	- A와 B 사이에 polumorphic Interface를 삽입
 	- A는 uses Interface
 	- B는 implements the interface
 	- 컴파일 의존성을 런타임 의존성으로 변경
