@@ -1,6 +1,6 @@
 
 # 의존성 주입의 이해
-> 출저 [스프링5.0 마스터](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791161751825&orderClick=LAG&Kc=)을 보고 정리한 내용입니다.
+> 출처 [스프링5.0 마스터](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791161751825&orderClick=LAG&Kc=)을 보고 정리한 내용입니다.
 
 의존성 주입을 적절하게 사용하면 코드를 테스트할 수 있게 만드는 방법을 알수 있다.
 

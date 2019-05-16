@@ -289,7 +289,7 @@ public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
 
 ### MVC 설정 마무리
 
-> 출저 배기선님 스프링 웹 MVC 공개 자료
+> 출처 배기선님 스프링 웹 MVC 공개 자료
 
 @EnableWebMvc
 - 애노테이션 기반의 스프링 MVC 설정 간편화
@@ -309,7 +309,7 @@ public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
 
 
 ## 요청 맵핑하기 6부 커스텀 애노테이션
-> 출저 : 백기선의 스프링 웹 MVC
+> 출처 : 백기선의 스프링 웹 MVC
 
 @RequestMapping 애노테이션을 메타 애노테이션으로 사용하기
 * @GetMapping 같은 커스텀한 애노테이션을 만들 수 있다.
@@ -341,7 +341,7 @@ public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
 
 ## 핸들러 메소드 6부 @Validated
 
-> 출저 : 백기선의 스프링 웹 MVC
+> 출처 : 백기선의 스프링 웹 MVC
 
 * 스프링 MVC 핸들러 메소드 아규먼트에 사용할 수 있으며 validation group이라는 힌트를 사용할 수 있다.
 * @Valid 애노테이션에는 그룹을 지정할 방법이 없다.
@@ -349,7 +349,7 @@ public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
 
 
 ## 핸들러 메소드 12부: Flash Attributes
-> 출저 : 백기선의 스프링 웹 MVC
+> 출처 : 백기선의 스프링 웹 MVC
 
 주로 리다이렉트시에 데이터를 전달할 때 사용한다.
 * 데이터가 URI에 노출되지 않는다.
@@ -362,7 +362,7 @@ RedirectAttributes를 통해 사용할 수 있다.
 
 
 ## 핸들러 메소드 15부: @RequestBody & HttpEntity
-> 출저 : 백기선의 스프링 웹 MVC
+> 출처 : 백기선의 스프링 웹 MVC
 
 @RequestBody
 * 요청 본문(body)에 들어있는 데이터를 HttpMessageConveter를 통해 변환한 객체로 받아올 수 있다.
@@ -381,7 +381,7 @@ HttpEntity
 
 
 ## 모델: @ModelAttribute 또 다른 사용법
-> 출저 : 백기선의 스프링 웹 MVC
+> 출처 : 백기선의 스프링 웹 MVC
 
 @ModelAttribute의 다른 용법
 * @RequestMapping을 사용한 핸들러 메소드의 아규먼트에 사용하기 (이미 살펴 봤습니다.)
@@ -390,7 +390,7 @@ HttpEntity
 RequestToViewNameTranslator
 
 ## 예외 처리 핸들러: @ExceptionHandler
-> 출저 : 백기선의 스프링 웹 MVC
+> 출처 : 백기선의 스프링 웹 MVC
 
 특정 예외가 발생한 요청을 처리하는 핸들러 정의
 * 지원하는 메소드 아규먼트 (해당 예외 객체, 핸들러 객체, ...)
@@ -402,7 +402,7 @@ RequestToViewNameTranslator
 
 
 ## 전역 컨트롤러: @(Rest)ControllerAdvice
-> 출저 : 백기선의 스프링 웹 MVC
+> 출처 : 백기선의 스프링 웹 MVC
 
 예외 처리, 바인딩 설정, 모델 객체를 모든 컨트롤러 전반에 걸쳐 적용하고 싶은 경우에 사용한다.
 * @ExceptionHandler

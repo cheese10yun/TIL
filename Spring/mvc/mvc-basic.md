@@ -1,4 +1,4 @@
-> 출저 [스프링5.0 마스터](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791161751825&orderClick=LAG&Kc=)을 보고 정리한 내용입니다.
+> 출처 [스프링5.0 마스터](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791161751825&orderClick=LAG&Kc=)을 보고 정리한 내용입니다.
 
 # 스프링 MVC
 스프링 MVC는 깔끔하고, 느슨하게 결합된 아키텍처라는 장점이있다. 스프링 MVC가 컨트롤러, 핸들러 매핑, 뷰 리졸버, POJO, Bean에 대한 역할을 명확하게 정의하면 의존성 주입 및 자동 와이어링과 같은 모든 핵심 스프링 기능을 사용해 웹 애플리케이션을 간단하게 만들 수 있다. 

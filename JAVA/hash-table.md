@@ -127,5 +127,5 @@ public class HastTable {
 }
 ```
 
-## 출저
+## 출처
 * [[자료구조 알고리즘] 해쉬테이블(Hash Table)에 대해 알아보고 구현하기](https://www.youtube.com/watch?v=Vi0hauJemxA&feature=youtu.be)

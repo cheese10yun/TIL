@@ -6,7 +6,7 @@ gollum은 이 git기반의 위키를 별로도 분리해서 공개한 Ruby on Ra
 
 사실 기능이 대단하진 않고 아주 심플한 편인데 그냥 위키의 문서화 기능에 충실한 점이 맘에 들었습니다.(사실 저도 Wiki를 잘쓰는 편은 못됩니다. 그냥 메모적는정도로만...) 그리고 웹에만 의존하지 않고 git기반이기 때문에 제가 자유롭게 접근할 수 있다는 점과 상당히 Geek스럽게 느껴지는 부분이 좋았습니다. 파일기반의 마크다운이기 때문에 나중에 다른 위키나 시스템으로 옮겨가게 될 경우에도 크게 손이 가지 않을 것 같았습니다.(플랫폼에 대한 의존성이 적다고 할 수 있겠죠.)
 
-[Outsider's Dev Story :Gollum 출저](https://blog.outsider.ne.kr/579)
+[Outsider's Dev Story :Gollum 출처](https://blog.outsider.ne.kr/579)
 
 ## 설치 (Mac OS 기준)
 

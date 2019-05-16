@@ -1,4 +1,4 @@
-> 출저 [AWS 시스템 설계와 마이그레이션](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791158391201&orderClick=LAG&Kc=)을 보고 정리한 내용입니다.
+> 출처 [AWS 시스템 설계와 마이그레이션](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791158391201&orderClick=LAG&Kc=)을 보고 정리한 내용입니다.
 
 # 목차 
 - [목차](#%EB%AA%A9%EC%B0%A8)

@@ -76,7 +76,7 @@ CORS 요청은 기본적으로 Non-Credential 요청이므로, `xhr.withCredenti
     * 서버도 `Access-Control-**` 류의 HTTP Header를 클라이언트에 회신하게 되어 있어야 한다.
 
 
-## 교차 출저 자원 공유 정책
+## 교차 출처 자원 공유 정책
 
 <p align = "center">
     <img src = "/assets/cors-.png">

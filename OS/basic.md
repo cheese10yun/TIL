@@ -143,7 +143,7 @@
 ## 프로세스란 ?
 
 ![](https://gmlwjd9405.github.io/images/os-process-and-thread/process.png)
-> 이미지 출저 [[OS] 프로세스와 스레드의 차이](https://gmlwjd9405.github.io/2018/09/14/process-vs-thread.html)
+> 이미지 출처 [[OS] 프로세스와 스레드의 차이](https://gmlwjd9405.github.io/2018/09/14/process-vs-thread.html)
 * 실행 중인 프로그램은 프로세스라고 함
   * 프로세스 : 메모리에 올려져서, 실행 중인 프로그램
   * 코드 이미지(바이너리): 실행 파일, 예
@@ -339,7 +339,7 @@
 ## 쓰레드 개념
 
 ![](https://gmlwjd9405.github.io/images/os-process-and-thread/thread.png)
-> 이미지 출저 [[OS] 프로세스와 스레드의 차이](https://gmlwjd9405.github.io/2018/09/14/process-vs-thread.html)
+> 이미지 출처 [[OS] 프로세스와 스레드의 차이](https://gmlwjd9405.github.io/2018/09/14/process-vs-thread.html)
 
 
 * 스레드는 프로세스 내에서 실행되는 여러 흐름의 단위 라고 할 수있음

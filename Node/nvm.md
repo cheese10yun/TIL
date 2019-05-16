@@ -17,7 +17,7 @@ To completely uninstall node + npm is to do the following:
 4. check your Home directory for any local or lib or include folders, and delete any node or node_modules from there
 5. go to /usr/local/bin and delete any node executable
 
-[출저](http://stackoverflow.com/questions/11177954/how-do-i-completely-uninstall-node-js-and-reinstall-from-beginning-mac-os-x)
+[출처](http://stackoverflow.com/questions/11177954/how-do-i-completely-uninstall-node-js-and-reinstall-from-beginning-mac-os-x)
 
 
 

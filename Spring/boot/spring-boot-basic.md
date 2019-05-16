@@ -1,4 +1,4 @@
-> 출저 [스프링5.0 마스터](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791161751825&orderClick=LAG&Kc=)을 보고 정리한 내용입니다.
+> 출처 [스프링5.0 마스터](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791161751825&orderClick=LAG&Kc=)을 보고 정리한 내용입니다.
 
 # 스프링 부트는 무엇인가?
 스프링 부트를 사용하면 "바로 실행"할 수있는 스탠드얼론 프로덕션급 스프링 기반 애를리케이션을 쉽게 만들 수 있다.
