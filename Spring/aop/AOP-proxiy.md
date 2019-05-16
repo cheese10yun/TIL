@@ -8,7 +8,7 @@ AOP는 OOP를 보완하는 수단으로. 흩어진 Aspect를 모듈화 할 수 �
 ## AOP 주요 개념
 * Aspject와 Target
     * Aspject는 각각의 모듈
-    * 적이용 되는 대상 
+    * 적용이 되는 대상 
 * Advice
     * 해야할 일
 * Join Point와 Pointcut
