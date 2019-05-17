@@ -69,7 +69,7 @@
 * [Spring Boot Https 적용하기](https://github.com/cheese10yun/blog-sample/tree/master/spring-https)
 
 ## 운영체제
-* [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/basic.md)
+* [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C_%EA%B8%B0%EC%B4%88.md)
 * [운영체제와 정보기술의 원리 정리](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%EC%99%80%EC%A0%95%EB%B3%B4%EA%B8%B0%EC%8A%AC%EC%9D%98%EC%9B%90%EB%A6%AC.md)
 
 ## 데이터베이스
