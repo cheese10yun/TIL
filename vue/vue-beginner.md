@@ -288,7 +288,7 @@ new Vue({...})
 
 ### Single File Components
 
-* 앱의 복잡도가 증가할 때 `.vue` 라는 파일 단위 안에 HTML, js, css 를 거ㅣㄴ리할 수 있는 방법
+* 앱의 복잡도가 증가할 때 `.vue` 라는 파일 단위 안에 HTML, js, css 를 관리할 수 있는 방법
 * 복잡도가 커짐에 따라 야기될 수 있는 문제들
 	- 모든 컴포넌트에 고유 이름을 붙야애함
 	- js 파일에 template 안의 html 문법이 강조 안됨
