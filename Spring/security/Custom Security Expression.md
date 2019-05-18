@@ -2,7 +2,7 @@
 
 # 개요
 
-Spring 프레임워크에서 사용 할 수 있는 Security Expression 정의해서 다양한 Expression 확장 할 수 있씁니다.
+Spring 프레임워크에서 사용 할 수 있는 Security Expression 정의해서 다양한 Expression 확장 할 수 있습니다.
 
 
 # Custom Permission Evaluator

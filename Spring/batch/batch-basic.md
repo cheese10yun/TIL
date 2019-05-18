@@ -139,7 +139,7 @@ public JobFlowBuilder flow(Step step){
 * 모든 Job에는 1개 이상의 Step이 있어야 합니다.
 
 #### StepExcution
-* Job에 JobExcution Job실행 정보가 있다면 Step에는 StepExcution이라는 Step 실행 정보를 담는 객체가 있씁니다.
+* Job에 JobExcution Job실행 정보가 있다면 Step에는 StepExcution이라는 Step 실행 정보를 담는 객체가 있습니다.
 
 ### JobRepository
 * JobRepository는 배치 처리 정보를 담고 있는 매커니즘입니다. 어떤 Job이 실행되었으면 몇 번 실행되었고 언제 끝났는지 등 배치 처리에 대한 메타데이터를 저장합니다.
