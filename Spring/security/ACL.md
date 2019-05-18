@@ -155,7 +155,7 @@ public class TodoAclConfig {
 * `AclService`는 읽기 작업을, 그 하위 인터페이스는 `MutableAclService`는 나머지 ACL 작업들(생성, 수정, 삭제)를 각각 기술합니다.
 * 그냥 ACL 읽기만 할 경우 `JdbcAclService` 같은 `AclService` 구현체를, 그 외에는 `JdbcMutableAclService`같은 MutableAclService 구현체를 각각 골라쓰면 됩니다.
 * 예제에서는 ADMIN 권한을 지닌 유저만 ACL 소유권 ACE 검사 세부 등 여러가지 ACL/ACE 상세 정보를 수정할 수 있습니다.
-* `PermissionGrantingStrategy형` 생성자 인수는 자신이 가지고 이쓴ㄴ Permission 값으로 주어진 SID에 ACL 액세스를 허용할지 결정합니다.
+* `PermissionGrantingStrategy형` 생성자 인수는 자신이 가지고 있는데 Permission 값으로 주어진 SID에 ACL 액세스를 허용할지 결정합니다.
 * `JdbcMutableAclService`에는 ACL 데이터를 RDBMS에서 관리할 때 필요한 표준 SQL문이 들어 있지만 모든 DB제품이 호환되는건 아닙니다.(아파티 더비)
 
 ### 도메인 객체에 대한 ACL 관리하기

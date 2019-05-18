@@ -6,7 +6,7 @@
 
 ![](https://i.imgur.com/A29SfzV.png)
 
-* Copy Module을 컴파일도 안하고 Low Loevel Details를 변경할 수있다.
+* Copy Module을 컴파일도 안하고 Low Loevel Details를 변경할 수 있다.
 
 ![](https://i.imgur.com/E8hl4vh.png)
 
@@ -19,7 +19,7 @@
 	- 확장을 위해 소스를 수정했다.
 * 해결책
 	- 확장이 필요한 행위를 Absctracation
-* CheckOut **수정없이**, PaymentMethod를 **확장 할 수있다**.
+* CheckOut **수정없이**, PaymentMethod를 **확장 할 수 있다**.
 * PaymentMethod를 외부에서 주입받을수 있게 한다
 
 ## POS Example
