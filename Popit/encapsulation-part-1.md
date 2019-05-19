@@ -80,7 +80,7 @@ public class OrderUnitTest {
 
     @Test
     // (1) Order의 getMessageTypes 메서드를 사용 할 때 불편하다
-    // 안좋은 캡술화
+    // 안좋은 캡슐화
     public void anti_message_test_01() {
         final Order order = build("KAKAO,EMAIL,SMS");
         final String[] split = order.getMessageTypes().split(",");
