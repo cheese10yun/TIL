@@ -37,15 +37,11 @@ JdbcTemplate는 영리하게 동작하도록 설계되어 있다. 만약 미리 
 ## 글로벌 트랜잭션 
 여러개의 데이터베이스 사용하는 경우 **하나의 트랜잭션 안에서 여러 개의 DB에 데이터를 넣는 작업을 해야한다.**
 
-한 개의 이상의 DB로의 작업을 하나의 트랜잭션으로 만든건 JDBC Connection을 이용한 트랜잭션 방식인 로컬 트랜잭션으로는 불가능하다. 로컬 트랜잭션은 하나의 DB Connection에 종속되기 때문이다.
-
-**따라서 별도의 트랜잭션 곤리자를 통해 트랜잭션을 관리하는 글로벌 트랜잭션 방식을 사용해야 한다.**
+한 개의 이상의 DB로의 작업을 하나의 트랜잭션으로 만든건 JDBC Connection을 이용한 트랜잭션 방식인 로컬 트랜잭션으로는 불가능하다. 로컬 트랜잭션은 하나의 DB Connection에 종속되기 때문이다. **따라서 별도의 트랜잭션 곤리자를 통해 트랜잭션을 관리하는 글로벌 트랜잭션 방식을 사용해야 한다.**
 
 자바는 JDBC 외에 이런 글로벌 트랜잭션을 지원하는 **트랜잭션 매니저를 지원하기 위한 API인 JTA (Java Transacion API)를 제공하고 있다.**
 
-트랜잭션은 JDBC나 JMS API를 사용해서 직접 제어하지 않고 JTA를 통해 트랜잭션 매니저가 관리하도록 위임한다. 
-
-**하나 이상의 DB가 참여하는 트랜잭션을 만들려면 JTA를 사용해야 한다.**
+트랜잭션은 JDBC나 JMS API를 사용해서 직접 제어하지 않고 JTA를 통해 트랜잭션 매니저가 관리하도록 위임한다. **하나 이상의 DB가 참여하는 트랜잭션을 만들려면 JTA를 사용해야 한다.**
 
 
 ## 스프링 트랜잭션 서비스 추상화
@@ -64,7 +60,5 @@ JDBC를 이용하는 경우 Connection을 생성하고 나서 트랜잭션을 �
 
 
 ### 여기서 중요!
-트랜잭션이 시작됐으니 이제 JdbcTemplate를 사용하는 DAO를 시용하는 작업은 진행한다. 스프링의 트랜잭션 추상화 기술은 앞에서 적용해봤던 트랜잭션 동기화를 사용한다. PlatformTransactionManager로 구현한 DataSourceTransactionManagerdml rorcpsms JddbcTemplate에서 사용될 수 있는 방식으로 트랜잭션을 관리해준다. 
-
-**따라서 PlatformTransactionManager를 통해 시작된 트랜잭션은 UserDao의 JdbcTemplate 안에서 사용된다.**
+트랜잭션이 시작됐으니 이제 JdbcTemplate를 사용하는 DAO를 시용하는 작업은 진행한다. 스프링의 트랜잭션 추상화 기술은 앞에서 적용해봤던 트랜잭션 동기화를 사용한다. PlatformTransactionManager로 구현한 DataSourceTransactionManagerdml rorcpsms JddbcTemplate에서 사용될 수 있는 방식으로 트랜잭션을 관리해준다. **따라서 PlatformTransactionManager를 통해 시작된 트랜잭션은 UserDao의 JdbcTemplate 안에서 사용된다.**
 
