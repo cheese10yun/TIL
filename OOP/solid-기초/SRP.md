@@ -8,7 +8,7 @@
 	<img src="https://i.imgur.com/LJMfQTW.png">
 </p>
 
-* 클래스는 하나의 책임을 가져야한다
+* 함께
 * 책임은 무엇인가 ?
 
 
