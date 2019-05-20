@@ -750,7 +750,7 @@ c456623003b1 = container id
 ```
 sudo pip install docker-compose
 ```
-* 에로 생겼을 경우
+* 에러 생겼을 경우
 
 * docker-compose up -d
 

@@ -18,7 +18,7 @@ AJAX가 널리 사용되면서 <script></script>로 둘러싸여 있는 스크�
 * localhost:8080 REST API 서버 구동
 * localhost:8181 REST API 서버 구동
 
-* **8181 에서 Ajax Call을 이용 8080 REST API를 호출 한다면 SOP를 위반해서 호출을 할 수 없다.** 이러한 문제를 해결하기 위해서 CORS 표쥰이 탄생
+* **8181 에서 Ajax Call을 이용 8080 REST API를 호출 한다면 SOP를 위반해서 호출을 할 수 없다.** 이러한 문제를 해결하기 위해서 CORS 표준이 탄생
 
 
 

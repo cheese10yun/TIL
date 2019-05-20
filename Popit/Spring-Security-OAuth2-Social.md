@@ -165,7 +165,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 위에서 configure 등록했던 ssoFilter 설정 입니다. 위에서 등록했던 빈 google(), 이전에 등록했던 OAuth 리다이렉트 URL `/login/google` 기반으로 Filter를 생성합니다.
 
-**OAuth2ClientAuthenticationProcessingFilter 필터는 인증 서버에서 OAuth2 액세스 토큰을 획득하고 인증 객체를 SecurityContext에로드하는 데 사용할 수 있는 OAuth2 클라이언트 필터입니다.**
+**OAuth2ClientAuthenticationProcessingFilter 필터는 인증 서버에서 OAuth2 액세스 토큰을 획득하고 인증 객체를 SecurityContext에러드하는 데 사용할 수 있는 OAuth2 클라이언트 필터입니다.**
 
 setRestTemplate 메스들을 통해서 OAuth2 인증 REST 요청을 만들 수 있는 RestTemplate 객체를 지정합니다.
 
