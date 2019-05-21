@@ -55,9 +55,10 @@
 * OAuth2
   * [소셜 연동 (Google, FaceBook)](https://github.com/cheese10yun/spring-security-oauth2-social)
   * [OAtuh2 인증서버 구현하기](https://github.com/cheese10yun/springboot-oauth2)
+* MSA
+  * [MSA 기초 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/msa/spring-cloud-%EA%B8%B0%EC%B4%88.md)
 * [Rest Docs : REST API 문서 만들기](https://github.com/cheese10yun/springboot-restdocs)
 * [Slack Notification](https://github.com/cheese10yun/spring-boot-slack-notificaion)
-* [MSA](https://github.com/cheese10yun/TIL/blob/master/Spring/msa.md)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
 * [RabbitMQ - 간단 정리 및 기초 활용법](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
 * [Jackson 어노테이션 정리](https://github.com/cheese10yun/blog-sample/tree/master/jackson)
