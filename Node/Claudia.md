@@ -71,7 +71,7 @@ $ claudia set-version --version production
 
 ## Express 앱 준비하기
 
-* Express 애플리케이션은 더이상 TCP 포트에서 청취 할 필교가 없습니다.
+* Express 애플리케이션은 더이상 TCP 포트에서 청취 할 필요가 없습니다.
 * API 게이트웨이가 웹 요청을 처리합니다.
 * 이에 대한 일바적인 호출을 제거하고 `app.listen` 람다 함수에서 사용 할 수 있도록 모듈에서 응용 프로그램을 설정합니다.
 
