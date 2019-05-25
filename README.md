@@ -189,3 +189,5 @@
 * [Redis 기초](https://github.com/cheese10yun/TIL/blob/master/ETC/redis-beginner.md)
 * [TimeZone 설정](https://github.com/cheese10yun/TIL/blob/master/ETC/time-zone-setting.md)
 * [Gollum WIKI](https://github.com/cheese10yun/TIL/blob/master/ETC/Gollum.md)
+* [IntelliJ Tip](https://github.com/cheese10yun/IntelliJ)
+* [추천 개발 강의 및 도서](https://github.com/cheese10yun/dev-info)
