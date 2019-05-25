@@ -54,7 +54,7 @@ UserService의 코드가 특정 트랜잭션 방법에 의존적이지 않고 �
 
 ![](../../draw/PlatformTransactionManager-2.png)
 
-JDBC를 이용하는 경우 Connection을 생성하고 나서 트랜잭션을 시작했다. 하지만 PlatformTransactionManager에서 트랜잭션을 가져오는 요청인 getTransacion() 메서드를 호출하기만 하면된다. 필요에 따라 트랜잭션 매니저가 DB 커넥션을 가져오는 작업도 같이 수행하기 때문이다. 트랜잭션을 가져온다는 것은 일단 트랜잭션을 시작한다는 의미라거 생각하자.
+JDBC를 이용하는 경우 Connection을 생성하고 나서 트랜잭션을 시작했다. 하지만 PlatformTransactionManager에서 트랜잭션을 가져오는 요청인 getTransacion() 메서드를 호출하기만 하면된다. 필요에 따라 트랜잭션 매니저가 DB 커넥션을 가져오는 작업도 같이 수행하기 때문이다. 트랜잭션을 가져온다는 것은 일단 트랜잭션을 시작한다는 의미라고 생각하자.
 
 이렇게 시작된 트랜잭션은 TransactionStatus 타입의 변수에 저장된다. TransactionStatus는 트랜잭션에 대한 조직이 필요할 때 PlatformTransactionManager 메서드의 파라미터로 전달해주면 된다.
 
