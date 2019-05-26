@@ -14,6 +14,7 @@
   * [자바 ORM표준 JPA프로그래밍](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/%EC%9E%90%EB%B0%94ORM%ED%91%9C%EC%A4%80JPA%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
   * [페이징 API](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/JPA-Paging-API.md)
   * [QueryDsl 기초 설정](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/Querydsl-%EC%84%A4%EC%A0%95.md)
+  * [Embedded를 적극 활용하자](https://github.com/cheese10yun/blog-sample/tree/master/embedded)
 * MVC
   * [MVC 요청 Flow](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/mvc-flow.md)
   * [TaskExecutor 비동기 처리](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/TaskExecutor-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC.md)
@@ -22,7 +23,7 @@
 * Security
   * [Security 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/security/basic.md)
   * [ACL](https://github.com/cheese10yun/TIL/blob/master/Spring/security/ACL.md)
-  * [CSRF](https://github.com/cheese10yun/TIL/blob/master/Spring/security/CSRF.md)
+  * [CSRF](https://github.com/cheese10yun/blog-sample/tree/master/sample-csrf)
   * [Custom Security Expression](https://github.com/cheese10yun/TIL/blob/master/Spring/security/Custom%20Security%20Expression.md)
   * [Security Expression](https://github.com/cheese10yun/TIL/blob/master/Spring/security/security-expression.md)
   * Security 학습
@@ -44,6 +45,7 @@
   * [Spring Boot Test Sample Code](https://github.com/cheese10yun/TIL/blob/master/Spring/test/boot-test-basic.md)
   * [Spring Test 가이드](https://github.com/cheese10yun/TIL/blob/master/Spring/test/spring-guide-test.md)
   * [Rest Docs : Test Code 기반 REST API 문서 만들기](https://github.com/cheese10yun/springboot-restdocs)
+  * [객체 생성시 테스트 전략](https://github.com/cheese10yun/blog-sample/tree/master/ddd)
 * Transaction
   * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
@@ -117,6 +119,13 @@
     * [DIP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/DIP.md)
 * [Design Smells (나쁜 디자인에 나타나는 3 가지 냄새)](https://github.com/cheese10yun/TIL/blob/master/OOP/Design-Smells.md)
 * [GoF의 디자인패턴](https://github.com/cheese10yun/TIL/blob/master/OOP/GOF_%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4.md)
+* [Spring OOP 프로그래밍 예제(1) - 내가 해석한 SOLID](https://github.com/cheese10yun/blog-sample/tree/master/notification)
+* [Spring OOP 프로그래밍 예제(2) - Value 클래스로 응집력 높이기](https://github.com/cheese10yun/blog-sample/tree/master/bankapi)
+* [Spring OOP 프로그래밍 예제(3) - 추상화, 다형성](https://github.com/cheese10yun/blog-sample/tree/master/partner-api)
+* [Spring OOP 프로그래밍 예제(4) - Service, ServiceImpl 구조에 대한 고찰](https://github.com/cheese10yun/blog-sample/tree/master/service)
+* [Spring OOP 프로그래밍 예제(5) - 외부 API(PagerDuty) 호출](https://github.com/cheese10yun/blog-sample/tree/master/pagerduty)
+* [Spring 예제로 보는 캡슐화](https://github.com/cheese10yun/blog-sample/tree/master/encapsulation)
+
 
 ## Docker
 * [Docker 기초](https://github.com/cheese10yun/TIL/blob/master/docker/docker-beginner.md)
