@@ -43,6 +43,7 @@
   * [Spring Test 종류](https://github.com/cheese10yun/TIL/blob/master/Spring/test/test-basic.md)
   * [Spring Boot Test Sample Code](https://github.com/cheese10yun/TIL/blob/master/Spring/test/boot-test-basic.md)
   * [Spring Test 가이드](https://github.com/cheese10yun/TIL/blob/master/Spring/test/spring-guide-test.md)
+  * [Rest Docs : Test Code 기반 REST API 문서 만들기](https://github.com/cheese10yun/springboot-restdocs)
 * Transaction
   * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
@@ -60,7 +61,6 @@
   * [Spring Cloud Config](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/config.md)
   * [Spring Cloud Bus](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/bus.md)
   * [Spring Cloud Feign](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/feign.md)
-* [Rest Docs : REST API 문서 만들기](https://github.com/cheese10yun/springboot-restdocs)
 * [Slack Notification](https://github.com/cheese10yun/spring-boot-slack-notificaion)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
 * [RabbitMQ - 간단 정리 및 기초 활용법](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
