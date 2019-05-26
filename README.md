@@ -59,6 +59,7 @@
   * [MSA 기초 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/msa/spring-cloud-%EA%B8%B0%EC%B4%88.md)
   * [Spring Cloud Config](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/config.md)
   * [Spring Cloud Bus](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/bus.md)
+  * [Spring Cloud Feign](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/feign.md)
 * [Rest Docs : REST API 문서 만들기](https://github.com/cheese10yun/springboot-restdocs)
 * [Slack Notification](https://github.com/cheese10yun/spring-boot-slack-notificaion)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
