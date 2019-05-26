@@ -164,24 +164,8 @@
 * [Vue Proejct](https://github.com/cheese10yun/TIL/blob/master/vue/vue-proejct.md)
 
 ## POP it 포스팅
-* [Spring 내가 생각하는 캡슐화 part 1](https://github.com/cheese10yun/TIL/blob/master/Popit/encapsulation-part-1.md)
-* [Spring 내가 생각하는 캡슐화 part 2](https://github.com/cheese10yun/TIL/blob/master/Popit/encapsulation-part-2.md)
-* [GitHub로 프로젝트 관리하기 Part1 - 이슈 발급 부터 코드리뷰](https://github.com/cheese10yun/TIL/blob/master/Popit/GitHub%EB%A1%9C%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0%20Part1.md)
-* [GitHub로 프로젝트 관리하기 Part2 - CI & Test Coverage & WIKI](https://github.com/cheese10yun/TIL/blob/master/Popit/GitHub%EB%A1%9C%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0%20Part2.md)
-* [GitHub로 프로젝트 관리하기 Part3 - ZenHub](https://github.com/cheese10yun/TIL/blob/master/Popit/Github%EB%A1%9C%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0%20Part3.md)
-* [Spring OOP - Service, ServiceImpl 구조에 대한 고찰](https://github.com/cheese10yun/TIL/blob/master/Popit/oop-part01.md)
-* [Spring Boot + JPA step-08: OneToOne 관계 설정 팁](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-boot-jpa-best-.md)
-* [IntelliJ 사용팁](https://github.com/cheese10yun/TIL/blob/master/Popit/IntelliJ-part-01.md)
-* [Spring OOP - 추상화, 다형성 예제](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-oop-part03.md)
-* [Spring OOP - 외부 API 호출에 대한 고찰](https://github.com/cheese10yun/TIL/blob/master/Popit/oop-pagerduty.md)
-* [Spring Boot 으로 초간단 Slack Message 보내기](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-boot-slack.md)
-* [Spring Boot + JPA Properties 설정값 가져오기](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-jpa-best-10.md)
-* [Spring Security OAuth2 소셜 인증](https://github.com/cheese10yun/TIL/blob/master/Popit/Spring-Security-OAuth2-Social.md)
-* [Spring Security OAuth2 소셜 인증 데이터베이스 저장](https://github.com/cheese10yun/TIL/blob/master/Popit/Spring-Security-OAuth2-Social-Dtabase.md)
-* [Spring REST Docs API 문서를 자동화 해보자](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-rest-docs.md)
-* [실무에서 Lombok 사용법](https://github.com/cheese10yun/TIL/blob/master/Popit/lombok.md)
-* [Spring Boot + JPA 페이징 API 만들기](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-jpa-best-12.md)
-* [Spring Guide - Domain 객체 가이드](https://github.com/cheese10yun/TIL/blob/master/Popit/spring-guide-domain.md)
+* [작성글](https://www.popit.kr/author/Yun)
+
 
 ## 도서
 * [DDD Start 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/DDD-START.md)
