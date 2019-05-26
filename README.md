@@ -61,6 +61,7 @@
   * [Spring Cloud Config](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/config.md)
   * [Spring Cloud Bus](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/bus.md)
   * [Spring Cloud Feign](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/feign.md)
+  * [Spring Cloud Ribbon](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/ribbon.md)
 * [Slack Notification](https://github.com/cheese10yun/spring-boot-slack-notificaion)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
 * [RabbitMQ - 간단 정리 및 기초 활용법](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
