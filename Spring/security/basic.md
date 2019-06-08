@@ -138,7 +138,7 @@ Authentication 클래스의 모든 서브 클래스
 * 요청을 받아낼 필터(AbstractAuthenticaionFilter)
 * Manager에 등록시킬 Auth Provider
 * 인증 정보를 담을 DTO
-* 각 인증에 따른 추가 구현체, 기본저긍로 성공/실패 핸들러.
+* 각 인증에 따른 추가 구현체, 기본적인 성공/실패 핸들러.
 * 소셜 인증의 경우 각 소셜 공급자 구경에 맞는 DTO와 Http Request
 * 인증 시도 / 인증 성송시에 각각 사용할 Authentication 객체
 
