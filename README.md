@@ -66,13 +66,14 @@
   * [Spring Cloud Ribbon](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/ribbon.md)
   * [Spring Cloud Eureka](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/eureka.md)
   * [Spring Cloud API-Gateway](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/api-gateway.md)
+* 연재
+  * [Spring Jpa Best Practices](https://github.com/cheese10yun/spring-jpa-best-practices)
+  * [스프링 실전 가이드](https://github.com/cheese10yun/spring-guide)
 * [Slack Notification](https://github.com/cheese10yun/spring-boot-slack-notificaion)
 * [Actuator](https://github.com/cheese10yun/TIL/blob/master/Spring/actuator.md)
 * [RabbitMQ - 간단 정리 및 기초 활용법](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
 * [Jackson 어노테이션 정리](https://github.com/cheese10yun/blog-sample/tree/master/jackson)
 * [Lombok 사용팁 정리](https://github.com/cheese10yun/blog-sample/tree/master/lombok)
-* [Spring Jpa Best Practices](https://github.com/cheese10yun/spring-jpa-best-practices)
-* [스프링 실전 가이드](https://github.com/cheese10yun/spring-guide)
 * 토비의 스프링 정리
   * [2장 테스트](https://github.com/cheese10yun/TIL/blob/master/Spring/%ED%86%A0%EB%B9%84/%ED%86%A0%EB%B9%84%EC%9D%98%EC%8A%A4%ED%94%84%EB%A7%81-2%EC%9E%A5-%ED%85%8C%EC%8A%A4%ED%8A%B8.md)
 * [스프링5 레시피 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8A%A4%ED%94%84%EB%A7%815%EB%A0%88%EC%8B%9C%ED%94%BC.md)
@@ -126,7 +127,7 @@
 * [Spring OOP 프로그래밍 예제(3) - 추상화, 다형성](https://github.com/cheese10yun/blog-sample/tree/master/partner-api)
 * [Spring OOP 프로그래밍 예제(4) - Service, ServiceImpl 구조에 대한 고찰](https://github.com/cheese10yun/blog-sample/tree/master/service)
 * [Spring OOP 프로그래밍 예제(5) - 외부 API(PagerDuty) 호출](https://github.com/cheese10yun/blog-sample/tree/master/pagerduty)
-* [Spring 예제로 보는 캡슐화](https://github.com/cheese10yun/blog-sample/tree/master/encapsulation)
+* [Spring OOP 프로그래밍 예제(6) - 예제로 보는 캡슐화](https://github.com/cheese10yun/blog-sample/tree/master/encapsulation)
 
 
 ## Docker
