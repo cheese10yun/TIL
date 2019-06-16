@@ -144,6 +144,9 @@
 * [람다 기초](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EB%9E%8C%EB%8B%A4%EC%8B%9D-%EA%B8%B0%EC%B4%88.md)
 * [자바8인액션 정리](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9E%90%EB%B0%948-%EC%9D%B8%EC%95%A1%EC%85%98.md)
 
+## Kotlin
+* [Kotlin In Action 정리](https://github.com/cheese10yun/TIL/blob/master/kotlin/kotlin_in_action.md)
+
 ## Node
 * [Apex](https://github.com/cheese10yun/TIL/blob/master/Node/Apex.md)
 * [Claudia](https://github.com/cheese10yun/TIL/blob/master/Node/Claudia.md)
@@ -178,6 +181,7 @@
 * [어떻게공부할것인가](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%96%B4%EB%96%BB%EA%B2%8C%EA%B3%B5%EB%B6%80%ED%95%A0%EA%B2%83%EC%9D%B8%EA%B0%80.md)
 * [실용주의 프로그래머](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8B%A4%EC%9A%A9%EC%A3%BC%EC%9D%98%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8.md)
 * [피플웨어](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%ED%94%BC%ED%94%8C%EC%9B%A8%EC%96%B4.md)
+* [함께 자라기 - 애자일로 가는 길](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%ED%95%A8%EA%BB%98_%EC%9E%90%EB%9D%BC%EA%B8%B0.md)
 
 ## AWS
 * [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
