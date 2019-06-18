@@ -9,9 +9,9 @@
 - [2장 아키텍처 개요](#2%EC%9E%A5-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EA%B0%9C%EC%9A%94)
   - [네 개의 영역](#%EB%84%A4-%EA%B0%9C%EC%9D%98-%EC%98%81%EC%97%AD)
   - [계층 구조 아키텍처](#%EA%B3%84%EC%B8%B5-%EA%B5%AC%EC%A1%B0-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98)
-  - [DIP](#dip)
-    - [DIP 주의사항](#dip-%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD)
-    - [DIP와 아키텍처](#dip%EC%99%80-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98)
+  - [DIP](#DIP)
+    - [DIP 주의사항](#DIP-%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD)
+    - [DIP와 아키텍처](#DIP%EC%99%80-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98)
   - [도메인 영역의 주요 구성요소](#%EB%8F%84%EB%A9%94%EC%9D%B8-%EC%98%81%EC%97%AD%EC%9D%98-%EC%A3%BC%EC%9A%94-%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C)
     - [엔티티와 벨류](#%EC%97%94%ED%8B%B0%ED%8B%B0%EC%99%80-%EB%B2%A8%EB%A5%98)
     - [애그리거트](#%EC%95%A0%EA%B7%B8%EB%A6%AC%EA%B1%B0%ED%8A%B8)
@@ -20,11 +20,11 @@
   - [애그리거트 루트](#%EC%95%A0%EA%B7%B8%EB%A6%AC%EA%B1%B0%ED%8A%B8-%EB%A3%A8%ED%8A%B8)
   - [도메인 규칙과 일관성](#%EB%8F%84%EB%A9%94%EC%9D%B8-%EA%B7%9C%EC%B9%99%EA%B3%BC-%EC%9D%BC%EA%B4%80%EC%84%B1)
   - [트랜잭션 범위](#%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EB%B2%94%EC%9C%84)
-  - [ID를 이용한 애그리거트 참조](#id%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%95%A0%EA%B7%B8%EB%A6%AC%EA%B1%B0%ED%8A%B8-%EC%B0%B8%EC%A1%B0)
+  - [ID를 이용한 애그리거트 참조](#ID%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%95%A0%EA%B7%B8%EB%A6%AC%EA%B1%B0%ED%8A%B8-%EC%B0%B8%EC%A1%B0)
     - [편한 탐색 오용](#%ED%8E%B8%ED%95%9C-%ED%83%90%EC%83%89-%EC%98%A4%EC%9A%A9)
     - [성능에 대한 고민](#%EC%84%B1%EB%8A%A5%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EB%AF%BC)
     - [확장 어려움](#%ED%99%95%EC%9E%A5-%EC%96%B4%EB%A0%A4%EC%9B%80)
-- [4장 리포지터리와 모델구현(JPA 중심)](#4%EC%9E%A5-%EB%A6%AC%ED%8F%AC%EC%A7%80%ED%84%B0%EB%A6%AC%EC%99%80-%EB%AA%A8%EB%8D%B8%EA%B5%AC%ED%98%84jpa-%EC%A4%91%EC%8B%AC)
+- [4장 리포지터리와 모델구현(JPA 중심)](#4%EC%9E%A5-%EB%A6%AC%ED%8F%AC%EC%A7%80%ED%84%B0%EB%A6%AC%EC%99%80-%EB%AA%A8%EB%8D%B8%EA%B5%AC%ED%98%84JPA-%EC%A4%91%EC%8B%AC)
   - [매핑 구현](#%EB%A7%A4%ED%95%91-%EA%B5%AC%ED%98%84)
     - [엔티티와 벨류 기본 매핑 구현](#%EC%97%94%ED%8B%B0%ED%8B%B0%EC%99%80-%EB%B2%A8%EB%A5%98-%EA%B8%B0%EB%B3%B8-%EB%A7%A4%ED%95%91-%EA%B5%AC%ED%98%84)
   - [필드 접근 방식 사용](#%ED%95%84%EB%93%9C-%EC%A0%91%EA%B7%BC-%EB%B0%A9%EC%8B%9D-%EC%82%AC%EC%9A%A9)
@@ -45,16 +45,16 @@
   - [여러 애그리거트가 필요한 기능](#%EC%97%AC%EB%9F%AC-%EC%95%A0%EA%B7%B8%EB%A6%AC%EA%B1%B0%ED%8A%B8%EA%B0%80-%ED%95%84%EC%9A%94%ED%95%9C-%EA%B8%B0%EB%8A%A5)
   - [도메인 서비스](#%EB%8F%84%EB%A9%94%EC%9D%B8-%EC%84%9C%EB%B9%84%EC%8A%A4)
 - [8장 애그리거트 트랜잭션 관리](#8%EC%9E%A5-%EC%95%A0%EA%B7%B8%EB%A6%AC%EA%B1%B0%ED%8A%B8-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EA%B4%80%EB%A6%AC)
-  - [Isolation REPEATABLE_READ 으로 해결 못하는 이유](#isolation-repeatableread-%EC%9C%BC%EB%A1%9C-%ED%95%B4%EA%B2%B0-%EB%AA%BB%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0)
+  - [Isolation REPEATABLE_READ 으로 해결 못하는 이유](#Isolation-REPEATABLEREAD-%EC%9C%BC%EB%A1%9C-%ED%95%B4%EA%B2%B0-%EB%AA%BB%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0)
   - [선점 잠금](#%EC%84%A0%EC%A0%90-%EC%9E%A0%EA%B8%88)
     - [선점 잠금 적용](#%EC%84%A0%EC%A0%90-%EC%9E%A0%EA%B8%88-%EC%A0%81%EC%9A%A9)
   - [선점 잠금과 교착상태](#%EC%84%A0%EC%A0%90-%EC%9E%A0%EA%B8%88%EA%B3%BC-%EA%B5%90%EC%B0%A9%EC%83%81%ED%83%9C)
   - [비선점 잠금](#%EB%B9%84%EC%84%A0%EC%A0%90-%EC%9E%A0%EA%B8%88)
     - [비선점 잠금을 이용한 트랜잭션 충돌 방지](#%EB%B9%84%EC%84%A0%EC%A0%90-%EC%9E%A0%EA%B8%88%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%B6%A9%EB%8F%8C-%EB%B0%A9%EC%A7%80)
-    - [비선점 트랜잭션 충돌 문제 해결 Flow](#%EB%B9%84%EC%84%A0%EC%A0%90-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%B6%A9%EB%8F%8C-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-flow)
-- [9장 도메인 모델과 BOUNDED COUNTEXT](#9%EC%9E%A5-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8%EA%B3%BC-bounded-countext)
-  - [BOUNDED CONTEXT](#bounded-context)
-  - [BOUNDED CONTEXT의 구현](#bounded-context%EC%9D%98-%EA%B5%AC%ED%98%84)
+    - [비선점 트랜잭션 충돌 문제 해결 Flow](#%EB%B9%84%EC%84%A0%EC%A0%90-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EC%B6%A9%EB%8F%8C-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0-Flow)
+- [9장 도메인 모델과 BOUNDED COUNTEXT](#9%EC%9E%A5-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8%EA%B3%BC-BOUNDED-COUNTEXT)
+  - [BOUNDED CONTEXT](#BOUNDED-CONTEXT)
+  - [BOUNDED CONTEXT의 구현](#BOUNDED-CONTEXT%EC%9D%98-%EA%B5%AC%ED%98%84)
 - [10장 이벤트](#10%EC%9E%A5-%EC%9D%B4%EB%B2%A4%ED%8A%B8)
   - [시스템 간 강력합의 문제](#%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B0%84-%EA%B0%95%EB%A0%A5%ED%95%A9%EC%9D%98-%EB%AC%B8%EC%A0%9C)
   - [이벤트 개요](#%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EA%B0%9C%EC%9A%94)
@@ -65,9 +65,9 @@
   - [이벤트, 핸들러, 디스패처 구현](#%EC%9D%B4%EB%B2%A4%ED%8A%B8-%ED%95%B8%EB%93%A4%EB%9F%AC-%EB%94%94%EC%8A%A4%ED%8C%A8%EC%B2%98-%EA%B5%AC%ED%98%84)
     - [이벤트 클래스](#%EC%9D%B4%EB%B2%A4%ED%8A%B8-%ED%81%B4%EB%9E%98%EC%8A%A4)
   - [메시징 시스템을 용한 비동기 구현](#%EB%A9%94%EC%8B%9C%EC%A7%95-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9D%84-%EC%9A%A9%ED%95%9C-%EB%B9%84%EB%8F%99%EA%B8%B0-%EA%B5%AC%ED%98%84)
-- [11장 CQRS](#11%EC%9E%A5-cqrs)
+- [11장 CQRS](#11%EC%9E%A5-CQRS)
   - [단일 모델의 단점](#%EB%8B%A8%EC%9D%BC-%EB%AA%A8%EB%8D%B8%EC%9D%98-%EB%8B%A8%EC%A0%90)
-  - [CQRS](#cqrs)
+  - [CQRS](#CQRS)
 
 # 1장 도메인 모델 시작
 
@@ -288,9 +288,7 @@ public class MemberService {
 
 > 개인적 의견
 
-XXXService 이러한 서비스 클래스는 안티패턴이라고 생각한다. 서비스의 크기는 작아야 그 객체가 갖는 의존성, 책임 등이 작아진다. 이는 테스트 코드작성시에도 많은 도움이 된다.
-
-무엇보다 XXXService가 안티패턴인 이유는 다형성을 만족시키기 힘들다. **객체의 책임이 모여 역할이 되고 이 역할은 대체를 의미한다.** 
+XXXService 이러한 서비스 클래스는 안티패턴이라고 생각한다. 서비스의 크기는 작아야 그 객체가 갖는 의존성, 책임 등이 작아진다. 이는 테스트 코드작성시에도 많은 도움이 된다. 무엇보다 XXXService가 안티패턴인 이유는 다형성을 만족시키기 힘들다. **객체의 책임이 모여 역할이 되고 이 역할은 대체를 의미한다.** 
 
 비밀번호 변경 기능은 크게 2가지 정도가 있다. 
 
