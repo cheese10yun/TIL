@@ -112,7 +112,7 @@
 * SecirtyContext Holder에 LocalThread에 담겨서 필요한 순간에 뿌려줄 수 있게됨
 
 
-![](/draw/spring-security.png)
+![](/assets/spring-security.png)
 
 ### AuthenticationManager : AuthenticationProvider 주머니
 * Builder 패턴으로 구현

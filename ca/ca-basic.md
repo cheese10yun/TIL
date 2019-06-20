@@ -27,7 +27,7 @@
 
 ## 컴퓨터의 구성 요소
 
-![](/draw/ca-com.png)
+![](/assets/ca-com.png)
 
 * 입력 (Input)
 * 출력 (Output)
@@ -37,7 +37,7 @@
 
 
 ## 구성요서별 역할
-![](/draw/cs-computer.png)
+![](/assets/cs-computer.png)
 
 * 프로세스
   * 메모리로 부터 명령과 데이터를 얻음
@@ -64,7 +64,7 @@
 
 #### 프로세스의 동작 과정
 
-![](/draw/cu-alu.png)
+![](/assets/cu-alu.png)
 
 * 제어유닛(Control Unit) - 명령어를 순서대로 읽어와 차례대로 실행, 제어신호를 생성하여 주변 장치에게 보냄
 * 레지스터

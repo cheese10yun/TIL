@@ -10,7 +10,7 @@
 
 
 ## 트랜잭션 동기화 작업 흐름
-![](../../draw/TransactionSynchronizations.png)
+![](../../assets/TransactionSynchronizations.png)
 
 
 * (1) UserService Connection을 생성하고
@@ -52,7 +52,7 @@ UserService의 코드가 특정 트랜잭션 방법에 의존적이지 않고 �
 
 **스프링은 트랜잭션 기술의 공통점을 담은 트랜잭션 추상화 기술을 제공하고 있다.** 이를 이요하면 애플리케이션에서 직접 각 기술의 트랜잭션 API를 사용 하지 않고도, 일관된 방식으로 트랜잭션을 제어하는 트랜잭션 경계설정 작업이 가능해진다.
 
-![](../../draw/PlatformTransactionManager-2.png)
+![](../../assets/PlatformTransactionManager-2.png)
 
 JDBC를 이용하는 경우 Connection을 생성하고 나서 트랜잭션을 시작했다. 하지만 PlatformTransactionManager에서 트랜잭션을 가져오는 요청인 getTransacion() 메서드를 호출하기만 하면된다. 필요에 따라 트랜잭션 매니저가 DB 커넥션을 가져오는 작업도 같이 수행하기 때문이다. 트랜잭션을 가져온다는 것은 일단 트랜잭션을 시작한다는 의미라고 생각하자.
 

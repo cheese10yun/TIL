@@ -50,7 +50,7 @@ public void save(Comment comment){
 프로그래밍에서 MQ는 프로세스 또는 프로그램 인스턴스가 데이터를 서로 교환할 때 사용하는 방법을 말한다. 이러한 MQ를 오픈소스에 기반한 표준 프로토콜이 AMQP이다. AMQP 자체가 프로토콜을 의미하기 때문에 이 프로토콜을 구현한 MQ 제품들은 여러가지가 있으며 그 중하나가 RabbitMQ이다.
 
 ### AMQP의 구성요소와 라우팅 알고리즘
-![](/draw/rabbitmq.png)
+![](/assets/rabbitmq.png)
 
 * AMQP의 라우팅 모델은 Exchange, Queue, Binding으로 구성된다.
 
@@ -78,7 +78,7 @@ RabbitMQ는 AMQP를 구현한 오픈소스 메시지 소프트웨어 Pulisher(Pr
 > 출처 [RabibitMQ Tutorials]([http://blog.naver.com/PostView.nhn?blogId=tmondev&logNo=220419853534&parentCategoryNo=&categoryNo=6&viewDate=&isShowPopularPosts=false&from=postView](http://www.rabbitmq.com/getstarted.htm))
 
 
-![](/draw/rabbitmq-turorial.png)
+![](/assets/rabbitmq-turorial.png)
 
 ### Rabbit MQ Exchagne Type
 이름              | RabbitMQ 이름

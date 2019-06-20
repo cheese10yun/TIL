@@ -42,7 +42,7 @@
   * 메인 스레드(메인 스레드는 JVM이 생성)는 작업 스레드를 만들어서 병렬로 코드들을 실행 할 수 있다.
 
 ## 멀티 스레드, 싱글 스레드
-![](/draw/java-thread-single-multy.png)
+![](/assets/java-thread-single-multy.png)
 
 
 * 싱글 스레드 : 메인 스레드가 종료하면 프로세스도 종료된다.
@@ -52,7 +52,7 @@
 # 스레드 우선 순위
 
 ## 동시성과 병렬성
-![](/draw/concurrency-Parallelism.png)
+![](/assets/concurrency-Parallelism.png)
 
 * 동시성(concurrency)
   * 멀티 작업을 위해 하나의 코드에서 멀티 스레드가 번갈아 가며 실행하는 성질
@@ -63,7 +63,7 @@
 
 ## 스레드 스케쥴링
 
-![](/draw/thead-shduler.png)
+![](/assets/thead-shduler.png)
 
 * 스레드의 개수가 코어의 수보다 많은 경우
   * 스레드를 어떤 순서로 동시성으로 실행할것인가를 결정, **스레드 스케쥴링**
@@ -88,7 +88,7 @@
 
 ## 공유 객체를 사용할 때 중의 할 점
 
-![](/draw/thread-synchronization.png)
+![](/assets/thread-synchronization.png)
 1. User 1 스레드 : 메모리에 100을 Calculator 객체에 저장
 2. User 2 스레드 : 메모리에 50을 Calculator 객체에 저장
 3. User 1 스레드 : 출력 100을 예상하지만 50이 출력
@@ -101,7 +101,7 @@
 
 # 스레드 상태 제어
 
-![](/draw/thread-status.png)
+![](/assets/thread-status.png)
 
 * 실행 중인 스레드의 상태를 변경하는 것을 말한다.
 * 실행 변화를 가져오는 메소드의 종류
@@ -118,21 +118,21 @@
 
 
 ## 다른 스레드에게 실행 양보 : yield()
-![](/draw/thread-yield.png)
+![](/assets/thread-yield.png)
 
 스레드가 처리하는 작업은 반복적인 실행을 위해 for문이나 while문을 포함하는 경우가 많다. 스레드가 시작되어 run() 메서드를 실행하면 블록을 무한 반복 실행한다. 만약 while 문은 어떤 실행문도 실행하지 않고 무의미한 반복을 한다면 이것보다 다른 스레드에게 실행을 양보하고 자신은 실행 대기 상태로 가는 것이 전체 프록램 성능에 도움이 된다. 
 
 이런 기능을 위해 스레드는 yield()메서드를 제공하고 있다. yield() 메서드를 호출한 스레드는 실행디기 상태로 돌아가고 동일한 우선수위 또는 높은 우선순위를 갖는 다른 스레드가 실행 기회를 가질 수 있도록 해준다.
 
 ## 다른 스레드의 종료를 기다림 : join()
-![](/draw/thread-join.png)
+![](/assets/thread-join.png)
 
 * `threadB.join()` 메서드는 Thread B를 일시 정지하는 것이 아니라, Thread A를 일시 정지 하는 것이다.
 * ThreadA가 ThreadB의 결과 값을 받아 작업이 진행될때 ThreadA는 `threadB.join()`를 통해서 ThreadB의 종료를 기다린다.
 * 계산 작업을 하는 스레드가 모든 계산 작업을 마쳤을 때, 계산 결과값을 받아 이용하는 경우 주로 사용
 
 ## 스레드 간 협업 : wait(), notify(), notifyAll()
-![](/draw/thread-notify.png)
+![](/assets/thread-notify.png)
 
 ## 동기화 메서드는 또는 블록에서만 호출 가능한 Object의 메소드
 * wait()
@@ -145,7 +145,7 @@
     * sleep() 무조건 주어진 시간이 다되야 실행 대기로 넘어간다.
 
 ## 두 개의 스레드가 교대로 번갈아 가며 실행해야 할 경우에 주로 사용
-![](/draw/thrad-share-data.png)
+![](/assets/thrad-share-data.png)
 
 * **wait(), notify(), notifyAll() 메서드는 동기화 메소드, 동기화 블록에서만 호출 가능**
 * 소비자 스레드가 한 번읽고 생성자 스레드에게 notify()를 호출해서 생성자 스레드가 새로운 데이터를 넣을 때까지 기다린다.
@@ -208,7 +208,7 @@ List<Runnable>      shutdownNow() 현재 작업 처리 중인 스레들을 inter
 ## 콜백 방식의 작업 완료 통보
 
 ### 콜백 이란?
-![](/draw/blocking-callback.png)
+![](/assets/blocking-callback.png)
 
 애플리케이션이 스레드에게 작업 처리를 요청한 후, 스레드가 작업을 완료하면 특정 메소드를 작동 실행하는 기법을 말한다. 이때 자동 실행되는 메서드를 콜백 메소드라고 한다.
 

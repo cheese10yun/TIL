@@ -393,7 +393,7 @@ MemberService라는 곳에 모든 로직이 담겨있다면 MemberService의 책
 
 한 주문 애그리거트에 대해 운영자는 배송 준비 상태로 변경할 때 사용자는 배송지 주소를 변경하면 어떻게 될까? 아래 그림은 운영자와 고객이 동시에 한 주문 애그리거트를 수정하는 과정을 보여준다. (배송 상태로 변경되면 더 이상 배송지 변경은 할 수 없다.)
 
-![](https://github.com/cheese10yun/TIL/raw/master/draw/transaction-thread.png)
+![](https://github.com/cheese10yun/TIL/raw/master/assets/transaction-thread.png)
 
 운영자 스레드와 고객 스레드는 같은 주문 애그리거트를 나타내는 다른 객체를 구하게 된다 (트랜잭션 마다 리포지토리라는 새로운 애그리거트를 생성한다.)
 
@@ -414,7 +414,7 @@ MemberService라는 곳에 모든 로직이 담겨있다면 MemberService의 책
 REPEATABLE_READ은 트랜잭션이 지속되는 동안 다른 트랜잭션이 해당 필드를 변경할 수 없는 격리 레벨이다. **이것으로 위의 문제를 해결할 수 있지는 않다.**
 
 
-![](https://github.com/cheese10yun/TIL/raw/master/draw/transaction-thread.png)
+![](https://github.com/cheese10yun/TIL/raw/master/assets/transaction-thread.png)
 
 1. 운영자 스레드가 주문 애그리거트를 구함 (배송 이전 상태)
 2. 고객 스레드가 주문 애그리거트를 구함 (배송 이전 상태) REPEATABLE_READ 속성이므로 select 트랜잭션이 진행중에 있더라도 select는 진행됨
@@ -431,7 +431,7 @@ REPEATABLE_READ은 트랜잭션이 지속되는 동안 다른 트랜잭션이 �
 ## 선점 잠금
 선점 잠금은 먼저 애그리거트를 구한 스레드가 애그리거트 사용이 끝날 때까지 다른 스레드가 해당 애그리거트를 수정하는 것을 막는 방식이다.
 
-![](https://github.com/cheese10yun/TIL/raw/master/draw/transaction-thread2.png)
+![](https://github.com/cheese10yun/TIL/raw/master/assets/transaction-thread2.png)
 
 스레드1 선점 잠금방식으로 애그리거트를 구한 뒤 이에서 스레드2가 같은 애그리거트를 구하고 있는데, 이 경우 스레드2는 스레드1이 애그리거트에대한 잠금을 해제할 때 까지 블로킹된다.
 
@@ -442,7 +442,7 @@ REPEATABLE_READ은 트랜잭션이 지속되는 동안 다른 트랜잭션이 �
 
 ### 선점 잠금 적용
 
-![](https://github.com/cheese10yun/TIL/raw/master/draw/transaction-thread3.png)
+![](https://github.com/cheese10yun/TIL/raw/master/assets/transaction-thread3.png)
 
 1. 운영자 스레드가 먼저 선점 잠금 방식으로 주문 애그리거트를 구함
 2. 고객 스레드는 운영자 스레드가 잠금을 해제할 때까지 고객 스레드는 대기 상태
@@ -510,7 +510,7 @@ WHERE aggid =? and version = 현재 버전
 
 ### 비선점 잠금을 이용한 트랜잭션 충돌 방지
 
-![](https://github.com/cheese10yun/TIL/raw/master/draw/transacion-thread4.png)
+![](https://github.com/cheese10yun/TIL/raw/master/assets/transacion-thread4.png)
 
 1. 스레드 1 애그리거트 조회
 2. 스레드 2 애그리거트 조회
