@@ -328,3 +328,7 @@ lombok.data.flagUsage= error
 
 
 실제 컴파일을 진행하면 위에서 설정한 lombok.config에서 제한한 어노테이션은 warning, error로 표시됩니다. 이 처럼 명확한 가이드 라인이 있으면 설정 파일을 통해서 제한하는 것이 바람직하다고 생각합니다.
+
+## 8. 관련 코드
+* [실무에서 Lombok 사용법](https://github.com/cheese10yun/blog-sample/tree/master/lombok)
+* [Builder 기반으로 객체를 안전하게 생성하는 방법](https://github.com/cheese10yun/blog-sample/tree/master/ddd)
