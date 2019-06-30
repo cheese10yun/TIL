@@ -112,13 +112,13 @@
 * SOLID
   * 기초 이론
     * [SRP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/SRP.md)
-    * [OPC](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/OCP.md)
+    * [OCP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/OCP.md)
     * [LSP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/LSP.md)
     * [ISP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/ISP.md)
     * [DIP](https://github.com/cheese10yun/TIL/blob/master/OOP/solid-%EA%B8%B0%EC%B4%88/DIP.md)
   * 실전 예제
     * [SRP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/SRP.md)
-    * [OPC](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/OCP.md)
+    * [OCP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/OCP.md)
     * [LSP 예정]()
     * [ISP 예정]()
     * [DIP](https://github.com/cheese10yun/spring-SOLID/blob/master/docs/DIP.md)
