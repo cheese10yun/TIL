@@ -9,3 +9,17 @@
 * 로컬 환경에서 Nginx 설치
 * Docker 설치, Docker hub를 통해 컨테이너 기반의 Nginx 설치
 * AWS EC2 인스턴스 생성 후 해당 환경에서 Nginx 설치하여 외부에서 접속
+
+
+# 2주차
+
+worker thrad = auto = CPU 갯수
+
+worker connection = 1024 , CPU 갯수 * 1024가 Best practices
+
+
+
+systemctl enable nginx
+
+* LB 그림 그리기
+* CLB만 public network 하면 된다. 나머지는 VPN
