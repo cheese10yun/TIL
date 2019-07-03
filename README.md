@@ -83,6 +83,7 @@
 * [스프링이란?](https://github.com/cheese10yun/TIL/blob/master/Spring/%EC%8A%A4%ED%94%84%EB%A7%81%EC%9D%B4%EB%9E%80.md)
 * [Gradle 기반 멀티 모듈 구성하기](https://github.com/cheese10yun/blog-sample/tree/master/multi-module)
 * [Lombok 가이드](https://github.com/cheese10yun/TIL/blob/master/Spring/lombok-guide.md)
+* [Spring Actuator 기초 설정](https://github.com/cheese10yun/blog-sample/tree/master/actuator)
 
 ## 운영체제
 * [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C_%EA%B8%B0%EC%B4%88.md)
