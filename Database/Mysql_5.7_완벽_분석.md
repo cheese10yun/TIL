@@ -242,7 +242,7 @@ EXPLAIN은 MySQL 서버가 어떠한 쿼리를 실행할 것인가, **즉 실행
 #### 표형식의 EXPLAIN 개선
 
 ```sql
-explain 
+explain
 select
     City.Name, Countury.Code, CountryLanguage.Language 
 from 
@@ -265,11 +265,80 @@ EXPLAIN에는 3개의 행이 있는데, 각각 테이블로의 접근을 표시�
 ##### id
 id는 SELECT에 붙은 번호를 말한다. MySQL은 조인을 하나의 단위로 실행하기 때문에 id는 그 쿼리에 실행 단위를 식별하는 것이다. 따라서 조인만 수행하는 쿼리에서는 id는 항상 1이 된다.
 
-##### 
-##### 
-##### 
-##### 
-##### 
-##### 
-##### 
-##### 
+##### select_type
+select_type은 항상 SIMPLE 이된다. 복잡한 조인을 해도 SIMPLE이 된다. 서브뤄리나 UNION이 있으면 id와 select_type이 변한다.
+
+##### partitions
+partitions는 파티셔닝이 되어 있는 경우에 사용되는 필드이다. 이 쿼리에서 사용된 테이블을 모두 파티셔닝이 되어 있지 않기 때문에 이 필드가 모두 NULL로 출력되았다. 파티셔닝 되어 있는 경우는 반드시 이 필드를 확인하자 
+
+##### type
+type은 접근 방식을 표시하는 필드다. 접근 방식은 테이블에서 어떻게 행데이터를 가져올것인가를 가리킨다. 위 EXPLAIN에서는 ALL, eq_ref, ref가 있는데
+ALL xpdlqmf tmzos, eq_ref는 조인시 기본 키나 고유키를 사용하여 하나의 값으로 접근(최대 1행만을 정확하게 패치), ref는 여러 개의 행을 패치할 가능성이 있는 접근을 의미한다. **접근 방식은 대상 테이블로의 접근이 효율적일지 여부를 판단하는 데 아주 중요한 항목이다.**
+
+이들 접근 방식 가운데도 주의가 필요한 것은 ALL, index, ref_or_null이다. **ALL, index 두 가지는 테이블 또는 특정 인덱스가 전체 행에 접근하기 때문에 테이블 크기가 크면 효율이 떨어진다. ref_or_null의 경우 NUL이 들어있는 행은 인덱스의 맨 앞에 모아서 저장하지만 그 건수가 많으면 MySQL 서버의 작업량이 방대해진다. 다시 말해서 ALL 이외의 접근 방식은 모두 인덱스를 사용한다.**  
+
+접근 방식이 ALL 또는 index인 경우는 그 쿼리로 사용할 수 있는 적절한 인덱스가 없다는 의미일 수도 있다. 위 쿼리에서 Country 테이블에 대한 접근은 ALL이지만 이는 WHERE 구의 조건을 지정하지 않았기 때문이다. 그러한 쿼리에서 드라이빙 테이블에 접근한다면 전체 행을 스캔 할수 밖에 없다.
+
+접근 방식 | 설명
+------|---
+const | 기본 키 또는 고유키에 의한 loockup(등가비교), 조인이 아닌 가장 외부의 테이블에 접근 하는 방식, 결과는 항상 1행이다. 단 기본 키, 고유 키를 사용하고 있으므로 범위 검색으로 지정하는 경우 const가 되지 않는다
+system | 테이블에 1행밖에 없는 경우의 특수한 접근 방식
+ALL | 전체 행 스캔, 테이블의 데이터 전체에 잡근한다.
+index | 인덱스 스캔, 테이블의 특정 인덱스의 전체 엔트리에 접근한다.
+eq_ref | 조인이 내부 테이블로 접근할 떄 기본키 또는 공유 키에 의한 lookup이 일어난다. const와 비슷하지만 조인의 내부 테이블에 접근한다는 점이 다르다
+ref | 고유 키가아닌 인덱스에 대한 등가비교, 여러 개 행에 접근할 가능성이 있다.
+ref_or_null | ref와 마찬가지로 인덱스 접근 시 맨 앞에 저장되어 있는 NULL의 엔트리를 검색한다.
+range | 인덱스 특정 범위의 행에 접근한다
+fulltext | fulltext 인덱스를 사용한 검색
+index_merge | 여러 개인스턴스를 사용해 행을 가져오고 그 결과를 통합한다.
+unique_subquery | IN 서브쿼리 접근에서 기본 키 또는 고유 키를 사용한다. 이 방식은 쓸데 없는 오버헤드를 줄여 상당히 빠르다.
+index_subquery | unique_sunquery와 거의 비슷하지만 고유한 인덱스를 사용하지 않는 점이 다르다. 이 접근 방식도 상당히 빠르다
+
+##### possible_keys
+possible_keys 필드는 이용 가능성있는 인덱스의 목록이다.
+
+##### key 
+possible_keys 필드는 이용 가능성있는 인덱스의 목록 중에서 실제로 옵티마이저가 선택한 인덱스가 key가 된다. 위 EXPLAN 에서는 County 테이블(첫 번째 행)의 **Key는 NULL 인데 이는 행 데이터를 가져오기 위해 인덱스를 사용할 수 없다는 의미이다.**
+
+##### key_len
+key_len 필드는 선택된 인덱스의 길이를 의미한다. 중요한 필드는 아니지만 인덱스가 너무 긴 것도 비효율적이므로 기억해두자.
+
+##### rows
+rows는 이 접근 방식을 사용해 몇 행을 가져왔는가를 표시한다. 최초에 접근하는 테이브,ㄹ에 대해서 쿼리 전체에 의해 접근하는 행 수, 그 이후에 테이블에 대해서는 1행의 조인으로 평균 몇 행에 접근했는가를 표시한다. 단 어디까지나 통계 값으로 계산한 값이므로 실제 행 수와 반드시 일치하지 않는다.
+
+##### filtered
+filtered는 행 데이터를 가져와 거이에서 WHERE 구의 검색 조건이 적용되면 몇행이 남는지를 표시한다. 이 값도 통계 값 바탕으로 계산한 값이므로 현실의 값과 반드시 일치하지 않는다. 
+
+위 EXPLAN에서는 쿼리에서 톰티마이저가 City 테이블에 접근한 후 WHERE 구의 조건을 적용하게되면 5%밖에 남지 않는다고 판단한 것이다.
+
+##### Extra
+Extra 필드는 옵티마이저가 동작하는데 대해서 우리에게 알려주는 힌트다. 이 필드는 EXPLAN을 사용해 옵티마이저의 행동을 파악할때 아주 중요하다. 
+
+Extra       설명
+
+
+
+Extra 필드는 왜 옵티마이저가 이러한 실행 계획을 취했는가와 실행 계획의 상세를 파악하는데 중요한 정보를 제공한다. EXPLRAN을 얼마나 정확히 해설하는가는 Extra 필드를 얼마나 이해했느냐에 달려있다고 해도 과언이 아니다.
+
+### JSON 형식 EXPLAIN의 개선
+5.6 부터는 JSON으로 실행 계획을 출력하는 것이 가능해졌다.
+
+```sql
+explain format = json
+select
+    City.Name, Countury.Code, CountryLanguage.Language 
+from 
+    City
+join City.countrycode = Country.code and City.id = Country.capital
+join CountryLanguage.countryCode = City.countryCode
+```
+JSON 형식의 EXPLAIN은 기존의 표 형식 보다 출력되는 정보가 많다. 5.7 부터는 비용에 관한 정보를 부여주어서 표 형식에 비해 편리하다. JOSN 형식의 EXPLAIN에는 Extra 필드에서 Using WHERE 라고만 출력되는 것이 attacged_condition로 나와서 구체적으러 어떤 조건이 적용되는지 알 수 있다. 
+
+### 새로운 비주얼 EXPLAIN
+MySQL Workbench는 비주얼 EXPLAIN을 표시할 수 있습니다. JSON형식 보다 깔끔하고 내용도 쉽게 확인 가능합니다. 5.7 부터 가능합니다.
+
+### 실행 중인 쿼리의 EXPLAIN
+
+```sql
+EXPLAIN FOR CONNECTION 777 # 777 = SQL의 Connection id
+```
