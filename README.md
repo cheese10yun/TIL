@@ -17,6 +17,7 @@
   * [Embedded를 적극 활용하자](https://github.com/cheese10yun/blog-sample/tree/master/embedded)
   * [OneToOne 관계 설정 팁](https://github.com/cheese10yun/spring-jpa-best-practices/blob/master/doc/step-05.md)
   * [OneToMany 관계 설정 팁](https://github.com/cheese10yun/spring-jpa-best-practices/blob/master/doc/step-09.md)
+  * [Paging 처리 Fetch Join 적용시 limit 동작하지 않는 이슈](https://github.com/cheese10yun/blog-sample/tree/master/jpa-fetch-join)
 * MVC
   * [MVC 요청 Flow](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/mvc-flow.md)
   * [TaskExecutor 비동기 처리](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/TaskExecutor-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC.md)
