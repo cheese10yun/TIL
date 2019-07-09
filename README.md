@@ -1,7 +1,6 @@
 # Today I Learned(TIL) Wiki
 [![Blog](https://img.shields.io/badge/Blog-cheese10yun.github.io-green.svg)](https://cheese10yun.github.io/)
 
-
 ## Spring
 * IoC
   * [의존성 주입 DI 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/IoC/DI-%EA%B8%B0%EC%B4%88.md)
@@ -137,6 +136,9 @@
 
 ## Docker
 * [Docker 기초](https://github.com/cheese10yun/TIL/blob/master/docker/docker-beginner.md)
+
+## Nginx
+* [Nginx 기초 설정](https://github.com/cheese10yun/TIL/blob/master/nginx/nginx-basic.md)
 
 ## Java
 * [데이터 타입](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%EB%B6%84%EB%A5%98.md)
