@@ -450,3 +450,32 @@ InnoDB에서는 REPEATABL-READ 격리 레벨을 실현하기 위해 MVCC 시스�
 
 **InnoDB에서 REPEATABLE-READ와 READ-COMMITTED로 MVCC가 이뤄진다. READ-UNCOMMITTED와, SERIALIZABLE은 UNDO 로그를 참조 하지 않는다. READ-UNCOMMITTED는 Duty Read 상태가 되어도 최신 데이터를 읽으며, SERIALIZABLE은 전체 행 접근으로 Lock을 걸기 떄문에 최신 데이터만 참조한다.**
 
+
+### Non Locking Read와 Locking Read
+
+> Non Locking Read
+> Non Locking Read 말 그대로 Locking Read가 없다는 뜻이다. Isolation Level에서 READ-UNCOMMITTED 발생한다. 최신데이터 즉, 다른 트랜잭션에서 아직 커밋하지 않은 트랜잭션까지 다 읽어 올수 있다는 것이다.
+
+> Locking Read
+> Locking Read 말 그대로 Lock을 한다는 뜻이다. Isolation Level 에서는 READM-COMMITTED, REPEATABLE-READ, SERIALIZABLE이 여기에 해당된다. 각 Lock거는 강도에 따라 Level이 달라진다.
+
+**InnoDB는 MVCC은 Non Locking Read로만 사용된다. Non Locking은 행에 lock을 걸지 않는다는 뜻이다.** Non Locking Read에서는, 읽고자 하는 행이 실행 중인 다른 트랜잭션에 의해 변경되어 최신의 행 데이터에 lock이 걸려 있어도 MVCC를 통해 오래된 버전의 데이터를 lock 없이 읽을 수 있다.
+
+Non Locking Read를 통해 읽은 것은 오래된 버전의 데이터이므로 최신 데이터가 무엇이든, lock에 걸리든 말든 상관 없다. MVCC는 이러한 경우에만 사용된다. 여기서 중의할 점은 Locking Read 이다.
+
+MVCC를 이용하는 격리 레벨 REPEATABLE-READ, READ-COMMITTED에는 쿼리에 의해 Non Locking Read와 Locking Read가 구사된다. **데이터의 변경은 데이터 페이지에 있는 최신 데이터에 대해 일어나야하고, 변경한 행은 트랜잭션이 종료할 때까지 lock을 걸어야 한다.**
+
+변경 계열의 쿼리나 SELECT ..FOR UPDATE 또는 SELECT ... LOCK IN SHARE MODE는 Locking Read, 즉 최신데이터에 접근하는 동시에 lock을 획득한다.
+
+❗
+다시 말해서 None Locking Read를 통해서 과거 버전의 데이터에 접근하는 것만으로 변경 처리가 성립하지 않는다.
+> 과거의 데이터를 가져오는 것이 아니라 Lcok 이후 최신 데이터를 가져와야 한다. -> Non Repeatable Read (재현 불가능한 읽기)가 발생하는 것을 막아야한다. 즉 트랜잭션이 지속되는 동안 다른 트랜잭션이 해당 필드를 변경할 수 없도록 lock 해야한다.
+
+> **Non Repeatable Read 문제**
+> 어떤 필드를 T1이 읽은 후 T2가 수정할 경우, T1이 같은 필드를 다시 읽으면 다른 값을 얻습니다.
+
+
+변경된 행에 대해 과거 버전을 읽는 Non Locking READ와 늘 최신데이터를 읽는 Locking Read는 당연히 값이 다르게 보일수 있다. 더블어 Non Repeatable Read 때에는 보이지 않았던 행이 보일 수도 있다. (팬덤 읽기)
+
+
+MVCC는 편리하지만 Non Locking Read와 Locking Read가 혼재할 수 있는 새로운 문제가 있다. 참조 모드의 혼재에 의한 믄제를 막으려면 격리 레벨을 SERIALIZABLE로 해야한다. SERIALIZABLE 격리 레벨에서 모든 행 접근이 Locking Read가 된다. 다시 **말해서 접근한 행은 SELECT라면 공유 lock이, 변경 계열 쿼리라면 베타 lock이 전체 행에 자동적으로 걸린다.** lock을 건 행 데이터는 다른 트랜잭션에서 변경할 수 없기 때문에 그 트랜잭션이 완료되어 lock이 해제되기까지 항상 같은 값을 갖게 된다.
