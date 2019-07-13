@@ -23,3 +23,20 @@ systemctl enable nginx
 
 * LB 그림 그리기
 * CLB만 public network 하면 된다. 나머지는 VPN
+
+
+# 3주차
+
+- nginx proxy 설정
+- nginx location → api endpint reverse proxy 설정
+  - location 설정은 상위에 있을수록 우선순위가 높기 때문에 설정을 잘 해야한다.
+  - proxy 웹서버 여역으로 요청을 그대로 전달
+  - 해더값에 많은 정보가 있으니까 그대로 전달해ㅑ함
+  - ios / android 에따라서 로드 벨런싱 할 수도 있음 (좋아 보이진 않음?...)
+- front proxy reverse proxy 차이는 ?
+
+# 4주차
+
+## 네트워크
+
+## 리눅스
