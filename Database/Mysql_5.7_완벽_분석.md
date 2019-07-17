@@ -251,11 +251,11 @@ join City.countrycode = Country.code and City.id = Country.capital
 join CountryLanguage.countryCode = City.countryCode
 ```
 
-id | select_type | table | partitions | type | possible_keys | key | key_len | ref | rows | filtered | Extra
----|-------------|-------|------------|------|---------------|-----|---------|-----|------|----------|------
-1 | SIMPLE | Country | NULL | ALL | PRIMARY | NULL | NULL | NULL | 239 | 100.00 | Using where
-1 | SIMPLE | City | NULL | eq_ref | PRIMARY,ConturyCode | PRIMAY | 4 | world.Country.Capital | 1 | 5.00 | Using where
-1 | SIMPLE | CountryLanguage | NULL | ref | PRIMARY,ConturyCode | CountryCode | 3 | world.Country.Code | 4 | 100.00 | Using index
+id | select_type | table           | partitions | type   | possible_keys       | key         | key_len | ref                   | rows | filtered | Extra
+---|-------------|-----------------|------------|--------|---------------------|-------------|---------|-----------------------|------|----------|------------
+1  | SIMPLE      | Country         | NULL       | ALL    | PRIMARY             | NULL        | NULL    | NULL                  | 239  | 100.00   | Using where
+1  | SIMPLE      | City            | NULL       | eq_ref | PRIMARY,ConturyCode | PRIMAY      | 4       | world.Country.Capital | 1    | 5.00     | Using where
+1  | SIMPLE      | CountryLanguage | NULL       | ref    | PRIMARY,ConturyCode | CountryCode | 3       | world.Country.Code    | 4    | 100.00   | Using index
 
 EXPLAIN에는 3개의 행이 있는데, 각각 테이블로의 접근을 표시한 것이다. 조인은 위에서부터 순서대로 일어난다고 생각하면 된다.
 
@@ -279,20 +279,20 @@ ALL xpdlqmf tmzos, eq_ref는 조인시 기본 키나 고유키를 사용하여 �
 
 접근 방식이 ALL 또는 index인 경우는 그 쿼리로 사용할 수 있는 적절한 인덱스가 없다는 의미일 수도 있다. 위 쿼리에서 Country 테이블에 대한 접근은 ALL이지만 이는 WHERE 구의 조건을 지정하지 않았기 때문이다. 그러한 쿼리에서 드라이빙 테이블에 접근한다면 전체 행을 스캔 할수 밖에 없다.
 
-접근 방식 | 설명
-------|---
-const | 기본 키 또는 고유키에 의한 loockup(등가비교), 조인이 아닌 가장 외부의 테이블에 접근 하는 방식, 결과는 항상 1행이다. 단 기본 키, 고유 키를 사용하고 있으므로 범위 검색으로 지정하는 경우 const가 되지 않는다
-system | 테이블에 1행밖에 없는 경우의 특수한 접근 방식
-ALL | 전체 행 스캔, 테이블의 데이터 전체에 잡근한다.
-index | 인덱스 스캔, 테이블의 특정 인덱스의 전체 엔트리에 접근한다.
-eq_ref | 조인이 내부 테이블로 접근할 때 기본키 또는 공유 키에 의한 lookup이 일어난다. const와 비슷하지만 조인의 내부 테이블에 접근한다는 점이 다르다
-ref | 고유 키가아닌 인덱스에 대한 등가비교, 여러 개 행에 접근할 가능성이 있다.
-ref_or_null | ref와 마찬가지로 인덱스 접근 시 맨 앞에 저장되어 있는 NULL의 엔트리를 검색한다.
-range | 인덱스 특정 범위의 행에 접근한다
-fulltext | fulltext 인덱스를 사용한 검색
-index_merge | 여러 개인스턴스를 사용해 행을 가져오고 그 결과를 통합한다.
+접근 방식           | 설명
+----------------|-------------------------------------------------------------------------------------------------------------------------------
+const           | 기본 키 또는 고유키에 의한 loockup(등가비교), 조인이 아닌 가장 외부의 테이블에 접근 하는 방식, 결과는 항상 1행이다. 단 기본 키, 고유 키를 사용하고 있으므로 범위 검색으로 지정하는 경우 const가 되지 않는다
+system          | 테이블에 1행밖에 없는 경우의 특수한 접근 방식
+ALL             | 전체 행 스캔, 테이블의 데이터 전체에 잡근한다.
+index           | 인덱스 스캔, 테이블의 특정 인덱스의 전체 엔트리에 접근한다.
+eq_ref          | 조인이 내부 테이블로 접근할 때 기본키 또는 공유 키에 의한 lookup이 일어난다. const와 비슷하지만 조인의 내부 테이블에 접근한다는 점이 다르다
+ref             | 고유 키가아닌 인덱스에 대한 등가비교, 여러 개 행에 접근할 가능성이 있다.
+ref_or_null     | ref와 마찬가지로 인덱스 접근 시 맨 앞에 저장되어 있는 NULL의 엔트리를 검색한다.
+range           | 인덱스 특정 범위의 행에 접근한다
+fulltext        | fulltext 인덱스를 사용한 검색
+index_merge     | 여러 개인스턴스를 사용해 행을 가져오고 그 결과를 통합한다.
 unique_subquery | IN 서브쿼리 접근에서 기본 키 또는 고유 키를 사용한다. 이 방식은 쓸데 없는 오버헤드를 줄여 상당히 빠르다.
-index_subquery | unique_sunquery와 거의 비슷하지만 고유한 인덱스를 사용하지 않는 점이 다르다. 이 접근 방식도 상당히 빠르다
+index_subquery  | unique_sunquery와 거의 비슷하지만 고유한 인덱스를 사용하지 않는 점이 다르다. 이 접근 방식도 상당히 빠르다
 
 ##### possible_keys
 possible_keys 필드는 이용 가능성있는 인덱스의 목록이다.
@@ -479,3 +479,87 @@ MVCC를 이용하는 격리 레벨 REPEATABLE-READ, READ-COMMITTED에는 쿼리�
 
 
 MVCC는 편리하지만 Non Locking Read와 Locking Read가 혼재할 수 있는 새로운 문제가 있다. 참조 모드의 혼재에 의한 믄제를 막으려면 격리 레벨을 SERIALIZABLE로 해야한다. SERIALIZABLE 격리 레벨에서 모든 행 접근이 Locking Read가 된다. 다시 **말해서 접근한 행은 SELECT라면 공유 lock이, 변경 계열 쿼리라면 베타 lock이 전체 행에 자동적으로 걸린다.** lock을 건 행 데이터는 다른 트랜잭션에서 변경할 수 없기 때문에 그 트랜잭션이 완료되어 lock이 해제되기까지 항상 같은 값을 갖게 된다.
+
+# 보안
+
+## MySQL 보안 모델
+
+### 사용자 계정
+MySQL은 클라이언트/서버 방식의 소프트웨어로, 불특정 다수의 원격 호스트가 접속한다. 따라서 MySQL 서버가 의도하지 않은 조작을 받아들이지 않도록 해야한다. 클라이언트/서버 방식의 소프트웨어의 보안에서 중요한것은 서버가 허가한 사용자만 접근하도록 하는 것이다. 사용자 계정을 확실히 운영하는 것이 보안의 대원칙이다. MySQL 사용자 계정에서 무엇보다 주의해야 할 점은 계정이 **사용자명과 호스트의 세트로 구성되어 있다는 점이다. 여기서 말하는 호스트란, 접속하고자 하는 클라이언트의 호스트를 말한다. MySQL에서는 같은 사용자명이 있어도 클라이언트의 호스트가 다르다면 다른 사용자 계정으로 인식한다.**
+
+```
+사용자명@호스트
+```
+
+사용자 계정                        | 설명                                                  | 우선수위
+------------------------------|-----------------------------------------------------|-----
+appuser@appserver.example.com | 사용자명은 공란이 아니고, 호스트에 와일드카드를 지정하지 않았다.                | 1
+''@appserver.example.com      | 특정 호스트에서 임이의 사용자명으로 접속을 받는다.                        | 2
+appuser@app%.example.com      | app%..example.com에 일치하는 호스트에서 appuser 사용자의 접속을 받는다. | 3
+''@app%...example.com         | app%..example.com에 일치하는 호스트에서 임이의 사용자명에 의한 접속을 받는다. | 4
+appuser@%                     | 임이의호스트에서 appuser 사용자의 접속을 받는다.                      | 5
+''@%                          | 사용자명도 호스트명도 임의로 한다.                                 | 6
+
+
+
+### MySQL의 권한
+사전에 허가된 사용자 계정만 접근한다고 해도, 부정 접근의 우험이 없다고는 할 수 없다. 각각의 사용자 계정이 실행할 수 있는 조작을 최소한으로 하는 것이 바람직하다.
+
+권한명                    | 대상               | 종류  | 설명
+-----------------------|------------------|-----|--------------------------------------------
+CREATE                 | 데이터베이스, 테이블, 인덱스 | DDL | 데이터베이스, 테이블, 테이블 작성에 동반하는 인덱스의 작성
+CREATE TEMPORARY TABLE | 임시테이블            | DDL | 임시테이블 작성
+INDEX                  | 테이블              | DDL | 현존하는 테이블에 인덱스 작성과 삭제
+REFERENCES             | 테이블              | DDL | 와부 키 제약의 작성
+ALTER                  | 테이블              | DDL | 테이블 정의의 변경
+DROP                   | 데이터베이스, 테이블, 뷰   | DDL | 데이터베이스, 테이블, 뷰의 삭제
+CREATE VIEW            | 뷰                | DDL | 뷰의 작성
+SHOW VIEW              | 뷰                | DDL | 뷰의 정의 확인
+EVENT                  | 이벤트 스케줄러         | DDL | 이벤트 스케줄러의 작성, 삭제, 변경
+TRIGGER                | 트리거              | DDL | 트리거의 작성, 삭제 변경, 실행
+CREATE ROUTINE         | 스토어드 루틴          | DDL | 스토어드 루틴의 작성
+ALTER ROUTINE          | 스토어드 루틴          | DDL | 스토어드 루틴의 변경 삭제
+EXECUTE                | 스토어드 루틴          | DML | 스토어드 루틴의 실행
+LOCK TABLES            | 데이터베이스           | DML | 테이블 lock 확인
+SELECT                 | 테이블, 칼럼          | DML | 테이블의 참조
+INSERT                 | 테이블, 칼럼          | DML | 테이블에 행 추가
+UPDATE                 | 테이블, 칼럼          | DML | 테이블의 행 변경
+DELETE                 | 테이블              | DML | 테이블에서 행 삭제
+FILE                   | 서버               | 관리  | 호스트이 임이의 파일에 접근
+CREATE TABLESPACE      | 서버               | 관리  | 테이블스페이스의 작성, 삭제, 변경
+CREATE USER            | 서버               | 관리  | 사용자 작성, 변경, 삭제 RENAME, 모든 권한의 삭제
+PROCESS                | 서버               | 관리  | SHOW PROCESSLIST와 SHOW ENGINE... STATUS의 실행
+PROXY                  | 서버               | 관리  | 다른 사용자의 권한을 빌려씀
+RELOAD                 | 서버               | 관리  | FLUSH 명령어의 실행
+REPLICATION SLAVE      | 서버               | 관리  | 레플리케이션 슬레이브 실행
+REPLICATION CLIENT     | 서버               | 관리  | 레플리케이션 관리 명령어 실행
+SHOW DATABASE          | 서버               | 관리  | 서버에 있는 데이터베이스를 리스트업
+SHUTDOWN               | 서버               | 관리  | 서버 정지
+SUPER                  | 서버               | 관리  | 각종 관리 업무의 실행
+USAGE                  | 서버               | -   | 어떠한 권한도 부여하지 않음, 서버 로그인이나 DUAL 테이블 접근 가능
+ALL                    | 서버               | -   | 모든 권한 부여
+
+권한을 부여할 떄 중요한 것은 영향이 큰 권한을 사용자에게 무턱대고 부여하지 않는 것이다, 특히 관리계 명령에 대한 권한 DDL에 대한 권한 은 데이터베이스 관리자나 배치 서버 사용자 계정만 부여하는 것이 바람직하다. MySQL에서는 전통적으로 GRANT 명령어를 실행했을 때, 권한을 부여 받을 사용자가 존재하지 않으면 사용자 계정을 자동으로 만든 후에 권한을 부여 한다. MySQL 5.7에서는 이런 사용법은 권장하지 않는다.
+
+### 권한 테이블
+MySQL 사용자가 가진 각종 권한에 대한 정보는 mysql 데이터베이스 안에 있는 테이블에 저장되어 있다. **이들 시스템을 권한(Grant Table) 이라 한다.**
+
+테이블명         | 설명
+-------------|------------------------
+user         | 로그인 정보와 서버 젠체에 대한 권한 정보
+db           | 데이터베이스별 권한 정보
+table_priv   | 테이블별 권한 정보
+colums_priv  | 컬럼별 권한 정보
+procs_priv   | 스토어드 루틴에 대한 권한 정보
+proxies_priv | 권한의 프락시에 관한 정보
+
+권한 테이블에는 사용자 계정별로 권한 정보가 저장되있다. MySQL 서버를 시작할 때 이륵 고속으로 접근 할 수 있도록 데이터가 **메모리에 캐시된다.** 그러기 때문에 변경을 해도 메모리 캐시에 즉시 반영되는 것은 아니다. 반영하려면 아래 명령어를 수행 해야한다.
+```sql
+FLUSH PRIVILEGES
+```
+
+### 프락시 사용자
+프락시 사용자(proxy user)란, 다른 사용자의 권한을 대리로 행사하는 사용자를 말한다. 프락시 사용자에게 각종 오브젝트에 접근하기 위한 **구체적인 권한은 부여되어 있지 않고, PROXY 권한반 부여 된다.** 다시 말해 프락시 사용자를 사용해 로그인한 사용자는 **프락시 대상 사용자와 같은 권한을 갖게 되는 것이다.**
+
+### 통신 경로의 보호
+MySQL에서는 통신 경로의 보호를 위해 TLS/SSL에 의한 암호화를 지원하고 있다. MySQL 5.7 부터는 적용이 간략해졌다. **사설망을 이용하는 경우 등 통신 경로의 보호가 필요 없는 경우도 있다.**
