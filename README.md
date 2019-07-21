@@ -48,6 +48,7 @@
   * [Spring Test 가이드](https://github.com/cheese10yun/TIL/blob/master/Spring/test/spring-guide-test.md)
   * [Rest Docs : Test Code 기반 REST API 문서 만들기](https://github.com/cheese10yun/springboot-restdocs)
   * [객체 생성시 테스트 전략](https://github.com/cheese10yun/blog-sample/tree/master/ddd)
+  * [테스트 코드 작성에 대한 나름의 고찰](https://github.com/cheese10yun/blog-sample/tree/master/test-code)
 * Transaction
   * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
