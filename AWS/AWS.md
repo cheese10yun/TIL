@@ -40,3 +40,18 @@ systemctl enable nginx
 ## 네트워크
 
 ## 리눅스
+
+# 5주차
+
+##  Docker
+###  Health Check
+* EXITED, Health Check를 꼭 진행 해야한다. 
+
+### docker 명령어
+* `docker rm web`
+  * rm / rmi: 컨테이너 / 이미지 삭제시 사용
+  * `-f`을 이용해서 삭제
+
+### Container Registry
+
+
