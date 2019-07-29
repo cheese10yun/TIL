@@ -37,3 +37,42 @@ var s2: String = "" // null이 될 수 없음
 
 코틀린 컴파일러로 컴파일한 코드는 코틀린 런타임 라이브러리에 의존 한다.
 
+## 클래스와 프로퍼티
+```kotlin
+class Person {
+    
+    val name: Strung, // 읽기 전용 프로퍼티로, 코틀링은 비공개 필드와 필드를 읽는 단순한 공개 게터를 말들어 낸다.
+    vaㄱ isMarrried: Boolean // 읽기, 쓰기 프로퍼티로, 코틀린은 (비공개) 필드, 공개 개터, 공개 세터를 만들어 낸다.
+}
+```
+
+## 강력한 When
+븐기 조건에 상수만을 사용할 수 있는 자바와 달리 코틀린 `when`의 분기 조건은 임이의 객체를 허용한다.
+
+```kotlin
+fun mix(c1: Color, c2: Color) = 
+    // 
+    when(setOf(c1, c2)) {
+        setOf(READ, YELLOW) -> ORANGE
+        setOf(YELLOW, BLUDE) -> GREEN
+        setOf(BLUDE, VIOLET) -> INDIGO
+        else -> throw Exception()
+    }
+```
+
+## try는 식이다
+
+
+```kotlin
+fun readNumber (reader: BufferedReader) {
+    var number = try {
+        Integer.parseInt(reader.readLine())
+    } catch (e: NumberFormatException) {
+        return
+        // return 0 catch 블록도 값으로 만들면 그 다음 동작이 실행된다.
+    }
+    println (number)
+}
+```
+
+**최신 JVM 언어와 마찬가지로 코틀린도 체크 예외와 언체크 예외를 구별하지 않는다. 코틀린의 try 키워드는 if when과 마찬가지로 식이다. 따라서 try의 값을 변수에 대입할 수 있다. if와 달리 try는 본문에 반드시 중광호 {}로 둘러싸야한다.** 예제는 catch 블록안에서 return 문을 사용한다. 따라서 예외가 발생한 경우 **catch 블록 다음의 코드는 실행되지 않는다.** 계속 진행하고 싶다면 catch 블록 도 값으로 만들면 된다. 
