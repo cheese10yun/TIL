@@ -141,7 +141,6 @@
 * [Nginx 기초 설정](https://github.com/cheese10yun/TIL/blob/master/nginx/nginx-basic.md)
 
 ## Java
-* [데이터 타입](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%EB%B6%84%EB%A5%98.md)
 * [Thread](https://github.com/cheese10yun/TIL/blob/master/JAVA/thread.md)
 * [인터페이스](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md)
 * [Effective Java](https://github.com/cheese10yun/TIL/blob/master/JAVA/Effective-java.md)
