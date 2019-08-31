@@ -91,7 +91,7 @@
 * [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C_%EA%B8%B0%EC%B4%88.md)
 * [운영체제와 정보기술의 원리 정리](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C%EC%99%80%EC%A0%95%EB%B3%B4%EA%B8%B0%EC%8A%AC%EC%9D%98%EC%9B%90%EB%A6%AC.md)
 
-## 터베이스
+## 데이터베이스
 * [데이터베이스 첫걸음 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%B2%AB%EA%B1%B8%EC%9D%8C.md)
 * [관계형 데이터베이스 실전 입문 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EA%B4%80%EA%B3%84%ED%98%95_%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4_%EC%8B%A4%EC%A0%84_%EC%9E%85%EB%AC%B8.md)
 * [정규화 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EC%A0%95%EA%B7%9C%ED%99%94.md)
