@@ -44,7 +44,7 @@ var s2: String = "" // null이 될 수 없음
 * `System.out.println` 대신에 `println()`이라고 쓴다. 코틀린 표준 라이버러리는 여러 가지 표준 자바 라이브러리 함수를 한겨랗게 사용할 수 있게 감싼 래퍼를 제공한다.
   
 > 문(statement)과 식(expression)의 구분
-> 코틀린에서 if는  식이지 문이아니다. 식은 값을 만들어 내며 다른 식의 하위 요소로 계산에 참여할 수 있는 반면에 문은 자신을 둘러싸고 있는 가장 안쪽 블록의 최상위 요소로 존재하며 아무런 값을 만들어내지 않는다.
+> 코틀린에서 if는  식이지 문이아니다. **식은 값을 만들어 내며 다른 식의 하위 요소로 계산에 참여**할 수 있는 반면에 문은 자신을 둘러싸고 있는 가장 안쪽 블록의 최상위 요소로 존재하며 **아무런 값을 만들어내지 않는다.**
 
 ## 변수
 
@@ -109,7 +109,7 @@ class Rectangle(val height: Int, val width: Int) {
 ## 선택 표현과 처리: enum, when
 
 ### enum 클래스
- ```kotlin
+```kotlin
  enum class Color(
     val r: Int, val g: Int, val b: Int
 ) {
@@ -124,26 +124,77 @@ class Rectangle(val height: Int, val width: Int) {
 ```
 코틀린에서 enum은 **소프트 키워드**라 부르는 존재다. enum은 class 앞에 있을 떄 특별한 의미를 지니지만 **다른 곳에서 이름에 사용할 수 있다**. 반면 클래스는 키워드다. 따라서 class라는 이름을 사용할 경우 clazz나 aClass라는 이름을 사용 한다.
 
+### when으로 enum 클래스 다루기
+```kotlin
+fun getMnemonic(color: Color) = // 함수 반환 값으로 when 식을 직접 사용 가능
+    when (color) {
+        Color.RED -> "Richard"
+        Color.ORANGE -> "Of"
+        Color.YELLOW -> "York"
+        Color.GREEN -> "Gave"
+        Color.BLUE, Color.INDIGO -> "Battle"
+    }
+```
+자바의 switch에 해당하는 것이 코틀린의 when이다. if와 마찬가지로 **when도 값을 만들어내는 식이다.** 따라서 식이 본문인 함수에 when을 바로 사용할 수 있다.(식이니 값을 가질수 있기 때문에) 자바와 달리 각 분기의 끝에 break를 넣지 않아도 된다.
 
 
 
-
-
-
-기본적으로 코틀린은 프로퍼티를 선언하는 방식은 프로퍼티와 관련 있는 접근자를 선언하는 것이다.
-
-## 강력한 When
-븐기 조건에 상수만을 사용할 수 있는 자바와 달리 코틀린 `when`의 분기 조건은 임이의 객체를 허용한다.
+### when과 임이의 객체를 함께 사용
+코틀린에서 when은 자바의 switch보다 훨씬 더 강력하다. 분기 조건에 상수(enum 상수나 숫자 리터럴)만을 사용할 수있는 자바 switch와 달리 코틀린 when의 분기 조건은 임이의 객체를 허용 한다.
 
 ```kotlin
-fun mix(c1: Color, c2: Color) = 
-    // 
-    when(setOf(c1, c2)) {
-        setOf(READ, YELLOW) -> ORANGE
-        setOf(YELLOW, BLUDE) -> GREEN
-        setOf(BLUDE, VIOLET) -> INDIGO
-        else -> throw Exception()
+fun mix(c1: Color, c2: Color) =
+    when (setOf(c1, c2)) {
+        setOf(Color.RED, Color.YELLOW) -> Color.ORANGE
+        setOf(Color.YELLOW, Color.BLUE) -> Color.GREEN
+        else -> throw IllegalArgumentException("argument is invalid")
     }
+```
+c1, c2가 RED, YELLOW라면 그 둘을 혼합한 결과는 ORANGE다. 이를 구현해서 집합 비교를 사용한다.
+
+**when의 분기 조건 부분에 식을 넣을 수 있기 때문에 많은 경우 코드를 더 간결하고 아름답게 작성 할 수 있다.**
+
+
+### 스마트 캐스트: 타입 검사와 타입 캐스트를 조합
+```koltin
+fun eval(e: Expr): Int =
+    when (e) {
+        is Num -> e.value
+        is Sum -> eval(e.right) + eval(e.left)
+        else -> throw IllegalArgumentException("unknown")
+    }
+```
+**어떤 변수나 원하는 타입인자를 일단 is로 검사하고 나면 굳이 변수를 원하는 타입으로 캐스팅 하지 않아도 마치 처음부터 그 변수가 원하는 타입으로 선언된 것처럼 사용할 수 있다.** 하지만 실제로는 컴파일러가 캐스팅을 수행해준다. 이를 **스마트 캐스트**라고 한다.
+
+## 대상을 이터레이션: while과 for 루프
+
+### 수에 대한 이터레이션: 범위와 수열
+루프의 가장 흔한 용례인 초깃값, 증가 값, 최종 값을 사용한 루프를 대신하기 위해 코틀린에서는 범위를 사용한다.
+
+범위는 기본적으로 두 값으로 이뤄진 구간이다. 보통 그 두 값을 정수 등의 숫자 타입이며, `..` 연산자로 시작 값과 끝 값을 연결해서 범위를 만든다.
+
+```kotlin
+fun main(args: Array<String>) {
+
+    val oneToTen = 1..10
+
+    println(oneToTen)
+
+    for (i in 1..100){
+        println(fizzBuzz(i))
+    }
+
+    for (i in 100 downTo 1 step 2){
+        println(fizzBuzz())
+    }
+}
+
+fun fizzBuzz(i: Int) = when {
+    i % 15 == 0 -> "FizzBuzz"
+    i % 3 == 0 -> "Fizz"
+    i % 5 == 0 -> "Buzz"
+    else -> "$i"
+}
 ```
 
 ## try는 식이다
