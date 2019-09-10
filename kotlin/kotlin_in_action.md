@@ -77,14 +77,58 @@ fun main(args: Array<String>) {
 
 
 ## 클래스와 프로퍼티
+클래스라는 개념의 목적은 데이터를 캡슐화하고 캡슐화한 데이터를 다루는 코드를 한 주체 아래에 가두는 것이다. 자바에서는 필드와 접근자를 한데 묶어 프로퍼티라고 부른다.
+
+
+### 프로퍼티
 ```kotlin
-class Person {
-    
+class Person (
+
     val name: Strung, // 읽기 전용 프로퍼티로, 코틀링은 비공개 필드와 필드를 읽는 단순한 공개 게터를 말들어 낸다.
     var isMarrried: Boolean // 읽기, 쓰기 프로퍼티로, 코틀린은 (비공개) 필드, 공개 개터, 공개 세터를 만들어 낸다.
+)
+
+fun main(args: Array<String>){
+    val person = Person("name", true)
+    println(person.name) // name
+    println(person.isMarried) // true
 }
 ```
-클래스라는 개념의 목적은 데이터를 캡슐화하고 캡슐화한 데이터를 다루는 코드를 한 주체 아래에 가두는 것이다. 자바에서는 필드와 접근자를 한데 묶어 프로퍼티라고 부른다.
+
+### 커스텀 접근자
+```kotlin
+class Rectangle(val height: Int, val width: Int) {
+
+    val isSquare: Boolean
+        get() { // 프로퍼티 게터 선언
+            return height == width
+        }
+}
+```
+ 
+## 선택 표현과 처리: enum, when
+
+### enum 클래스
+ ```kotlin
+ enum class Color(
+    val r: Int, val g: Int, val b: Int
+) {
+    RED(255, 0, 0),
+    ORANGE(255, 165, 0),
+    YELLOW(255, 255, 0),
+    GREEN(0, 255, 0),
+    BLUE(0, 0, 255); // 코틀린에서 유일하게 `;` 이 필요한 곳이 enum이다.
+
+    fun rgb() = (r * 256 * g) * 256 + b
+}
+```
+코틀린에서 enum은 **소프트 키워드**라 부르는 존재다. enum은 class 앞에 있을 떄 특별한 의미를 지니지만 **다른 곳에서 이름에 사용할 수 있다**. 반면 클래스는 키워드다. 따라서 class라는 이름을 사용할 경우 clazz나 aClass라는 이름을 사용 한다.
+
+
+
+
+
+
 
 기본적으로 코틀린은 프로퍼티를 선언하는 방식은 프로퍼티와 관련 있는 접근자를 선언하는 것이다.
 
