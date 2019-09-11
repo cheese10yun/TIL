@@ -197,19 +197,76 @@ fun fizzBuzz(i: Int) = when {
 }
 ```
 
-## try는 식이다
+### 맵에 대한 이터레이션
+```kotlin
+    val binaryReps = TreeMap<Char, String>()
+
+    for (c in 'A'..'F') { // A ~ F까지 이터레이션
+        val binary = Integer.toBinaryString(c.toInt()) // 아시크 코드를 2진표현으로 
+        binaryReps[c] = binary // c를 키로 c의 2진 표현을 맵에 put
+    }
+
+    for ((letter, binary) in binaryReps) { // 맵에 대한 이터레이션, 맵의 키와 값을 두 변수에 각각 대입한다.
+        println("$letter = $binary")
+    }
+```
+
+키를 사용해 맵의 값을 가져어고나 키에 해당 하는 값을 넣는 작업인 get, put을 사용 하는 대신에 `map[key]` `[key] = value`
+
+### in으로 컬렉션이나 범위의 원소 검사
+```kotlin
+fun isLetter(c: Char) = c in 'a'..'z' || c in 'A'..'Z'
+
+fun isNotDigit(c: Char) = c !in '0'..'9'
+```
+`in` 연산자를 사용해 어떤 값이 범위에 속하는지 검사할 수 있다. 반대로 `!in`을 사용하면 어떤 값이 범위에 속하지 않는지 검사 할 수 있다.
 
 
+```kotlin
+fun reconize(c: Char) = when (c) {
+    in '0'..'9' -> "number"
+    in 'a'..'z', in 'A'..'Z' -> "string"
+    else -> "what ? "
+}
+```
+
+## 코틀린의 예외 처리
+코틀린의 예외처리 방식은 자바와 비슷하다. 발생한 예외를 함수 호출 단에서 처리(catch)하지 않으면 함수 호출 스택을 거슬러 올라가면서 예외를 처리하는 부분이 나올 때까지 예외를 다시 던진다 (throw)
+
+
+
+### try, catch, finally
+```kotlin
+fun readNumber(reader: BufferedReader): Int?{
+    try {
+        val line = reader.readLine()
+        return Integer.parseInt(line)
+    } catch (e: NumberFormatException){
+        return null
+    } finally {
+        reader.close()
+    }
+}
+```
+자바 코드와 가장 큰 차이는 **throw 절이 코드에 없다는 점이다.** 자바에서는 체크 예외인 경우에는 함수를 작성할 때 함수 선언 뒤에 throw IOExecption을 붙여야 한다. **자바에서는 체크 예외를 명시적으로 처리해야 한다.**
+
+**코틀린은 체크 예외외 언체크 예외를 구분하지 않는다.** 자바는 체크, 언체크 예외를 의미적으로 구분짓지만 실제 개발에서는 이것을 의미 있게 구분하지 않거니와 체크드 예외를 `try catch` 으로 감싸고 다음 로직을 이어가는 코드를 작성하는 경우도 흔하게 있다. 이런 부분들 때문에 예외를 처리하는데 불편함과, 실수를 발생시킨다.
+
+
+
+
+## try를 식으로 사용
 ```kotlin
 fun readNumber (reader: BufferedReader) {
     var number = try {
         Integer.parseInt(reader.readLine())
     } catch (e: NumberFormatException) {
         return
-        // return 0 catch 블록도 값으로 만들면 그 다음 동작이 실행된다.
+        // null catch 블록도 값으로 만들면 그 다음 동작이 실행된다.
     }
-    println (number)
+    println (number) // catch 블록 다음이기 때문에 이 코드는 실행되지 않는다.
 }
 ```
+코틀린의 try 키워드는 if when과 마찬가지로 **식이다**. 따라서 try의 값을 변수에 대입할 수 있다. 
 
-**최신 JVM 언어와 마찬가지로 코틀린도 체크 예외와 언체크 예외를 구별하지 않는다. 코틀린의 try 키워드는 if when과 마찬가지로 식이다. 따라서 try의 값을 변수에 대입할 수 있다. if와 달리 try는 본문에 반드시 중광호 {}로 둘러싸야한다.** 예제는 catch 블록안에서 return 문을 사용한다. 따라서 예외가 발생한 경우 **catch 블록 다음의 코드는 실행되지 않는다.** 계속 진행하고 싶다면 catch 블록 도 값으로 만들면 된다. 
+위 예제처럼 **catch 블록안에서 return문을 사용한다.** 예외가 발생한 경우 catch 블록 다음의 코드는 실행되지 않는다. 
