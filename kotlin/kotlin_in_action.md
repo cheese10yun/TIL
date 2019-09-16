@@ -270,3 +270,40 @@ fun readNumber (reader: BufferedReader) {
 위 예제처럼 **catch 블록안에서 return문을 사용한다.** 예외가 발생한 경우 catch 블록 다음의 코드는 실행되지 않는다.
 
 # 03 함수 정의와 호출
+
+## 코틀린에서 컬렉션 만들기
+
+```kotlin
+val hashSetOf = hashSetOf(1, 7, 53)
+println(hashSetOf) // [1, 53, 7]
+
+val arrayListOf = arrayListOf(1, 7, 53)
+println(arrayListOf) // [1, 7, 53]
+
+val hashMapOf = hashMapOf(1 to "one", 7 to "seven", 53 to "fifty-three")
+println(hashMapOf) // {1=one, 53=fifty-three, 7=seven}
+
+println(hashSetOf.javaClass) // class java.util.HashSet
+println(arrayListOf.javaClass) // class java.util.ArrayList
+println(hashMapOf.javaClass) // class java.util.HashMap
+```
+코틀린은 위 처럼 간단하게 컬랙션을 사용할 수 있다. **여기서 `to`는 언어가 제공하는 특별한 키워드가 아니라 일반 함수이다.**
+
+`javaClass`는 자바의 `getClass()`에 해당하는 코틀린 코드다. 이 코드는 코틀린이 자신만의 컬렉션 기능을 제공하지 않는 다는 뜻이다. 
+
+코틀린이 자체 컬렉션을 제공하지 않는 이유는 표준 자바 컬렉션을 활용하면 자바 코드와 상호작용하기가 훨씬 쉽기 떄문이다. 자바에서 코틀린 함수를 호출하거나 코틀린에서 자바 함수를 호출할 때 자바와 코틀린 컬렉션을 서로 변환할 필요가 없다. **코틀린 컬렉션은 자바 컬렉션과 똑같은 클래스다.** 하지만 코틀린에서는 자바보다 더 많은 기능을 쓸 수 있다. 
+
+```kotlin
+val strings = listOf("first", "second", "third")
+println(strings.last()) // third
+
+val numbers = setOf(1, 14, 2)
+println(numbers.max()) // 14
+```
+
+위 코드 처럼 컬렉션에서 많은 기능들을 제공해준다.
+
+## 함수를 호출해서 쉽게 만들기
+
+
+
