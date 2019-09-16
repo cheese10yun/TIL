@@ -305,5 +305,88 @@ println(numbers.max()) // 14
 
 ## 함수를 호출해서 쉽게 만들기
 
+```kotlin
+
+fun <T> joinToString(
+    collection: Collection<T>,
+    separator: String,
+    prefix: String,
+    postfix: String
+): String {
+    val result = StringBuilder(prefix)
+
+    for ((index, element) in collection.withIndex()) {
+        if (index > 0) result.append(separator)
+        result.append(element)
+    }
+
+    result.append(postfix)
+    return result.toString()
+}
+return result.toString()
 
 
+val hashSetOf = hashSetOf(1, 7, 53)
+println(joinToString(arrayListOf, "; " ,"(",")")) // (1; 7; 53)
+println(joinToString(arrayListOf, separator = "; " ,prefix = "(", postfix = ")")) // // (1; 7; 53)
+```
+위 코드 처럼 코틀린으로 작성한 함수를 호출할 떄는 함수에 전달하는 인자 중 일부의 이름을 명시할 수 있다. 이런 코드는 가독성이 좋은 장점이 있다. **호출 시 인자 중 어느 하나라도 이름을 명시하고 나면 혼동을 막기 위해 그 뒤에 오는 모든 인자는 이름을 꼭 명시해야 한다.**
+
+## 디폴트 파라미터 값
+코틀린의 디폴트 파라미터 값을 이용하면 자바의 오버로딩이 많아 지는 문제를 해결 할 수 있다.
+
+```kotlin
+fun <T> joinToString(
+    collection: Collection<T>,
+    separator: String = ", ",
+    prefix: String = "",
+    postfix: String = ""
+): String {
+    val result = StringBuilder(prefix)
+
+    for ((index, element) in collection.withIndex()) {
+        if (index > 0) result.append(separator)
+        result.append(element)
+    }
+
+    result.append(postfix)
+
+    return result.toString()
+}
+
+println(joinToString(arrayListOf, separator = ", ")) // 1, 7, 53
+println(joinToString(arrayListOf, separator = "; ")) // 1; 7; 53
+```
+함수의 디폴트 파라미터 값은 함수를 호출하는 쪽이 아니라 함수 선언 쪽에서 지정된다. 그레서 디폴트 값을 변경하면 이미 작성된 코드중에 값을 지정하지 않은 모든 인자는 자동으로 바뀐 디폴트 값으로 적용 받는다.
+
+## 메서드를 다른 클래스에 추가: 확장 함수와 확장 프로퍼티
+**확장 함수를 함수는 어떤 클래스의 멤버 메소드인 것처럼 호출할 수 있지만 그 클래스 밖에 선언된 함수다.**
+
+```kotlin
+
+// String = 수신 객체 타입, this. = 수신 객체 (this는 자기자신, 즉 함수를 의미한다) 
+fun String.lastChar(): Char = this.get(this.length - 1);
+```
+확장 함수를 만들려면 추가하려는 함수 이름 앞에 그 함수가 확장할 클래스의 이름을 덧붙이기만 하면 된다. **클래스 이름을 수신 객체 타입, 확장 함수가 호출되는 대상이 되는 값을 수신 객체라고 부른다.**
+
+
+### 확장 함수로 유틸리티 함수 정의
+```kotlin
+fun <T>Collection<T>.joinToString2(
+    separator: String = ", ",
+    prefix: String = "",
+    postfix: String = ""
+): String {
+    val result = StringBuilder(prefix)
+
+    for ((index, element) in this.withIndex()) {
+        if (index > 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
+
+print(arrayListOf.joinToString2("; ", "#", "@")) // #1; 7; 53@
+```
+확장 함수로 유틸리티 함수를 편리하게 사용할 수 있다. **주위 해야할것은 확장 함수는 오버라이드 할 수 없다는 것이다.**
