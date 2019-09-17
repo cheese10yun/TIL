@@ -390,3 +390,56 @@ fun <T>Collection<T>.joinToString2(
 print(arrayListOf.joinToString2("; ", "#", "@")) // #1; 7; 53@
 ```
 확장 함수로 유틸리티 함수를 편리하게 사용할 수 있다. **주위 해야할것은 확장 함수는 오버라이드 할 수 없다는 것이다.**
+
+## 코드 다듬기: 로컬 함수와 확장
+코틀린에서는 함수에서 추출한 함수를 원 함수 내부에 중첩시킬 수 있다. 그렇게 되면 문법적인 부가 비용을 들이지 않고도 깔끔하게 코드를 조작할 수 있다.
+
+```kotlin
+fun saveUser(user: User) {
+
+    if (user.name.isEmpty()) {
+        throw IllegalArgumentException("${user.name}: ..")
+    }
+
+    if (user.address.isEmpty()) {
+        throw IllegalArgumentException("${user.address}: ...")
+    }
+
+    // user database save....
+}
+```
+흔하게 발생하는 중복 적인 코드이다. 
+
+```kotlin
+fun saveUser2(user: User) {
+    fun validate(value: String, fieldName: String) {
+        if (value.isEmpty()) {
+            throw IllegalArgumentException("${user.id} : empty $fieldName")
+        }
+    }
+
+    validate(user.name, "name")
+    validate(user.address, "Address")
+}
+```
+로컬 함수로 분리하면 중보긍ㄹ 없애는 동시에 코드 구조를 깔끔하게 유지할 수 있다. **로컬 함수는 자신이 속한 바깥 함수의 모든 파라미터와 변수를 사용할 수 있다.**
+
+```kotlin
+fun User.validateBeforeSave() {
+
+    fun validate(value: String, fieldName: String) {
+        if (value.isEmpty()) {
+            throw IllegalArgumentException("$id: empty $fieldName")
+        }
+    }
+
+    validate(name, "Name")
+    validate(address, "Address")
+}
+
+fun saveUser4(user: User) {
+    user.validateBeforeSave()
+}
+```
+
+이 경우 검증 로직은 User를 사용하는 다른 곳에서 쓰이지 않을 기능이기 때문에 User에 포함시키고 싶지는 않고 User를 간결하게 유지하려면 검증 로직을 확장 함수로 작성할 수 도 있다.
