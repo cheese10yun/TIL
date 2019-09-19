@@ -197,16 +197,16 @@ fun fizzBuzz(i: Int) = when {
 
 ### 맵에 대한 이터레이션
 ```kotlin
-    val binaryReps = TreeMap<Char, String>()
+val binaryReps = TreeMap<Char, String>()
 
-    for (c in 'A'..'F') { // A ~ F까지 이터레이션
-        val binary = Integer.toBinaryString(c.toInt()) // 아시크 코드를 2진표현으로 
-        binaryReps[c] = binary // c를 키로 c의 2진 표현을 맵에 put
-    }
+for (c in 'A'..'F') { // A ~ F까지 이터레이션
+    val binary = Integer.toBinaryString(c.toInt()) // 아시크 코드를 2진표현으로 
+    binaryReps[c] = binary // c를 키로 c의 2진 표현을 맵에 put
+}
 
-    for ((letter, binary) in binaryReps) { // 맵에 대한 이터레이션, 맵의 키와 값을 두 변수에 각각 대입한다.
-        println("$letter = $binary")
-    }
+for ((letter, binary) in binaryReps) { // 맵에 대한 이터레이션, 맵의 키와 값을 두 변수에 각각 대입한다.
+    println("$letter = $binary")
+}
 ```
 
 키를 사용해 맵의 값을 가져어고나 키에 해당 하는 값을 넣는 작업인 get, put을 사용 하는 대신에 `map[key]` `[key] = value`
