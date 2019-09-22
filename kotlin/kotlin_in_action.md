@@ -156,7 +156,7 @@ c1, c2가 RED, YELLOW라면 그 둘을 혼합한 결과는 ORANGE다. 이를 구
 
 
 ### 스마트 캐스트: 타입 검사와 타입 캐스트를 조합
-```koltin
+```kotlin
 fun eval(e: Expr): Int =
     when (e) {
         is Num -> e.value
@@ -514,12 +514,12 @@ override | 상위 클래스나 상위 인스턴스의 멤버를 오버라이드�
 
 **자바의 기본 가기성인 패키지 전용 pckage-private은 코틀린에 없다. 코틀린은 패키지를 네임스페이스를 관리하는 용도로만 사용한다. 그래서 패키지를 가시성 제어에 사용하지 않는다.**
 
-변경자 | 클래스 멤버 | 최상위 선언
-----|--------|-------
-public(기본 가시성임) | 모든 곳에서 볼 수 있다. | 모든 곳에서 볼 수 있다.
-internal | 같은 모듈 안에서만 볼 수 있다. | 같은 모듈 안에서만 볼 수 있다.
-protected | 하위 클래스 안에서만 볼 수 있다. | 최상위 선언에 적용할 수 없ㅇ므
-private | 같은 클래스 안에서만 볼 수 있다. | 같은 파일 안에서만 볼 수 있다.
+변경자             | 클래스 멤버              | 최상위 선언
+----------------|---------------------|-------------------
+public(기본 가시성임) | 모든 곳에서 볼 수 있다.      | 모든 곳에서 볼 수 있다.
+internal        | 같은 모듈 안에서만 볼 수 있다.  | 같은 모듈 안에서만 볼 수 있다.
+protected       | 하위 클래스 안에서만 볼 수 있다. | 최상위 선언에 적용할 수 없ㅇ므
+private         | 같은 클래스 안에서만 볼 수 있다. | 같은 파일 안에서만 볼 수 있다.
 
 
 ```kotlin
@@ -536,3 +536,284 @@ fun TalkativeButton.giveSpeech() { // 오류 : pulbic 멤버가 자신의 intern
 ```
 
 **자바에서는 같은 패키지안에서 protected는 멤버에 접근할 수 있지만, 코틀린에서는 그렇지 않다는 점에서 자바와 코틀린의 protected가 다르다. 코틀린의 protected는 오직 어떤 클래스나 그 클래스를 상속한 클래스 안에서만 접근 가능하다.**
+
+### 내부 클래스와 중첩된 클래스: 기본적으로 중첩 클래스
+클래스안에 다른 클래스를 선언하면 도우미 클래스를 캡슐화하거나 코드 정의를 그 코드를 **사용하는 곳 가까이 두고 싶을 때 유용하다.** 자바와의 차이는 코틀린의 중첩 클래스는 명시적으로 요청하지 않으면 바깥쪽 클래스 인스턴스에 대한 접근 권한이 없다는 점이다.
+
+
+
+```kotlin
+interface State : Serializable
+
+interface View {
+    fun getCurrentState(): State
+    fun restoreState(state: State)
+}
+```
+Button 클래스의 상태를 저장하는 클래스는 Button 클래스 내부에 선언하면 편하다. 자바에서 그런 선언을 하려면 아래 코드와 같다
+
+```java
+pulbic class Buttoin implements View {
+
+    @Override
+    public State getCueentState() {
+        return new ButtonState();
+    }
+    
+    @Override
+    public void restoreState(State state) {...}
+
+    public class ButtonState implements {...};
+
+}
+```
+
+해당 코드는
+```
+java.io.NotSerializeableException:Button 
+```
+오류가 발생한다. **자바에서는 다른 클래스 안에 정의한 클래스는 자동으로 Inner Class가 된따. 이 예제는 ButtonState 클래스는 바깥쪽 Button 클래스에 대한 참조를 묵시적으로 포함한다. 그 참조로 인해 ButtonState를 직렬화할 수 없다. Button을 직렬화할 수 없음으로 버튼에 대한 참조 ButtonState의 직렬화를 방해한다.**
+
+이 문제를 해결하려면 ButtonState를 static으로 선언해야 한다. **자바에서 중첩 클래스를 static으로 선언하면 그 클래스를 둘러싼 바깥쪽 클래스에 대한 묵시적인 참조가 사라진다.**
+
+코틀린에서 중첩된 클래스가 기본적으로 동작하는 방식은 지금 설명한 것과 정반대다.
+
+```kotlin
+class Button : View {
+
+    override fun getCurrentState(): State {}
+
+    override fun restoreState(state: State) {}
+
+    class ButtonState : State {} // 이 클래스는 자바 중첩(static class) 클래스와 대응한다
+
+}
+```
+**코틀린 중첩 클래스에 아무런 변경자가 붙지 않으면 자바 static 중첩 클래스와 같다. 이를 내부 클래스로 변경해서 바깥쪽 클래스에 대한 참조를 포함하게 만들고싶다면 inner 변경자를 붙여야한다.**
+
+클래스 B 안에 정의된 클래스 A              | 자바에서는          | 코틀린에서는
+--------------------------------|----------------|--------------
+중첩 클래스(바깥쪽 클래스에 대한 참조를 지정하지 않음) | static class A | class A
+내부 클래스(바깥쪽 클래스에 대한 참조를 지정함)     | class A        | ineer class A
+
+```kotlin
+class Outer {
+    inner class Inner {
+        fun getOuterReference(): Outer = this@Outer
+    }
+}
+```
+**코틀린에서 바깥쪽 클래스의 인스턴스를 가리키는 참조를 표기하는 방법도 자바와는 다르다. 내 부클래스 Inner 안에서 바깥쪽 클래스 Outer의 참조를 접근하려면 `this@Outer`라고 써야 한다.**
+
+### 봉인된 클래스 계층 정의 시 계층 확장 제한
+
+```kotlin
+interface Expr
+class Num(val value: Int) : Expr
+class Sum(val left: Expr, val right: Expr) : Expr
+
+fun eval(e: Expr): Int =
+    when (e) {
+        is Num -> e.value
+        is Sum -> eval(e.left) + eval(e.right)
+        else -> throw IllegalArgumentException("")
+    }
+```
+코틀린 컴파일러는 when을 사용해서 Expr 타입의 값을 검사할 떄는 **꼭 디폴트 분기인 else 분기를 덧붙이게 강제한다**. else 분기는 반환할 만한 의미 있는 값이 없을때 예외를 던진다. **이는 안정성있는 코드이지만 항상 디폴트 분기를 추가해주는게 편리하지는 않다. 이러한 경우 sealed 클래스를 활용할 수 있다.**
+
+```kotlin
+sealed class Expr { // 기반 클래스를 sealed으로 봉인한다.
+    class Num(val value: Int) : Expr() // 기반 클래스의 모든 하위 크래스를 중첩 클래스로 나열한다.
+    class Sum(val left: Expr, val right: Expr) : Expr()
+}
+
+
+fun eval(e: Expr): Int =
+    when (e) {
+        is Expr.Num -> e.value // `when` 식이 모든 하위 클래스를 검사하므로 별도의 `else` 분기가 필요 없다.
+        is Expr.Sum -> eval(e.left) + eval(e.right)
+    }
+```
+
+**when 식에서 sealed 클래스의 모든 하위 클래스를 처리한다면 디폴트 분기가 필요 없다.** sealed class는 자동적으로 open이다.
+
+## 뻔하지 않은 생성자와 프로퍼티를 갖는 클래스 선언
+
+**코틀린은 주(primary) 생성자(보통 주 생성자는 클래스를 초기화할 때 주로 사용하는 간략한 생성자로, 클래스 본문 밖에서 정의한다.) 부 생성자(클래스 본문안에 정의한다)를 구분한다. 또 코틀린에서는 초기화 블록을 통해 초기화 로직을 추가할 수 있다.**
+
+### 클래스 초기화: 주 생성자와 초기화 블록
+
+```kotlin
+class User constructor(_nickname: String) { // 주 생성자
+    val nickname: String
+
+    init { // 초기화 불록
+        nickname = _nickname
+    }
+}
+```
+클래스 이름 뒤에 오는 괄호로 둘러싸인 코드를 주 생성자 라고 부른다. 주 생성자는 생성자 파라미터를 지정하고 그 생성자 파라미터에 의해 초기화되눈 프로퍼티를 정의하는 두 가지 목적에 쓰인다.
+
+constructor 키워드는 주 생성자나 부 생성자 정의를 시작할 떄 사용한다. init 키워드는 초기화 블록을 시작한다. 초기화 블록에는 클래스의 객체가 만들어질때(인스턴스화할 때) 실행될 코드가 들어간다. **주 생성자는 제한적이기 떄문에 별도의 코드를 포함할 수 없음오로 초기화 블록이 필요하다.**
+
+```kotlin
+class USer(_nickname: String) { // 파라미터가 하나뿐인 주 생성자
+    val nickname = _nickname // 파라미터를 주 생성자의 파라미터로 초기화한다.
+}
+```
+
+이러한 경우 constructor를 샐랙해도 된다.
+
+```kotlin
+class User (val nickname: String) // val은 이 파라미터에 상응하는 프로퍼티가 생성된다는 뜻이다.
+
+class User (val nickname: String, val isSubscribed: Bollean = true) // isSubscribed 파라미터에 디폴트 값제공
+
+>>> var yun = User("Yun")
+>>> println(yun.isSubscribed) // true
+>>> var wan = User("wan", false) // 모든 인자를 파라미터 선언 순서대로 지정할 수도 있다.
+>>> var wan = User("wan", isSubscribed = false) // 생성자 인자 중 일부에 대해 이름을 지정할 수 있다.
+```
+
+기반 클래스를 초기화하려면 기반 클래스 이름 뒤에 괄호를 치고 생성자 인자를 넘긴다.
+
+```kotlin
+open class User (val nickname: String) {...}
+class TwitterUser(nickname: String): User(nicname) {...}
+```
+클래스를 정의할 떄 별도 생성자를 정의하지 않으면 컴파일러가 자동으로 아무 일도 하지 않은 인자 없는 딮폴트 생성자를 만들어 준다.
+
+Button의 생성자는 아무런 인자도 받지 않지만, Buttoin 클래스를 상속한 하위 클래스는 반드시 Buttoin 클래스의 생성자를 호출해야 한다.
+
+```kotlin
+class RadioButtoin: Buttoin()
+```
+이 규칙으로 인해서 기반 클래스의 이름 뒤에는 꼭 빈 괄호가 들어간다. 반면 인터페이스는 생성자가 없기 때문에 어떤 클래스가 인터페이스를 구현하는 경우 그 클래스의 상위 클래스 목록에 있는 인터페이스 이름 뒤에는 ㅇ무 괄호도 없다.
+
+어떤 클래스를 클래스 외부에서 인스턴스화하지 못하게 막고 싶다면 모든 생성자를 private으로 만들면 된다.
+
+```kotlin
+class Secretive private constructor() {...} // 이 클래스의 유일한 주 생성자는 비공개다.
+```
+Secretive 클래스 안에서 주 생성자 밖에 없고 그 주 생성자는 비공개이므로 외부에서 Secretive를 인스턴스화할 수 없다.
+
+### 게터와 세터에서 뒷받침하는 필드에 접근
+
+```kotlin
+class User(val name: String) {
+    var address: String = "unspecified"
+        set(value: String) {
+            println(
+                """
+                Address was changed for $name:
+                "$field" -> "$value".""".trimIndent()
+            )
+            field = value
+        }
+}
+
+>> Address was changed for yun:
+"unspecified" -> "신림역".
+>> Address was changed for yun:
+"신림역" -> "낙성대".
+```
+접근자의 본문에서 field라는 특별한 식별자를 통해 뒷받침하는 필드에 접근할 수있다. 게터에서는 값을 일을 수만 있고, 세ㅓ에서는 field 값을 읽거나 쓸수 있다.
+
+### 접근자의 가시성 변경
+```kotlin
+class LengthCounter {
+    var counter: Int = 0
+        private set
+    
+    fun addWord(word: String) {
+        counter += word.length
+    }
+}
+```
+접근자의 가지성은 기본적으로 프로퍼티의 가시성과 같다. 하지만 **원한다면 get, set 앞에 가시성 변경자를 추가해서 접근자의 가기성을 변경할 수 있다.**
+
+## 컴파일러가 생성한 메서드: 데이터 클래스와 클래스 위임
+자바에서는 클래스가 equals, hashCode, toString 등의 메소드를 구현해야 한다. **코틀린에서는 메서드를 기계적으로 생성하는 작업을 보이지 않은 곳에서 해준다. 따라서 코드를 깔끔하게 유지할 수 있다.**
+
+### 모든 클래스가 정의해야 하는 메서드
+자바와 마찬가지로 코틀린 클래스에서도 toString, equals, hashCode 등을 오버라이드 할 수 있다.
+
+```kotlin
+class Client(val name: String, val postalCode: Int) {
+
+    override fun toString(): String {
+        return "Client(name='$name', postalCode=$postalCode)"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Client) return false
+
+        if (name != other.name) return false
+        if (postalCode != other.postalCode) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + postalCode
+        return result
+    }
+}
+```
+#### 문자열 표현: toString()
+자바의 ToString과 동일하다.
+
+#### 객체의 동등성: equals()
+> **동등성 연산애 ==를 사용함**
+> 
+> 자바에서 == 원시 타입과 참조 타입을 비교할 때 사용한다. 코틀린에서 == 연산자가 두 객체를 비교하는 기본적인 방법이다 ==는 내부적으로 equals를 호출해서 객체를 비교한다. 따라서 클래스가 equals를 오버라이드하면 ==를 통해서 안전하게 클래스의 인스턴스륿 비교할 수 있다. 참조 비교를 위해서는 === 연산자를 사용할 수 있다. === 연산자는 자바에서 객체의 참조를비교할 떄 사용하는 == 연산자와 같다.
+
+#### 해시 컨테이너: hashCode()
+
+HashSet은 원소를 비교할 때 비용을 줄이기 위해 먼저 객체의 해시 코드를 비교하고 해시코드가 같은 경우에만 실제 값을 비교한다. **즉 원소 객체들이 해시 코드에 대한 규칙을 지키지 않은 경우 HashSet은 제대로 작동할 수 없다. 그러기 위해서 hashCode를 구련해야 한다.**
+
+## 데이터 클래스: 모든클래스가 정의해아 하는 메서드 자동 생성
+
+코틀린에서는 data라는 변경자를 클래스 앞에 붙이면 필요한 메서드를 컴파일러가 자동으로 만들어 준다. data 변경자가 붙은 클래스를 데이터 클래스라고 한다.
+
+
+```kotlin
+data class Client(val name: String, val postalCode: Int)
+```
+data class는 아래 메서드를 자동으로 만들어준다.
+* 이스턴스 간 비교를 위한 equals
+* HashMap과 같은 해시 기반 컨테이너에서 키로 사용할 수 있는 hashCode
+* 클래스의 각 필드를 선언 순서대로 표시하는 문자열 표현을 만들어주는 toString
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
