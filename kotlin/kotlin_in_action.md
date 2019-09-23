@@ -787,33 +787,119 @@ data class는 아래 메서드를 자동으로 만들어준다.
 * HashMap과 같은 해시 기반 컨테이너에서 키로 사용할 수 있는 hashCode
 * 클래스의 각 필드를 선언 순서대로 표시하는 문자열 표현을 만들어주는 toString
 
+## 클래스 위임: by 키워드 사용
+...
+
+## object 키워드: 클래스 선언과 인스턴스 생성
+코틀린에서 object 클래스를 정의 하면서 동시에 인스턴스를 생성한다는 공통점이 있다. 
+
+* 객체 선언은 싱글턴을 정의하는 방법 중 하나다.
+* 동반 객체는 인스턴스 메서드는 아니지만 **어떤 클래스와 관련 있는 메서드와 팩토리 메서드를 담을 떄 쓰인다.** 동반 객체 메서드에 접근할 때는 동반 객체가 포함된 클래스의 이름은 사용할 수 있다.
+* 객체 식은 자바의 **무명 내부 클래스** 대신에 쓰인다.
+
+### 객체 선언: 싱글턴 쉡게 만들기
+코틀린은 객체 선언 기능을 통해 싱글턴을 언어에서 기본 지원한다. 객체 선언은 클래스 선언과 그 클래스에 대한 **단일 인스턴스의 선언을 합친 것이다.**
+
+```kotlin
+object Payroll {
+    val allEmployees = arrayListOf<Person>()
+    fun calculateSalary() {
+        for (person in allEmployees) { }
+    }
+}
+```
+객체 선언은 클래스를 정의하고 그 클래스의 인스턴스를 만들어서 변수에 저장하는 모든 작업을 단 한문장으로 처리한다. 일반 클래스 인스턴스와 달리 싱글턴 객체는 객체 선언문이 있는 위치에서 생성자 호출 없이 즉시 만들어진다. 따라서 객체 선언에는 생성자 정의가 필요 없다.
+
+### 동반 객체: 팩토리 메서드와 정적 멤버가 들어갈 장소
+코틀린 클래스 안에는 정적 멤버가 없다. 코틀린 언어는 자바 static 키워드를 지원하지 않는다. **그 대신 코틀린에서는 패키지 수준의 최상 함수(자바의 정적 메서드 역할을 거의 대신 할 수 있다,)와 객체 선언(자바의 정적 메서드 역할 중 코틀린 최상위 함수가 대신할 수 없는 역할이나 정적 필드를 대신할 수 있다.) 대부분의 경우 최상위 함수를 활용 하는 편을 더 권장한다.** 
 
 
+클래스 안에 정의된 객체 중 하나에 **companion이라는 특별한 표시를 붙이면 그 클래스의 동반 객체러 만들 수 있다.** 동반 객체의 프로퍼티나 메서드에 접근하려면 그 동반 객체가 정의된 클래스 이름을 사용한다.
+
+```kotlin
+class A {
+    companion object {
+        fun bar() {
+            print("bar...")
+        }
+    }
+
+    fun foo() {
+        print("foo..")
+    }
+}
+
+fun asd(){
+    A.bar() // 접근 가능
+    A.foo() // 접근 불가능
+}
+```
+
+### 동반 객체를 일반 객체 처럼 사용
+
+```kotlin
+class User private constructor(val nickname: String) {
+    companion object {
+        fun newSubscribingUser(email: String) = User(email.substringBefore('@'))
+        fun newFacebookUser(accountId: Int) = User(getFacebookName(accountId))
+    }
+}
+
+fun newInstance() {
+    User.newSubscribingUser("asd@asd.com")
+    User.newFacebookUser(1)
+}
+```
+간결하게 자바의 static factory method 방식을 구현 할 수 있다.
+
+#### 동반 객체에서 인터페이스 구현 
+다른 객체 선언과 마찬가지로 동반 객체도 인터페이스를 구현 할 수 있다.
+
+```kotlin
+interface JsonFactory<T> {
+    fun fromJson(jsonText: String): T
+}
+
+class Person(val name: String) {
+    companion object : JsonFactory<a4.Person> {
+        override fun fromJson(jsonText: String): a4.Person {
+            return a4.Person("....")
+        }
+    }
+}
+```
+
+#### 동반 객체 확장
+Person 클래스는 핵심 비지니스 로직 모듈이다. 하지만 그 비지니스 모듈이 특정 데이터 타입에 의존하기를 원치 않는다. **따라서 역직렬화 함수를 비지니스 모듈이 아니라 클라인트/서버 통신을 담당하는 모듈 안에 포함시키고 싶다. 이때 확장 함수를 사용하면 아래와 같이 구조를 가질 수 있다.**
+
+‼️ 자바에서 많이 고민 했던 부분이다. 좋은 해결인거 같다.
+
+```kotlin
+// 비지니스 로직 모듈 : 해당 객체
+class Person(val firstName: String, val lastName: String) {
+    companion object {}
+}
+
+// 클라이언트, 서버 통신 모듈
+fun Person.Companion.fromJson(json: String): a4.Person {
+    return Person("firstName", "lastNameL`")
+}
+
+val person = Person.fromJson(json)
+```
+**마치 동반 객체 안에서 fromJson 함수를 정으힌 것처럼 함수를 호출할 수 있다.** 동반 객체에 대한 확장 함수를 작성할 수 있으려면 **원래 클래스에 동반 객체를 꼭 선언 해야한다.**
 
 
+### 객체 식: 무명 내부 클래스를 다른 방식으로 작성
+object 키워드를 싱글턴과 같은 객체를 정의하고 그 객체에 이름을 붙일 때만 사용하지 않는다. 무명 객체를 정의할 떄도 object 키워드를 쓴다. 무명 객체는 자바의 무명 내부 클래스를 대신한다.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```kotlin
+val listener = object : MouseAdapter() {
+    override fun mouseClicked(e: MouseEvent?) {
+        super.mouseClicked(e)
+    }
+    override fun mouseEntered(e: MouseEvent?) {
+        super.mouseEntered(e)
+    }
+}
+```
