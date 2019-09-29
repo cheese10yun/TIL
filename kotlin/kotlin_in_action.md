@@ -1008,3 +1008,15 @@ person.maxBy( p -> p.age )
 person.maxBy( it.age)
 ```
 멤버 참조는 그 멤버를 호출하는 람다와 같은 타입이다.
+
+```kotlin
+>> val createPerson = :: Person // "person"의 인스턴스를 만드는 동작을 값으로 저장한다.
+>> val p = createPErson("yun", 29) 
+>> println(p)
+Person(name="yun", age=10)
+```
+확장 함수도 멤버 함수와 똑같은 방식으로 참조할 수 있다.
+
+
+## 컬렉션 함수형 API
+
