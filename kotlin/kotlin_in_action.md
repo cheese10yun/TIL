@@ -1084,7 +1084,6 @@ fun Person.ContryName(): String {
 fun foo(s: String?){
     val t: String = s ?: "" // `s`가 null이면 빈문자열 
 }
-습
 fun strLenSafe(S: String?): Int = s?.length ?:0
 ```
 
