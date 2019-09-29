@@ -1019,4 +1019,83 @@ Person(name="yun", age=10)
 
 
 ## 컬렉션 함수형 API
+...
 
+
+
+# 06 코틀린 타입 시스템
+
+
+## 널 가능성
+널 가능성(NPE)를 피할 수 있게 돕기 위한 코틀린 타입 시스템의 특징이다. 코틀린을 비롯한 최신 언어에서 null에 대한 접근 방법은 가능한 이 문제를 실행 시점에서 컴파일 시점으로 옮기는 것이다.
+
+### 널이 될수 있는 타입
+코틀린은 메서드 널을 리턴하는 메서드 호출을 금지함으로써 많은 오류를 방지할 수 있다.
+
+```java
+int strLen (String s) {
+    return s.length();
+}
+```
+이 함수에 NULL을 넘기면 NPE이 발생한다. **널인자로 넘어올 수 없다면 코틀린에서는 다음과 같은 함수를 정의할 수 있다.**
+
+```kotlin
+fun strLen(s: String) = s.length
+```
+strLen에 null이거나 널이 될 수 있는 인자를 넘기는 것은 금지되며, 혹시 그런 값을 넘기면 컴파일 시 오류가 발생한다.
+
+
+**strLen 함수에서 파리미터는 s의 타입은 String인데 코틀린에서는 이는 s가 항상String 인스턴스여야 한다느 뜻이다.** 이때 컴파일러는 널이 될 수 있는 값을 strLen에게 인자로 넘기지 못하게 막는다. 따라서 **strLen 함수가 결코 실행 시점에 NullPointerException을 발생시키지 않으리라 장담할수 있다.**
+
+`String?, Int?, MycustomType?` 등 어떤 타입이든 타입 이름 뒤에 물읖표를 붙이면 그 타입의 변수나 프로퍼티에 null 참조를 저장할 수 있다는 뜻이다.
+
+
+널이 될 수 있는 타입의 변수가 있다면 그에 대해 수행할 수 있는 연산이 제한된다.
+
+```kotlin
+fun strLen(s: String) = s.length() -> 호출 X
+```
+
+**널이 될 수 있는 타입인 변수에에 x.메서드() 처럼 메소드를 직접 호출할 수는 없다.** 일단 null과 비교하고 나면 컴파일러는 그 사실을 기억하고 null이 아님이 확실한 여영ㄱ에서 해당 값을 널이 될 수 없다는 타입의 값처럼 사용할 수 있다.
+
+### 타입의 의미 
+**타입은 분류로 ... 타입은 어떤 값이 가능한지와 그 타입에 대해 수행할 수 있는 연산의 종류를 결정한다.** 따라서 dobule 타입의 변수가 있고 그 변수에 대한 연산을 **컴파일러가 통과시킨 경우 그 연산이 성공적으로 실행되디란 사실을 확신할 수 있다.**
+
+
+### 안전한 호출 연산자 : ?.
+코틀린에서 제공하는 가장 유욜한 도구 중 하나가 안전한 호출 연산자인 `?.`이다. **`?.`은 null 검사와 메서드 호출을 한 번의 연산으로 수행한다.**
+
+호출하려는 값이 null이 아니라면 `?.`은 일반 메서드 처럼 작동한다. 호출하려는 값이 null이면 이 호출은 무시되고  null이 결과 값이 된다.
+
+
+```kotlin
+fun Person.ContryName(): String {
+    val contry = this.company?.address?.contry
+    return if(contry != null) contry else "Unkown" // 여러 안전한 호출 연산자를 연쇄 사용한다.
+}
+```
+코틀린에서는 훨씬 간결하게 널 검사를 할 수 있다. 
+
+### 엘비스 연산자 : ?:
+코틀린은 null 대신 사용할 디폴트 값을 지정할 때 편리하게 사용할 수있는 연산자를 제공한다. 그 연산자를 엘비스 연산자라고 한다.
+
+
+```kotlin
+fun foo(s: String?){
+    val t: String = s ?: "" // `s`가 null이면 빈문자열 
+}
+습
+fun strLenSafe(S: String?): Int = s?.length ?:0
+```
+
+코틀린에서는 return이나 throw 등의 연산자도 식이다. **따라서 엘리스 연산자의 우항에 return, throw 등의 연산을 넣을 수 있고, 엘비스 연산자를 더욱 편리하게 사용할 수 있다.** 그런 경우 엘비스 연산자의 좌항이 널이면 함수가 즉시 어떤 값을 변환하거나 예외를 던진다.
+
+
+```kotlin
+fun printShppingLabel(person: Person){
+    var address = person.company?.address?: throw IllegalArgumentException() // 주소가 없으면 예외를 발생 시킨다.
+    with(address){
+        println(streetAddress)
+    }
+}
+```
