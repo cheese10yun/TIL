@@ -1098,3 +1098,120 @@ fun printShppingLabel(person: Person){
     }
 }
 ```
+
+### 안전한 캐스트: as?
+
+**`as?` 연산자는 어떤 값을 지정한 타입으로 캐스트한다. `as?`는 값을 대상 타입으로 변환할 수 었으면 null을 리턴한다.** 즉 타입 캐스트 연산자는 값을 주어진 타입으로 변환하려 시도하고 타입이 맞지 않으면 null을 반환한다. 이 패턴은 equals를 구현할 때 유용하다.
+
+```kotlin
+class Person2(val firstName: String, val lastName: String) {
+    override fun equals(o: Any?): Boolean {
+        val otherPerson = o as Person2 ?: return false // 타입이 서로 일치하지 않으면 false를 반환한다.
+        return otherPerson.firstName == firstName && otherPerson.lastName == lastName; // 안전한 캐스트를 하고 나면 otherPerson이 Person 타입으로 스마트 캐스트 된다.
+    }
+}
+```
+**이 패턴을 사용하면 파라미터 받은 값이 원하는 타입인지 쉽게 검사하고 캐스트할 수 있고, 타입이 만지 않으면 쉽게 false를 반환할 수 있다.**
+
+### 널아님 단언: !!
+널 아님 단언은 코틀린에서 타입의 값을 다룰 때 사용할 수있는 도구이다. **느김표를 이중으로 `!!`으로 사용하면 어떤 값이든 널이 될 수 없는 타입으로(강제로) 바꿀 수 있다. 실제 널에 대해서 !!를 적용하면 NPE가 발생한다.**
+
+```kotlin
+fun ignoreNulls(s: String?) {
+    val sNotnull: String = s!! // 예외는 이 지점을 가리킨다.
+    print(sNotnull.length)
+}
+```
+
+`sNotnull.length` NPE이 발생할거 같지만 컴파일러는 `!!`는 `나는 이 값이 null이 아님을 잘알 고 있어, 내가 잘못 생각했다면 예외가 발생해도 감수하겠다`라고 말하는 것이다.
+
+어떤 함수가 값이 널인지 검사한 다음 다른 함수를 호출한다고 해도 컴파일러는 호출된 함수 안에서 안전하게 그 값을 사용할 수 있음을 인식할 수 없다. 하지만 이런 **경우 호출된 함수가 언제나 다른 함수에서 널이 아닌 값을 전달받는다는 사실이 분명하다면 굳이 널검사를 다시 수행하거 싶지 않을 것이다. 이럴 때 널 아님 단언문을 쓸 수 있다.**
+
+
+### let 함수
+let 함수를 사용하면 널이 될수 있는 식을 더 쉽게 다룰 수 있다. let 함수를 안전한 호출 연산자와 함께 사용하면 원하는 식을 평가해서 결과가 널인지 검사한 다음에 그결과를 변수에 넣을 작업을 간단한 식을 사용해 한꺼번에 처리할 수 있다.
+
+**let을 사용하는 가장 흔한 용례는 널이 될 수 있는 값을 널이 아닌 값만 인자로 받는 함수에 넘기는 경우다.**
+
+
+```kotlin
+fun sendEmailTo(email: String) {...} // 이 함수는 널이 될수 있는 타입의 값을 넘길 수 없다.
+
+// 인자를 넘기기 전에 주어진 값이 널인지 검사 해야한다.
+if (email != null) sendtoEmail(email)
+```
+
+하지만 let함수를 통해 인자를 전달할 수 있다. let 함수는 자신의 주신 객체를 인자로 전달받은 람다에게 넘긴다. **널이 될 수 있는 값에 대해 안전한 호출 구문을 사용해 let을 호출하되 널이 될 수 없는 타입을 인자로 받는 람다를 let에 전달한다. 이렇게 하면 널이 될 수 있는 타입의 값을 널이 될 수 없는 타입의 값으로 바꿔서 람다에게 전달하게 된다.** 즉 let을 안전하게 호출하면 수신 객체가 널이 아닌 경우 람다를 실행해준다. 
+
+```kotlin
+
+email?.lent { email -> sendEmailTo(email) }
+
+email?.let { sendEmailTo(it) } // 더 간결하게 가능하다 
+```
+**email null인 경우 `sendEmailTo` 람다 식은 실행되지 않는다.** 여러 값이 널인지 검사해야 하는 let 호출을 중첩시켜서 처리할 수 있다. 그렇게 let을 중접 시키면 코드가 복잡해져서 알아보기 어렵다. 이런 경우 일반적인 if를 사용해 모든 값을 한꺼번에 검사하는 편이 낫다.
+
+## 나중에 초기화할 프로퍼티
+객체 인스턴스를 일단 생성한 다음에 나중에 초기화하는 프레임워크가 많다. 하지만 **코틀린에서 클래스 안의 널이 될 수 없는 프로퍼티를 생성자 안에서 초기화하지 않고 특별한 메서드 안에서 초기화할 수 없다. 코틀린에서는 일반적으로 생성자에서 모든 프로퍼티를 초기화해야 한다.** 게다가 프로퍼티는 타입이 널이 될 수 없는 타입이라면 반드시 널이 아닌 값으로 그 프로퍼티를 초기화 해야한다. **그런 초기화 값을 제공할 수 없으면 널이 될 수 있는 타입을 사용할 수밖에 없다.** 
+
+```kotlin
+class MyService {
+    fun performAction(): String = "foo"
+}
+
+class MyTest {
+    private var myService: Myservice? = null // null로 초기화하기 위해 널이 될 수 있는 타입인 프로퍼티를 선언한다.
+    
+    @Before fun setUp() {
+        myService = MyService() // setUp 메서드 안에서 진짜 초깃값을 지정한다.
+    }
+
+    @Test fun testAction() {
+        Assert.assertEquals("foo", myService!!.performAction()) // 반드시 널 가능성에 신겅 써야한다. !!나 ? 을 꼭 써야 한다.
+    }
+}
+```
+**이런 문제를 해결하기 위해 프로퍼티를 lateinit 변경자를 붙이면 프로퍼티를 나중에 초기화할 수 있다.**
+
+
+```kotlin
+class MyService {
+    fun performAction(): String = "foo"
+}
+
+class MyTest {
+    private lateinit var myService: Myservice? = null // 초기화하지 않고 널이 될수 없는 프로퍼티를 선언한다.
+    
+    @Before fun setUp() {
+        myService = MyService() // setUp 메서드 안에서 진짜 초깃값을 지정한다.
+    }
+
+    @Test fun testAction() {
+        Assert.assertEquals("foo", myService.performAction()) // 널 감사를 수행하지 않고 프로퍼티를 사용한다.
+    }
+}
+```
+**나중에 초기화하는 프로퍼티는 항상 var 여야 한다.** val 프로퍼티는 final 필드로 컴파일되며, 생성자 안에서 반드시 초기화해야 한다. 따라서 생성자 밖에서 초기화해야 하는 나중에 초기화하는 프로퍼티는 항상 var여야 한다. **그렇지만 나중애 초기화하는 프로퍼티는 널이 될 수 없는 타입 이라 해도 더 이상 생성자 안에 초기화할 필요가 없다** 그 프로퍼티를 초기화하기 전에 프로퍼티에 접근 하면 `lateinit property myService has not bean initlaized` 예외가 발생한다 NPE 보다 훨씬 구체적인 예외이다.
+
+
+### 널이 될 수 있는 타입 확장
+
+```kotlin
+fun verifyUserInput(input: String?) {
+    if(input.isNullOrBlank()) { // 안전한 호출을 하지 않아도 된다.
+        println("Please fill in the required fields")
+    }
+}
+>>> verifyUserInput(" ")
+Please fill in the required fields
+
+>>> verifyUserInput(null)
+Please fill in the required fields // null을 넘겨줘도 NPE이 발생하지 않는다.
+```
+
+**안전한 호출 없이도 널이 될 수 있는 수신 객체 타입에 대해 선언된 확장 함수를 호출 가능하다.**
+```kotlin
+fun String?.isNullOrBlank(): Boolean =  // 널이 될 수 있는 String의 확장
+    this == null || this.isBlank() // 두번째 this에는 스마트 캐스트가 적영 된다.
+```
+그 함수 내부에서는 this는 널이 될 수 있다. 따라서 명시적으로 널 여부를 검새해야한다. **자바에선느 메서드 안에 this는 그 메서드가 호출된 수신 객체를 가리키므로 항상 널이 아니다. 코틀린에서는 널이 될 수 있는 타입의 확장 함수 안에서는 this가 널이 될 수 있다는 점이 자바와 다르다.**
