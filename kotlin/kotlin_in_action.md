@@ -1406,3 +1406,70 @@ java.lang.IllegalArgumentException: Error occurred
 같은 컬렉션 객체를 가리키는 다른 타입의 참조(읽기 전용리스트, 변경 가능 리스트)이 가능하기 때문에 읽기 전용 컬렉션이 항상 Thread Safe하지는 않다는 것을 명심해야 한다.
 
 # 07 연산자 오버로딩과 기타 관례
+
+## 산술 연산자 오버로딩
+```kotlin
+data class Point(val x: Int, val y: Int) {
+    operator fun plus(other: Point): Point { // `plus`라는 이름의 연산자 함수를 정의한다
+        return Point(x + other.x, y + other.y)
+    }
+}
+>>> val p1 = Point(10, 20)
+>>> val p1 = Point(30, 40)
+>>> println(p1 +  p2) // + 로 계산하면 "plus" 함수가 호출된다.
+Potin(x=40, y=60)
+```
+plus 함수 앞에 operator 키워드를 붙여야 한다. 연산자를 오버로딩하는 함수 앞에는 꼭 operator를 붙여야한다.
+
+### 코틀린 이항 연산자에 사응하는 함수 이름표
+
+식     | 함수 이름
+------|---------------
+a * b | times
+a / b | div
+a % b | mod(1.1부터 rem)
+a + b | plus
+a - b | minus
+
+### 오버로딩할 수 있는 단항 연술 연산자표
+식        | 함수 이름
+---------|-----------
++a       | unaryPlus
+-a       | unaryMinus
+!a       | not
+++a, a++ | inc
+--a, a-- | dec
+
+**직접 정의한 함수를 통해 구현하더라도 연산자 우선순위는 언제나 표준 숫자 타입에 대한 연산자의 우선순위와 같다.**
+
+## 비교 연산자 오버로딩
+모든 객체에 대해 비교연산을 수핼할 수 있다. equals나 compareTo를 호출해야 하는 자바와 달리 코틀린에서는 == 비교 연산자를 직접 사용할 수 있어서 비교코드가 equals나 compareTo를 사용한 코드보다 간결하며 이애하기 쉽다.
+
+### 동등성 연산자: equals
+
+```kotlin
+data class Point(val x: Int, val y: Int) {
+
+    override fun equals(other: Any?): Boolean { // Any에 정의된 메소드를 오버라이딩한다.
+        if (this === other) return true // 최적화: 파라미터 `this`와 같은 객체인지 살펴본다
+        if (other !is Point) return false // 파라미터 타입을 검사한다.
+
+        if (x != other.x) return false
+        if (y != other.y) return false
+        return true
+    }
+}
+```
+`===`는 자신의 두 피연 연사자가 서로 같은 객체를 가리키는지 비교한다. equals를 구현할 떼는 `====`를 사용해 자기 자신의 비교를 최적화하는 경우가 많다. **`===`를 오버로딩할 수 없다.**
+
+### 순서 연산자: compareTo
+**비교 연산자 (<, >, <=, >=)는 compareTo 호출로 컴파일된다. compareTo가 반환하는 값은 Int다**
+
+```kotlin
+data class Point(val x: Int, val y: Int) : Comparable<Point> {
+    override fun compareTo(other: Point): Int {
+        return compareValuesBy(this, other, Point::x, Point::y)
+    }
+}
+```
+코틀린 표준 라이브러리의`compareValuesBy`함수를 사용해 `compareTo`함수를 통해 구현한다.
