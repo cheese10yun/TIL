@@ -60,14 +60,14 @@
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
   * [Lock - 트랜잭션 선점 잠금, 비선점 잠금](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-lock.md)
   * [Transaction Checked Exception에대한 고찰](https://github.com/cheese10yun/blog-sample/tree/master/exception)
-  * [Transacion 기초 학습 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-study.md)
-  * [Transacion Rollback 케이스 정리](https://github.com/cheese10yun/blog-sample/tree/master/spring-transaction-test)
+  * [Transaction 기초 학습 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-study.md)
+  * [Transaction Rollback 케이스 정리](https://github.com/cheese10yun/blog-sample/tree/master/spring-transaction-test)
 * [Class Loader](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/class-loader.md)
 * Spring Boot
   * [Spring Boot 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/boot/spring-boot-basic.md)
 * OAuth2
   * [소셜 연동 (Google, FaceBook)](https://github.com/cheese10yun/spring-security-oauth2-social)
-  * [OAtuh2 인증서버 구현하기](https://github.com/cheese10yun/springboot-oauth2)
+  * [OAuth2 인증서버 구현하기](https://github.com/cheese10yun/springboot-oauth2)
 * MSA
   * [MSA 기초 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/msa/spring-cloud-%EA%B8%B0%EC%B4%88.md)
   * [Spring Cloud Config](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/config.md)
@@ -181,7 +181,7 @@
 ## Vue
 * [Vue 기초](https://github.com/cheese10yun/TIL/blob/master/vue/vue-beginner.md)
 * [Vue2.js 프로그래밍 정리](https://github.com/cheese10yun/TIL/blob/master/vue/vue.js2-programing.md)
-* [Vue Proejct](https://github.com/cheese10yun/TIL/blob/master/vue/vue-proejct.md)
+* [Vue Project](https://github.com/cheese10yun/TIL/blob/master/vue/vue-proejct.md)
 
 ## POP it 포스팅
 * [작성글](https://www.popit.kr/author/Yun)

@@ -39,7 +39,7 @@ JdbcTemplate는 영리하게 동작하도록 설계되어 있다. 만약 미리 
 
 한 개의 이상의 DB로의 작업을 하나의 트랜잭션으로 만든건 JDBC Connection을 이용한 트랜잭션 방식인 로컬 트랜잭션으로는 불가능하다. 로컬 트랜잭션은 하나의 DB Connection에 종속되기 때문이다. **따라서 별도의 트랜잭션관리자를 통해 트랜잭션을 관리하는 글로벌 트랜잭션 방식을 사용해야 한다.**
 
-자바는 JDBC 외에 이런 글로벌 트랜잭션을 지원하는 **트랜잭션 매니저를 지원하기 위한 API인 JTA (Java Transacion API)를 제공하고 있다.**
+자바는 JDBC 외에 이런 글로벌 트랜잭션을 지원하는 **트랜잭션 매니저를 지원하기 위한 API인 JTA (Java Transaction API)를 제공하고 있다.**
 
 트랜잭션은 JDBC나 JMS API를 사용해서 직접 제어하지 않고 JTA를 통해 트랜잭션 매니저가 관리하도록 위임한다. **하나 이상의 DB가 참여하는 트랜잭션을 만들려면 JTA를 사용해야 한다.**
 
@@ -54,7 +54,7 @@ UserService의 코드가 특정 트랜잭션 방법에 의존적이지 않고 �
 
 ![](../../assets/PlatformTransactionManager-2.png)
 
-JDBC를 이용하는 경우 Connection을 생성하고 나서 트랜잭션을 시작했다. 하지만 PlatformTransactionManager에서 트랜잭션을 가져오는 요청인 getTransacion() 메서드를 호출하기만 하면된다. 필요에 따라 트랜잭션 매니저가 DB 커넥션을 가져오는 작업도 같이 수행하기 때문이다. 트랜잭션을 가져온다는 것은 일단 트랜잭션을 시작한다는 의미라고 생각하자.
+JDBC를 이용하는 경우 Connection을 생성하고 나서 트랜잭션을 시작했다. 하지만 PlatformTransactionManager에서 트랜잭션을 가져오는 요청인 getTransaction() 메서드를 호출하기만 하면된다. 필요에 따라 트랜잭션 매니저가 DB 커넥션을 가져오는 작업도 같이 수행하기 때문이다. 트랜잭션을 가져온다는 것은 일단 트랜잭션을 시작한다는 의미라고 생각하자.
 
 이렇게 시작된 트랜잭션은 TransactionStatus 타입의 변수에 저장된다. TransactionStatus는 트랜잭션에 대한 조직이 필요할 때 PlatformTransactionManager 메서드의 파라미터로 전달해주면 된다.
 
