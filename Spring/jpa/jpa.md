@@ -323,10 +323,10 @@ public void closeEntityManager() {
 
 #### 프록시 객체의 초기화
 !![](../../assets/jpa-proxy-delegate.png)
+
 **프록시 객체는 실제 객체에 대한 참조(Target)를 보관한다. 프록시 객체의 메소드를 호출하면 프록시 객체는 실제 객체의 메서드를 호출한다.**
 
 프록시 객체는 `member.getName()` 처럼 실제 사용될 떄 데이터베이스를 조회해 실제 ㅔㄴ티티 객체를 생성하는데 이것을 프록시 객체의 초기화라 한다.
-
 
 ![](../../assets/jpa-proxy-flow.png)
 ```java
