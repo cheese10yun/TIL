@@ -56,7 +56,7 @@
   * [객체 생성시 테스트 전략](https://github.com/cheese10yun/blog-sample/tree/master/ddd)
   * [테스트 코드 작성에 대한 나름의 고찰](https://github.com/cheese10yun/blog-sample/tree/master/test-code)
 * Transaction
-  * [Transcational Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
+  * [Transaction Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
   * [Lock - 트랜잭션 선점 잠금, 비선점 잠금](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-lock.md)
   * [Transaction Checked Exception에대한 고찰](https://github.com/cheese10yun/blog-sample/tree/master/exception)
