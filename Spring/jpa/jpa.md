@@ -1,3 +1,6 @@
+> [자바 ORM 표준 JPA 프로그래밍 ](http://www.acornpub.co.kr/book/jpa-programmig)를 보고 정리한 글입니다.
+
+
 # 영속 성컨텍스트
 
 ## 영속성 컨텍스트의 특징
@@ -304,3 +307,218 @@ public void closeEntityManager() {
 
 ### 병합: merge()
 준영속 상태의 엔티티를 다시 영속 상태로 변경하려면 병합을 사용하면 된다. **merge() 메서드는 준영속 상태의 엔티티를 바당서 그 정보로 새로운 영속 상태의 엔티티를 반환한다.**
+
+# 프록시와 연관관계 관리
+
+* 프록시와 즉시로딩, 지연로딩: 객체는 객체 그래프로 연관된 객체를 탐색한다. 그런데 객체가 데이터베이스에 저장되어 있으므로 연관된 객체를 마음껏 탐색하기는 어렵다. JPA 구현체들은 이 문제를 해결하고자 프록시라는 기술을 사용한다. 프롤시를 사용하면 영관된 갹체를처음부터 데이터베이스에서 조회하는 것이 아니라, 실제 사용하는 시점에 데이터베이스에서 조회할 수 있다. 하지만 자주 함께 사용하는 객체들은 조인을 사용해서 함꼐 조회하는 것이 효과적이다. **JPA는 즉시 로딩과 지연 로딩이라는 방법으로 둘을 모두 지원한다.**
+* 영속성 전이와 고아 객체: JPA는 연관된 객체를 함께 저장하거나 함께 삭제할 수 있는 영속성 전이와 고와 객체를 제거라는 편리한 기능을 제공한다.
+
+## 프록시
+
+### 프록시 기초
+엔티티를 실제 사용하는 시좀 까지 데이터베이스 조회를 미루고 싶다면 `Member meber = em.getReference(Member.class, "member");` 이 메서드를 호출할 떄 JPA는 데이터베이스를 조회하지 않고 실제 엔티티 객체도 생성하지 않는다. 대신 데이터베이스 접근을 위임한 프록시 객체를 반환한다.
+
+#### 프록시 객체의 특징
+프록시 클래스는 실제 클래스를 상속 받아서 만들어지므로 실제 클래스와 겉모용이 같다. 따라서 사용하는 입장에서는 이것이 진짜 객체인지 프록시 객체인지 구분하지 않고 사용하면 된다.
+
+#### 프록시 객체의 초기화
+!![](../../assets/jpa-proxy-delegate.png)
+**프록시 객체는 실제 객체에 대한 참조(Target)를 보관한다. 프록시 객체의 메소드를 호출하면 프록시 객체는 실제 객체의 메서드를 호출한다.**
+
+프록시 객체는 `member.getName()` 처럼 실제 사용될 떄 데이터베이스를 조회해 실제 ㅔㄴ티티 객체를 생성하는데 이것을 프록시 객체의 초기화라 한다.
+
+
+![](../../assets/jpa-proxy-flow.png)
+```java
+// Proxy 객체 반환
+Member member = em.getReferecne(Member.class, "id1");
+member.getName(); // 1. geName()
+
+// 프록시 클래스 예상 코드
+class MemberProxy extends Member{
+
+    Member tartget = null; // 실제 엔티티 참조
+
+    if(tartget == null) {
+        // 2. 초기화 진행
+        // 3. DB조회
+        // 4. 실제 엔티티 생성 및 참조 보관
+        this.target = ...;
+    }
+    // 5. tartget.getName();
+    return tartget.getName();
+}
+```
+1. 프록시 객체에 `member.getName()`을 호출해서 실제 데이터를 조회한다.
+2. **프록시 객체는 실제 엔티티가 생성되어 있지 않으면 영속성 컨텍스트에 실제 엔티티 생성을 요청 하는데 이것을 초기화라 한다.**
+3. 영속성 컨텍스트는 데이터베이스를 조회해서 실제 엔티티 객체를 생성한다.
+4. 프록시 객체는 생성된 실제 엔티티 객체의 참조를 Member target 멤버변수에 보관한다.
+5. 프록시 객체는 실제 엔티티 객체의 `getName()`을 호출해서 결과를 반환한다.
+
+#### 프록시의 특징
+1. **프록시 객체는 청므 사용할 때 한번만 초기화 된다.**
+2. 프록시 객체를 초기화한다고 프록시 객체가 **실제 엔티티로 바뀌는 것은 아니다. 프록시 객체가 초기화되면 프록시 객체를 총해서 실제 엔티티에 접근할 수있다.**
+3. 영속성 컨텍스트에 찾는 엔티티가 이미 있다면 데이터베이스를 조회할 필요가 없음으로 `em.getReferecne()`를 호출해도 프록시가 아닌 실제 엔티트를 반환한다.
+4. 초기화는 영속성 컨텍스트의 도움을 받아야 가능하다. 따라서 영속성 컨텍스트의 도움을 받을 수 없는 준영속 상태의 프록시를 초기화한다면 문제가 발생한다. 하이버네이트는 org.hibernate.LazyInitializationException예외가 발생
+
+## 즉시 로딩과 지연 로딩
+* 즉시 로딩
+  *  엔티티를 조회할 떄 연관된 엔티티도 함꼐 조회 된다.
+  *  `em.find(Member.class, "member1")`를 호출할 때 회원 엔티티와 연관된 팀 엔ㄴ티티도 함께 조회한다.
+*  지연로딩
+   *  연관된 엔티티를 실제 사용할때 조회한다.
+   * `member.getTeam().getName()` 처럼 조회한 팀 엔티티를 실제 사용하는 시점에 JPA가 SQL을 호출해서 팀 엔티티를 조회한다.
+
+### 즉시 로딩
+즉시 로딩은 `@ManyToOne(FetchType.EAGER)`로 지정한다. **JPA 구현체는 즉시 로딩을 최적화하기 위해서 가능하면 조인 쿼리를 사용한다.**
+
+```sql
+SELECT
+    M.MEMBER_ID AS MEMBER_ID,
+    M.TEAM_ID AS TEAM_ID
+    T.TEAM_ID AS TEAM_ID
+    T.NAME AS NAME
+FROM
+    MEMBER M LEFT OUTER JOIN TEAM T ON M,TEAM_ID = T.TEAM_ID
+WHERE 
+    M.MEMBER_ID = 'MEMBER1'
+```
+
+### nullabel 설정에 따른 조인 전략
+* @JoinColumn(nullable = true): null 허용(기본값) , 와부 조인을 사용
+* @JoinColumn(nullable = false): null 허용하지 않음(기본값) , 내부 조인사용
+
+### FetcchType.EAGER 설정에 따른 조인 전략
+* @ManyToOne, @OneToOne
+  * (optional = false) : 내부 조인
+  * (optional = true) : 외부 조인
+* @OneToMany, @ManyToMany
+  * (optional = false) : 외부 조인
+  * (optional = true) : 외부 조인
+
+  
+### 지연 로딩
+위 그림 처럼 실제 데이터가 필요한 순간이 되어서야 데이터베이스를 조회해서 프록시 객체를 초기화한다. `em.findMember(Member.class, "member1")` 호출 시 실행되는 SQL은 다음과 같다
+
+```sql
+  SELECT * FROM MEMBER
+  WHERE MEMBER_ID = 'MEMBER1'
+
+# team.getName() 호출로 프록시 객체가 초기화되면서 실행되는 SQL은 다음과 같다
+
+SELECT * FROM TEAM
+WHERE TEAM_ID = 'TEAM1'
+```
+
+### 프록시와 컬렉션 레퍼
+엔티티를 지연 로딩하면 프록시 객체를 엔티티에 컬렉션이 있으면 컬렉션을 추적하고 관리할 목적으로 **원본 컬렉션을 하이버네이트가 제공하는 내장 컬렉션으로 변경하는데 이것을 컬렉션 레퍼라고 한다.**
+`member.getOrders()`를 호출해도 컬렉션은 초기화되지 않는다. 컬렉션은 `member.getOrders().get(0)` 처럼 컬렉션에 실제 데이터를 조회할 때 데이터베이스를 조회해서 초기화한다.
+
+## 영속성 전이: CASECADE
+**특정 엔티티를 영속 상태로 만들 떄 연관된 엔티티도 함께 영속 상태로 만들고 싶으면 영속성 전이 기능을 사용하면 된다.** JPA는 CASECADE 옵션으로 영속성 전이를 제공한다.
+
+### 영속성 전이: 저장
+```java
+@Enttiy
+public class Parent {
+    @Id @GeneratedValu
+    private Long id;
+
+    @OneToMany(mappedBy = "parent", casecade = CascadeType.PERSIST)
+    private List<Child> children = new ArrayList<Child>();
+}
+
+@Entity
+public class {
+
+    @Id @GeneratedValu
+    private Long id;
+
+    @MayToOne
+    private Parent parent;
+}
+
+public void saveEntityWithCasecade(EnttiyManager em) {
+
+    Child child1 = new Child();
+    Child child2 = new Child();
+
+    Parent parent = new Parent();
+
+    child1.setParent(parent);
+    child2.setParent(parent);
+
+    parent.getChildren().add(child1);
+    parent.getChildren().add(child2;
+}
+```
+위 같이 CASECADE 옵션을 주면 간편하게 부모와 자식 엔티티를 한 번에 영속화 할 수 있다. **영속성 전이는 연관관계를 매핑하는 것과는 아무 관련이 없다. 단지 엔티티를 영속화할 때 연관된 엔티티도 같이 영속화하는 편리함을 제공할 뿐이다.**
+
+
+### 영속성 전이: 삭제
+방금 젖아한 부모와 자식 엔티티를 모두 제거하려면 다음과 같은 코드로 각각 제거해야한다.
+
+```java
+Parent findParent = em.find(Parent.class, 1L);
+
+Child findChild1 = em.find(Child.class, 1L);
+Child fundChild2 = em.find(Child.class, 2L);
+
+em.revmoe(findParent);
+em.revmoe(findChild1);
+em.revmoe(findChild2);
+```
+CascadeType.REMOVE로 설정하고 다음 코드처럼 부모 엔티티만 삭제하면 연관된 자식 엔티티도 함께 삭제된다.
+
+```java
+Parent findParent = em.find(Parent.class, 1L);
+em.remove(findParent);
+```
+코드를 실행하면 DELETE SQL을 3 번샐행하고 부모는 물론 연관된 자식 모두 삭제된다. **삭제 순서는 왜래 키 제약조건을 고려해서 자식을 먼저 삭제하고 부모를 삭제한다.**
+
+부모만 삭제하려고 할 경우 데이터베이스는 부모 로우를 삭제하는 순간 자식 엔테이블에 결려 있는 왜래 키 제약조건으로 인해, **데이터베이스에서 외래키 무결성 예외가 발생한다.**
+
+:exclamation: 물리적인 외래키 제약조건을 걸지 않은 경우 조회 조인 쿼리를 하는 경우 JPA에서는 예외가 발생한다.(OneToOne, FK 조건이 not null 인경우는 무조건 조회되어야함) 하지만 위와 같은 삭제 쿼리에 대해서는 어떻게 될까? (Blog 작성하자)
+
+
+## 고아 객체
+**JPA는 부모 엔티티와 연관관계가 끊어진 자식 엔티티를 자동으로 삭제하는 기능을 제공한다.** 이것을 고아 객체 제거라 한다. **부모 엔티티의 컬렉션에서 자식 엔티티의 참조만 제거하면 잣힉 엔티티가 자동으로 삭제된다.**
+
+```java
+@Enttiy
+public class Parent {
+    @Id @GeneratedValu
+    private Long id;
+
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    private List<Child> children = new ArrayList<Child>();
+}
+
+public void remvoe() {
+    Parent parent1 = em.find(Parent);
+
+    parent1.getChildren().remove(0); // 자식 엔티티를 컬렉션에서 제거
+}
+```
+위와 같은 코드를 실행하면
+
+```sql
+DELETE FROM CHILD WHERE ID = ?
+```
+`orphanRemoval = true` 옵션으로 인해 컬렉션에서 엔티티를 제거하면 데이터베이스의 데이터도 삭제된다. 고아 객체를 제거 기능은 영속성 컨텍스트를 플러시할 때 적용되므로 플러시시점에서 DELETE SQL 실행된다.
+
+만약 모든 자식 엔티티를 제거하고 싶다면 아래 코드처럼 사용할 수 있다.
+```java
+parent1.getChildren().clear();
+```
+
+**고아 겍체 제거는 참조가 제거된 엔티티는 다른 곳에서 참조하지 않는 고아 객체로 보고 삭제하는 기능이다. 따라서 이 기능은 참조하는 곳이 하나일 때만 사용해야 한다.** 쉽게 이야기 해서 특정 엔티티가 개인 소유하는 엔티티에만 이 기능을 적용해야 한다. **만약 삭제한 엔티티를 다른 곳에서 참조한다면 문제가 될 수 있다. 이러 한 이유로 orphanRemoval은 `@OneToOne`, `@OneToMany`에서만 사용할 수 있다.**
+
+
+
+
+
+
+
+
+
