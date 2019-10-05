@@ -83,13 +83,13 @@
 * [RabbitMQ - 간단 정리 및 기초 활용법](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
 * [Jackson 어노테이션 정리](https://github.com/cheese10yun/blog-sample/tree/master/jackson)
 * [Lombok 사용팁 정리](https://github.com/cheese10yun/blog-sample/tree/master/lombok)
+* [Lombok 가이드](https://github.com/cheese10yun/TIL/blob/master/Spring/lombok-guide.md)
 * [Custom Validation 어노테이션 만들기(1)](https://github.com/cheese10yun/blog-sample/blob/master/custom-validation/docs/field-validation.md)
 * [Custom Validation 어노테이션 만들기(2)](https://github.com/cheese10yun/blog-sample/blob/master/custom-validation/docs/class-validation.md)
 * [스프링5 레시피 정리](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%8A%A4%ED%94%84%EB%A7%815%EB%A0%88%EC%8B%9C%ED%94%BC.md)
 * [Spring Boot Https 적용하기](https://github.com/cheese10yun/blog-sample/tree/master/spring-https)
 * [스프링이란?](https://github.com/cheese10yun/TIL/blob/master/Spring/%EC%8A%A4%ED%94%84%EB%A7%81%EC%9D%B4%EB%9E%80.md)
 * [Gradle 기반 멀티 모듈 구성하기](https://github.com/cheese10yun/blog-sample/tree/master/multi-module)
-* [Lombok 가이드](https://github.com/cheese10yun/TIL/blob/master/Spring/lombok-guide.md)
 * [Spring Actuator 기초 설정](https://github.com/cheese10yun/blog-sample/tree/master/actuator)
 
 ## 운영체제
