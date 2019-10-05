@@ -1473,3 +1473,43 @@ data class Point(val x: Int, val y: Int) : Comparable<Point> {
 }
 ```
 코틀린 표준 라이브러리의`compareValuesBy`함수를 사용해 `compareTo`함수를 통해 구현한다.
+
+# 09 제네릭스
+선언 지점 변성을 사용하면 기저 타입은 같지만 타입 인자가 다른 두 제네릭 타입 `Type<A>` `Type<B>`가 있을 때 타입 인자 A와 B의 상위/하위 타입 관계에 따라 두 제네릭 타입의 상위/하위 타입 관꼐가 어떻게 되는지 지정할 수 있다. 예를 들어 List<Any>를 인자로 받는 함수에게 List<Init> 타입의 값을 전달할 수 있는지 여부를 선언 지점 변선을 통해 지정할 수 있다.
+
+## 제니릭 타입 파라미터
+
+### 제니릭 함수와 프로퍼티
+```kotlin
+fun <T> List<T>.slice(indices: IntRange): List<T> // 제네릭 함수인 slice는 T를 타입 파라미터로 받는다.
+
+>>> val letters = ('a'..'z').toList()
+>>> println(letters.slice<Char>(0..2)) // 타입 인자를 명시적으로 지정한다.
+[a, b , c]
+```
+
+### 타입 파라미터 제약
+**어떤 타입을 제니릭 타입의 타입 파라미터에 슈퍼 타입으로 지정하면 그 제네릭 타입을 인스턴스화할 때 사용하는 타입 인자는 반드시 수퍼타입이거나 그 서브 타입어야아 한다.**
+
+```kotlin
+fun <T: Number> List<T>.sum(): T
+
+`<T: Number>`:  T -> 타입 파라미터, Number -> 슈퍼 파라미터
+```
+
+```kotlin
+fun <T: Number> oneHalf(value: T) : Dobule { // Number를 타입 파라미터의 슈퍼 타입으로 지정
+    return value.toDobule() / 2.0  // Number 클래스에 정의된 메서드를 호출
+}
+```
+
+
+
+
+
+
+
+
+
+
+
