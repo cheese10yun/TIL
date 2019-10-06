@@ -516,11 +516,89 @@ parent1.getChildren().clear();
 
 **고아 겍체 제거는 참조가 제거된 엔티티는 다른 곳에서 참조하지 않는 고아 객체로 보고 삭제하는 기능이다. 따라서 이 기능은 참조하는 곳이 하나일 때만 사용해야 한다.** 쉽게 이야기 해서 특정 엔티티가 개인 소유하는 엔티티에만 이 기능을 적용해야 한다. **만약 삭제한 엔티티를 다른 곳에서 참조한다면 문제가 될 수 있다. 이러 한 이유로 orphanRemoval은 `@OneToOne`, `@OneToMany`에서만 사용할 수 있다.**
 
+# 객체지향 쿼리 언어
+
+## 객체지향 쿼리 심화
+
+### 벌크 연산
+수백 개 이상의 엔티티를 하나씩 처리하기에는 시간이 너무 오래 걸린다. 이 때 여러 건을 한번에 수정하거나 삭제하는 벌크 연산을 사용 할 수 있다.
+
+```java
+// 재고가 10개 미만인 모든 상품의 가격을 10% 상승시키는 업데이츠
+public void bulkUpdate() {
+    String sql = "update Product set p.price = p.price * 1.1 where p.stockAmount < :stockAmount";
+
+    int resultCount = em.createQuery(sql)
+                        .setParameter("stockAmount", 10)
+                        .executeUpdate();
+}
+
+// 100원 미만 상품을 삭제하는 코드
+public void bulkDelete() {
+    String sql = "delete from Product p where p.price < :price"
+
+    int resultCount = em.createQuery(sql)
+                        .setParameter("price", 100)
+                        .executeUpdate();
+}
+
+// JPA 표준은 아니지만 하이버네이트는 INSERT 벌크 연산도 지원한다.
+// 100원 미만의 ㅁ든 상품을 선태갷서 ProducutonTemp에 저장한다
+public void bulkInsert() {
+    String sql = "insert into ProductTemp(id, price, stockAmount) select p.id, p.name, p.price, p.stockAmount from Product p where p.price < :price"
+
+    int resultCount = em.createQuery(sql)
+                        .setParameter("price", 100)
+                        .executeUpdate();
+}
+```
+벌크 연산은 `executeUpdate()` 메서드를 사용한다. 이 메서드는 별크 연산으로 영향을 받은 엔티티 건수를 반환한다.
+
+### 벌크 연산 주의점
+**벌크 연산을 사용할 때 벌크 연산이 영속성 컨텍스트를 무시하고 데이터베이스에 직접 쿼리한다는 점에 저의해애 한다.** 
 
 
+```java
+// 벌크 연산 시 주의점 예제
+public void bulkTest() {
+    // (1) 상품A의 가격은 1000 이다.
+    Product product = em.createQuery("select p from Product p where p.name = :name", Product.class)
+                        .setParameter("name", "productA")
+                        .getSingleResult();
 
+    // 출력 결과 : 1000
+    System.out.println("Product 수정전 : " + productA.getPrice());
 
+    // (2) 벌크 연산 수행으로 모둔 상품 가격 10% 상승
+    em.createQuery("update Product p set p.price = p.price * 1.1")
+                        .executeUpdate();
 
+    // (3) 출력 결과 : 1000
+    System.out.println("Product 수정후 : " + productA.getPrice());
+}
+```
+* (1) 가격이 1000원인 상품A를 조회했다. 조회된 상품A는 영속성 컨텍스트에서 관리 된다.
+* (2) 벌크 연산으로 모든 상품의 가격을 10% 상승시켰다. 따라서 상품A의 가격은 1100원이 되어야 한다.
+* 벌크 연산을 수행한 후에 상품 A의 가격을 출력하면 기대했던 1100원이 아니라 1000원이 출력된다.
 
+> 벌크 연산 수행전 
+![](../../assets/jpa-bulk-persistent-1.png)
 
+위 그림은 벌크 연산 직전의 상황을 나타낸다. 상품 A를 조회했으므로 가격이 1000원인 상품 A가 영속성 컨텍스트에 괸리된다.
 
+> 벌크연산 수행 후
+![](../../assets/jpa-bulk-persistent-2.png)
+
+벌크 연산은 영속성 컨텍스트를 통하지 않고 데이터베이스에 직접 쿼리한다. 따라서 **영속성 컨텍스트에 있는 상품A와 데이터베이스에 있는 상품A의 가격이 다를 수 있다.**
+
+### 해결 방법
+
+#### em.refresh() 사용
+벌크 연산을 수행한 직후에 정확한 상품A 엔티티를 사용해야 한다면 em.refresh()를 사용해서 데이터베이스에서 상품A를 다시 조회하면 된다.
+`em.refresh(productA);` 데이터베이스에 상품A를 다시 조회한다.
+
+#### 벌크 연산 먼지실행
+갖아 실용적인 해결책은 벌크 연산을 가장먼저 실행하는 것이다.
+
+#### 벌크 연산 수행 후 영속성 컨텍스트 초기화
+벌크 연산ㅇㄹ 수행한 직후에 바로 영속성 컨텍스트를 초기화해서 영속성 컨텍스트에 남아있는 엔티티를 제거하는 방법도 있다. **영속성 컨텍스트가 초기화되면 다시 데이터베이스에서 값을 가져오기 때문에 변경된 이후의 값을 가져올 수 있다.**
