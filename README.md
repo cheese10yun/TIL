@@ -30,6 +30,7 @@
   * [TaskExecutor 비동기 처리](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/TaskExecutor-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC.md)
   * [Spring 웹 MVC 강의 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/Spring-%EC%9B%B9MVC-%EA%B0%95%EC%9D%98-%EC%A0%95%EB%A6%AC.md)
   * [Spring MVC 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/mvc-basic.md)
+  * [Cookie](https://github.com/cheese10yun/TIL/blob/master/network/http/cookie.md)
 * Security
   * [Security 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/security/basic.md)
   * [ACL](https://github.com/cheese10yun/TIL/blob/master/Spring/security/ACL.md)
@@ -105,7 +106,6 @@
 
 ## 네트워크
 * [OSI 7 계층](https://github.com/cheese10yun/TIL/blob/master/network/OSI-7%EA%B3%84%EC%B8%B5.md)
-* [Cookie](https://github.com/cheese10yun/TIL/blob/master/network/http/cookie.md)
 * [CORS](https://github.com/cheese10yun/TIL/blob/master/network/http/CORS.md)
 * [HTTP 기초](https://github.com/cheese10yun/TIL/blob/master/network/http/HTTP-basic.md)
 * [HTTPS 기초](https://github.com/cheese10yun/TIL/blob/master/network/http/https.md)
