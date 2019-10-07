@@ -1337,7 +1337,7 @@ null
 fun <T: Any> printHashCode(t: T) { // 이제 `T`는 널이 될 수 없는 타입이다.
     println(h.hashCode())
 }
->>> printHashCode(null) // 이 코드는 컴파일되지 않ㄹ는다.
+>>> printHashCode(null) // 이 코드는 컴파일되지 않는다.
 Error: Type parameter bound for `T` is not satisfied
 
 >>> printHashCode(42)
