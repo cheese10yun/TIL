@@ -459,7 +459,7 @@ public void saveEntityWithCasecade(EnttiyManager em) {
 
 
 ### 영속성 전이: 삭제
-방금 젖아한 부모와 자식 엔티티를 모두 제거하려면 다음과 같은 코드로 각각 제거해야한다.
+방금 저장한 부모와 자식 엔티티를 모두 제거하려면 다음과 같은 코드로 각각 제거해야한다.
 
 ```java
 Parent findParent = em.find(Parent.class, 1L);
