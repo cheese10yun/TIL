@@ -220,8 +220,8 @@
     - [글로벌 패치 전략 단점](#%EA%B8%80%EB%A1%9C%EB%B2%8C-%ED%8C%A8%EC%B9%98-%EC%A0%84%EB%9E%B5-%EB%8B%A8%EC%A0%90)
       - [사용하지 않는 엔티티를 로딩한다](#%EC%82%AC%EC%9A%A9%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%97%94%ED%8B%B0%ED%8B%B0%EB%A5%BC-%EB%A1%9C%EB%94%A9%ED%95%9C%EB%8B%A4)
       - [N +1 문제가 발생한다](#n-1-%EB%AC%B8%EC%A0%9C%EA%B0%80-%EB%B0%9C%EC%83%9D%ED%95%9C%EB%8B%A4)
-    - [JPQL 패치 조인](#jpql-%ED%8C%A8%EC%B9%98-%EC%A1%B0%EC%9D%B8)
-    - [JPQL 패치 조인 단점](#jpql-%ED%8C%A8%EC%B9%98-%EC%A1%B0%EC%9D%B8-%EB%8B%A8%EC%A0%90)
+    - [JPQL 페치 조인](#jpql-%ED%8C%A8%EC%B9%98-%EC%A1%B0%EC%9D%B8)
+    - [JPQL 페치 조인 단점](#jpql-%ED%8C%A8%EC%B9%98-%EC%A1%B0%EC%9D%B8-%EB%8B%A8%EC%A0%90)
     - [강제로 초기화](#%EA%B0%95%EC%A0%9C%EB%A1%9C-%EC%B4%88%EA%B8%B0%ED%99%94)
       - [FACADE 계층추가](#facade-%EA%B3%84%EC%B8%B5%EC%B6%94%EA%B0%80)
     - [OSIV](#osiv)
@@ -2874,7 +2874,7 @@ class OrderController {
 
 뷰가 필요한 엔티티 미리 로딩해두는 방법은 어디서 미리 로딩하느냐에 따라 3가지 방법이 있다.
 * 글로벌 패치 전략 수정
-* JPQL 패치 조인
+* JPQL 페치 조인
 * 강제로 초기화
 
 ### 글로벌 패치 전략
@@ -2933,7 +2933,7 @@ select * from Member where id = ? // EAGER로 실행된 SQL
 
 만약 조회된 order 엔티티가 10개면 member를 조회하는 SQL로 10번 실행된다. 이것을 N + 1 문제라고 한다. 이러한 문제는 JPQL 패치 조인으로 해결 할 수 있다
 
-### JPQL 패치 조인
+### JPQL 페치 조인
 글로벌 패치 전략을 즉시 로딩으로 설정하면 애플리케이션 전체에 영향을 주므로 너무 비효율적이다. JPQL을 호출하는 시점에 함께 로딩할 엔티티를 선택할 수 있는 패치 조인을 알아보자.
 
 ```
@@ -2947,9 +2947,9 @@ select o.*, m.*
 from Order o
 join Member m on o.MEMBER_ID = m.MEMBER_ID
 ```
-사용딘 SQL JOIN을 사용해서 패치 조인 대상까지 함께 조회 되므로 N + 1 문제는 발생하지 않는다.
+사용딘 SQL JOIN을 사용해서 페치 조인 대상까지 함께 조회 되므로 N + 1 문제는 발생하지 않는다.
 
-### JPQL 패치 조인 단점
+### JPQL 페치 조인 단점
 패치 조인의 현실적인 대안이긴 하지만 무분별하게 사용하면 화면에 맞춘 레포지토리 메소드가 증가할 수 있다. 결국 프리젠테이션 계층이 알게 모르게 데이터 접근 계층을 침법하는 것이다.
 
 ### 강제로 초기화 

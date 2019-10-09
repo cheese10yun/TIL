@@ -518,6 +518,152 @@ parent1.getChildren().clear();
 
 # 객체지향 쿼리 언어
 
+## JPQL 조인
+
+### 내부 조인
+```java
+String query = "select m from Member m inner join m.team t where t.name :teamName"
+
+List<Member> members = em.createQuery(query, Member.class)
+    .getParameter("teamName", teamName)
+    .getResultCount();
+```
+
+### 외부조인
+```sql
+SELECT m
+FROM Member m LEFT [OUTER] JOIN t.team t
+```
+
+### 컬렉션 조인
+일대다 관계나 다대다 관계처럼 컬렉션을 사용하는 곳에 조인을하는 것을 컬렉션 조인이라 한다.
+
+### 세타조인
+WHERE 절을 사용해서 세타 저인을 할 수 있다. **세타 조인은 내부 조인만 지원한다.**
+
+```sql
+
+# JQPL
+select count(m) from Member m, Team t
+where m.username = t.name
+
+# SQL
+SELECT COUNT(M.ID)
+FROM 
+    MEMBER M CROSS JOUNT TEAM T
+WHERE 
+    M.USERNAME = T.NAME
+```
+
+### 패치 조인
+패치 조인은 SQL에서 이야기하는 조인의 종류는 아니고 JPQL에서 성능 최적화를 위해 제공하는 기능이다. 이것은 연관된 엔티티나 컬렉션을 한 번에 같이 조회하는 기능인데 joint fetch 명령어로 사용할 수 있다.
+
+#### 엔티티 페치 조인
+```sql
+# SQL
+select m
+from Member m join fetch m.team
+
+# SQL
+SELECT 
+    M.*, T.*
+FROM MEMBER T
+INNER JOIN TEAM T ON N.TEAM_ID = T.ID
+```
+**회원을 조화할 때 패치조인을 사용해서 팀도 함께 조회하는 경우 연관된 팀 엔티티는 프록시가 아닌 실제 엔티티다.** 즉 연관관계 객체까지 한번의 쿼리로 가져온다. 프로시가 아닌 실제 엔티티이므로 회원 엔티티가 영속성 컨텍스트에 분리되어 준영속 상태가 되어도 연관된 팀을 조회할 수 있다.
+
+#### 컬렉션 페치 조인
+# JPQL
+```sql
+select t
+from Team t join fetch t.members
+where t.name = '팀A'
+
+# SQL
+SELECT
+    T.*, M.*
+FROM TEAM T
+INNER JOIN MEMBER M ON T.ID = M.TEAM_ID
+WHERE T.NAME = '팀A'
+```
+
+```java
+String jqpl "select t from team t join fetch t.members where t.name = '팀A'";
+List <Team>  teams = em.createQuery(jqpl, Team.class).getListList();
+
+for (Team team: teams) {
+    
+    System.out.println("teamnae = " + team.getName() + "team = " + team);
+
+    for (Member member: team.getMembers()){
+
+        System.out.println("->username = " + member.getUsername()+ "member = " + member);
+    }
+}
+
+teamname = 팀A, team = Team@0x100
+-> username = 회원1, member = Member@0x200
+-> username = 회원2, member = Member@0x300
+teamname = 팀A, team = Team@0x100
+-> username = 회원1, member = Member@0x200
+-> username = 회원2, member = Member@0x300
+```
+조회 결과를 보면 `팀A`가 2건 조회된것을 확인할 수있다.  조회된 `팀A`의 주소값은 동일하다, 영속성 컨텍스트에거 가져왔기 떄문이다.
+
+#### 페치 조인과 DISTINCT
+SQL의 DISTINCT는 중복된 결과를 제거하는 명령어다. JPQL에서 사용 가능하다 애플리케이션에서 한 번 더 중복을 제거한다.
+
+```sql
+select distinct t
+from Team t join fetch t.members 
+where t.name = '팀A'
+```
+
+위 예제를 distinct 기반으로 실행하면 아래 처럼 중복된 값은 제거된다.
+
+```
+teamname = 팀A, team = Team@0x100
+-> username = 회원1, member = Member@0x200
+-> username = 회원2, member = Member@0x300
+teamname = 팀A, team = Team@0x100
+```
+
+#### 페치 조인과 일반 조인 차이
+
+```sql
+# JPQL
+select  t
+from Team t join t.members 
+where t.name = '팀A'
+
+# SQL
+SELECT
+ T.*
+FROM TEAM T
+INNER JOIN MEMBER M ON T.ID = M.TEAM_ID
+WHERE T.NAME = '팀A'
+```
+위 JPQL에서 팀과 회원 컬렉션을 조인했으므로 회원 컬렉션도 함께 조회할 것으로 기대해선 안된다. **JPQL은 결과를 반환할 때 연관관계까지 고려하지 않는다 단지 SELECT 절에 지정한 엔티티만 조회할 뿐이다.** 따라서 팀 엔티티만 조회하고 연관된 회원 컬렉션은 조회하지 않는다. 그래서 **프록시나 아직 초기화하지 않은 컬렉션 레퍼를 반환한다. 즉시로딩 같은 경우 회원 컬렉션을 즉시 로딩하기 위해 쿼리르 한 번더 실행 한다.**
+
+#### 패치 조인의 특성과 한계
+패치 조인을 사용하면 SQL 한 번으로 연관된 엔티티들을 함께 조회할 수 있어서 SQL 호출 횟수를 줄여 성능을 최적화할 수 있다. **패치 조인은 글로벌 로딩 전략보다 우선 한다. 글로벌 로딩 전략을 지연 로딩으로 설정해도 JPQL에서 페치 조인을 사용하면 페치 조인을 적용해서 함께 조회한다.** 또 한 패치 조인은 사용하면 연관된 엔티티를 쿼리 시점에 조화하므로 지연 로딩이 발생하지 않는다. 따라서 준영속 상태에서 객체 그래프를 탙ㅁ색할 수 있다. 페치 조인은 다음과 같은 한계가 있다.
+
+##### 페치 조인 대상에는 별칭을 줄 수 없다.
+* 페치 조인에 병칭을 정의할 수 없다 **따라서 SELECT, WHERE, Sub Query에 페치 조인 대상을 사용할 수 없다.**
+* **JPA 표준에서는 지원하지 않지만 하이버네이트를 포함한 몇몇 구현체들은 페치 조인에 병칭을 지원한다.** 하지만 병ㅇ칭을 잘못 사용하면 연관된 데이터수가 달라져서 데이터 무결성이 깨질 수 있으므로 소심해야한다.
+
+##### 둘 이상 컬렉션을 페치할 수 없다.
+구현체에 따라 다르긴하지만 컬렉션의 카테시안 곱이 만들어지므로 주의해야한다. 하이버네이트는 `...fetch muliple bags`예외가 발생한다.
+
+##### 컬렉션을 페치 조인하면 페이징AP(setFirstResult, setMaxResults)을 사용할 수없다
+* 컬렉션이 아닌 단일 값 연관 필드 (일대일, 다애일)들은 페치 조인을 사용해도 페이징 API를 사용할 수있다.
+* 하이버네이트에서 컬렉션을 페치 조인하고 페이징 API를 사용하면 **메모리에서 페이징 처리를 한다. 데어터가 많으면 성능 이슈과 메모리 촤과 예외가 발생할 수 있어어 위험하다.**(FULL SCAN해서 모든 데이터를 가져온후 limit에 맞게 짜른다.)
+
+**여러 테임을 조인해서 엔티티가 가진 모양이 아닌 전혀 다른 결과를 만들어 내야 한다면 억지러 페치 조인을 사용하는 것보다 여러 테이블에서 필요한 필드를 조회해서 DTO로 변환 한는 것이 더 효과적일 수 있다.**
+
+
+
+
 ## 객체지향 쿼리 심화
 
 ### 벌크 연산
