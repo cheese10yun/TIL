@@ -986,7 +986,7 @@ FACADE 계층 추가
 
 ![](../../assets/jpa-osiv-1.png)
 
-서블릿 필러나 스프링 인터셉터에서 영속성 컨텍스트를 만들면서 트랜잭션을 시작하고 요청이 끝날 떄 트랜잭션과 영속성 컨텍스트를 트랜잭션 영속성을 함꼐 종료한다. 영속성 컨텍스트가 처음부터 끝까지 살아있으므로 조회한 엔티티도 영속 상태를 유지한다.
+서블릿 필러나 스프링 인터셉터에서 영속성 컨텍스트를 만들면서 트랜잭션을 시작하고 요청이 끝날 때 트랜잭션과 영속성 컨텍스트를 트랜잭션 영속성을 함꼐 종료한다. 영속성 컨텍스트가 처음부터 끝까지 살아있으므로 조회한 엔티티도 영속 상태를 유지한다.
 
 ### 요청 당 트랜잭션 방식 OSIV 문제점
 ```java
@@ -1020,7 +1020,7 @@ class MemberContoller {
 ### 트랜잭션 없이 읽기
 영속성 컨텍스트를 통한 모든 변경은 트랜잭션 안에서 이뤄져야한다. **트랜잭션이 없이 엔티트를 변경하고 영속성 컨텍스트를 플러시하면 `TransactionRequireException` 예외가 발생한다.**
 
-**엔티티를 변경하지 않고 단순 조회만 할 떄는 트랜잭션이 없어도 되는데 이것을 트랜잭션 없이 읽기 라고 한다.** 프록시를 초기화하는 지연 로딩도 조회 기능이므로 트랜잭션 없이 일긱가 가능하다.
+**엔티티를 변경하지 않고 단순 조회만 할 때는 트랜잭션이 없어도 되는데 이것을 트랜잭션 없이 읽기 라고 한다.** 프록시를 초기화하는 지연 로딩도 조회 기능이므로 트랜잭션 없이 일긱가 가능하다.
 
 * 영속성 컨텍스트는 트랜잭션 범위 안에서 엔티티를 조회하고 수정할 수 있다.
 * 영속성 컨텍스트는 트랜잭션 범위 밖에서 엔티티를 조회만 할 수 있다. 이것은 트랜잭션 없이 읽기 라고한다.
@@ -1051,7 +1051,7 @@ class MemberContoller {
 * 프리젠테이션 계층에서 **`em.flush()`를 호출해서 강제로 플러시해도** 트랜잭션 범위 밖이므로 데이터를 수정할 수 없다는 예외를 만난다.
 
 ### 스프링 OSIV 단점
-OSIV를 사용하면 화면 출력할 떄 엔티티를 유지하면서 객체 그래프를 마음껏 탐색할 수 있다. 이는 복잡한 화면 구성할 떄는 효과적인 방법이 아니다. 이런 경우는 JPQL을 작성해서 DTO로 조회하는 것이 효과적이다.
+OSIV를 사용하면 화면 출력할 때 엔티티를 유지하면서 객체 그래프를 마음껏 탐색할 수 있다. 이는 복잡한 화면 구성할 때는 효과적인 방법이 아니다. 이런 경우는 JPQL을 작성해서 DTO로 조회하는 것이 효과적이다.
 
 # 고급 주제와 성능 최적화
 
@@ -1199,3 +1199,279 @@ public class MemberRepository {
 * 데이터베이스 동등성: @Id인 데이터베이스 식별자가 같다.
 
 ## 성능 최적화
+
+### N + 1 문제
+
+#### 즉시 로딩과 N + 1
+
+JPQL을 실행하면 JPA는 이것을 분석해서 SQL을 생성한다. **이때는 즉시 로딩과 지연 로딩에 대해서 젼혀 신경 쓰지 않고(글로벌 패치 전략) JPQL만 사용해서 SQL을 생성한다.**
+
+```java
+@Entity
+@Table(name = "ORDERS")
+public class Order {
+
+    @Id
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Member member;
+    ...
+}
+
+class NQueryTest{
+
+    public void test() {
+        List<Member> members = em.createQuery("select m from Member m", Member.class)
+            .getResults();
+
+    }
+}
+```
+
+```sql
+# 위의 코드가 실행된 SQL
+SELECT * FROM MEMBER
+```
+**SQL의 실행 결과로 먼저 회원 엔티티를 애플리케이션에 로딩하다. 그런데 회원 엔티티와 연관된 주문 컬렉션이 즉시 로딩으로 설정되오 있으므로 JPA는 주문 컬렉션을 즉시 로딩하려고 다음 SQL을 추가로 실행한다.**
+
+```sql
+SELECT * FROM MEMBER // 1번 실행으로 회원 5명 조회
+
+SELECT * FROM ORDERS WHERE MEMBER_ID = 1 // 회원과 연관된 주문
+SELECT * FROM ORDERS WHERE MEMBER_ID = 2 // 회원과 연관된 주문
+SELECT * FROM ORDERS WHERE MEMBER_ID = 3 // 회원과 연관된 주문
+SELECT * FROM ORDERS WHERE MEMBER_ID = 4 // 회원과 연관된 주문
+SELECT * FROM ORDERS WHERE MEMBER_ID = 5 // 회원과 연관된 주문
+```
+**즉시 로딩은 JPQL을 실행할 때 N + 1 문제가 발생한다.**
+
+#### 지연 로딩과 N + 1
+```java
+@Entity
+@Table(name = "ORDERS")
+public class Member {
+
+    @Id
+    private Long id;
+
+    @OneToMany(mapperdBy = "member", fetch = FetchType.LAZY)
+    private List<Order> orders = new ArrayList<Order>();
+    ...
+}
+```
+
+지연 로딩으로 설정하면 JPQL에서는 N+1 문제가 발생하지 않는다. 
+```java
+List<Member> members = em.creqteQuery("select m from Member m", Member.class)
+    .getResultList();
+
+# 실행된 SQL
+SELECT * FROM MEMBER
+```
+지연 로딩이므로 데이터베이스에서 회원만 조회한다. 따라서 다음 SQL만 실행 되고 연관된 주문 컬렉션은 지연 로딩된다.
+
+**하지만 이후 비지니스 로직에서 주문 컬렉션을 실제 사용할 때 지연 로딩이 발생한다.**
+
+```java
+firsstMember = members.get(0);
+firsstMember.getOders().size(); // 지연로딩 초기화
+```
+
+`members.get(0)`로 회원 하나만 조회해서 사용했기 때문에 다음과 긑은 SQL이 실행된다.
+
+```sql
+SELECT * FROM ORDERS WHERE MEMBER_ID = ?
+```
+**문제는 다음 처럼 모든 회원에 대해 연관된 주문 컬렉션을 사용할 때 발생한다.**
+
+```java
+for(Member member : members) {
+    // 지연 로딩 초기화
+    System.out.println("member = " + member.getOrders().size());
+}
+```
+
+```sql
+SELECT * FROM ORDERS WHERE MEMBER_ID = 1 // 회원과 연관된 주문
+SELECT * FROM ORDERS WHERE MEMBER_ID = 2 // 회원과 연관된 주문
+SELECT * FROM ORDERS WHERE MEMBER_ID = 3 // 회원과 연관된 주문
+SELECT * FROM ORDERS WHERE MEMBER_ID = 4 // 회원과 연관된 주문
+SELECT * FROM ORDERS WHERE MEMBER_ID = 5 // 회원과 연관된 주문
+```
+결국 N+1 문제가 발생한다. **지연 로딩과 즉시로딩 모두 N+1 문제가 발생한다.**
+
+### 페치 조인 사용
+N+1 문제를 해결하는 가장 일반적인 방법은 조인을 사용하는 것아다. 페치 조인은 SQL 조인을 사용해서 연관된 엔티티를 함께 조회하므로 N+1 문제가 발생하지 않는다.
+
+```sql
+# JPQL 페치 조인
+select m from Member m join fect m.orders 
+
+# SQL
+SELECT M.*, O.* MEMBER M
+INNER JOIN ORDERS O ON M.ID = O.MEMBER_ID
+```
+
+### 하이버네이트 @BatchSzie
+**연관된 엔티티를 조회할 때 지정한 size만큼 SQL의 IN 절을 사용해서 조회한다.**
+
+```java
+@Entity
+@Table(name = "ORDERS")
+public class Member {
+
+    @Id
+    private Long id;
+
+    @BatchSize(size = 5)
+    @OneToMany(mapperdBy = "member", fetch = FetchType.EAGER) // 즉시 로딩으로 변경
+    private List<Order> orders = new ArrayList<Order>();
+    ...
+}
+```
+
+```sql
+SELECT * FROM ORDERS
+WHERE MEMBER_ID IN (?, ?, ?, ?, ?)
+```
+지연 로딩을 설정하면 지연 로딩된 엔티티를 최초 사용하는 시점에 다음 **SQL을 실행해서 `@BatchSize(size = 5)`에서 설정한 것만큼 5건의 데이터를 미리 로딩해둔다. 그리고 6번째 데이터를 사용하면 다음 SQL을 추가로 실행 한다.**
+
+### 읽기 전용 쿼리의 성능 최적화
+영속성 컨텍스트는 변경 감지를 위해 스냅샷 인스턴스를 보관 하므로 예를들어 100건의 구매 내용을 조회하는 경우** 조회한 엔티티를 다시 조회할 일도 없고 수정할 일도 없어 딱 한 번만 읽는 경우 읽기 전용으로 엔티티를 조회하면서 메모리 사용량을 최적화할 수 있다.**
+
+
+#### 스칼라 타입으로 조회
+가장 확실한 방법은 다음 처럼 엔티티가 아닌 스칼라 타입으로 모든 필드를 조회하는 것이다.
+```sql
+select o.id, o.name, o.price from Order p
+```
+**스칼라 타입은 영속성 컨텍스트가 결과를 관리하지 않는다.(엔티티 객체가 아니니 영속성 컨텍스트에서 관리하지 않는다.)**
+
+#### 일기 전용 쿼리 힌트 사용
+하이버네이트 전용 힌트인 `org.hibernate.readOnly`를 사용하면 엔티티를 읽기 전용으로 조회할 수 있다. **읽기 전용이므로 영속성 컨텍스트는 스냅샵을 보관하지 않는다.** 따라서 메모리 사용량을최적화할 수 있다. **스냅샷이 없으므로 엔티티를 수정해도 데이터베이스에 반영되지 않는다.**
+
+```java
+TypedQuery<Order> query = em.creqteQuery("select o from Order o", Order.class)
+query.setHint("org.hibernate.readOnly", true)
+```
+
+#### 읽기 전용 트랜잭션 사용
+**스프링 프레임워크를 사용하면 트랜잭션을 읽기 전용 모드로 설정할 수 있다.**
+`@Transacional(readOnly = true)`
+**트랜잭션에 `readOnly = true` 옵션을 주면 스프링 프레임워크가 하이버네이트 세션의 플러시 모드를 MANUAL로 설정한다 그렇게되면 강제로 플러시를 호출하지 않은 한 플러시가 일어나지 않는다. 따라서 트랜잭션을 커밋해도 영속성 컨텍스트 플러시하지 않는다. 영속성 컨텍스트를 플러시하지 않으니 엔티티의 등록, 수정, 삭제는 당연히 동작하지 않는다.** 플러시 할 때 일어나는 스냅샷비교와 같은 무거운 로직을 수행하지 않으므로 성능에 향상된다.
+
+
+### 배치 처리
+수백만 건의 데이터를 배치 처리해야 하는 경우 영속성 컨텍스트에의 관리는 효율적이지 않는 경우가 많다. 이런 경우 배치 처리는 적절한 단위로 영속성 컨텍스트를 초기화해야 한다.
+
+#### JPA 등록 배치
+수천에서 수만 건 이상의 엔티티를 한 번에 등록할 때 주의할 점은 **영속성 컨텍스트에 엔티티가 계속 쌓이지 않도록 일정 단위마다 영속성 컨텍스트의 엔티티를 데이터베이스에 플러시하고 영속성 컨텍스트를 초기화 해야한다.**
+
+```java
+public void bulkInsert() {
+    EntityManager em = enttiyManagerFactory.createEntityManager();
+    EntityTransacion tx = em.getTransacion();
+
+    tx.begin();
+
+    for(int i = 0; i < 100000; i++) {
+        Product product = new Product("item"+ i, 10000);
+        em.persist(product);
+
+        // 100건 마다 플러시와 영속성 컨텍스트 초기화 한다.
+        if (i % 100 == 0) {
+            em.flush();
+            em.clear();
+        }
+    }
+    tx.commit();
+    em.close();
+}
+```
+**엔티티를 100건 저장할 때마다 플러시를 호출하고 영속성 컨텍스트를 초기화한다.**
+
+#### JPA 페이징 처리 (Update)
+```java
+public void bulkUpdate() {
+    EntityManager em = enttiyManagerFactory.createEntityManager();
+    EntityTransacion tx = em.getTransacion();
+
+    tx.begin();
+
+    final int pageSize = 100;
+
+    for(int i = 0; i < 100; i++) {
+        List<Product> resultList = em.createQuery("select p from Product p", Product.class)
+            .setFirstResult(i * pageSzie)
+            .setMaxResult(pageSzie)
+            .getResultLsit();
+
+            // 비지니스 로직 실행
+        for (Product product : resultList) {
+            product.setPrice(production.getPrice() + 100);
+        }
+
+        em.flush();
+        em.clear();
+    }
+
+    tx.commit();
+    em.close();
+}
+```
+한 번에 100건씩 페이징 쿼리로 조화하면서 상품의 가격을 100원씩 증가한다. 그리고 페이지 단위마다 영속성 컨텍스트를 플러시하고 초기화한다.
+
+#### 하이버네이트 scroll
+...
+
+#### 하이버네이트 무상태 세션 사용
+...
+
+### SQL 쿼리 힌트 사용
+...
+
+### 트랜잭션을 지원하는 쓰지 지연과 성능 최적화
+
+#### 트랜잭션을 지원하는 쓰지 이연과 JDBC 배치
+```sql
+insert(member1); // INSERT INTO ...
+insert(member2); // INSERT INTO ...
+insert(member3); // INSERT INTO ...
+insert(member4); // INSERT INTO ...
+insert(member5); // INSERT INTO ...
+
+commit();
+```
+**네트워크 호출 한번은 단순한 메소드를 수만 번 호출하는 것보다 더 큰 비용이 든다.** 이코드는 5번의 INSERT SQL과 1번의 커밋으로 총 6번 데이터 베이스와 통신한다. 이것을 최적화하라면 5번의 INSERT SQL을 모아서 한 번에 데이터베이스로 보내면 된다.
+JDBC가 제공하는 SQL 배치 기능을 사용하면 SQL을 모아서 데이터베이스에 한 번에 보낼 수 있다. 하지만 이 기능을 사용하라면 많은 코드를 수정해야한다. JPA는 플러시 기능이 있이므로 SQL 배치 기능을 효과적으로 사용할 수 있다.
+
+**`hibernate.jdbc.batch_size` 속성의 값을 50으로 주면 최대 50건씩 모아서 SQL 배치를 실행한다. 하지만 SQL 배치는 같은 SQL일 때만 유효하다. 중간에 다른 처리가 들어가면 SQL 배치를 다시 시작한다.**
+
+```sql
+em.persist(new Member()); // 1
+em.persist(new Member()); // 2
+em.persist(new Member()); // 3
+em.persist(new Member()); // 4
+em.persist(new Orders()); // 5
+em.persist(new Member()); // 6
+em.persist(new Member()); // 7
+```
+1,2,3,4를 모아서 하나의 SQL 배치를 실행하고 5를 한 번 실행하고 6,7을 모아서 실행한다. 따라서 총 3번의 SQL 배치를 실행한다.
+
+
+**엔티티가 영속 상태가 디려면 식별자가 꼭 필요하다. 그런데 IDENTITY 식별자 생성 전략은 엔티티를 데이터베이스에 저장해야 식별자를 구할 수 있으므로 em.persist()를 호출하는 즉시 INSERT SQL이 데이터베이스에 전달된다. 따라서 쓰지 지연을 활용한 성능 최적화를 할 수가 없다.**
+
+
+#### 트랜잭션을 지원하는 쓰기 지연과 애플리케이션 확장성
+트랜잭션을 지원하는 쓰기 지연의 가장큰 장점은 **데이터베이스 테이블 로우에 락이 걸리는 시간을 최소한다는 것이다.** 이 기능은 트랜잭션을 커밋해서 영속성 컨텍스트를 플러시하기 전까지는 데이터베이스에 데이터를 등록, 수정, 삭제 하지 않는다. 따라서 **커밋 전까지 데이터베이스 로우에 락을 걸지 않는다.**
+
+```
+update(memberA); // UPDATE SQL Member A
+비지니스로직A(); // UPDATE SQL ...
+비지니스로직B(); // UPDATE SQL ...
+commit();
+```
+**JPQ를 사용하지 않고 SQL 직접ㄷ다루면 `update(memberA)`를 호출할 때 UPDATE SQL을 실행하면 데이터베이스 테이블 로우에 락을 건다.** 이 락은 `비지니스 로직A()`, `비지니스 로직B()`를 모두 수행하고 `commit()`을 호출할 때까지 유지된다. 트랜잭션 격리 수준에 따라 다르지만 보통 많이 사용하는 커밋된 읽기 Read Committed 격리 수준이나 그 이상에는 데이터베이스에 현재 수정 중인 데이터(로우)를 수정하려는 다른 트랜잭션은 락이 풀릴 때까지 대기한다.
+
+JPA는 커밋을 해야 플러시를 호ㅓ출하고 데이터베이스에 수정 쿼리를 보낸다. 예제에서 `commit()`을 호출할 떄 UPDATE SQL을 실행하고 바로 데이터베이스 트랜잭션을 커밋한다. 쿼리를 보내고 보내고 바로 트랜잭션을 커밋하므로 결과적으로 데이터베이스에 락이 걸리는 시간을 최소화 한다. 이는 동시에 더 많은  트래잭션을 처리할 수 있다는 장점이 된다
