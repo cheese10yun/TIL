@@ -1009,6 +1009,8 @@ class MemberContoller {
 
 ![](../../assets/jpa-osiv-2.png)
 
+
+
 1. 클라이언틔의 요청이 들어오면 서블릿 필터나, 스프링 인터셉터에서 영속성 컨텍스트를 생성한다. 단 이때 **트랜잭션은 시작하지 않는다.**
 2. 서비스 계층에서 `@Transacional`로 트랜잭션을 시작할 때 1번에서 미리 생성해둔 영속성 컨텍스트를 찾아서 트랜잭션을 시작한다.
 3. 서비스 계층이 끝나면 트랜잭션을 커밋하고 영속성 컨텍스트를 플러시한다. 이때 **트래잭션을 끝내지만 영속성 컨텍스트는 종료하지 않는다.**
@@ -1050,3 +1052,150 @@ class MemberContoller {
 
 ### 스프링 OSIV 단점
 OSIV를 사용하면 화면 출력할 떄 엔티티를 유지하면서 객체 그래프를 마음껏 탐색할 수 있다. 이는 복잡한 화면 구성할 떄는 효과적인 방법이 아니다. 이런 경우는 JPQL을 작성해서 DTO로 조회하는 것이 효과적이다.
+
+# 고급 주제와 성능 최적화
+
+## 엔티티 비교
+1차 캐시의 가장 큰 장점인 **애플리케이션 수준의 반복 가능한 읽기**를 이해 해야한다. 이것은 단순히 동등성(equals) 비교 수준이 아니라 정말 **주소값이 같은 인스턴스를 봔한 한다.**
+
+```java
+public void testReferecne() {
+
+    Member member 1 = em.find(Member.class, "1L");
+    Member member 2 = em.find(Member.class, "1L");
+
+    assertTrue(member1 == member2); // 둘은 같은 인스턴스다
+}
+```
+
+### 영속성 컨텍스트가 같을 때 엔티티 비교
+
+![](../../assets/jpa-test-1.png)
+```java
+@RunWith(SpringJunit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:appConfig.xml")
+@Transacional // 트랜잭션 안에서 테스트를 실행한다
+public class MemberServiceTest {
+
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
+
+    @Test
+    public void 회원가입() throws Exception {
+
+        // Given
+        Member member = new Member("kim")
+
+        // When
+        Long saveId = memberService.join(member);
+
+        // Then
+        Member findMember = memberRepository.findOne(saveId);
+
+        assertThat(member == findMember); // 참조값 비교 true
+    }
+}
+
+@Transacional
+public class MemberService {
+
+    @Autowired MemberRepository memberRepository;
+
+    public Long join (Member member) {
+        ...
+        memberRepository.save(member);
+        return member.getId();
+    }
+}
+
+@Transacional
+public class MemberRepository {
+
+    @PersistenceContext EntitiManager em;
+
+    public void save (Member member) {
+        em.persist(member);
+    }
+
+    public Member findOne(Long id) {
+        return em.find(Member.class, id);
+    }
+}
+```
+
+테스트 클래스 `@Transacional`이 선언되어 있어 트랜잭션을 먼저 시작하고 테스트 메서드를 실행한다. 따라서 **테스트 메소드인 `회원 가입()`은 이미 트랜잭션 범위에 들어 와있고 이 메소드가 끝나면 트랜잭션이 종료된다. 그러므로 `회원 가입()`에서 사용된 코드는 항상 같은 트랜잭션과 같은 영속성 컨텍스트에 접근한다.** 같은 영속성 컨텍스트에서 조회했으니(1차 캐시되므로) 같은 참조를 갖는다. 따라서 영속성 컨텍스트가 같으면 엔티티를 비교할 때 다음 3가지 조건이 모두 만족한다.
+
+* 동일성 : == 비교가 같다
+* 동등성 : equals() 비교가 같다
+* 데이터베이스 동등성: @Id인 데이터베이스 식별자가 같다
+
+
+### 영속성 컨텍스트가 다를 때 엔티티 비교
+```java
+@RunWith(SpringJunit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:appConfig.xml")
+// @Transacional // 테스트에서 트랜잭션을 사용하지 않는다.
+public class MemberServiceTest {
+
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
+
+    @Test
+    public void 회원가입() throws Exception {
+
+        // Given
+        Member member = new Member("kim")
+
+        // When
+        Long saveId = memberService.join(member);
+
+        // Then
+        Member findMember = memberRepository.findOne(saveId);
+
+        assertThat(member == findMember); // 참조값 비교 true
+    }
+}
+
+@Transacional // 서비스 클래스에서 트랜잭션이 시작된다.
+public class MemberService {
+
+    @Autowired MemberRepository memberRepository;
+
+    public Long join (Member member) {
+        ...
+        memberRepository.save(member);
+        return member.getId();
+    }
+}
+
+@Transacional // 레포지에서 트랜잭션이 시작된다.
+public class MemberRepository {
+
+    @PersistenceContext EntitiManager em;
+
+    public void save (Member member) {
+        em.persist(member);
+    }
+
+    public Member findOne(Long id) {
+        return em.find(Member.class, id);
+    }
+}
+```
+
+![](../../assets/jpa-test-persist.png)
+
+1. 테스트 코드에서 memberService.join(member)를 호출해서 회원가입을 시도하면 서비스 계층에서 트랜잭션이 시작되고 `영속성 컨텍스트1`이 만드렁 진다.
+2. `memberRepository`에서 `em.persist()`를 호출해서 `member` 엔티티를 영속화한다.
+3. 서비스 계층이 끝날 때 트랜잭션이 커밋되면서 영속성 컨텍스트가 플러시된다. 이 때 트랜잭션과 영속성 컨텍스트가 종료된다. 따라서 `member` 엔티티 인스턴스는 준영속상태가 된다.
+4. 테스트 코드에서 `memberRepository.fondOne(savId)`를 호출해서 지종한 엔티티를 조회하면 레포지토리 계층에서 새로운 트랜잭션이 시작되면서 새로운 `영속성 컨텍스트2`가 생성된다.
+5. 저장된 회원을 조회하지만 새로 생성된 `영속성 컨텍스트2`에는 찾는 회원이 존재하지 않는다.
+6. 따라서 데이터베이스에서 회원을 찾아 온다.
+7. 데이터베이스에서 조회된 회원 엔티티를 영속성 컨텍스트에 보관하고 변환한다.
+8. `memberRepository.findOne()` 메소드가 끝나면 트랜잭션이 종료되고 영속성 컨텍스트2도 종료된다.
+
+* 동일성: == 비교가 실패한다.
+* 동등성: equals() 비교가 만족한다.
+* 데이터베이스 동등성: @Id인 데이터베이스 식별자가 같다.
+
+## 성능 최적화
