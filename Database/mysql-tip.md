@@ -1,3 +1,11 @@
+# 유저 생성
+
+```sql
+create user 'user-name'@'%' identified by 'password-value';
+grant all privileges on *.* to 'user-name'@'%';
+flush privileges;
+```
+
 # 비밀번호 초기화
 
 ```
@@ -6,7 +14,6 @@ ERROR 1054 (42S22): Unknown column 'password' in 'field list'
 ```
 
 * mysql 비밀번호 변경시 5.7에는 password 컬럼이 없어서 위의 쿼리로는 업데이트가 안된다
-
 
 ```
 mysql> describe user;
@@ -70,3 +77,30 @@ flush privileges; # 즉시 적용
 ```
 * 해당 업데이트 문으로 쿼리 변경이 가능하다
 * 여담으로 로컬 데이터베이스 환경은 비밀번호가 없는 것이 편리하고 좋아서 ''으로 설정해서 사용하고 있다.
+
+# 칼럼, 코멘트 조회
+```sql
+SELECT TABLE_NAME, COLUMN_NAME, COLUMN_COMMENT, TABLE_SCHEMA
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE 
+    COLUMN_NAME LIKE '%colum%' and
+    TABLE_CATALOG = 'sample'
+;
+```
+* `COLUMN_NAME LIKE '%colum%` 조회 하고자하는 칼럼 이름
+* `TABLE_CATALOG = 'sample'` 조회 대상 데이터베이스
+
+
+TABLE_NAME | COLUMN_NAME | COLUMN_COMMENT | TABLE_SCHEMA
+-----------|-------------|----------------|-------------
+orders | member_id |  | sample
+
+```sql
+SELECT TABLE_NAME, COLUMN_NAME, COLUMN_COMMENT
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE 
+    COLUMN_NAME LIKE 'business_category%' and 
+    TABLE_CATALOG = 'sample';
+```
+위 처럼 comment를 조회할 수 있다
+
