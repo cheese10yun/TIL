@@ -92,9 +92,9 @@
     - [영속성 컨텍스트가 같을 때 엔티티 비교](#%ec%98%81%ec%86%8d%ec%84%b1-%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ea%b0%80-%ea%b0%99%ec%9d%84-%eb%95%8c-%ec%97%94%ed%8b%b0%ed%8b%b0-%eb%b9%84%ea%b5%90)
     - [영속성 컨텍스트가 다를 때 엔티티 비교](#%ec%98%81%ec%86%8d%ec%84%b1-%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ea%b0%80-%eb%8b%a4%eb%a5%bc-%eb%95%8c-%ec%97%94%ed%8b%b0%ed%8b%b0-%eb%b9%84%ea%b5%90)
   - [성능 최적화](#%ec%84%b1%eb%8a%a5-%ec%b5%9c%ec%a0%81%ed%99%94)
-    - [N + 1 문제](#n--1-%eb%ac%b8%ec%a0%9c)
-      - [즉시 로딩과 N + 1](#%ec%a6%89%ec%8b%9c-%eb%a1%9c%eb%94%a9%ea%b3%bc-n--1)
-      - [지연 로딩과 N + 1](#%ec%a7%80%ec%97%b0-%eb%a1%9c%eb%94%a9%ea%b3%bc-n--1)
+    - [N+1 문제](#n--1-%eb%ac%b8%ec%a0%9c)
+      - [즉시 로딩과 N+1](#%ec%a6%89%ec%8b%9c-%eb%a1%9c%eb%94%a9%ea%b3%bc-n--1)
+      - [지연 로딩과 N+1](#%ec%a7%80%ec%97%b0-%eb%a1%9c%eb%94%a9%ea%b3%bc-n--1)
     - [페치 조인 사용](#%ed%8e%98%ec%b9%98-%ec%a1%b0%ec%9d%b8-%ec%82%ac%ec%9a%a9)
     - [하이버네이트 @BatchSzie](#%ed%95%98%ec%9d%b4%eb%b2%84%eb%84%a4%ec%9d%b4%ed%8a%b8-batchszie)
     - [읽기 전용 쿼리의 성능 최적화](#%ec%9d%bd%ea%b8%b0-%ec%a0%84%ec%9a%a9-%ec%bf%bc%eb%a6%ac%ec%9d%98-%ec%84%b1%eb%8a%a5-%ec%b5%9c%ec%a0%81%ed%99%94)
@@ -1027,7 +1027,7 @@ class OrderCOntroller {
 
 * 사용하지 않은 엔티티를 로딩한다.
   * 글로벌 전략이기 때문에 모든 경우에 엔티티를 즉시 로딩으로 가져오기 때문에 비효율적이다.
-* N + 1 문제가 발생한다.
+* N+1 문제가 발생한다.
   * **JPA가 JPQL을 분석해서 SQL을 생성할 때는 글로벌 페치 전략을 참고하지 않고 오직 JPQL 자체만 사용한다.**
   * 그래서 즉시 로딩이든 지연 로딩이든 구분하지 않고 JPQL 쿼리 자체에 충실하게 SQL을 만든다.
 
@@ -1045,7 +1045,7 @@ select * from Member where id = ? // EAGER로 실행된 SQL
 select * from Member where id = ? // EAGER로 실행된 SQL
 select * from Member where id = ? // EAGER로 실행된 SQL
 select * from Member where id = ? // EAGER로 실행된 SQL
-... (List의 겟수 만큼 실행된다. N + 1 번 쿼리가 실행되기 때문에 N + 1 이라 한다)
+... (List의 겟수 만큼 실행된다. N+1 번 쿼리가 실행되기 때문에 N+1 이라 한다)
 ```
 
 1. `select from Order o` JPQL을 분석해서 SQL을 생성한다.
@@ -1067,7 +1067,7 @@ select o.*, m.*
 from order o
 join member m on o.member_id = m.member_id
 ```
-페치 조인을 사용하면 SQL JOIN을 사용해 페치 조인 대상까지 함께 조회한다. 따라서 N + 1문제가 발생하지 않는다. 연관된 엔티티를 이미 로딩했으므로 글로벌 페치 전략은 무의미 한다.
+페치 조인을 사용하면 SQL JOIN을 사용해 페치 조인 대상까지 함께 조회한다. 따라서 N+1문제가 발생하지 않는다. 연관된 엔티티를 이미 로딩했으므로 글로벌 페치 전략은 무의미 한다.
 
 
 페치 조인의 단점으로는 무분별하게 사용하면 화면에 맞춘 레포지토리 메소드가 증가된다. 결국 프리젠테이션 계층이 알게 모르게 데이터 접근 계층을 침법하는 것이다. 
@@ -1318,9 +1318,9 @@ public class MemberRepository {
 
 ## 성능 최적화
 
-### N + 1 문제
+### N+1 문제
 
-#### 즉시 로딩과 N + 1
+#### 즉시 로딩과 N+1
 
 JPQL을 실행하면 JPA는 이것을 분석해서 SQL을 생성한다. **이때는 즉시 로딩과 지연 로딩에 대해서 젼혀 신경 쓰지 않고(글로벌 패치 전략) JPQL만 사용해서 SQL을 생성한다.**
 
@@ -1362,9 +1362,9 @@ SELECT * FROM ORDERS WHERE MEMBER_ID = 3 // 회원과 연관된 주문
 SELECT * FROM ORDERS WHERE MEMBER_ID = 4 // 회원과 연관된 주문
 SELECT * FROM ORDERS WHERE MEMBER_ID = 5 // 회원과 연관된 주문
 ```
-**즉시 로딩은 JPQL을 실행할 때 N + 1 문제가 발생한다.**
+**즉시 로딩은 JPQL을 실행할 때 N+1 문제가 발생한다.**
 
-#### 지연 로딩과 N + 1
+#### 지연 로딩과 N+1
 ```java
 @Entity
 @Table(name = "ORDERS")
@@ -1667,7 +1667,7 @@ WHERE
 
 벌크 연산은 버전을 무시한다. 벌크 연산에서 버전을 증가하라면 버전 필드를 강제로 증가시켜야한다.
 ```sql
-update Member m set m.name = "변경", m.version = m.version + 1
+update Member m set m.name = "변경", m.version = m.versioN+1
 ```
 
 ## JPA 난관적 락
