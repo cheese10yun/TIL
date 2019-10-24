@@ -807,7 +807,7 @@ public void bulkDelete() {
 }
 
 // JPA 표준은 아니지만 하이버네이트는 INSERT 벌크 연산도 지원한다.
-// 100원 미만의 ㅁ든 상품을 선태갷서 ProducutonTemp에 저장한다
+// 100원 미만의 만든 상품을 선태갷서 ProducutonTemp에 저장한다
 public void bulkInsert() {
     String sql = "insert into ProductTemp(id, price, stockAmount) select p.id, p.name, p.price, p.stockAmount from Product p where p.price < :price"
 
@@ -1306,7 +1306,7 @@ public class MemberRepository {
 1. 테스트 코드에서 memberService.join(member)를 호출해서 회원가입을 시도하면 서비스 계층에서 트랜잭션이 시작되고 `영속성 컨텍스트1`이 만드렁 진다.
 2. `memberRepository`에서 `em.persist()`를 호출해서 `member` 엔티티를 영속화한다.
 3. 서비스 계층이 끝날 때 트랜잭션이 커밋되면서 영속성 컨텍스트가 플러시된다. 이 때 트랜잭션과 영속성 컨텍스트가 종료된다. 따라서 `member` 엔티티 인스턴스는 준영속상태가 된다.
-4. 테스트 코드에서 `memberRepository.fondOne(savId)`를 호출해서 지종한 엔티티를 조회하면 레포지토리 계층에서 새로운 트랜잭션이 시작되면서 새로운 `영속성 컨텍스트2`가 생성된다.
+4. 테스트 코드에서 `memberRepository.fondOne(saveId)`를 호출해서 지종한 엔티티를 조회하면 레포지토리 계층에서 새로운 트랜잭션이 시작되면서 새로운 `영속성 컨텍스트2`가 생성된다.
 5. 저장된 회원을 조회하지만 새로 생성된 `영속성 컨텍스트2`에는 찾는 회원이 존재하지 않는다.
 6. 따라서 데이터베이스에서 회원을 찾아 온다.
 7. 데이터베이스에서 조회된 회원 엔티티를 영속성 컨텍스트에 보관하고 변환한다.
