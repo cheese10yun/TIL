@@ -659,7 +659,6 @@ FROM Member m LEFT [OUTER] JOIN t.team t
 WHERE 절을 사용해서 세타 저인을 할 수 있다. **세타 조인은 내부 조인만 지원한다.**
 
 ```sql
-
 # JQPL
 select count(m) from Member m, Team t
 where m.username = t.name
