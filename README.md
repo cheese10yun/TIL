@@ -25,6 +25,7 @@
   * [Paging 처리 Fetch Join 적용시 limit 동작하지 않는 이슈](https://github.com/cheese10yun/blog-sample/tree/master/jpa-fetch-join)
   * [JPA 학습 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/jpa.md)
   * [무식하게 배우는 JPA](https://github.com/cheese10yun/blog-sample/tree/master/spring-kotlin)
+  * [JPA N+1 발생원인과 해결방법](https://github.com/cheese10yun/blog-sample/tree/master/jpa-n-plus-1)
 * MVC
   * [MVC 요청 Flow](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/mvc-flow.md)
   * [TaskExecutor 비동기 처리](https://github.com/cheese10yun/TIL/blob/master/Spring/mvc/TaskExecutor-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC.md)
