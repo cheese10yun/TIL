@@ -60,12 +60,13 @@
   * [테스트 코드 작성에 대한 나름의 고찰](https://github.com/cheese10yun/blog-sample/tree/master/test-code)
   * [Junit5 With Kotlin](https://github.com/cheese10yun/blog-sample/tree/master/kotlin-junit5)
 * Transaction
-  * [Transaction Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
+  * [트랜잭션 Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
   * [Lock - 트랜잭션 선점 잠금, 비선점 잠금](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-lock.md)
-  * [Transaction Checked Exception에대한 고찰](https://github.com/cheese10yun/blog-sample/tree/master/exception)
-  * [Transaction 기초 학습 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-study.md)
-  * [Transaction Rollback 케이스 정리](https://github.com/cheese10yun/blog-sample/tree/master/spring-transaction-test)
+  * [트랜잭션 Checked Exception에대한 고찰](https://github.com/cheese10yun/blog-sample/tree/master/exception)
+  * [트랜잭션 기초 학습 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-study.md)
+  * [트랜잭션 Rollback 케이스 정리](https://github.com/cheese10yun/blog-sample/tree/master/spring-transaction-test)
+  * [트랜잭션 단위](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-junit5/docs/transaction.md)
 * [Class Loader](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/class-loader.md)
 * Spring Boot
   * [Spring Boot 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/boot/spring-boot-basic.md)
