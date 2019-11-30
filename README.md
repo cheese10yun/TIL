@@ -99,6 +99,7 @@
 * [Gradle 기반 멀티 모듈 구성하기](https://github.com/cheese10yun/blog-sample/tree/master/multi-module)
 * [Spring Actuator 기초 설정](https://github.com/cheese10yun/blog-sample/tree/master/actuator)
 * [Immutable Properties 설정하는 방법](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-junit5/docs/data-properties.md)
+* [Application Event](https://github.com/cheese10yun/blog-sample/tree/master/application-event)
 
 ## 운영체제
 * [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C_%EA%B8%B0%EC%B4%88.md)
