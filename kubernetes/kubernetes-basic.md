@@ -29,3 +29,7 @@
 * 스캐줄러가 판단: Pod를 만들 때 리소스의 사용량을 지정할 수 있다. 2기가 메모리를 지정, 최대 메모리 3기가 지정
 * 메모리: 초과시 Pod 종료 시킴
 * CPU: 초과시 request로 낮춤 over시 종료되지 않음
+
+
+## 참고
+* [강의 자료](https://kubetm.github.io/practice/beginner/gettingstarted-kubernetes/)
