@@ -207,6 +207,9 @@
 * [함께 자라기 - 애자일로 가는 길](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%ED%95%A8%EA%BB%98_%EC%9E%90%EB%9D%BC%EA%B8%B0.md)
 * [클린 코더](https://github.com/cheese10yun/TIL/blob/master/도서/클린-코더.md)
 
+## 쿠버네티스
+* [쿠버네티스 기초 학습](https://github.com/cheese10yun/TIL/blob/master/kubernetes/kubernetes-basic.md)
+
 ## AWS
 * [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
 * [AWS 대표 서비스 정리](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-Service.md)
