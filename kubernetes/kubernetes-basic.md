@@ -2,13 +2,11 @@
 
 
 ## Object
-
 ![](https://github.com/cheese10yun/TIL/blob/master/assets/kubernetes-object.png?raw=true)
 
 
 ### Container
-
-* 컨테이너 안에 Po이 있다
+* 컨테이너 안에 Pod이 있다
 * 한 컨테이너에서 여러 Pod를 가질 수 있지만 동일한 Pod 내에서 컨테이너는 Port가 동일 할 수 없다.
 * 동일한 Pod에서는 Container1 -> Container2로 접근할 때 localhost:8080으로 접근 가능
 * Pod가 생성될때 고유한 아이피가 할당된다. 쿠버네티스 클러스 안에서만 해당 아이피로 접근 가능
