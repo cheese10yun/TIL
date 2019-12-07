@@ -568,7 +568,7 @@ public class OrderController {
 하위 도메인 마다 같은 용어라도 의미가 다르고 같은 대상이라도 지칭하는 **용어가 다를 수 있기 때문에 한 개의 모델로 모든 하위 도메인을 표현하는 시도는 올바른 방법이 아니며 표현할 수도 없다.**
 
 ## BOUNDED CONTEXT
-BOUNDED CONTEXT는 모델의 경계를 결졍하며 한 개의 BOUNDED CONTEXT는 논리저적으로로 한 개의 모델을 갖는다.
+BOUNDED CONTEXT는 모델의 경계를 결정하며 한 개의 BOUNDED CONTEXT는 논리저적으로로 한 개의 모델을 갖는다.
 
 ## BOUNDED CONTEXT의 구현
 BOUNDED CONTEXT가 도메인 모델만 포함하는 것은 아니다. BOUNDED CONTEXT는 도메인 모델 뿐만이 아니라 도메인 기능을 사용자에게 제공하는데 필요한 표현 영역, 응용 서비스, 인프라 영역 등 모두 포함한다.
