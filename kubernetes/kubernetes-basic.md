@@ -1,12 +1,10 @@
 ![](https://github.com/cheese10yun/TIL/blob/master/assets/kubernetes-controller.png?raw=true)
 
-
 ## Object
 ![](https://github.com/cheese10yun/TIL/blob/master/assets/kubernetes-object.png?raw=true)
 
 
 ### Container
-
 ![](https://github.com/cheese10yun/TIL/blob/master/assets/kubernetes-container.png?raw=true)
 
 * 컨테이너 안에 Pod이 있다
