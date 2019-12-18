@@ -771,4 +771,16 @@ docker rmi $(docker images -q)
 docker volume rm $(docker volume ls |awk '{print $2}')
 rm -rf ~/Library/Containers/com.docker.docker/Data/*
 ```
-* [link](https://github.com/docker/for-mac/issues/371)
+
+
+## 모든 도커 컨테이너 삭제
+```
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+```
+
+## 모든 도커 이미지 삭제
+```
+docker rmi $(docker images -q)
+```
+
