@@ -59,6 +59,7 @@
   * [객체 생성시 테스트 전략](https://github.com/cheese10yun/blog-sample/tree/master/ddd)
   * [테스트 코드 작성에 대한 나름의 고찰](https://github.com/cheese10yun/blog-sample/tree/master/test-code)
   * [Junit5 With Kotlin](https://github.com/cheese10yun/blog-sample/tree/master/kotlin-junit5)
+  * [Junit5 추가 기능](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-junit5/docs/Junit5.md)
 * Transaction
   * [트랜잭션 Annotation](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/Transcational-annotation.md)
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
