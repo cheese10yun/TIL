@@ -1,5 +1,28 @@
 > 해당 문서는 [https://docs.spring.io/spring-cloud-task/](https://docs.spring.io/spring-cloud-task/docs/current/reference/#getting-started)를 참조 했습니다.
 
+# Task Execution Listener
+`TaskExecutionListener`를 통해서 특정 이벤트에 대한 리스너를 등록할 수 있습니다. `TaskExecutionListener` 인터페이스를 통해서 구현 클래스를 구현 합니다.
+
+```java
+ public class MyBean {
+
+	@BeforeTask
+	public void methodA(TaskExecution taskExecution) {
+	}
+
+	@AfterTask
+	public void methodB(TaskExecution taskExecution) {
+	}
+
+	@FailedTask
+	public void methodC(TaskExecution taskExecution, Throwable throwable) {
+	}
+}
+```
+* @BeforeTask: 하여 저장 이전에 TaskExecution로TaskRepository
+* @AfterTask: 표시의 TaskExecution항목을 업데이트하기 전에 TaskRepository작업의 최종 상태를 표시합니다
+* @FailedTask: @AfterTask처리되지 않은 예외가 태스크에 의해 발생할 때 메소드가 호출 되기 전에
+
 # TASK TABLE Schema
 
 ![](https://docs.spring.io/spring-cloud-task/docs/current/reference/images/task_schema.png)
