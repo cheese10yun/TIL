@@ -75,7 +75,6 @@ sepc:
 
 ## Volume
 
-
 ### emptyDir
 ![](../assets/kubernetes-volume-empdir.png)
 
@@ -93,6 +92,8 @@ sepc:
 
 ### PVC / PV
 ![](../assets/kubernetes-volume-PVC.png)
+* Pod 에서 PSV를 거쳐서 PV를 접속하는 이유
+  * 
 
 ## 참고
 * [강의 자료](https://kubetm.github.io/practice/beginner/gettingstarted-kubernetes/)
