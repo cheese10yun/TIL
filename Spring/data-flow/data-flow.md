@@ -5,4 +5,6 @@ stream create --name mysqlstrea3 --definition "http --server.port=9010 | jdbc --
 
 ```
 http post --contentType 'application/json;charset=UTF-8' --target http://172.24.0.2:9010 --data "{\n  \"name\": \"yun\",\n  \"firstName\": \"100\",\n  \"lastName\": \"200\"\n}"
+
+http post --contentType 'application/json;charset=UTF-8' --target http://172.24.0.2:9011 --data "{\n  \"name\": \"www\",\n  \"firstName\": \"100\",\n  \"lastName\": \"200\"\n}"
 ```
