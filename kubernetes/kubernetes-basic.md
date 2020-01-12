@@ -97,3 +97,10 @@ sepc:
 
 ## 참고
 * [강의 자료](https://kubetm.github.io/practice/beginner/gettingstarted-kubernetes/)
+
+## ETC
+
+```bash
+kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+```
+token 정보 가져오기
