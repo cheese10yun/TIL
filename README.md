@@ -221,6 +221,9 @@
 * [AWS 대표 서비스 정리](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-Service.md)
 * [AWS 서비스 패턴 정리](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-%EC%84%9C%EB%B9%84%EC%8A%A4-%ED%8C%A8%ED%84%B4-%EC%A0%95%EB%A6%AC.md)
 
+## ElasticSearch
+* [설치 및 기초 사용법](https://github.com/cheese10yun/blog-sample/blob/master/elk-sample/api/README.md)
+
 ## ETC
 * [Bitbucket](https://github.com/cheese10yun/TIL/blob/master/ETC/bitbucket-beginner.md)
 * [MySQL 비밀번호 초기화](https://github.com/cheese10yun/TIL/blob/master/ETC/mysql-%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8%EC%B4%88%EA%B8%B0%ED%99%94.md)
