@@ -81,11 +81,11 @@ sepc:
 * 컨테이너 끼리 데이터를 공유하기 위해서 Volume을 사용 하는 경우
 * 최초 Volume 생성되는 경우 Volume은 Empty이기 때문에 Empty Dir
 * Container1, Container2 서로 마운트가되 있는 Volume에 저장 한다. 즉 자신의 로컬에 저장되 어있는 것 처럼 사용한다.
-* 동일한 Pod에 저장되기 떄문에 Pod가 재생성되면 데이터가 제거된다. 즉 일시적인 데이터들만 저장 해야한다.
+* 동일한 Pod에 저장되기 때문에 Pod가 재생성되면 데이터가 제거된다. 즉 일시적인 데이터들만 저장 해야한다.
 
 ### hostPath
 ![](../assets/kubernetes-volume-host-path.png)
-* 각각의 path를 각각의 volume으로 사용하는 것, 즉 각각의 Pod들이 마운트해서 공유하기 떄문에 Pod들이 죽어도 Volume은 사라지지 않는다.
+* 각각의 path를 각각의 volume으로 사용하는 것, 즉 각각의 Pod들이 마운트해서 공유하기 때문에 Pod들이 죽어도 Volume은 사라지지 않는다.
 * Pod 입장에서는 Pod2가 만약 죽으면 반드시 해당 노드에 재생성되는 보장이 없기 때문에 스케줄러에서 다른 Node2에서 생성되는 경우 문제가 발생할수 있다. 또 Node1 -> Node2으로 Pod가 이동될 수도 있다.
 
 
