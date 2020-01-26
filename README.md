@@ -22,6 +22,7 @@
   * [무식하게 배우는 JPA](https://github.com/cheese10yun/blog-sample/tree/master/spring-kotlin)
   * [JPA N+1 발생원인과 해결방법](https://github.com/cheese10yun/blog-sample/tree/master/jpa-n-plus-1)
   * [Query Dsl With Koltin](https://github.com/cheese10yun/blog-sample/tree/master/query-dsl)
+  * [영속성 컨텍스트 주의점](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-persistence-context.md)
 * Data Flow
   * Task
     * [Task 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/data-flow/task/task-basic.md)
