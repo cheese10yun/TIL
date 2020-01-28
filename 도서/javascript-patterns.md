@@ -671,7 +671,7 @@ var add = function add(a, b) {
 };
 ```
 
-- 이코드는 기명함수 표현식 (named function expression)을 사용한 함수를 보여준다.
+- 이 코드는 기명함수 표현식 (named function expression)을 사용한 함수를 보여준다.
 
 #### 무명함수 표현식 (unnamed function expression)
 

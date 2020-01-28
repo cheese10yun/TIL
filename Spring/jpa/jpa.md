@@ -1559,21 +1559,21 @@ insert(member5); // INSERT INTO ...
 
 commit();
 ```
-**네트워크 호출 한번은 단순한 메소드를 수만 번 호출하는 것보다 더 큰 비용이 든다.** 이코드는 5번의 INSERT SQL과 1번의 커밋으로 총 6번 데이터 베이스와 통신한다. 이것을 최적화하라면 5번의 INSERT SQL을 모아서 한 번에 데이터베이스로 보내면 된다.
+**네트워크 호출 한번은 단순한 메소드를 수만 번 호출하는 것보다 더 큰 비용이 든다.** 이 코드는 5번의 INSERT SQL과 1번의 커밋으로 총 6번 데이터 베이스와 통신한다. 이것을 최적화하라면 5번의 INSERT SQL을 모아서 한 번에 데이터베이스로 보내면 된다.
 JDBC가 제공하는 SQL 배치 기능을 사용하면 SQL을 모아서 데이터베이스에 한 번에 보낼 수 있다. 하지만 이 기능을 사용하라면 많은 코드를 수정해야한다. JPA는 플러시 기능이 있이므로 SQL 배치 기능을 효과적으로 사용할 수 있다.
 
 **`hibernate.jdbc.batch_size` 속성의 값을 50으로 주면 최대 50건씩 모아서 SQL 배치를 실행한다. 하지만 SQL 배치는 같은 SQL일 때만 유효하다. 중간에 다른 처리가 들어가면 SQL 배치를 다시 시작한다.**
 
-```sql
+```java
 em.persist(new Member()); // 1
 em.persist(new Member()); // 2
 em.persist(new Member()); // 3
 em.persist(new Member()); // 4
-em.persist(new Orders()); // 5
-em.persist(new Member()); // 6
-em.persist(new Member()); // 7
+em.persist(new Orders()); // 5, 다른 SQL이 추가 되었기 때문에  SQL 배치를 다시 시작 해야 한다
+em.persist(new Member()); // 1
+em.persist(new Member()); // 2
 ```
-1,2,3,4를 모아서 하나의 SQL 배치를 실행하고 5를 한 번 실행하고 6,7을 모아서 실행한다. 따라서 총 3번의 SQL 배치를 실행한다.
+1,2,3,4를 모아서 하나의 SQL 배치를 실행하고 5를 한 번 실행하고 1,2을 모아서 실행한다. 따라서 총 3번의 SQL 배치를 실행한다.
 
 
 :exclamation: **엔티티가 영속 상태가 디려면 식별자가 꼭 필요하다. 그런데 IDENTITY 식별자 생성 전략은 엔티티를 데이터베이스에 저장해야 식별자를 구할 수 있으므로 em.persist()를 호출하는 즉시 INSERT SQL이 데이터베이스에 전달된다. 따라서 쓰지 지연을 활용한 성능 최적화를 할 수가 없다.**
