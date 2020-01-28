@@ -311,7 +311,7 @@ em.remove()에 삭제 대상 엔티티를 넘겨주면 엔티티를 삭제한다
 영속성 컨텍스트를 플러시 하는 방법은 3가지다.
 
 1. em.flush()를 직접 호출한다.
-2. 트랜 잭션 커밋 시 플러시가 자동 호출된다.
+2. 트랜잭션 커밋 시 플러시가 자동 호출된다.
 3. JPQL 쿼리 실행 시 플러시가 자동 호출된다.
 
 ### 직접 호출
@@ -321,7 +321,7 @@ em.remove()에 삭제 대상 엔티티를 넘겨주면 엔티티를 삭제한다
 데이터베이스에 변경 내용을 SQL로 전달하지 않고 트랜잭션만 커밋하면 어떤 데이터도 데이터베이스에 반영되지 않는다. 따라서 **트랜잭션을 커밋하기 전에 꼭 플러시를 호출해서 영속성 컨텍스트의 변경 내용을 데이터베이스에 반영해야 한다.** JPA는 이런 문제를 예방하기 위해서 트랜잭션 커밋할 때 **플러시를 자동으로 호출한다.**
 
 ### JPQL 쿼리 실행시 플러시 자동 호출
-JPQL이나 QueryDSL 같은 객체지향 쿼리를 호출할 플러시가 실행된다. 
+JPQL이나 QueryDSL 같은 객체지향 쿼리를 호출할때 플러시가 실행된다. 
 
 ```java
 em.persist(memberA);
@@ -817,7 +817,7 @@ public void bulkInsert() {
 벌크 연산은 `executeUpdate()` 메서드를 사용한다. 이 메서드는 별크 연산으로 영향을 받은 엔티티 건수를 반환한다.
 
 ### 벌크 연산 주의점
-**벌크 연산을 사용할 때 벌크 연산이 영속성 컨텍스트를 무시하고 데이터베이스에 직접 쿼리한다는 점에 저의해애 한다.** 
+**벌크 연산을 사용할 때 벌크 연산이 영속성 컨텍스트를 무시하고 데이터베이스에 직접 쿼리한다는 점에 쥐의해야 한다.** 
 
 
 ```java
@@ -1079,7 +1079,7 @@ join member m on o.member_id = m.member_id
 ```java
 class OrderService {
 
-    @Transacional
+    @Transactional
     public Order findOrder(id) {
         Order order = orderRepository.findOrder(id);
         order.getMember().getName(); // 프록시 객체를 강제로 초기화한다.
@@ -1128,7 +1128,7 @@ class MemberContoller {
 
 
 1. 클라이언틔의 요청이 들어오면 서블릿 필터나, 스프링 인터셉터에서 영속성 컨텍스트를 생성한다. 단 이때 **트랜잭션은 시작하지 않는다.**
-2. 서비스 계층에서 `@Transacional`로 트랜잭션을 시작할 때 1번에서 미리 생성해둔 영속성 컨텍스트를 찾아서 트랜잭션을 시작한다.
+2. 서비스 계층에서 `@Transactional`로 트랜잭션을 시작할 때 1번에서 미리 생성해둔 영속성 컨텍스트를 찾아서 트랜잭션을 시작한다.
 3. 서비스 계층이 끝나면 트랜잭션을 커밋하고 영속성 컨텍스트를 플러시한다. 이때 **트래잭션을 끝내지만 영속성 컨텍스트는 종료하지 않는다.**
 4. 컨트롤러와 뷰까지 영속성 컨텍스트가 유지되므로 조회한 엔티티는 영속 상태를 유지한다.
 5. 서블릿 필터나, 스프링 인터셉터로 요청이 돌아오면 영속성 컨텍스트를 종료한다. 이때 플러시를 호출하지 않고도 바로 종료한다.
@@ -1190,7 +1190,7 @@ public void testReferecne() {
 ```java
 @RunWith(SpringJunit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:appConfig.xml")
-@Transacional // 트랜잭션 안에서 테스트를 실행한다
+@Transactional // 트랜잭션 안에서 테스트를 실행한다
 public class MemberServiceTest {
 
     @Autowired MemberService memberService;
@@ -1212,7 +1212,7 @@ public class MemberServiceTest {
     }
 }
 
-@Transacional
+@Transactional
 public class MemberService {
 
     @Autowired MemberRepository memberRepository;
@@ -1224,7 +1224,7 @@ public class MemberService {
     }
 }
 
-@Transacional
+@Transactional
 public class MemberRepository {
 
     @PersistenceContext EntitiManager em;
@@ -1239,7 +1239,7 @@ public class MemberRepository {
 }
 ```
 
-테스트 클래스 `@Transacional`이 선언되어 있어 트랜잭션을 먼저 시작하고 테스트 메서드를 실행한다. 따라서 **테스트 메소드인 `회원 가입()`은 이미 트랜잭션 범위에 들어 와있고 이 메소드가 끝나면 트랜잭션이 종료된다. 그러므로 `회원 가입()`에서 사용된 코드는 항상 같은 트랜잭션과 같은 영속성 컨텍스트에 접근한다.** 같은 영속성 컨텍스트에서 조회했으니(1차 캐시되므로) 같은 참조를 갖는다. 따라서 영속성 컨텍스트가 같으면 엔티티를 비교할 때 다음 3가지 조건이 모두 만족한다.
+테스트 클래스 `@Transactional`이 선언되어 있어 트랜잭션을 먼저 시작하고 테스트 메서드를 실행한다. 따라서 **테스트 메소드인 `회원 가입()`은 이미 트랜잭션 범위에 들어 와있고 이 메소드가 끝나면 트랜잭션이 종료된다. 그러므로 `회원 가입()`에서 사용된 코드는 항상 같은 트랜잭션과 같은 영속성 컨텍스트에 접근한다.** 같은 영속성 컨텍스트에서 조회했으니(1차 캐시되므로) 같은 참조를 갖는다. 따라서 영속성 컨텍스트가 같으면 엔티티를 비교할 때 다음 3가지 조건이 모두 만족한다.
 
 * 동일성 : == 비교가 같다
 * 동등성 : equals() 비교가 같다
@@ -1250,7 +1250,7 @@ public class MemberRepository {
 ```java
 @RunWith(SpringJunit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:appConfig.xml")
-// @Transacional // 테스트에서 트랜잭션을 사용하지 않는다.
+// @Transactional // 테스트에서 트랜잭션을 사용하지 않는다.
 public class MemberServiceTest {
 
     @Autowired MemberService memberService;
@@ -1272,7 +1272,7 @@ public class MemberServiceTest {
     }
 }
 
-@Transacional // 서비스 클래스에서 트랜잭션이 시작된다.
+@Transactional // 서비스 클래스에서 트랜잭션이 시작된다.
 public class MemberService {
 
     @Autowired MemberRepository memberRepository;
@@ -1284,7 +1284,7 @@ public class MemberService {
     }
 }
 
-@Transacional // 레포지에서 트랜잭션이 시작된다.
+@Transactional // 레포지에서 트랜잭션이 시작된다.
 public class MemberRepository {
 
     @PersistenceContext EntitiManager em;
@@ -1474,7 +1474,7 @@ query.setHint("org.hibernate.readOnly", true)
 
 #### 읽기 전용 트랜잭션 사용
 **스프링 프레임워크를 사용하면 트랜잭션을 읽기 전용 모드로 설정할 수 있다.**
-`@Transacional(readOnly = true)`
+`@Transactional(readOnly = true)`
 **트랜잭션에 `readOnly = true` 옵션을 주면 스프링 프레임워크가 하이버네이트 세션의 플러시 모드를 MANUAL로 설정한다 그렇게되면 강제로 플러시를 호출하지 않은 한 플러시가 일어나지 않는다. 따라서 트랜잭션을 커밋해도 영속성 컨텍스트 플러시하지 않는다. 영속성 컨텍스트를 플러시하지 않으니 엔티티의 등록, 수정, 삭제는 당연히 동작하지 않는다.** 플러시 할 때 일어나는 스냅샷비교와 같은 무거운 로직을 수행하지 않으므로 성능에 향상된다.
 
 
