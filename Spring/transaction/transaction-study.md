@@ -62,3 +62,19 @@ JDBC를 이용하는 경우 Connection을 생성하고 나서 트랜잭션을 �
 ### 여기서 중요!
 트랜잭션이 시작됐으니 이제 JdbcTemplate를 사용하는 DAO를 시용하는 작업은 진행한다. 스프링의 트랜잭션 추상화 기술은 앞에서 적용해봤던 트랜잭션 동기화를 사용한다. PlatformTransactionManager로 구현한 DataSourceTransactionManager의 객체는 JddbcTemplate에서 사용될 수 있는 방식으로 트랜잭션을 관리해준다. **따라서 PlatformTransactionManager를 통해 시작된 트랜잭션은 UserDao의 JdbcTemplate 안에서 사용된다.**
 
+
+## @Transactional 어노테이션
+
+속성명             | 역할
+----------------|-------------------------------------------------
+isolation       | 격리 수준을 의미
+propagation     | 전파 규칙을 정의
+readOnly        | 트랜잭션을 읽기 전용으로 설정
+rollbackFor     | 정의된 Exception에 대해 rollback 수행
+no-rollback-for | rollbackFor와는 반대로 Exception이 발생해도 롤백을 정용하지 않은 설정
+timeout         | 지정된 시간 내에 메서드 수행이 완료되지 않으면 롤백하는 설정
+
+
+## @Transactional(readOnly = true)
+
+JPA 구현체를 하이버네이트를 사용할 때 트랜잭션을 `readOnly`를 사용하면 다음 과같은 장점이 있다.
