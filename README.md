@@ -61,6 +61,7 @@
   * [테스트 코드 작성에 대한 나름의 고찰](https://github.com/cheese10yun/blog-sample/tree/master/test-code)
   * [Junit5 With Kotlin](https://github.com/cheese10yun/blog-sample/tree/master/kotlin-junit5)
   * [Junit5 추가 기능](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-junit5/docs/Junit5.md)
+  * [RestTemplate Mock 기반 테스트 하기](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/rest-template-mock-test.md)
 * Transaction
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
   * [트랜잭션 Lock - 트랜잭션 선점 잠금, 비선점 잠금](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-lock.md)
