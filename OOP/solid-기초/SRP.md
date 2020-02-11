@@ -57,7 +57,7 @@
 ## Collision
 ![](https://i.imgur.com/2o71S7u.png)
 * Primay Value 저하
-  - Policy Actors: 비지니스 룰의 변경을 필요함
+  - Policy Actors: 비즈니스 룰의 변경을 필요함
   - ArchiterCure Actors: DB 스키마 변경을 필요함
   - 동일 모듈의 변경, Merge 충돌 Source Repo 충돌
 

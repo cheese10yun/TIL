@@ -8,7 +8,7 @@
 * (2) DispacherServlert이 요청을 받으면 그 요청을 처리할 수 있는 Hanlder의 이름을 HanderMapping 에게 물어본다
 * (3) HandlerMapping은 요청 URL을 보고 Hanlder를 판단하고 Handler Name을 과 함께 제어권을 DispacherServlet에게 넘겨준다
 * (4) Handler 실행 전에 전처리, 후처리로 실행해야할 인터셉터 목록을 결정한다.
-* (5) Service의 비지니스 로직을 실행한다.
+* (5) Service의 비즈니스 로직을 실행한다.
 * (6) 랜더링해야하는 View Name을 판단해서 Dispacher Servlet에 전송한다.
 * (7) DispacherServlert은 논리적인 View Name을 ViewResolver에 전달한다.
 * (8) 전달받은 값으로 적절한 View를 생성한다.
