@@ -24,6 +24,7 @@
   * [영속성 컨텍스트 주의점](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-persistence-context.md)
   * [영속성 컨텍스트 플러시](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-flush.md)
   * [벌크 연산시 주의점](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-bulk.md)
+  * [JPA 선호 하는 패턴](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-preference.md)
 * Data Flow
   * Task
     * [Task 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/data-flow/task/task-basic.md)
