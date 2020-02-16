@@ -404,7 +404,7 @@ from
 join City.countrycode = Country.code and City.id = Country.capital
 join CountryLanguage.countryCode = City.countryCode
 ```
-JSON 형식의 EXPLAIN은 기존의 표 형식 보다 출력되는 정보가 많다. 5.7 부터는 비용에 관한 정보를 부여주어서 표 형식에 비해 편리하다. JOSN 형식의 EXPLAIN에는 Extra 필드에서 Using WHERE 라고만 출력되는 것이 attacged_condition로 나와서 구체적으러 어떤 조건이 적용되는지 알 수 있다. 
+JSON 형식의 EXPLAIN은 기존의 표 형식 보다 출력되는 정보가 많다. 5.7 부터는 비용에 관한 정보를 부여주어서 표 형식에 비해 편리하다. JOSN 형식의 EXPLAIN에는 Extra 필드에서 Using WHERE 라고만 출력되는 것이 attached_condition로 나와서 구체적으러 어떤 조건이 적용되는지 알 수 있다. 
 
 ### 새로운 비주얼 EXPLAIN
 MySQL Workbench는 비주얼 EXPLAIN을 표시할 수 있습니다. JSON형식 보다 깔끔하고 내용도 쉽게 확인 가능합니다. 5.7 부터 가능합니다.
