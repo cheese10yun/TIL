@@ -127,6 +127,7 @@
 * [HTTPS 기초](https://github.com/cheese10yun/TIL/blob/master/network/http/https.md)
 * [REST API](https://github.com/cheese10yun/TIL/blob/master/network/http/REST.md)
 * [OAuth2](https://github.com/cheese10yun/TIL/blob/master/network/http/OAuth2.md)
+* [Network 기초](https://github.com/cheese10yun/TIL/blob/master/network/network.md)
 
 ## 컴퓨터 구조
 * [컴퓨터 구조 기초](https://github.com/cheese10yun/TIL/blob/master/ca/ca-basic.md)
