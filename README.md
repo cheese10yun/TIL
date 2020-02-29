@@ -67,6 +67,7 @@
   * [RestTemplate Mock 기반 테스트 하기](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/rest-template-mock-test.md)
   * [Mockito 정리](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-junit5/docs/mockito.md)
   * [TestContainer 정리](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/test-containers.md)
+  * [JPA 기반 테스트 코드 작성 팁](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-test-support.md)
 * Transaction
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
   * [트랜잭션 Lock - 트랜잭션 선점 잠금, 비선점 잠금](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-lock.md)
