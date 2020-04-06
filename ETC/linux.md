@@ -18,3 +18,11 @@ $ chmod 600 ~/.ssh/authorized_keys
 $ ssh [user]@[host]
 ```
 * 비밀번호 없이 SSH 접속 가능
+
+
+## ETC
+
+```
+$ ln -s xxx.x.x.x xxx
+```
+* 심볼 링크를 생성함, 
