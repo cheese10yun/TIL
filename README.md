@@ -130,7 +130,7 @@
 * [HTTPS 기초](https://github.com/cheese10yun/TIL/blob/master/network/http/https.md)
 * [REST API](https://github.com/cheese10yun/TIL/blob/master/network/http/REST.md)
 * [OAuth2](https://github.com/cheese10yun/TIL/blob/master/network/http/OAuth2.md)
-* [Network 기초](https://github.com/cheese10yun/TIL/blob/master/network/network.md)
+* [그림으로 배우는 HTTP & Network](https://github.com/cheese10yun/TIL/blob/master/network/%EA%B7%B8%EB%A6%BC%EC%9C%BC%EB%A1%9C%EB%B0%B0%EC%9A%B0%EB%8A%94_HTTP.md)
 
 ## 컴퓨터 구조
 * [컴퓨터 구조 기초](https://github.com/cheese10yun/TIL/blob/master/ca/ca-basic.md)
