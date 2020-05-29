@@ -58,3 +58,4 @@ class PaymentRestService(
 ```
 * `RestTemplate`를 기반으로 Generic type, Collection Type 기반으로 데이터를 받아야 하는 경우 `ParameterizedTypeReference`을 활용해서 받을 수 있다.
 * 아마 `exchange`으로 활용해야 한다. `getForEntity()`, `getForObject()` 으로는 `ParameterizedTypeReference`을 이용 못하는 거같음..
+
