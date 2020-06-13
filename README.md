@@ -27,6 +27,7 @@
   * [JPA 선호 하는 패턴](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-preference.md)
   * [Querydsl Projection 정리](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/querydsl-projections.md)
   * [Querydsl Repository Support 활용](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/querydsl-custom-repository.md)
+  * [JPA + Querydsl group_concat 사용법](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/query-dsl-group-concat.md)
 * Data Flow
   * Task
     * [Task 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/data-flow/task/task-basic.md)
