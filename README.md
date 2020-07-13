@@ -225,6 +225,7 @@
 * [함께 자라기 - 애자일로 가는 길](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%ED%95%A8%EA%BB%98_%EC%9E%90%EB%9D%BC%EA%B8%B0.md)
 * [클린 코더](https://github.com/cheese10yun/TIL/blob/master/도서/클린-코더.md)
 * [도메인 주도 설계란 무엇인가](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EB%8F%84%EB%A9%94%EC%9D%B8%20%EC%A3%BC%EB%8F%84%20%EC%84%A4%EA%B3%84%EB%9E%80%20%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80.md)
+* [학교에서 알려주지 않는 17가지 실무 개발 기술](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%ED%95%99%EA%B5%90%EC%97%90%EC%84%9C_%EC%95%8C%EB%A0%A4%EC%A3%BC%EC%A7%80_%EC%95%8A%EB%8A%94_17%EA%B0%80%EC%A7%80_%EC%8B%A4%EB%AC%B4_%EA%B0%9C%EB%B0%9C_%EA%B8%B0%EC%88%A0.md)
 
 ## 쿠버네티스
 * [쿠버네티스 기초 학습](https://github.com/cheese10yun/TIL/blob/master/kubernetes/kubernetes-basic.md)
