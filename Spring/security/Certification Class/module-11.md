@@ -1,13 +1,12 @@
 ## 목차
-- [목차](#%EB%AA%A9%EC%B0%A8)
+- [목차](#목차)
 - [Lesson 2: The Data Structure of ACL](#lesson-2-the-data-structure-of-acl)
-  - [퍼미션(Permission, 인가 받은 권한)](#%ED%8D%BC%EB%AF%B8%EC%85%98permission-%EC%9D%B8%EA%B0%80-%EB%B0%9B%EC%9D%80-%EA%B6%8C%ED%95%9C)
-  - [보안 식별자(SID, Security IDentity)](#%EB%B3%B4%EC%95%88-%EC%8B%9D%EB%B3%84%EC%9E%90sid-security-identity)
-  - [ACL 데이터 구조](#acl-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0)
+  - [퍼미션(Permission, 인가 받은 권한)](#퍼미션permission-인가-받은-권한)
+  - [보안 식별자(SID, Security IDentity)](#보안-식별자sid-security-identity)
+  - [ACL 데이터 구조](#acl-데이터-구조)
 - [Lesson 3: ACL with Spring Security - part 1](#lesson-3-acl-with-spring-security---part-1)
 
 ## Lesson 2: The Data Structure of ACL
-
 스프링 시큐리티는 ACL을 설정하는 전용 모듈을 지원합니다. ACL에는 도메인 객체와 연결하는 ID를 비록해서 여러 개의 ACE(접근 통제 엔티티)가 들어 있습니다. ACE는 다음 두 가지 핵심 요소로 구성됩니다.
 
 ### 퍼미션(Permission, 인가 받은 권한)
@@ -116,8 +115,6 @@ public DataSource dataSource() {
 }
 ```
 * 이제 데이터 소스, 조회 전략 및 캐시가 필요합니다. 이것이 ehcache 의존성을 일찍 정의한 이유입니다. 이제이 3 개의 새 bean을 정의 해 보겠습니다.
-* 
-
 
 ```java
 @Bean

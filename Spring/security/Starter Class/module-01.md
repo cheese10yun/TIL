@@ -69,7 +69,7 @@ protected void configure(HttpSecurity http) throws Exception {
 ```
 * URL 접근 보안은 `authorizeRequests()` 부터 시작되며 여러 가지 `matchers()`로 매치 규칙을 지정합니다.
 * hasRole 메서드는 앞에 ROLE_ 으로 시작 해야 true 리턴 위처럼 하면 안되고 ROLE_ADMIN으로 설정 해야함
-* hasAuthority 메섣는 ROLE 으로 시작 안해도됨
+* hasAuthority 메서드는 ROLE 으로 시작 안해도됨
 * hasAnyAuthority 복수개로 연결 가능 hasAnyRole 메서드도 가능
 * UserDetailsBuilder roles(String... roles) 메서드에서 자동으로 ROLE_를 붙이기 때문에 크게 상관 없음
 
@@ -130,7 +130,7 @@ protected void configure(HttpSecurity http) throws Exception {
 * CSRF가 활성화되면 GET은 로그 아웃에 작덩하지 않고 POST만 동작 시켜야 보안상 좋음
 
 다음과 같이 더 디테일 하게 설정 할 수있음
-* 로그아웃할 시 인증이 클리어  :: clearAuthentication
+* 로그아웃할 시 인증이 클리어 : clearAuthentication
 * 로그아웃시 삭제할 특정 쿠키 지정 : deleteCookies
 * 로구아웃시 https session이 무효화되면 벼경: invalidateHttpSession
 * 로그아웃성공시 URL 이동: logoutSuccessUrl
