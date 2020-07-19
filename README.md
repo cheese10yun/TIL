@@ -128,7 +128,6 @@
 ## 네트워크
 * [OSI 7 계층](https://github.com/cheese10yun/TIL/blob/master/network/OSI-7%EA%B3%84%EC%B8%B5.md)
 * [CORS](https://github.com/cheese10yun/TIL/blob/master/network/http/CORS.md)
-* [HTTP 기초](https://github.com/cheese10yun/TIL/blob/master/network/http/HTTP-basic.md)
 * [HTTPS 기초](https://github.com/cheese10yun/TIL/blob/master/network/http/https.md)
 * [REST API](https://github.com/cheese10yun/TIL/blob/master/network/http/REST.md)
 * [OAuth2](https://github.com/cheese10yun/TIL/blob/master/network/http/OAuth2.md)
