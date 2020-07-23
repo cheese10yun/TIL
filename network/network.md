@@ -1,4 +1,4 @@
-## 네티워크 IP
+## 네트워크 IP
 ![](../assets/ip-class-1.png)
 
 * IP 주소 -> 8Byte -> 32Bit 으로 이루어져 있음
