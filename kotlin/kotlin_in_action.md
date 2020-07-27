@@ -302,7 +302,7 @@ fun fizzBuzz(i: Int) = when {
 val binaryReps = TreeMap<Char, String>()
 
 for (c in 'A'..'F') { // A ~ F까지 이터레이션
-    val binary = Integer.toBinaryString(c.toInt()) // 아시크 코드를 2진표현으로 
+    val binary = Integer.toBinaryString(c.toInt()) // 아스키 코드를 2진표현으로 
     binaryReps[c] = binary // c를 키로 c의 2진 표현을 맵에 put
 }
 

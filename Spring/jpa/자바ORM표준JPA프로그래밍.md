@@ -2711,7 +2711,7 @@ JPA는 복잡한 검색 조건을 사용해서 엔티티 객체를 조회할 수
 * 테이블이 아닌 객체를 대상으로 검색하는 객체지향 쿼리다
 * SQL을 추상화해서 특정 데이터베이스 SQL에 의존하지 않는다.
 
-SQL이 데이터베이스 테이블을 대상으로 하는 데이터 중심의 쿼리라면 JPQL은 엔티티를 대상으로 하는 객체지향 쿼리다. JPQL은 사용하면 JPA는 이 JPQL을 분석한 당므 적절한 SQL을 만드렁 데이터베이스를 조회한다. **JPQL은 한마디로 정의하면 객체지향 SQL이다**
+SQL이 데이터베이스 테이블을 대상으로 하는 데이터 중심의 쿼리라면 JPQL은 엔티티를 대상으로 하는 객체지향 쿼리다. JPQL은 사용하면 JPA는 이 JPQL을 분석한 당므 적절한 SQL을 만들어 데이터베이스를 조회한다. **JPQL은 한마디로 정의하면 객체지향 SQL이다**
 
 JPA가 공식으로 지원 하는 기능이다.
 
@@ -3032,7 +3032,7 @@ class Team {
     private Collection<Member> members = new ArrayList<Member>();
 }
 ```
-Team은 members 컬렉션을 필드고 가지고 있다 다음 코드로 Team을 영속 상태로 만드렁보자
+Team은 members 컬렉션을 필드고 가지고 있다 다음 코드로 Team을 영속 상태로 만들어보자
 
 ```java
 Team team = new Team();
