@@ -34,6 +34,7 @@ sepc:
 ```
 
 ## Lebel
+![](../assets/k8s-lable.png)
 * 라벨은 Pod 뿐만 아니라 Object도 사용 가능, 대부분 Pod에사용
 * 라벨은 목적에 따라 Object를 분류하고, 그 오브젝트를 따로 연결하기 위함
 * 라벨은 key, value가 한 쌍
