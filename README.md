@@ -79,6 +79,7 @@
   * [트랜잭션 Rollback 케이스 정리](https://github.com/cheese10yun/blog-sample/tree/master/spring-transaction-test)
   * [트랜잭션 단위](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-junit5/docs/transaction.md)
   * [동일한 Bean(Class)에서 @Transactional 동작 방식](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/transaction.md)
+  * [ApplicationEventPublisher 기반으로 강결합 및 트랜잭션 문제 해결](https://github.com/cheese10yun/blog-sample/tree/master/event-transaction)
 * [Class Loader](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/class-loader.md)
 * Spring Boot
   * [Spring Boot 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/boot/spring-boot-basic.md)
