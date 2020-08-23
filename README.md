@@ -93,7 +93,8 @@
   * [Spring Cloud Feign](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/feign.md)
   * [Spring Cloud Ribbon](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/ribbon.md)
   * [Spring Cloud Eureka](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/eureka.md)
-  * [Spring Cloud API-Gateway](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/api-gateway.md)
+  * [Spring Cloud Zuul](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/api-gateway.md)
+  * [Spring Cloud Gateway](https://github.com/cheese10yun/blog-sample/blob/master/spring-gateway/README.md)
   * [Spring Cloud Hystrix](https://github.com/cheese10yun/blog-sample/tree/master/msa-study/hystrix)
   * [Spring Cloud Stream](https://github.com/cheese10yun/blog-sample/tree/master/msa-study/steam-sample)
 * 연재
