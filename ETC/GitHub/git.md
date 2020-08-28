@@ -86,3 +86,14 @@ git stash pop stash@\{0\}
 ```
 ##
 * [stash](https://blog.outsider.ne.kr/788)
+
+
+
+##  머지된 브랜치를 삭제하는 스크립트
+
+```
+git fetch --all -p
+git branch --merged | grep -E -v "master|\*" | xargs -n 1 git branch -d
+git branch -vv | grep gone | sed | awk '{print $1}' | xargs -n 1 git branch -D
+```
+> https://yceffort.kr/2020/01/delete-merged-branch/
