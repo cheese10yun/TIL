@@ -96,8 +96,15 @@ sepc:
 * Pod 에서 PSV를 거쳐서 PV를 접속하는 이유
   * 
 
+
+# Controller
+
+
 ## 참고
 * [강의 자료](https://kubetm.github.io/practice/beginner/gettingstarted-kubernetes/)
+
+
+
 
 ## ETC
 
