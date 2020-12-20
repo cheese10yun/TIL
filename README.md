@@ -221,8 +221,7 @@
 * [실전 아파치 카프카](https://github.com/cheese10yun/TIL/blob/master/kafka/%EC%8B%A4%EC%A0%84-%EC%95%84%ED%8C%8C%EC%B9%98-%EC%B9%B4%ED%94%84%EC%B9%B4.md)
 
 ## Reactive Streams
-* [Rx Java](https://github.com/cheese10yun/blog-sample/blob/master/reactor-study/README.md) 
-* [Kotlin Reactive](https://github.com/cheese10yun/blog-sample/blob/master/reactive-kotlin/README.md)
+* [Rx Java & Kotlin](https://github.com/cheese10yun/blog-sample/blob/master/reactive-kotlin/README.md)
 * [Rx Kotlin 으로 성능 개선](https://github.com/cheese10yun/blog-sample/blob/master/reactive/README.md)
 
 
