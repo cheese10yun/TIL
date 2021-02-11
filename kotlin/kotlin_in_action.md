@@ -170,7 +170,7 @@ str.add("string") // 값변경 가능
 
 ```kotlin
 fun main(args: Array<String>) {
-    val name = if(agrs.szie > 0) args[0] else "kotlin"
+    val name = if(agrs.SIZE > 0) args[0] else "kotlin"
     println("Hello, $name!")
 }
 ```

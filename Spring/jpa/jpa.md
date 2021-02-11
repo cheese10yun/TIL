@@ -96,7 +96,7 @@
       - [즉시 로딩과 N+1](#%ec%a6%89%ec%8b%9c-%eb%a1%9c%eb%94%a9%ea%b3%bc-n1)
       - [지연 로딩과 N+1](#%ec%a7%80%ec%97%b0-%eb%a1%9c%eb%94%a9%ea%b3%bc-n1)
     - [페치 조인 사용](#%ed%8e%98%ec%b9%98-%ec%a1%b0%ec%9d%b8-%ec%82%ac%ec%9a%a9)
-    - [하이버네이트 @BatchSzie](#%ed%95%98%ec%9d%b4%eb%b2%84%eb%84%a4%ec%9d%b4%ed%8a%b8-batchszie)
+    - [하이버네이트 @BatchSIZE](#%ed%95%98%ec%9d%b4%eb%b2%84%eb%84%a4%ec%9d%b4%ed%8a%b8-batchSIZE)
     - [읽기 전용 쿼리의 성능 최적화](#%ec%9d%bd%ea%b8%b0-%ec%a0%84%ec%9a%a9-%ec%bf%bc%eb%a6%ac%ec%9d%98-%ec%84%b1%eb%8a%a5-%ec%b5%9c%ec%a0%81%ed%99%94)
       - [스칼라 타입으로 조회](#%ec%8a%a4%ec%b9%bc%eb%9d%bc-%ed%83%80%ec%9e%85%ec%9c%bc%eb%a1%9c-%ec%a1%b0%ed%9a%8c)
       - [일기 전용 쿼리 힌트 사용](#%ec%9d%bc%ea%b8%b0-%ec%a0%84%ec%9a%a9-%ec%bf%bc%eb%a6%ac-%ed%9e%8c%ed%8a%b8-%ec%82%ac%ec%9a%a9)
@@ -1429,7 +1429,7 @@ SELECT M.*, O.* MEMBER M
 INNER JOIN ORDERS O ON M.ID = O.MEMBER_ID
 ```
 
-### 하이버네이트 @BatchSzie
+### 하이버네이트 @BatchSIZE
 **연관된 엔티티를 조회할 때 지정한 size만큼 SQL의 IN 절을 사용해서 조회한다.**
 
 ```java
@@ -1519,8 +1519,8 @@ public void bulkUpdate() {
 
     for(int i = 0; i < 100; i++) {
         List<Product> resultList = em.createQuery("select p from Product p", Product.class)
-            .setFirstResult(i * pageSzie)
-            .setMaxResult(pageSzie)
+            .setFirstResult(i * pageSIZE)
+            .setMaxResult(pageSIZE)
             .getResultLsit();
 
             // 비즈니스 로직 실행
