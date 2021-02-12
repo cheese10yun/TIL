@@ -14,6 +14,7 @@
   * [Batch CSV Reader](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-csv-reader.md)
   * [Batch Job](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-job.md)
   * [Batch 개발](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-application.md)
+  * [Batch Test 노하우](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-test-2.md)
 * JPA
   * [자바 ORM표준 JPA프로그래밍](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/%EC%9E%90%EB%B0%94ORM%ED%91%9C%EC%A4%80JPA%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
   * [페이징 API](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/JPA-Paging-API.md)
