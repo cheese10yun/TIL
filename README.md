@@ -34,6 +34,7 @@
   * [Querydsl Repository Support 활용](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/querydsl-custom-repository.md)
   * [JPA + Querydsl group_concat 사용법](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/query-dsl-group-concat.md)
   * [JPA @Where 사용법](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-where.md)
+  * [JPA Batch Insert](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/jpa-batch-insert.md)
 * Data Flow
   * Task
     * [Task 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/data-flow/task/task-basic.md)
