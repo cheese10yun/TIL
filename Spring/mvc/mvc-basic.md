@@ -66,6 +66,9 @@
 10. DispacherSevlet은 응답을 다시 브리우저로 보낸다.
 
 
+> 출처 [@Controller 정리](https://drive.google.com/file/d/1j_4j424gVBil3JPQ8ySXZ21AwaEKxBcU/view?fbclid=IwAR2Qll3Vz_zfHkVEPUUhaLBLE3x64VJJYqtqPBgXPciyiATNXVRgp3vrAZ4)
+![](/assets/146945303_1873079896179401_1657444025127539580_n.jpg)
+
 
 ## MVC 주요 기능
 * 각 객체에 대해 잘 정의된 독립적인 역할을 가진 느슨하게 결합된 아키텍처 이다.
