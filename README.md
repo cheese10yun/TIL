@@ -137,6 +137,7 @@
 * [관계형 데이터베이스 실전 입문 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EA%B4%80%EA%B3%84%ED%98%95_%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4_%EC%8B%A4%EC%A0%84_%EC%9E%85%EB%AC%B8.md)
 * [정규화 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EC%A0%95%EA%B7%9C%ED%99%94.md)
 * [MySQL 5.7 완벽 분석](https://github.com/cheese10yun/TIL/blob/master/Database/Mysql_5.7_%EC%99%84%EB%B2%BD_%EB%B6%84%EC%84%9D.md)
+* [Real MySQL](https://github.com/cheese10yun/TIL/blob/master/Database/real_mysql.md)
 * [Mysql Tip](https://github.com/cheese10yun/TIL/blob/master/Database/mysql-tip.md)
 
 ## 네트워크
