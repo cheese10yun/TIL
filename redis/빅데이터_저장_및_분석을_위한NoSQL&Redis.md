@@ -1,4 +1,4 @@
-> [빅데이터 저장 및 분석을 위한 NoSQL & Redis](http://m.yes24.com/goods/detail/71131862)을 보고 정리한 자료입니다.
+> [빅데이터 저장 및 분석을 위한 NoSQL & Redis](http://m.yes24.com/goods/detail/71131862) 내용 정리
 
 # 2 Redis 설치 및 데이터 처리
 

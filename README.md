@@ -186,6 +186,9 @@
 ## Nginx
 * [Nginx 기초 설정](https://github.com/cheese10yun/TIL/blob/master/nginx/nginx-basic.md)
 
+## Redis
+* [빅데이터 저장 및 분석을 위한 NoSQL & Redis]]()
+
 ## Java
 * [Thread](https://github.com/cheese10yun/TIL/blob/master/JAVA/thread.md)
 * [인터페이스](https://github.com/cheese10yun/TIL/blob/master/JAVA/%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md)
