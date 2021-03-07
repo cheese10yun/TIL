@@ -99,8 +99,161 @@ Geospatial | 좌표 데이터를 저장 및 관리하는 데이터 타입
 * 하나의 Key는 오브젝트명과 하나 이상의 필드 값을 콜론 `:` 기호로 결합하여 표현할 수 있습니다. ex order:201809123, order_detial:201809123:01
 * 문자 값을 저장할 떄는 잉용부호를 `""`를 사용하여 숫자 값을 저장할 떄는 잉용부호가 필요하지 않습니다
 * 기본적으로 필드 개수는 제한 없습니다.
-* Hash 타입의 데이터를 처리할 때는 hmset, hget, hgetall, hkey, hlen 명령어를 사용합니다.
+* Hash 타입의 데이터를 처리할 때는 `hmset`, `hget`, `hgetall`, `hkey`, `hlen` 명령어를 사용합니다.
 
 #### 실습
 
 ![](../assets/redis-hash-2.jpg)
+
+```
+$ hmset order:201809123 customer_name "Woman & Sports" emp_name "Manage" total 601100 peyment_type "Credit" order_filled "Y" ship_date 20180925
+# Hash 타입은 하나의 Key에 여러 개의 field와 value를 저장할 수 있음
+
+$ hget order:201809123 customer_name
+"Woman & Sports"
+# hget order:201809123 key에 대한 customer_name 필드와 value 값 검색
+
+$ hget order:201809123 ship_date
+"20180925"
+# hget order:201809123 key에 대한 ship_date 필드와 value 값 검색
+
+$ hgetall order:201809123
+ 1) "customer_name"
+ 2) "Woman & Sports"
+ 3) "emp_name"
+ 4) "Manage"
+ 5) "total"
+ 6) "601100"
+ 7) "peyment_type"
+ 8) "Credit"
+ 9) "order_filled"
+10) "Y"
+11) "ship_date"
+12) "20180925"
+# order:201809123 모든 key에 대한 모든 필드와 value 값 검색
+
+$ hexists order:201809123 product_name
+(integer) 0
+# product_name 필드가 존재하는지 여부 확인
+
+$ hkeys order:201809123
+1) "customer_name"
+2) "emp_name"
+3) "total"
+4) "peyment_type"
+5) "order_filled"
+6) "ship_date"
+# order:201809123 키에 대한 모든 필드명 출력
+
+$ hvals order:201809123
+1) "Woman & Sports"
+2) "Manage"
+3) "601100"
+4) "Credit"
+5) "Y"
+6) "20180925"
+# order:201809123 키에 대한 모든 
+
+
+$ hmget order:201809123 emp_name total
+1) "Manage"
+2) "601100"
+
+해당 Key에 정의된 특정 필드의 value만 출력
+```
+
+#### List 타입
+
+![](../assets/redis-list.jpg)
+
+* List 타입은 기존의 관계형 테이블에 존재하지 않은 데이터 유형이며 일반적인 프로그래밍 언어에서 데이터를 처리할 떄 사용되는 배열 변수와 유사한 데이터 구조입니다.
+* 기본적으로 String 타입의 경우 배열에 저장할 수 있는 데이터 크기는 512M 입니다.
+* List 타입의 데이터를 처리할 떄는 `lpush`, `lrange`, `rpus`, `rpop`, `llen`, `lindex` 명령어를 사용 합니다.
+
+#### 실습
+
+```
+$ lpush order_detail:201809123 "<item_id>1</item_id><product_name>Bunny Boots</product_name><item_price>135</item_price><qty>500</qty><price>67000</price>" "<item_id>2</item_id><product_name>Pro Ski Boots</product_name><item_price>380</item_price><qty>400</qty><price>152000</price>"
+
+$ lpush order_detail:201809123 "<item_id>3</item_id><product_name>ProSki Boots</product_name><item_price>380</item_price><qty>10</qty><price>13500</price>"
+# 기존 저장된 데이터의 오른쪽(마지막 인덱스) 부분에 새로운 value 저장
+
+$ rpop order_detail:201809123
+# 가장 마지막 인덱스에 저장된 value 제거
+
+$ lrange order_detail:201809123 0 10 
+# 0~10 index 값 조회
+
+$ llen order_detail:201809123
+# 저장된 value의 count
+
+$ lindex order_detail:201809123 0
+# index에 저장된 데이터 검색
+```
+
+#### Set 타입
+
+![](../assets/redis-set.jpg)
+
+* List 타입은 하나의 필드에 여러 개의 배열 값을 저장할 수 있는 데이터 구조라면 Set 타입은 배열 구조가 아닌 여러 개의 엘리먼트로 데이터 값을 표현하는 구조입니다.
+* Set 타입의 데이터를 처리할 떄는 `sadd`, `smembers`, `scard`, `sdfiff`, `sunion` 명령어를 사용 합니다.
+
+#### 실습
+
+```
+$ SADD product "id:11, product_name:Sky Pole, item_price:55, qty: 100, price:5500" "id:12, product_name:Bunny Boots, item_price:135, qty: 500, price:67000"
+
+$ SADD product "id:13, product_name:Pants, item_price:10, qty: 200, price:2000"
+
+$ SMEMBERS product
+1) "id:13, product_name:Pants, item_price:10, qty: 200, price:2000"
+2) "id:1, product_name:Bunny Boots, item_price:135, qty: 500, price:67000"
+3) "id:11, product_name:Sky Pole, item_price:55, qty: 100, price:5500"
+# product에 저장되어 있는 Element 조회
+
+$ SCARD product
+(integer) 3
+# 저장된 value 개수
+
+# SADD product_old "id:91, product_name:Old Sky Pole"
+
+$ SDIFF product_old product
+1) "id:91, product_name:Old Sky Pole"
+# product와 product_old 중에 product_old에 만 있는 value 
+
+$ SDIFFSTORE product_diff product prodct_old
+# prodct와 product_old 중에 product에 만 있는 value Sets를 product_diff에 저장
+
+$ SUNION product product_old
+# product와 product_old를 union한 결과
+
+$ SUNIONSTORE product_new product product_old
+# union한 결과를 product_new에 저장
+
+$ SREM product_new "id:11, product_name:Sky Pole, item_price:55, qty: 100, price:5500"
+$ 지정해서 제거
+
+$ SADD product.id.index 1 13
+
+```
+
+#### Sorted Set 타입
+
+* Sorted Set 타입은 Set 타입과 동일한 데이터 구조이며 차이점은 저장된 데이터 값이 분류된 상태이며 Sorted Set 타입이고 분류되지 않으면 Set 타입입니다.
+* 데이터를 처리할 때는 `zadd`, `zrange`, `zcard`, `zacount`, `zrank`, `zrevrank` 명령어를 사용합니다.
+
+
+#### Bit 타입
+
+* 일반적으로 사용자가 표현하는 데이터는 문자, 숫자, 날짜인데 이를 Ascii 값이라고 표현하는데 컴퓨터는 이를 최종적으로 0,1로 변환하여저장합니다. Redis에서 제공되는 Bit 타입은 사용자의 데이터를 0,1로 표현하며 컴퓨터가 가장 빠르게 저장할 수 있도록 해석할 수 있도록 표현하는 구조입니다.
+* 데이터를 처리할 때는 setbit, gebit, bitaccount 명령어릂 사용합니다.
+
+##### Geo 타입
+
+* Redis DB의 Geo 타입은 위치정보 데이터를 효율적으로 저장 관리할 수 있으며 이를 활용한 위치 정보 데이터 분석 및 검색에 사용할 수 있습니다.
+* 데이터를 처리할 때는 `geoadd`, `gerpops`, `geodist`, `georadius`, `geohash` 명령어를 사용합니다.
+
+##### HyperLogLogs 타입
+
+* HyperLogLogs 타입은 관계형 DB의 테이블 구조에서 Check 제약조건과 유사한 개념의 데이터 구조입니다. 관계형 DB에서 check 제약조건을 사용하는 이유는 해당 칼럼에 반드시 저장되오야 할 데이터 값 만을 저장할 수 있또록 제한을 가하는 것입니다. Redis DB에서도 동일하게 특정 필드 또는 엘리먼트에 저장되오야 할 데이터 값을 미리 생성하여 저장한 후 필요에 따라 연결하여 사용할 수 있는 데이터 타입입니다.
+* 데이터를 처리할 때는 `pfadd`, `pfcount`, `pfmerge` 명령어를 사용합니다.
