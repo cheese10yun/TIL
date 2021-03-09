@@ -257,3 +257,82 @@ $ SADD product.id.index 1 13
 
 * HyperLogLogs 타입은 관계형 DB의 테이블 구조에서 Check 제약조건과 유사한 개념의 데이터 구조입니다. 관계형 DB에서 check 제약조건을 사용하는 이유는 해당 칼럼에 반드시 저장되오야 할 데이터 값 만을 저장할 수 있또록 제한을 가하는 것입니다. Redis DB에서도 동일하게 특정 필드 또는 엘리먼트에 저장되오야 할 데이터 값을 미리 생성하여 저장한 후 필요에 따라 연결하여 사용할 수 있는 데이터 타입입니다.
 * 데이터를 처리할 때는 `pfadd`, `pfcount`, `pfmerge` 명령어를 사용합니다.
+
+## Redis 확장 Module
+
+많은 개발자들이 Redis Server의 소스를 이용한 다양한 기능들을 개발하여 배포하게 되었는데 이를 Redis 확장 모듈 이라고 합니다. 
+
+
+* REJSON: JSON 데이터 타입을 이요한 데이터를 처리할 수 있는 모듈
+* RedisSQL: Redis Server에서 SQLite(관계형 DB)로 데이터를 저장할 수 있는 모듈
+* RedisSearch: Redis DB 내에 저장된 데이터에 대한 검색엔진을 사용할 수 있는 모듈
+
+# 트랜잭션 제어 & 사용자 관리
+
+NoSQL로 분류되는 모든 제품이 트랜잭션을 제어할 수 있고 일관성과 공유 기능을 제공하는 것은 아닙니다. 맣은 제품들 중에 관계형 DB의 Commit, Rollback 명령어처럼 트랜젝션 제어가 가능한 제품이 몇되지 않은데 그 중 하나가 Redis 입니다. **하지만 관계형 DB 처럼 Commit, Rollback을 수해앟게 되면 초딩 100,000 ~ 200,000건 이상 데이터의 쓰기와 읽기 작업에 좋은 성능을 기대할 수는 없게 되는 문제점이 발생하게 되는데 이를 보완하기 위해 Redis는 Read Committed 타입의 트랜잭션 제어 타입도 제공하고 있습니다.**
+
+일반적으로 관계형 DB 또는 대부분의 NoSQL 기술은 위 그림처럼 5가지 유형의 락-메커니즘을 제공하는데 Redis 4.0 버전은 데이터-셋 레벨의 락 메커니즘을 제공하고 있습니다.
+
+## CAS (Check and Set)
+
+```
+> WATCH         -> 다중 트랜잭션 모니터링 시작
+> MULTI         -> 트랜잭션 시작
+OK              
+> Set 1 jmjoo   
+QUEUED          -> 임시 저장
+> Sest 2 yhjoo  
+QUEUED          -> 임시 저장
+>
+> EXEC          -> 트랜잭션 종료
+Error ....
+```
+**하나의 트랜잭션에 의해 데이터가 변경되는 시점에 다른 트랜잭션에 의해 동일한 데이터가 먼저 변경되는 경우 일관성에 문제가 발생할 수 있다.** Redis는 이ㅘ 같은 경우 `Watch` 명령어에 의해 트랜잭션을 취소할 수 있습니다.
+
+데이터 일관성과 공유(동일한 데이터를 동시 여러 명의 사용자가 수정, 삭제 하는 경우 발생하는 충돌을 피하기 위한 기술)을 위해서 동시 처리가 발생할 때 먼저 **작업을 요구한 사용자에게 우선권을 보장하고 나중에 작업을 요구한 사용자의 세션에서는 해당 트랜잭션에 충돌이 발생했음을 인지할 수 있도록 해야하는데 이를 Redis DB에서는 CAS 라고 합니다.**
+
+
+### 실습
+
+```
+redis:6379> WATCH a # 다중 트랜잭션이 발생하는지 여부를 모니터링 시작함
+OK
+redis:6379> MULTI # 트랜잭션 시작
+OK
+redis:6379(TX)> Set 1 jmjoo
+QUEUED # 임시 저장
+redis:6379(TX)> Set 2 yhjoo
+QUEUED # 임시 저장
+redis:6379(TX)> EXEC # 트랜잭션 종료
+1) OK
+2) OK
+```
+
+## commit & rollback
+
+Redis 서버에서 트랜잭션을 사용자가 직접 제어하는 방법입니다. 변경한 데이터를 최종 저장할 떄 EXEC, 취소할 때 DISCARD 명령어를 실행합니다.
+
+```
+redis:6379> WATCH a
+OK
+redis:6379> MULTI
+OK
+redis:6379(TX)> Set 1 jmjoo
+QUEUED
+redis:6379(TX)> Set 2 yhjoo
+QUEUED
+redis:6379(TX)> EXEC # 트랜잭션 Commit
+1) OK
+2) OK
+
+redis:6379> FLUSHALL # 데이터 초기화
+redis:6379> MULTI
+OK
+redis:6379> Set 3 jmjoo
+QUEUED
+redis:6379> Set 4 yhjoo
+QUEUED
+>
+> DISCARD # 트랜잭션 Rollback
+OK
+```
