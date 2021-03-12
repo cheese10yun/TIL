@@ -336,3 +336,32 @@ QUEUED
 > DISCARD # 트랜잭션 Rollback
 OK
 ```
+
+## Index 유형 및 생헝
+
+![](../assets/redis-index.jpg)
+
+Redis DB는 기본적으로 하나의 Key와 하나 이상의 Field/Element 값으로 구성되는데 **해당 Key에 빠른 검색을 위해 기본적으로 인덱스가 생성됩니다. 이를 Primary Key Index라고 합니다. 또한 사용자의 필요에 따라 추가적인 인덱스를 생성할 수 있는데 이를 Secondary Index라고 합니다.**
+
+
+인덱스 키를 통해 검색할 때 유일한 값을 검색하는 경우에 `Exact Match By a Secondary Index`라고 하며 일정 범위의 값을 검색 조건으로 부여하는 경우를 `Range By Secondary Index` 라고합니다.
+
+### Sorted Set 타입 인덱스
+
+```
+redis:6379> ZADD order.ship_date.index 2 '201809124:20180926'
+(integer) 1
+redis:6379> ZADD order.ship_date.index 2 '201809123:20180925' # order 테이블, order_no:ship_date 필드에 인덱스 생성
+(integer) 1
+redis:6379> ZRANGE order.ship_date.index 0 -1
+1) "201809123:20180925"
+2) "201809124:20180926"
+redis:6379> ZSCAN order.ship_date.index 
+1) "0"
+2) 1) "201809123:20180925"
+   2) "2"
+   3) "201809124:20180926"
+   4) "2"
+```
+
+## 사용자 생성 및 인증/보안/Roles
