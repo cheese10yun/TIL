@@ -365,3 +365,96 @@ redis:6379> ZSCAN order.ship_date.index
 ```
 
 ## 사용자 생성 및 인증/보안/Roles
+
+### Access Control 권한
+* DBMS의 가장 보편적인 인증 방식으로 미리 사용자 계정과 암호를 생성한뒤 이 계정명과 암호를 정확히 입력하면 사용자를 이증하는 방식 ex `vi redis.config`, `requirepass manager`
+* Redis에 접속할때 Access Control을 선탳갛ㄹ 수 있습니다. `vi config`, `masterauth redis123`
+
+### OS 인증 & Internal 인증
+* Redis에서는 해당 시스템의 IP-Address로만 접속을 허용하는 Network 인증 방식을 제공합니다. `vi redis.conf`, `bind_ip 192,168.0.10`
+* Auth command를 이용하여 인증하는 방법입니다. `auth manager`
+
+# Redis Data Modeling
+
+## 키-벨류 데이터 모델링 개념
+
+### 용어 설명
+
+![](../assets/redis-key-value.jpg)
+관계형 DB에서 데이터를 저장하는 논리적 구조를 테이블 이라고 펴한하는 것 처럼 키벨류 DB에서도 테이블 이라고 합니다. 하나의 테이블을 구성하고 있는 요소들을 칼럼이라고 표현하는데 키벨류 DB에서는 필드 또는 엘리먼트라고 표현합니다. 하나의 관계형 테이블은 반드시 하나의 식별키의 필드 또는 엘리먼트로 구성됩니다. 관계형 테이블은 NOT NULL, CHECK, UNIQUE와 같은 제약조건을 통해 원치않은 데이터가 특정 칼럼에 지정되는것을 방지할 수 있지만 키벨류 DB는 이와 같은 케약조건 기능을 제공되지 않고 있습니다. 다만 관계형 DB에서 CHECK 조건을 만족하는 데이터 만을 저장장 하기 위해 사용되는 것처럼 키벨류 DB는 `HYPRELOGLOGS` 데이터 속성을 통해 조건의 데이터를 저장, 관리할 수 있습니다. 
+
+### Redis 데이터 모델링 가이드라인
+
+![](../assets/redis-modeling.jpg)
+
+#### Hash 데이터 모델
+
+![](../assets/redis-hash-model.jpg)
+
+Redis의 Hash 데이터 모델과 가장 유사한 관계형 DB의 데이터 모델은 부모-자식 테이블에 해당됩니다. 운송 테이블은 주문 테이블이 먼저 생성되어야 만 비로서 생성될 수 이쓴ㄴ 데이터 구조이기 때문입니다. 즉 부모가 있어야만 자식이 존재할 수 있는 구조입니다. 이런 데이터 관계를 Redis에서는 Hash 모델을 사용합니다.
+
+#### List 모델 테이블 
+
+![](../assets/redis-list-model.jpg)
+
+관계형 DB의 모델은 마스터-디테일 테이블에 해당 됩니다. 위 그림처럼 주문전표를 관계형 DB의 분석/설계 과정을 거치면 주문 공통 테이블과 주문 상세 테이블로 설계할 수 있는데 이 과 같은 구조를 마스터-디테일 관계 테이블 이라고 합니다. **이과 같은 데이터 관계를 Redis DB에서 구현할 때 `Hash-List` 모델을 선택합니다.**
+
+
+#### Set/Sorted 데이터 모델
+
+![](../assets/redis-set-model.jpg)
+
+Redis의 Set/Sorted Set 데이터 모델과 가장 유사한 관계형 DB의 데이터 모델은 계층형 테이블에 해당 됩니다. 위 그름에서 사원 테이블은 사원번호가 식별-키이며 상관사원번호 칼럼은 같은 테이블 내에 식별-키인 사원번호를 참조하는 관계형 구조를 가지고 있습니다. 이와 같은 데이터 구조를 관계형 DB에서 `Self-Reference` 관계형 테이블이라고 표현하는데 Redis DB에서 구현할 떄 `Set/Sorted Set` 모델을 선택하시면 됩니다.
+
+
+
+#### HperLongLogs 데이터 모델
+
+Redis에 `HperLongLogs` 데이터 모델과 가장 유사한 관게형 DB의 데이터 모델은 Check-제약조건에 해당됩니다. 일반적으로 관계형 테이블의 특정 칼럼에 제한된 값만 정해야 하는 경우 3가지 방법을 통해 구현할 수 있습니다. 애플리케이션에서 데이터를 조정하는 방법, 특종 조건 데이터 값을 임의의 테이블에 미리 저장한 이후 해당 테이블에 데이터를 입력 및 수정할 떄 임이의 테이블과 식별키와 외부키로 검증하는 방식 입니다. 임시 테이블을 만드는 방식이 `HperLongLogs`dhk rkxdms qkdtlrdlqslek.
+
+
+### 데이터 모델
+
+Redis 서버에서 설계할 수 있는 데이터 모델 유형은 크게 5가지가 있습니다. 
+
+1. Hash-Hash Data Model
+2. Haash-List Data Model
+3. List-List Data Model
+4. Set/Sorted Set List Data Model
+5. HyperLogLogs Data Model
+
+#### Hash-Hash Data Model
+![](../assets/redis-hash-hash.jpg)
+
+위 그림과 같은 구조를 Redis DB의 Hash-Hash 데이터 모델로 표현할 수 있습니다.
+
+```
+redis:6379> hset order:201809123 customer_name "Woman & Sports" emp_name "Message" total 60110 payment_type "Credit" order_filled "Y"
+(integer) 5
+redis:6379> hgetall order:201809123
+ 1) "customer_name"
+ 2) "Woman & Sports"
+ 3) "emp_name"
+ 4) "Message"
+ 5) "total"
+ 6) "60110"
+ 7) "payment_type"
+ 8) "Credit"
+ 9) "order_filled"
+10) "Y"
+redis:6379> hmset translate:2020180912320 translate_no 672310 customer_name "Woman & Sports" zip_code 15881 address "Seoul Songpa 58" order_amount 60100
+OK
+redis:6379> hgetall translate:2020180912320
+ 1) "translate_no"
+ 2) "672310"
+ 3) "customer_name"
+ 4) "Woman & Sports"
+ 5) "zip_code"
+ 6) "15881"
+ 7) "address"
+ 8) "Seoul Songpa 58"
+ 9) "order_amount"
+10) "60100"
+```
+
+hmset translate:2020180912320 translate_no 672310 customer_name "Woman & Sports" zip_code 15881 address "Seoul Songpa 58" order_amount 60100
