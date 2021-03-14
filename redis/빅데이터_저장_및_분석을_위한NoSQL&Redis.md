@@ -15,24 +15,24 @@ $ docker run -it --link redis-study:redis --rm redis redis-cli -h redis -p 6379
 
 ![](../assets/redis-desc.jpg)
 
-용어 | 설명
----|---
-Table | 하나의 DB에사 데이터를 저장하는 논리적인 구조
-Data Sets | 테이블을 구성하는 논리적 단위입니다. 하나의 데이터-셋은 하나의 KEY와 한 개 이상의 `FIELD/ELEMENT`로 구성됩니다.
-Key | 하나의 KEY는 하나 이상의 조합된 값으로 표현 가능합니다. 예를들어 주문번호 또는 주문번호+순번, 년월일+순번
-Values | 해당 Key에 대한 구체적인 데이터를 값으로 펴햔합니다. 벨류는 하나 이상의 `Field, Element`로 구성됩니다.
+| 용어      | 설명                                                                                                            |
+| --------- | --------------------------------------------------------------------------------------------------------------- |
+| Table     | 하나의 DB에사 데이터를 저장하는 논리적인 구조                                                                   |
+| Data Sets | 테이블을 구성하는 논리적 단위입니다. 하나의 데이터-셋은 하나의 KEY와 한 개 이상의 `FIELD/ELEMENT`로 구성됩니다. |
+| Key       | 하나의 KEY는 하나 이상의 조합된 값으로 표현 가능합니다. 예를들어 주문번호 또는 주문번호+순번, 년월일+순번       |
+| Values    | 해당 Key에 대한 구체적인 데이터를 값으로 펴햔합니다. 벨류는 하나 이상의 `Field, Element`로 구성됩니다.          |
 
 ### 데이터 입력/수정/삭제/조회
 
-종류 | 내용
----|---
-set | 데이터를 저장할때(key, value)
-get | 저장된 데이터를 검색할 때
-rename | 저장된 데이터 값을 변경할 때
-randomKey | 지정된 Key 중에 하나의 Key를 랜덤하게 검색할 때
-Keys | 지정된 모든 Key를 검색할 때
-exits | 검색 대상 Key가 존재하는지 여부를 확인할 때
-mset/mget | 여러 개의 Key와 Value를 한번 저장하고 검색할 때
+| 종류      | 내용                                            |
+| --------- | ----------------------------------------------- |
+| set       | 데이터를 저장할때(key, value)                   |
+| get       | 저장된 데이터를 검색할 때                       |
+| rename    | 저장된 데이터 값을 변경할 때                    |
+| randomKey | 지정된 Key 중에 하나의 Key를 랜덤하게 검색할 때 |
+| Keys      | 지정된 모든 Key를 검색할 때                     |
+| exits     | 검색 대상 Key가 존재하는지 여부를 확인할 때     |
+| mset/mget | 여러 개의 Key와 Value를 한번 저장하고 검색할 때 |
 
 Redis DB에 데이터를 입력/수정/삭제/조회 하기 위해서는 반드시 Redis 서버에서 제공하는 명령어를 사용해야 하며 데이터를 조장할 때는 Key에 대한 하나 이상의 Field 또는 Element로 표현해야합니다.
 
@@ -76,15 +76,15 @@ redis_version:6.2.1
 
 ### 데이터 타입
 
-종류 | 내용
----|---
-strings | 문자, Binary 유형 데이터를 저장
-List | 하나의 Key에 여러 개의 배열 값을 저장
-Hash | 하나의 Key에 여러 개의 Fields와 Value로 구성된 테이블을 저장
-Set / Sorted set | 정령되지 않은 String 타입 / Set과 Hash를 결합한 타입
-Bitmaps | `0,1`로 표현하는 데이터 타입
-HyperLogLogs | Element 중에 Unique 한 개수의 Element 만 계산
-Geospatial | 좌표 데이터를 저장 및 관리하는 데이터 타입
+| 종류             | 내용                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| strings          | 문자, Binary 유형 데이터를 저장                              |
+| List             | 하나의 Key에 여러 개의 배열 값을 저장                        |
+| Hash             | 하나의 Key에 여러 개의 Fields와 Value로 구성된 테이블을 저장 |
+| Set / Sorted set | 정령되지 않은 String 타입 / Set과 Hash를 결합한 타입         |
+| Bitmaps          | `0,1`로 표현하는 데이터 타입                                 |
+| HyperLogLogs     | Element 중에 Unique 한 개수의 Element 만 계산                |
+| Geospatial       | 좌표 데이터를 저장 및 관리하는 데이터 타입                   |
 
 
 #### Hash 타입
@@ -457,4 +457,257 @@ redis:6379> hgetall translate:2020180912320
 10) "60100"
 ```
 
-hmset translate:2020180912320 translate_no 672310 customer_name "Woman & Sports" zip_code 15881 address "Seoul Songpa 58" order_amount 60100
+#### Haash-List Data Model
+
+#### List-List Data Model
+
+#### Set/Sorted Set List Data Model
+
+#### HyperLogLogs Data Model
+
+## 논리적 DB 설계
+![](../assets/redis-db.jpg)
+
+기본적으로 논리적 데이터 베이스를 16개를 생성할 수 있는데 필요에 따라 더 많은 수의 데이터베이스를 생성할 수도 있습니다. 여러 개의 데이터베이스를 설계 및 생성해야하는 이유는 다음과 같습니다.
+
+사용자가 생성하는 수십~수백개의 테이블은 데이터 성격, 비지니스 룰, 관리 방안, 성능이수에 따라 여러 개의 논리적 DB에 분산 저장하는 것이 원칙입니다. 이와 **같은 분산 저장기술을 스트라이핑** 기법이라고 하며 가장 보편적인 설계 및 저장 기술입니다. 
+
+데이터베이스 기술은 데이터를 입력, 수정 삭제, 조회할 떄 발생하는 **다양한 락 현상으로 인해 성능 이슈가 발생할 수 있습니다.** 이를 최소화하기 위해서는 논리적으로 어러 개의 데이터베이스로 분산 설계하고 구축하는 것이 좋습니다. 
+
+## swapDB 설계
+
+![](../assets/redis-db2.jpg)
+
+Redis는 인-메모리 기반의 데이터 처리 및 저장기술로 수만~수십 만 건의 데이터를 저장할 수 있으며 동시 읽기 작업을 통해 빅데이터 분석 및 가공 처리를 목적으로 사용되는 기술입니다. 이런 경우 메모리 부족으로 인한 일시적인 성능 지연 문제들이 발생할 수 있습니다. 이를 보완하기 위해 Redis 4.0 부터는 swapDB 기능을 제공하고 있씁니다. 이는 기존 관계형 데이터베이스에서 제공하는 ㅇ미시 테이블페이스 또는 임시 데이터베이스와 유사한 구조 입니다.
+
+# 5 Redis 아키텍처
+
+## Redis 아키텍처
+
+![](../assets/redis-architect.jpg)
+
+Redis 서버의 기본 아키텍처는 3가지 영역으로 구성되어 있습니다.
+
+### 메모리 영역
+* Resident Area: 이 영역은 사용자가 Redis 서버에 접속해서 처리하는 모든 데이터가 가장 먼저 저장 저장더ㅣ는 ㅇ영역이며 실제 작업이 수행되는 공간이고 WorkingSet 영역이라고 표현 합니다.
+* Data Structure: Redis 서버를 운영하다 보면 발생하는 다양한 정버와 서버 상태를 모니터링하기 위해 수집한 상태 정보를 저장하고 관리하기 위한 메모리 공간 입니다.
+
+### 파일 영역
+* AOF 파일: 중요한 데이터의 경우 사용자의 필요에 따라 지속적으로 저장해야 할 필요가 있는데 이를 위해 제공되는 디스크 영역이 AOF 파일입니다.(스냅샷 데이터)
+* DUMP 파일: AOF 파일과 같은 사용짜 데이터를 디스크 상에 저장할 수 있지만 소량의 데이터를 일시적으로 저장할때 사용되는 파일입니다.
+
+### 프로세스 영역
+* Server Process: `redis-server.exe`, `redis-setinel.exe` 실행 코드에 의해 활성화되는 프로세스를 서버 프로세스라고 하며 Redis 인스턴스를 관리해 주며 사용자자가 요구한 작업을 수행하는 프로세스 입니다. **Redis Server 프로세스는 4개의 멀티 쓰레드로 구서성되는데 `main thread`, `sub thread 1(BIO-Close-File)`, `sub thread 2(BIO-AOF-Resync)`, `sub thread 3(BIO-LAZY-Free)` 입니다.**
+* Client Process: `redis.cli.exe` 또는 사용자 애플리케이션에 의해 실행된느 명령어를 실행하기 위해 제공되는 프로세스 입니다.
+
+### 멀티 쓰레드
+1. `main thread` : 해당 스레드는 Redis 서버에 수행되는 대부분의 명령어와 이벤트를 처리하는 역활을 수행
+2. `sub thread 1(BIO-Close-File)`: AOF에 데이터를 Rewirte할 때 기존 파일을 close하고 새로운 AOF 파일에 Write할 때 사용됩니다.
+3. `sub thread 2(BIO-AOF-Resync)`: AOF에 쓰기 작업을 수행할 때 사용됩니다.
+4. `sub thread 3(BIO-LAZY-Free)`: `UNLINK`, `FLUSHALL`, `FLUSHDB` 명령어를 실행할 때 따른 성능을 보장하기 위해 백그라운드에서 사용됩니다.
+
+
+```
+redis:6379> info MEMORY
+# Memory
+used_memory:872248 # 현재 할당된 Redis 서버 크기
+used_memory_human:851.80K # 사용자가 사용중인 Redis 메모리 크기
+used_memory_rss:7643136
+used_memory_rss_human:7.29M
+used_memory_peak:936616 # Redis에 할당되있던 최데 메모리 크기
+used_memory_peak_human:914.66K
+used_memory_peak_perc:93.13%
+used_memory_overhead:830440 # 사용자 메모리 킈기에 대한 orverhead
+used_memory_startup:809824 # 최초 할당되었던 Redis 메모리 크기
+used_memory_dataset:41808 # 사용자 데이터가 ㅓ장된 메모리 크기
+used_memory_dataset_perc:66.97%
+allocator_allocated:864056
+allocator_active:1130496
+allocator_resident:3493888
+total_system_memory:2085687296 # 시스템 모미리 총 크기
+total_system_memory_human:1.94G # 사용자가 사용 가능한 메모리 크기
+used_memory_lua:37888
+used_memory_lua_human:37.00K
+used_memory_scripts:0
+used_memory_scripts_human:0B
+number_of_cached_scripts:0
+maxmemory:0 # maxmemory 파라미터에 설정된 메모리 크기
+maxmemory_human:0B # 사용자가 실제 사용 가능한 Redis 크기
+maxmemory_policy:noeviction
+allocator_frag_ratio:1.31
+allocator_frag_bytes:266440
+allocator_rss_ratio:3.09
+allocator_rss_bytes:2363392
+rss_overhead_ratio:2.19
+rss_overhead_bytes:4149248
+mem_fragmentation_ratio:9.19 # 메모리 단편화 상태율
+mem_fragmentation_bytes:6811904
+mem_not_counted_for_evict:0
+mem_replication_backlog:0
+mem_clients_slaves:0
+mem_clients_normal:20504
+mem_aof_buffer:0
+mem_allocator:jemalloc-5.1.0
+active_defrag_running:0
+lazyfree_pending_objects:0
+lazyfreed_objects:0
+```
+
+
+## 시스템 & Disk 사양
+
+| 내용                 | 최소사양 | 권장사양     |
+| -------------------- | -------- | ------------ |
+| of nodes per cluster | 3 nodes  | >= 3nodes    |
+| of coress per node   | 4 cores  | >= 8nodes    |
+| RAM                  | 15GB     | >= 30 GB     |
+| storage              | SATA     | SSD          |
+| Persistent           | Storage  | RAM 크기 * 3 | >= RAM 크기 * 6 |
+| Network              | 1G       | >= 10G       |
+
+### 노드수 (of nodes per cluster)
+
+마스터와 1대와 슬레이브 1대는 이중 복제이기 때문에 크리티컬한 비지니스 환경에서는 필요에 따라 삼중 복제 시스템이 요구될 수 도 있습니다. 결론적으로 스탠드얼론 또는 클러스터 서버를 구축하는 경우 하나의 복제 시스템 구축을 위해서 요구되는 최소 서버 대수는 마스터 서버 1대, 슬레이브서버 1대, 센티럴 서버 1대로 구성되어야 합니다.
+
+### CPU Core 수 (of coress per node)
+
+초당 10만건~20만건 이상의 데이터를 빠르게 쓰기/읽기/ 작업을 수행하는 비지느스 환경에서는 일반적으로 CPU Core 수가 몇 개 이상이어야한다는 정답은 없지만 최소 가이드는 다음과 같습니다.
+
+* Small Business: 환경: 4 Core 이하
+* Medium Business: 환경: 4 Core ~ 8 Core
+* Big Business: 환경: 8 Core ~ 16 Core
+
+### RAM 크기
+
+Redis 서버를 위한 최소 권장 사양은 14~15GB 입니다. 이 크기는 하나의 시스템이 총 16GB 메모리 크기를 가지고 있다면 기중 90~95% 공간을 Redis 서버가 사용할 수 있어야 한다느 것을 의미합니다.
+
+* Small Business: 환경: 16GB 이하
+* Medium Business: 환경: 32GB ~ 64GB
+* Big Business: 환경: 64 GB ~ 128 GB
+
+#### 스토리지 타입
+빅데이터 플랫폼 환경은 어떤 환경보다 많은 데이터를 빠른 시간 내에 처리 해야하는 것이 목표이기 때문에 SSD 타입의 저장장치 사용을 적극 권장합니다. 하지만 Redis 서버의 아키텍처는 인 메모리 기반이므로 스토리지에 장치에 과도한 비중을 둘 필요는 없습니다.
+
+#### 스토리지 크기 (Persitent Storage)
+
+* 최소 스토리지 크기 = 사용자 데이터의 총 크기 + (RAM 크기 * 3)
+* 권장 스토리지 크기 = 사용자 데이터의 총 크기 + (RAM 크기 * 6)
+
+#### 네트워크
+
+Redis 서버를 웅ㄴ형 하기 위해 요구되는 최소 네트워크 환경은 1G 환경이며 권장 환경은 10G 이상입니다.
+
+## 메모리 운영 기법
+
+Redis 서버도 사용자의 필요에 따라 중요한 데이터를 디스크 저장 장치에 DUMP. AOF 형태로 저장할 수 있습니다. 하지만 파일 시스템 기반의 젖아 관리 메커니즘과는 기본 동작 방식이 많이 다르기 떄문에 파일 시스템 기반이라는 표현을 하지는 않습니다.
+
+Redis 서버는 인-메모리 기반의 데이터 저장 관리기술을 제공하지만 시스템 모키리 크기는 제한적일 수 밖에 없고 상대적으로 사용자 데이터는 이보다 훨씬 더 클 수밖에 없습니다. 그러기 떄문에 모든 데이터를 메모리에서 저장 관리할 수 없습니다. 이런 문제를 해결하기 위해서 `LUR`, `LFU` 알고리즘이 4.0 부터 제공하고 있습니다.
+
+### LRU (Last Recently Used) 알고리즘
+
+LRU 알고리즘은 가장 최근에 처리된 데이터를 메모리 영역에 최대한 재 배치시키는 알고리즘 입니다. 즉 사용할 수 있는 메모리 크기는 정해져 있는데 그 공간에 데이터를 저장해야 한다면 가장 최근에 엡력,수정, 삭제 조회된 데이터를 저장하고 오래전 처리된 데이터는 메모리부터 제거하여 최근 사용된 데이터들이 최대한 메모리 상에 존재할수 있도록 운영하는 것입니다.
+
+### LFU (Last Frequently Used) 알고리즘
+
+자주 참조되는 데이터 만 배치하고 그렇지 않은 데이터들을 메모리부터 제거하여 자주 참조되는 데이터들이 배치될 수 있도록 운영하는 방법 LFU 알고리즘 이라고 합니다.
+
+
+## LazyFee 파라미터
+
+Redis 인스턴스에게 할당된 메모리 영역이 최대 임계치 도달하게 되는데 이 경우, 연속적인 범위 키 값이 동시에 삭제되는 오퍼레이션이 실행되면 메모리 부족과 프로세스의 지연 처리로 인해 성능 지연문제가 발생하게 됩니다.
+
+이와 같은 성능 지연 문제를 해소할 수 있는 방법은 Redis 인스턴슬 위한 메모리 영역의 크기를 충분히 할당하는 것과 **LazyFee 파라메터를 설정해 주는 것입니다. LazyFee 파라메터는 별도의 백그라운드 쓰레드를 통해 입력과 삭제 작업이 지연되기 않고 연속적으로 수행될 수 있도록 해 줍니다.** LazyFee 쓰레르 앞서 Redis 아키텍처에서 소개되었던 서버 프로세스의 4개의 쓰레드중 하나입니다.
+
+```
+vi redis_5000.conf
+
+lazyfee-lay-eviction        no # yes 권장 (unlink로 삭제하고 새 키 저장)
+lazyfee-lay-expire          no # yes 권장 (unlink로 만기 된 키 삭제)
+lazyfee-lay-server-del      no # yes 권장 (unlink로 데이터 변경)
+slave-lazy-flush            no # yes 권장 (복제 서버가 삭제 후 복제할 때 FlashAll async 명령어로 삭제)
+```
+
+### lazyfee-lay-eviction
+
+메모리 영역이 Full 되었을 때 연속적으로 범위의 Key 값을 삭제하면 기존 메모리 영역에 저장되 있던 데이터는 DEL 명령어에 의해 삭제하는데 이 작업은 **서버 프로세스의 main thread에 의해 실행되면서 블로킹 현상이 발생합니다. 이 값을 `YES`로 설정하면 DEL명령어가 아닌 UNLINK 명령어가 실행되고 서버 프로세스의 `sub tread 3`에 백그라운드에서 수행되기 때문에 블로킹 현상을 피할 수 있게 됨으로써 성능을 향상시킬 수 있습니다.** 
+
+### lazyfee-lay-expire
+
+`EXPIRTE` 명령어를 실행하면 메모리 상에 무효화된 키 값을 삭제하는데 내부적으로 DEL 명령어가 실행되면서 블로킹 현상이 일어난다. **이 값을 `YES`로 설정하면 `UNLINK` 명령어가 실행되면서 블로킹 현상을 피할 수 있습니다.**
+
+### lazyfee-lay-server-del
+
+메모리 상에 이미 저장되어 있는 키 값에 대해 `SET` 또는 `RENAME` 명령어를 실행하면 내부적으로 DEL 명령어가 실핻되면서 블로킹 현상이 발생합니다. 이를 피하기 위해서는 파라미터 값을 `YES`로 설정 해야 합니다.
+
+### lazyfee-lay-flush
+
+Master-Slave 또는 `Partition-Replication` 서버 환경에서 복제 서버는 마스터 서버의 데이터를 복제할 때 변경된 부분에 대해서 만 부분 복제하는 경우도 있지만 떄에 따라서는 **기본 데이터를 모두 삭제한 후 다시 복제하는 경우도 있습니다. 이 경우, 기존 복제 데이터를 빠른 ㅣ간 내에 삭제하고 동시에 다시 복제 작업을 빠르게 수행해야합니다. 이때 이 값을 `YES`로 설정하면 빠른 동기화 작업을 수행할 수 있습니다.**
+
+## 데이터 Persistence
+
+사용자의 필요 에 따라 숮용한 데이터를 지속적으로 저장관리해야 할 필요거 있는데 이와같으 경우 디스크 저장 장치에 파일을 저장할 수 있습니다. 또한 Redis 서버를 재시작한 후 파일에 저장해둔 데이터를 다시 메모리 업-로드 할 수 도 있습니다. 데이터를 지속적으로 저장하는 방법에는 다음과 같은 `SAVE` 명령어를 이용하는 방법과 `AOF` 명령어로 저장하는 방식이 있습니다.
+
+### RDB(SnapShot) 파일을 이용하여 저장하는 방식
+
+```
+redis:6379> keys *
+1) "translate:2020180912320"
+2) "order:201809123"
+redis:6379> save
+OK
+redis:6379>
+
+/data/dump.rdb
+```
+
+
+`SAVE` 명령어를 이용하여 일정 주기 마다 일정한 개수의 Key 데이터-셋 r값을 dump.rdb 파일로 저장하는 방법 입니다. **사용자가 저장 주기와 저장된 단위를 결정할 수 이쏙 시스템 자원이 최소한으로 요구된다는 최대 강점이 있지만 데이터를 최종 저장한 이후 새로운 저장이 수해되는 시점 전에 시스템 장애가 발생하는 경우 데이터 유실이 발생할 수 있기 때문에 지속성이 떨어지는 단점이 있습니다.**
+
+### AOF(Append Only File) 명려어를 이용하여 저장하는 방법
+
+AOF 명령어를 이요해서 디스크 상에 `appendonly.aof` 파일로 저장하는 방법입니다. 이 방법은 `redis-shell` 상에서 `bgrewriteaof` 명령어를 실행한 이후 입력, 수정, 삭제 도니느 모든 데이터를 저장해 줍니다.
+
+### 비교
+
+AOF | RDS
+----|----
+시스템 자원이 집중적으로 요구 | 시스템 자원이 최소한으로 요구
+마지막 시점까지 데이터 복구 가능 | 지속성이 떨어짐
+대용량 데이터 파일로 복구 작업시 복구 성능이 떨어짐 | 복구 시간이 빠름
+저장 공간이 압축되지 않기 때문에 데이터 양에 따라 크기 결정 | 저장 공간이 압축되기 때문에 최소 필요
+
+## Copy on Write
+
+**메모리 상에 로더되어 있든 데이터를 하나의 부모 프로세스가 참조하고 있는 와중에 자식 프로세스가 동시에 참조 관계를 가지게 되는 경우 서버 프로세스는 별도의 젖아관에 이를 복제하게 되는데 이와 같은 경우를 `Copy on Write`라고 표현합니다.** `Copy on Write` 가 빈번하게 발생하게 되면 해당 오퍼레이션은 지연되며 이는 Redis Server 전체의 성능 지연 문제로 이어집니다. 이런 문제가 발생하지 않도록 데이터를 처리하고 설사 발생했다 허더라도 지연 문제가 덜 발생하고 빨리 해소될 수 있드록 충분한 메모리 영역을 확보하는 것도 매우 중요한 성능 포인트 입니다. 다음은 `Copy on Write`가 발생하는 경우들 입니다.
+
+### SAVE 파라메터에 의해 주기적으로 RDB 파일을 생헝 할때
+
+`SAVE` 명령어를 또는 관리 파라메터는 Redis 워킹세트 영역에 저장되어 있는 데이터를 디스크 dump.rdb 파일로 저장할 때 사용됩니다. 이 경우는 `Copy on Write`가 발생하는 대표적인 경우라고 볼 수 있습니다. 
+
+### BGSAVE 명령어에 의해 RDB 파일로 저장할 때
+
+`SAVE` 명령어와 함께 `BGSAVE` 명령어로 동일한 방법으로 `Copy on Write`가 발생합니다.
+
+### BGREWRITEAOF 명령어의 의해 AOF 파일을 저장할 때
+
+`SAVE`, `BGSAVE는` `dump.rdb` 파일에 쓰기 작업이 발생한다면 `BGREWRITE`는 `appendonly.aof` 파일에 쓰기 작업이 발생하는 경우이며 `Copy on Write`가 발생합니다.
+
+### auto-aof-rewirte-percentage 파라미터에 의해 AOF 파일을 재정할 할 떄 
+
+AOF 파일이 가득 채워진 상태에서 계속저긍로 데이터를 저장하는 경우, AOF 파일을 비우고 처음부터 다시 쓰기 작업을 수행하는 경우도 발생합니다. 성능 이슈가 발생하는 비지니스 환경에서 해당 파라미터의 적극적인 사용은 권장하지 않습니다.
+
+### Master-Slave, Partition-Replication Server 환경으로 구동 할 때
+
+Master-Slave, Partition-Replication Server 환경에서는 Master 서버의 데이터를 Slave 서버에 복제 할 떄 `Copy on Write`가 발생합니다. 
+
+## 관리 명령어
+
+Parameter | 설명
+----------|---
+info | Redis Server의 현재 상태 확인
+select | Redis Server 내에 생성되어 있는 DB로 Switch 할 때
+dbsize | 현재 데이터베이스에 생성되어있는 Keys | tn
+swapdb | 현재 데이터베이스에 할댕할 swap DB 생성
+flushall / flushdb | 현재 생성되어 있는 모든 Keys /DB | tkrwp
+client list / client getname / cluent kill | 현재 Redis Server에 접속되어 있는 Client 조회 / Client 명 조회 / Client 제거
+time | Redis Server의 현재 시간
