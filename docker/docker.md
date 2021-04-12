@@ -389,4 +389,10 @@ CMD ["node", "server.js"]
 
 이미지 안에서 어플리케이션 소스 코드를 가지고 있을 디렉토리르 생성하는 것 그리고 이 디렉토리가 어플리케이션에 working directroy가 됩니다.
 
+![](../assets/docker-30.png)
 
+## Volume
+
+![](../assets/docker-30.png)
+
+![](../assets/docker-32.png)
