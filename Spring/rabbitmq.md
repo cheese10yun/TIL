@@ -116,7 +116,7 @@ public interface RabbitMqEvent {
 * 이벤트를 Publisher하는 template를 생성합니다.
 * ConnectionFactory 의존성 주입을 받아 생성합니다.
 * message conveter를 등록시킵니다. 다른 예제들은 Bean으로 등록시는데 딱히 Bean으로 등록시킬 필요는 없어 보입니다.
-* `setChannelTransacted` 플래극 값은 Transaction 으로 생성하게 해줍니다. (`@Transactional` 이 붙은 것처럼 처리됩니다. 만약 데이터베이스의 트랜잭션과 연결된다면 트랜잭션이 전위 된다고 이해했습니다.)
+* `setChannelTransacted` 플래극 값은 Transaction 으로 생성하게 해줍니다. (`@Transactional` 이 붙은 것처럼 처리됩니다. 만약 데이터베이스의 트랜잭션과 연결된다면 트랜잭션이 전이 된다고 이해했습니다.)
 * `setReplyTimeout` amqpTemplate의 timeout을 지정합니다.
 
 
