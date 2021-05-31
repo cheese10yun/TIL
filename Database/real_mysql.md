@@ -6,6 +6,19 @@
 
 ### my.conf 설정 파일
 
+#### server-id
+
+#### user
+#### basedir
+#### datadir
+#### tempdir
+#### character-ser-server, collation-server
+#### default-storage-engine
+#### skip-name-resolve
+#### event-scheduler
+#### sysdata-is-now
+#### back_log
+
 #### max_connections
 MySQL 서버가 쵀대 허용할 수 있는 클라이언트 연결 수를 제안하는 설정이다. `max_connections` 설정은 동적으로 변경할 수 있으므로 컨넥션이 부족하다면 그때 그때 변경해 주면 된다. 어떤 웹 서버가 20대라면 한 서버당 컨넥션이 100개씩 이라고 해도 2000의 컨넥션이 필요하다. 컨넥션 풀에서도 적절한 컨넥션 개수의 설정이 중요하다. MySQL 서버의 `max_connections` 설정은 이러한 위험을 막는 최후의 보루라는 점을 기억해야 한다.
 
@@ -39,10 +52,42 @@ MySQL에서 인덱스를 이용하거나 별도의 메모리 디스크 공간에
 #### join_buffer_size
 조인 버퍼는 MySQL에서 조인이 발생할 때마다 사용되는 버퍼가 아니다. 적절한 조인 조건이 없어서 드리븐 테이블의 검색이 풀 테이블 스캔으로 유도되는 경우에 조인 버퍼가 사용된다. 일반적으로 이런 경우에는 `Using join buffer`라는 내용이 실혱 계획에 표시된다. 
 
+
+#### read_buffer_size
+
+#### read_rnd_buffer_szie
+
+#### sort_buffer_szie, join_buffer_size, read_buffer_szie, rnd_buffer_szie
+
+#### query_cache_szie, query_cache_limit
+
+#### group_concat_max_len
+
+#### transcation-isolation
+
 #### innodb_buffer_pool_size
 InnoDB 스토리 엔진에서 가장 중요한 옵션이다. InnoDB 스토리지 엔진의 버퍼풀 디스크의 데이터를 메모리에 캐싱함과 동시에 데이터의 변경을 버퍼링하는 역할을 수행한다. 일반적으로 innodb_buffer_pool_szie는 운영체제나 MySQL 클라이언트에 대한 서버 스레드가 사용할 메모리를 제외하고는 남는 거의 모든 메모리 공간을 설정한다.
 
 하지만 이 예측치는 최대 사용 가능한 메모리 크기이므로 상당히 현실성이 떨어지며, 실제 사용하는 메모리는 쿼리의 특성에 따라 달라진다. 그래서 일반적으로 50 ~ 80% 까지 수준에서 inndb_buffer_pool_size를 설정한다.
+
+#### innodb_additional_mem_pool_size
+
+#### innodb_file_per_table
+
+#### innodb_data_home_dir
+
+#### innodb_data_file_path
+#### innodb_log_group_home_dir
+#### innodb_log_buffer_size
+#### innodb_log_file_size, innodb_log_files_in_group
+#### innodb_lock_wait_timeout
+#### innodb_flush_log_at_trx_commit
+#### innodb_flush_method
+#### innodb_old_locks_time
+#### innodb_buffer_szie
+#### general_log, general_log_file
+#### innodb_
+
 
 ### client 설정 그룹
 
