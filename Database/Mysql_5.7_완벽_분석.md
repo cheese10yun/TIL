@@ -386,7 +386,18 @@ filtered는 행 데이터를 가져와 거이에서 WHERE 구의 검색 조건�
 ##### Extra
 Extra 필드는 옵티마이저가 동작하는데 대해서 우리에게 알려주는 힌트다. 이 필드는 EXPLAN을 사용해 옵티마이저의 행동을 파악할때 아주 중요하다. 
 
-Extra       설명
+Extra | 설명
+------|---
+Using where | 접근 방식을 설명한 것으로, 테이블에서 행을 가져온 후 추가적으로 검색조건을 적용해 행의 범위를 축소한 것을 표시한다.
+Using index | 테이블에는 접근하지 않고 인덱스에서만 접근해서 쿼티를 해결하는 것을 의미한다. **커버링 인덱스로 처리됨 index only scan이라고도 부른다**
+Using index for group-by | Using index와 유사하지만 GROUP BY가 포함되어 있는 쿼리를 커버링 인덱스로 해결할 수 있음을 나타낸다
+Using filesort | ORDER BY 인덱스로 해결하지 못하고, filesort(MySQL의 quick sort)로 행을 정렬한 것을 나타낸다.
+Using temporary | 암묵적으로 임시 테이블이 생성된 것을 표시한다.
+Using where with pushed | 엔진 컨디션 pushdown 최적화가 일어난 것을 표시한다. 현재는 NDB만 유효
+Using index condition | 인덱스 컨디션 pushdown(ICP) 최적화가 일어났음을 표시한다. IPC는 멀티 칼럼 인덱스에서 왼쪽부터 순서대로 칼럼을 지정하지 않는 경우에도 인덱스를 이용하는 실행 계획이다.
+Using MRR | 멀티 레인지 리드(MRR) 최적화가 사용되었음을 표시한다.
+Using join buffer(Block Nested Loop) | 조인에 적절한 인덱스가 없어 조인 버퍼를 이용했음을 표시한다.
+Using join buffer(Batched Key Access) | Batched Key Access(BKAJ) 알고리즘을 위한 조인 버퍼를 사용했음을 표시한다.
 
 
 
