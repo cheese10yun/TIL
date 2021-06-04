@@ -394,7 +394,7 @@ Using index for group-by | Using index와 유사하지만 GROUP BY가 포함되�
 Using filesort | ORDER BY 인덱스로 해결하지 못하고, filesort(MySQL의 quick sort)로 행을 정렬한 것을 나타낸다.
 Using temporary | 암묵적으로 임시 테이블이 생성된 것을 표시한다.
 Using where with pushed | 엔진 컨디션 pushdown 최적화가 일어난 것을 표시한다. 현재는 NDB만 유효
-Using index condition | 인덱스 컨디션 pushdown(ICP) 최적화가 일어났음을 표시한다. IPC는 멀티 칼럼 인덱스에서 왼쪽부터 순서대로 칼럼을 지정하지 않는 경우에도 인덱스를 이용하는 실행 계획이다.
+Using index condition | 인덱스 컨디션 pushdown(ICP) 최적화가 일어났음을 표시한다. ICP는 멀티 칼럼 인덱스에서 왼쪽부터 순서대로 칼럼을 지정하지 않는 경우에도 인덱스를 이용하는 실행 계획이다.
 Using MRR | 멀티 레인지 리드(MRR) 최적화가 사용되었음을 표시한다.
 Using join buffer(Block Nested Loop) | 조인에 적절한 인덱스가 없어 조인 버퍼를 이용했음을 표시한다.
 Using join buffer(Batched Key Access) | Batched Key Access(BKAJ) 알고리즘을 위한 조인 버퍼를 사용했음을 표시한다.
