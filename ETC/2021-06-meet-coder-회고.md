@@ -5,9 +5,9 @@
 
 ## 내 개발 리즈 시절
 
-![](../assets/2018.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/2018.png)
 
-![](../assets/2019.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/2019.png)
 
 09-10의 이영호가 있었다면 18-19에는 내가 있다는 건 아니고, 주니어 개발자 시절 (지금도 주니어 이긴 한데...) 정말 열심히 공부했었던 거 같다. 지금은 왜 그때처럼 열심히 못할까라는 생각이 많이 든다.
 
