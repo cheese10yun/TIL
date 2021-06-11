@@ -667,6 +667,82 @@ public static void main(String[] args) throws Exception {
 **만약 변경하려는 작업이 기존 값과 똑같다면 실질적인 변경 작업을 생략해버린다.**
 
 #### Statement와 PreparedStatement의 차이
+Statement와 PreparedStatement의 차이를 알아보려면 우선 MySQL 서버가 쿼리를 처리하는 각 단계를 이해 해야한다. MySQL 서버가 쿼리를 실행하기 위한 테스크를 간한하게 표현하면 다음과 같다.
+
+**MySQL 서버로 쿼리를 요청하면 MySQL 서버는 쿼리를 분서해 파스 트리를 만들고 그 정보를 분석해 권한 체크나 쿼리의 최적화 작업을 수행한다. 그리고 최종적으로 준비된 쿼리의 실행을 실행 계획을 이용해 쿼리를 실행한다.**
+
+![](../assets/real-mysql-flow-1.png)
+
+**자바 프로그럄에서 Statement로 실행되는 쿼리는 위의 단계를 매번 거쳐 쿼리가 실행되는데, 쿼리 분석이나 최적화와 같은 작업은 상대적으로 시간이 걸리는 작업이다. 하지만 PreparedStatement를 사용하면 쿼리 분석이나 최적화의 일부 작업을 처음 한번만 수행해 별도로 저장해 두고, 다음부터 요청되는 쿼리는 저장된 분석 결과를 재사용 한다.** 이렇게 함으로써 매번 쿼리를 실행할 때 마다 거쳐야 했던 쿼리 분석이나 최적화의 일부 작업을 건너 뛰고 빠르게 처리할 수 있는 것이다.
+
+프리페어 스테이트먼트를 사용할 때 쿼리의 분석 정보를 MySQL 서버의 메모리에 저장해둔다. 만약 당므과 같은 쿼리의 모든 부분은 똑같지만 WHERE 절의 상수 값만 다른 쿼리가 PreparedStatement를 이용해 100번을 실행한다고 가정해보자
+
+```sql
+SELECT * FROM emplyees WHERE emp_no = 10001;
+SELECT * FROM emplyees WHERE emp_no = 10002;
+SELECT * FROM emplyees WHERE emp_no = 10003;
+```
+
+**똑같은 패턴의 쿼리임에도 MySQL 서버에서는 100개의 쿼리 분석 결과를 보관해야 한다. 이런 부분을 보안 하고자 PreparedStatement에서 쿼리에 변수를 사용할 수있다.**  다음 예제에서는 WHERE 조건의 상수가 `?`로 대체된 것을 확인할 수 있다.
+
+```sql
+SELECT * FROM emplyees WHERE emp_no = ?;
+```
+PreparedStatement에서 `?`는 바인딩 변수 또는 변수 홀더라고 표현하는데, 실제 쿼리를 실핼할 떄는 변수 대신에 상수 값을 대입해야 한다. **이렇게 바인딩 변수를 사용하면 쿼리를 최대한 템플릿화할 수 있고, 템플릿화된 쿼리는 상수 값을 직접 사용한 쿼리보다 쿼리 문장의 수를 대폭적으로 줄일 수 있게 만들어준다.** 상수를 직접 사용할 떄는 쿼리 문장이 100개가 필요했지만 쿼리를 템플릿화한 다음에는 하나로 줄어들었다. **애플리케이션에서 사용하는 쿼리 문장의 개수가 줄어든다는 것은 MySQL 서버에서 보관해야 하는 쿼리의 분석 정보가 줄어들어 메모리 사용량을 줄일 수 있다는 의미이기도 하다.**
+
+이렇게 변수를 사용하는 쿼리를 프리페어 스테티트먼트 또는 바인딩 쿼리라고 하고, 바인딩 변수 없이 상수만 사용하는 쿼를 동적 쿼리 또는 다이나믹 쿼리라고 한다.
+
+```java
+public static void main(String[] args) throws Exception {
+   Connection connection = null;
+   PreparedStatement statement = null;
+   ResultSet resultSet = null;
+   try {
+      connection = (new JdbcTest2()).getConnection();
+      statement = connection.prepareStatement("select *from payment where id = ?"); // (1)
+      statement.setInt(1, 1);
+      resultSet = statement.executeQuery();
+      if(resultSet.next()){
+            System.out.println("id: " +resultSet.getString("id"));
+      }
+      resultSet.close();
+
+      statement.setInt(1, 2); // (2)
+      resultSet = statement.executeQuery();
+      if(resultSet.next()){
+            System.out.println("id: " +resultSet.getString("id"));
+      }
+      resultSet.close();
+      resultSet = null;
+
+   } catch (SQLException ex) {
+      ex.printStackTrace();
+      System.out.println("Connection Failed");
+      System.out.printf(ex.getMessage());
+   } finally {
+      try { if (resultSet != null) resultSet.close(); } catch (SQLException ex) { }
+      try { if (statement != null) statement.close(); } catch (SQLException ex) { }
+      try { if (connection != null) connection.close(); } catch (SQLException ex) { }
+   }
+}
+```
+
+![](../assets/real_mysql_stmt_1.png)
+
+PreparedStatement를 사용할 때는 SQL 쿼리 문장을 이용해 PreparedStatement 객체를 먼저 준비 해야한다. 위 예제에서는 `connection.prepareStatement("select *from payment where id = ?")` 함수를 호출하면 Connector/J는 주어진 SQL 문장을 서버로 전송해서 쿼리를 분석하고 그 결과를 저장해서 저장해둔다.`(1)`
+
+**그리고 MySQL서버는 쿼리의 분석 결과의 포인터와 같은 해시 값을 Connector/J로 변환한다. Connector/J는 반환 받은 해시 값을 이용해 PreparedStatement 객체를 생성한다. 이렇게 생성된 PreparedStatement는 바인딩 변수의 값만 변경하면 계속해서 사용하게 된다.`(2)` 하지만 MySQL 서버는 이미 이 쿼리 패턴에 대한 분석 정보를 가지고 있으므로 매번 쿼리를 분석하지 않고 단출된 경로로 쿼리를 실행하기 때문에 Statement 보다 빠르게 처리된다.**
+
+애플리케이션에서 실행하려는 쿼리와 함께 preparedStatement() 함수를 호출하면 MySQL 서버는 그 쿼리를 미리 분석해서 별도로 저장해두고, 분석 정보가 저장된 주소(해시 키)를 애플리케이션으로 반환한다. **이렇게 PreparedStatement를 이용해 쿼리를 실해앟면 애플리케이션에서 쿼리 문장을 서버로 전달하지 않고 분석 정보가 저장된 주소(해시 키)와 쿼리에 바인딩할 변수 값만 서버로 전달한다.** MySQL 서버는 전달받은 해시 키를 이용해 분석 정보를 찾아 전달된 바인드 변수를 결합하고 쿼리를 실행한다.
+
+**결론적으로 PreparedStatement의 성능적인 장점은 한 번 실행된 쿼리는 매번 쿼리 분석 과정을 거치지 않고 처음 분성된 정보를 재사용한다는 점이다.** SQL 문장의 길이가 길어서 성능상의 문제가 되는 경우는 그다지 없겠지만 **매번 쿼리를 실행할 때 SQL 문장 자체가 네트워크로 전송되지 않고 바인딩할 변수 값만 전달되므로 네트웤, 트래픽 측면에서도 조금은 효율적이라고 볼 수있다.**
+
+**PreparedStatement의 또 다른 장점은 바이너리 프로토콜을 사용한 다는 것이다.** 초기 MySQL Connctor/J 버전에서는 모든 Statement, PreparedStatement가 클라어은트(JDBC)와 서버(MySQL) 간의 통신에서 문자열 기반의 프로토콜을 사용했다. 그래서 사용자 프로그램에서 타입을 지정해서 값을 설정하더라도 내부적으로 MySQL 서버에 전송하기 위해 문자열 타입으로 데이터를 변환했으며, 서버에서는 다시 그 문자열 값을 지정된 타입으로 변환하는 과정을 거쳐야 했다. **즉 내부적으로 불 필요한 타입 변환을 수행했으며, 그로인해 데이터의 크기가 커지는 문제가 발생했던 것이다. 하지만 MySQL 5.0 이상에서는 PreparedStatement를 사용하면 별도의 타입 변환을 수행하지 않는 바이너리 통신 프로토콜을 사용하게 된다.** 하지만 Statement 객체를 사용하면 바이너리 통신 프로토콜을 사용하지 않고 예전과 같은 문자열로 변호나해서 통신한다.
+
+PreparedStatement의 또 다른 장점은 SQL 인젝션의 문제도 손쉽게 해결 가능하다. **PreparedStatement를 사용해 코드를 개발하면 아스케이프 문자 처리를 MySQL Connctor/J에서 대신해 처리해 주므로 개발자가 직접 이러한 부분을 고려하지 않아도 된다.**
+
+#### 프리페어 스테이트의 종류
+
 
 # 14 데이터 모델링
 
