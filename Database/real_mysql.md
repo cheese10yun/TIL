@@ -126,9 +126,9 @@ InooDB에서 접근을 획득을 위해 최대한 대기할 수 있는 시간(�
 
 첫 번째로, 두 단계의 작업을 동시에 같이 실행하는 방식을 `동기(Sync) IO`라고 하며, 1단계와 2단계 작업을 각각 다른 시점에 실행하는 방식을 `비동기(Aynce) IO`라고 한다. 물론 Sync와 Async는 쓰기 함수의(커널 콜)이 언제 반환하는 지를 의미하기도 하지만 큰 맥락에서  보면 동일한 내용으로 이해하면 된다.
 
-두 번쨰로, 데이터가 변경되면 그와 동시에 파일의 변경 일시와 같은 메타 정보도 함꼐 변경하는데, 이렇게 데이터와 파일의 메타데이터를 한꺼번에 변경하는 방식을 `fsync`라 하며, 파일의 메타 정보는 무시하고 순수하게 사용자의 데이터만 변경하는 방식을 `fdataasync`라고 한다.
+두 번째로, 데이터가 변경되면 그와 동시에 파일의 변경 일시와 같은 메타 정보도 함꼐 변경하는데, 이렇게 데이터와 파일의 메타데이터를 한꺼번에 변경하는 방식을 `fsync`라 하며, 파일의 메타 정보는 무시하고 순수하게 사용자의 데이터만 변경하는 방식을 `fdataasync`라고 한다.
 
-세 번쨰로, 디스크 쓰기의 두 작업 중에서 `운영체제의 버퍼 기록`단계를 생략하고 바로 사용자의 데이터를 디스크로 쓰는 경우도 있는데, 이를 특별히 `다이렉트 IO`라고 한다.
+세 번째로, 디스크 쓰기의 두 작업 중에서 `운영체제의 버퍼 기록`단계를 생략하고 바로 사용자의 데이터를 디스크로 쓰는 경우도 있는데, 이를 특별히 `다이렉트 IO`라고 한다.
 
 
 #### innodb_old_locks_time
@@ -420,7 +420,7 @@ UPDATE member SET name = '홍길동' WHERE member_id = '1';
  
 **위 문장이 실행되면 트랜잭션을 커밋하지 않아도 실제 데이터 파일(데이터/인덱스 버퍼) 내용은 '홍길동' 으로 변경된다. 그리고 변경되기 전의 값이 "박계수" 였다면, 언두 영역에는 "박계수"라는 값이 백업 되는 것이다. 이 상태에서 만약 사용자가 커밋을 하게되면 현재 상태가 그대로 유지되고, 롤백하게 되면 언두 영억의 백업된 데이터를 다시 데이터 파일(파일/인덱스 버퍼로) 복구한다.**
 
-언두의 데이터 크게 두 가지 용도로 사용되는데, **첫 번쨰 용도가 바로 위에서 언급한 트랜잭션이 롤백 대비용이다. 두 번쨰 용도는 트랜잭션의 격리 수준을 유지하면서 높은 동시성을 제공하는 데 사용된다.** 트랜잭션의 격리 수준이라는 개념이 있는데. 이는 동시에 여러 트랜잭션이 데이터를 변경하거나 조회할 때, 한 트랜잭션의 작업 내용이 다른 트랜잭션에 어떻게 보여질지를 결정하는 수준이다.
+언두의 데이터 크게 두 가지 용도로 사용되는데, **첫 번째 용도가 바로 위에서 언급한 트랜잭션이 롤백 대비용이다. 두 번째 용도는 트랜잭션의 격리 수준을 유지하면서 높은 동시성을 제공하는 데 사용된다.** 트랜잭션의 격리 수준이라는 개념이 있는데. 이는 동시에 여러 트랜잭션이 데이터를 변경하거나 조회할 때, 한 트랜잭션의 작업 내용이 다른 트랜잭션에 어떻게 보여질지를 결정하는 수준이다.
 
 ### 인설트 버퍼(Inser Buffer)
 **RDBMS에서 레코드가 INSERT 되거나 UPDATE 될 때는 데이터 파일을 변경하는 작업 뿐만 아니라 해당 테이블에 포함된 인덱스를 업데이트하는 작업도 필요하다. 그런데 인덱스를 업데이트하는 작업은 랜덤하게 디스크를 읽는 작업이 필요하므로 테이블에 인덱스가 많다면 이 작업은 상당히 많은 자원을 소모하게 된다.** 그래서 InnoDB는 변경해야 할 인덱스 페이지가 버퍼 풀에 있으면 바로 업데이트를 수행하지만. 그렇지 않고 **디스크로부 터 읽어와서 업데이트해야 한다면 이를 즉시 실행하지 않고 임시 공간에 저장해두고 바로 사용자에게 결과를 반환하는 형태로 성능을 향상시키게 되는데, 이때 사용하는 임시 메모리 공간을 인설트 버퍼라고 한다.**
@@ -547,9 +547,9 @@ InnoDB의 경우에는 MySQL 서버가 비정상적으로 또는 강제적으로
 ## 자바
 자바 프로그램 언어로 MySQL 데이터베이스에 접속해서 SQL을 실행하려면 자바에서 제공하는 표준 데이터베이스 접속 API인 JDBC를 이용 해야한다. 자바에서 제공하는 JDBC는 사실은 껍대기 Inerface일 뿐이며, 실제 각 DBMS에 접속해 필요한 작업을 하는 알맹이는 각 DBMS 제조사에서 제공하는 JDBC 드라이버다.
 
-### MySQL Connector/J 를 이용한 개발
+## MySQL Connector/J 를 이용한 개발
 
-#### MySQL 서버 접속
+### MySQL 서버 접속
 Connector/J를 이용해 MySQL 서버에 접속하려면 JDBC URL 이라는 개념을 알아야 한다. 여기서 URL은 일반적으로 HTTP, FTP에서 사용하는 URL이 아니라 접속할 MySQL 서버의 정보를 표준 포맷으로 조합한 문자열이다. 때로는 이를 컨넥션 스트링이라고 표현하기도 한다. MySQL Connector/J를 이용해 MySQL ConntorJ를 이용해 MySQL 서버에 접속하는 예제를 보자.
 
 ```java
@@ -582,13 +582,13 @@ public class JdbcTest {
 1. MySQL 서버 접속을 위해 JDBC URL을 설정
 2. 현재는 없지만 성능이나 작동 방식을 변경하기 위해 Connctor/J에 별도의 옵션을 설정해야 할때 이 때는 ?를 표시히고 키/값 쌍으로 변수 값으로 사용
 3. MySQL JDBC 드라이버 클래스의 로딩이 정상적으로 완료되면 DriverManager.getConnection() 명령어를 이용해 애플리케이션 MySQL 
-4. 자바에서 많은 자원이나 변수가 자동으로 소멸되지만 데이터베이스 컨넥션과 같은 네트워크 자원은 사용이 끄타면 즉시 해제하는 것이 좋다. 특히 데이터베이스 컨넥션과 같은 자원은 프로그램 코드에서 사용 직전에 가져와서, 사용이 완료됨과 동시에 바납하는 것이 좋다.
+4. 자바에서 많은 자원이나 변수가 자동으로 소멸되지만 데이터베이스 컨넥션과 같은 네트워크 자원은 사용이 끝나면 즉시 해제하는 것이 좋다. 특히 데이터베이스 컨넥션과 같은 자원은 프로그램 코드에서 사용 직전에 가져와서, 사용이 완료됨과 동시에 바납하는 것이 좋다.
 5. `con.close()` 명령어를 이용해 컨넥션을 종료 하고 있다.
 6. `try-catch` 예외 처리를 한다. 오류가 발생하면 로깅이나 재처리 코드를 작성하는 것이 좋다
 7. 애플리케이션을 재처리 과정을 구현할 때는 `getSQLState()`, `getErrorCode()` 함수를 이용해 지정된 에러 코드로 예외 상황을 판단하는 것이 좋다.
 
 
-#### select 실행
+### select 실행
 ```sql
 public static void main(String[] args) throws Exception {
    Connection connection = null;
@@ -615,19 +615,19 @@ public static void main(String[] args) throws Exception {
    }
 }
 ```
-**(1) Statement 갹체는 JDBC를 사용하는 애플리케이션에서 모든 SQL문과 DDL 문장을 실행하는데 필요한 객체다.** 그리고 이와 비슷한 방식으로 사용하지만 프리페어 스테이트먼트를 실행할 때 사용하는 PreparedStatement 객체와 스토어드 프로시저를 실핼할 때 사용하는 CallableStatement 객체도 있다.
+**(1) Statement 객체는 JDBC를 사용하는 애플리케이션에서 모든 SQL문과 DDL 문장을 실행하는데 필요한 객체다.** 그리고 이와 비슷한 방식으로 사용하지만 프리페어 스테이트먼트를 실행할 때 사용하는 PreparedStatement 객체와 스토어드 프로시저를 실핼할 때 사용하는 CallableStatement 객체도 있다.
 
 Statement 클래스는 `execute()`, `executeQuery()`, `excetueUpdate()`라는 세 가지 주요 함수를 제공한다. 결과 셋을 반환하 SELECT 쿠리 문장은 `executeQuery()` 함수를 사용하며, 결과 셋을 반환하지 않는 INSERT, UPDATE, DELETE, DDL 문장은 `executeUpdate()` 함수를 이용한다. 만약 실행 쿼리가 SELECT 인지 INSERT 인지 모를 때는 `exceute()` 함수를 이용할 수있다.
 
-**(2)는 `excuteQuery()` 함수는 스토어는 프로시저에서 살펴본 커서와 거의 비슷한 기능을 제공하는 ResultSEt 이라는 객체를 반환한다. 즉시 SELECT 쿼리의 결과를 렠드 단위로 하나씩 페치할 수 있는 기능을 제공하는 객체다.**
+**(2)는 `excuteQuery()` 함수는 스토어는 프로시저에서 살펴본 커서와 거의 비슷한 기능을 제공하는 ResultSet 이라는 객체를 반환한다. 즉시 SELECT 쿼리의 결과를 필드 단위로 하나씩 페치할 수 있는 기능을 제공하는 객체다.**
 
-ResultSet의 `next()` 함수는 결과 셋에 아직 읽지 않은 레코드가 더 있는지 확인할 수 있게 해준다. (3)만약 아직 읽지 않은 레코드가 남아 있다면 ResultSet의 `getString()`, `getInt()` 등의 함수를 이용해 칼럼 값을 가져올 수 있다. 칼럼 이름이나 SELECT 절에 나열된 칼럼의 순번을 인자로 해서 `getString()`, `getInt()` 등의 함수로 칼럼 값을 가져올 수 있다
+ResultSet의 `next()` 함수는 결과 셋에 아직 읽지 않은 레코드가 더 있는지 확인할 수 있게 해준다. (3)만약 아직 읽지 않은 레코드가 남아 있다면 ResultSet의 `getString()`, `getInt()` 등의 함수를 이용해 칼럼 값을 가져올 수 있다. 칼럼 이름이나 SELECT 절에 나열된 칼럼의 순번을 인자로 해서 `getString()`, `getInt()` 등의 함수로 칼럼 값을 가져올 수 있다.
 
-#### INSERT/UPDATE/DELETE 실행
+### INSERT/UPDATE/DELETE 실행
 
 **SELECT 쿼리와는 달리 INSERT, UPDATE, DELETE 문장은 별도의 결과 셋을 반환하지 않으므로 `Statement.executeQuery()`함수 대신 `Statement.executeUpdate()` 함수를 사용해서 실행한다.** DDL이나 MySQL의 SET 명령과 같이 결과 셋을 변환하지 않는 SQL 명령으 모두 `excecuteUpdate()` 함수를 사용해 실행할 수 있다.
 
-`excecuteUpdate()` 함수는 INSERT, UPDATE, DELETE 문장에 의해 변경된 레코드 건수를 반환한다. `excecuteUpdate()` 함수의 반환값은 별도로 확인하지 않고 무시해버릴 때가 많다. 하지만 실제로 DELETE 쿼리로 단 한 건만 삭제돼야 하는데, 한 건도 삭제되지 않았거나 두 건 이상의 레코드가 삭제됐다면 어떻게 해야할까? 만약 이런 상황ㅇ이 문제가 될 수지가 있다면 변경된 레코드 건수를 체크해서 COMMIT이나 ROLLBACK을 수행하게 해주는 것이 좋다.
+`excecuteUpdate()` 함수는 INSERT, UPDATE, DELETE 문장에 의해 변경된 레코드 건수를 반환한다. `excecuteUpdate()` 함수의 반환값은 별도로 확인하지 않고 무시해버릴 때가 많다. 하지만 실제로 DELETE 쿼리로 단 한 건만 삭제돼야 하는데, 한 건도 삭제되지 않았거나 두 건 이상의 레코드가 삭제됐다면 어떻게 해야할까? 만약 이런 상황에 문제가 될 수지가 있다면 변경된 레코드 건수를 체크해서 COMMIT이나 ROLLBACK을 수행하게 해주는 것이 좋다.
 
 ```java
 public static void main(String[] args) throws Exception {
@@ -662,14 +662,10 @@ public static void main(String[] args) throws Exception {
 ```
 `connection.setAutoCommit(false);` 함수를 먼저 호출 했다. **MySQL에서는 매 쿼리가 정상적으로 실행되면 자동으로 트랜잭션 COMMIT된다. 이를 AutoCommit 이라고 표현하는데, 별도로 AutoCommit 모드를 변경하지 않았다면 이것이 기본 작동 모드다. 만약 하나의 트랜잭션으로 여러 개의 UPDATE, DELETE 문장을 묶어서 실행하려면 AutoCommit 모드를 FALSE로 설정해야 한다.** `connection.setAutoCommit(false);` 명령은 MySQL 서버가매 쿼리마다 자동으로 COMMIT을 실행하지 않도록 AutoCommit 모드를 FALSE로 변경하는 것이다.
 
-`executeUpdate()` 실행하고 UPDATE 문장의 실행으로 변경된 레코드 건수를 affectedRowsCount 변수에 할당한다. 위 문장은 PK 값으로 변경하기 때문에 반드시 한 검만 변경됐는지 체크하기 위해 affectedRowsCount에 할단된 값이 1인지 비교해서 최종적으로 UPDATE 작업을 COMMIT할지 ROLLBACK할지 결정한다.
+`executeUpdate()` 실행하고 UPDATE 문장의 실행으로 변경된 레코드 건수를 affectedRowsCount 변수에 할당한다. 위 문장은 PK 값으로 변경하기 때문에 반드시 한 건만 변경됐는지 체크하기 위해 affectedRowsCount에 할당된 값이 1인지 비교해서 최종적으로 UPDATE 작업을 COMMIT할지 ROLLBACK할지 결정한다. **만약 변경하려는 작업이 기존 값과 똑같다면 실질적인 변경 작업을 생략해버린다.**
 
-**만약 변경하려는 작업이 기존 값과 똑같다면 실질적인 변경 작업을 생략해버린다.**
-
-#### Statement와 PreparedStatement의 차이
-Statement와 PreparedStatement의 차이를 알아보려면 우선 MySQL 서버가 쿼리를 처리하는 각 단계를 이해 해야한다. MySQL 서버가 쿼리를 실행하기 위한 테스크를 간한하게 표현하면 다음과 같다.
-
-**MySQL 서버로 쿼리를 요청하면 MySQL 서버는 쿼리를 분서해 파스 트리를 만들고 그 정보를 분석해 권한 체크나 쿼리의 최적화 작업을 수행한다. 그리고 최종적으로 준비된 쿼리의 실행을 실행 계획을 이용해 쿼리를 실행한다.**
+### Statement와 PreparedStatement의 차이
+Statement와 PreparedStatement의 차이를 알아보려면 우선 MySQL 서버가 쿼리를 처리하는 각 단계를 이해 해야한다. MySQL 서버가 쿼리를 실행하기 위한 테스크를 간한하게 표현하면 다음과 같다. **MySQL 서버로 쿼리를 요청하면 MySQL 서버는 쿼리를 분서해 파스 트리를 만들고 그 정보를 분석해 권한 체크나 쿼리의 최적화 작업을 수행한다. 그리고 최종적으로 준비된 쿼리의 실행을 실행 계획을 이용해 쿼리를 실행한다.**
 
 ![](../assets/real-mysql-flow-1.png)
 
@@ -688,9 +684,7 @@ SELECT * FROM emplyees WHERE emp_no = 10003;
 ```sql
 SELECT * FROM emplyees WHERE emp_no = ?;
 ```
-PreparedStatement에서 `?`는 바인딩 변수 또는 변수 홀더라고 표현하는데, 실제 쿼리를 실핼할 떄는 변수 대신에 상수 값을 대입해야 한다. **이렇게 바인딩 변수를 사용하면 쿼리를 최대한 템플릿화할 수 있고, 템플릿화된 쿼리는 상수 값을 직접 사용한 쿼리보다 쿼리 문장의 수를 대폭적으로 줄일 수 있게 만들어준다.** 상수를 직접 사용할 떄는 쿼리 문장이 100개가 필요했지만 쿼리를 템플릿화한 다음에는 하나로 줄어들었다. **애플리케이션에서 사용하는 쿼리 문장의 개수가 줄어든다는 것은 MySQL 서버에서 보관해야 하는 쿼리의 분석 정보가 줄어들어 메모리 사용량을 줄일 수 있다는 의미이기도 하다.**
-
-이렇게 변수를 사용하는 쿼리를 프리페어 스테티트먼트 또는 바인딩 쿼리라고 하고, 바인딩 변수 없이 상수만 사용하는 쿼를 동적 쿼리 또는 다이나믹 쿼리라고 한다.
+PreparedStatement에서 `?`는 바인딩 변수 또는 변수 홀더라고 표현하는데, 실제 쿼리를 실핼할 때는 변수 대신에 상수 값을 대입해야 한다. **이렇게 바인딩 변수를 사용하면 쿼리를 최대한 템플릿화할 수 있고, 템플릿화된 쿼리는 상수 값을 직접 사용한 쿼리보다 쿼리 문장의 수를 대폭적으로 줄일 수 있게 만들어준다.** 상수를 직접 사용할 때는 쿼리 문장이 100개가 필요했지만 쿼리를 템플릿화한 다음에는 하나로 줄어들었다. **애플리케이션에서 사용하는 쿼리 문장의 개수가 줄어든다는 것은 MySQL 서버에서 보관해야 하는 쿼리의 분석 정보가 줄어들어 메모리 사용량을 줄일 수 있다는 의미이기도 하다.** 이렇게 변수를 사용하는 쿼리를 프리페어 스테티트먼트 또는 바인딩 쿼리라고 하고, 바인딩 변수 없이 상수만 사용하는 쿼를 동적 쿼리 또는 다이나믹 쿼리라고 한다.
 
 ```java
 public static void main(String[] args) throws Exception {
@@ -731,17 +725,310 @@ public static void main(String[] args) throws Exception {
 
 PreparedStatement를 사용할 때는 SQL 쿼리 문장을 이용해 PreparedStatement 객체를 먼저 준비 해야한다. 위 예제에서는 `connection.prepareStatement("select *from payment where id = ?")` 함수를 호출하면 Connector/J는 주어진 SQL 문장을 서버로 전송해서 쿼리를 분석하고 그 결과를 저장해서 저장해둔다.`(1)`
 
-**그리고 MySQL서버는 쿼리의 분석 결과의 포인터와 같은 해시 값을 Connector/J로 변환한다. Connector/J는 반환 받은 해시 값을 이용해 PreparedStatement 객체를 생성한다. 이렇게 생성된 PreparedStatement는 바인딩 변수의 값만 변경하면 계속해서 사용하게 된다.`(2)` 하지만 MySQL 서버는 이미 이 쿼리 패턴에 대한 분석 정보를 가지고 있으므로 매번 쿼리를 분석하지 않고 단출된 경로로 쿼리를 실행하기 때문에 Statement 보다 빠르게 처리된다.**
+**그리고 MySQL서버는 쿼리의 분석 결과의 포인터와 같은 해시 값을 Connector/J로 변환한다. Connector/J는 반환 받은 해시 값을 이용해 PreparedStatement 객체를 생성한다. 이렇게 생성된 PreparedStatement는 바인딩 변수의 값만 변경하면 계속해서 사용하게 된다.`(2)` 하지만 MySQL 서버는 이미 이 쿼리 패턴에 대한 분석 정보를 가지고 있으므로 매번 쿼리를 분석하지 않고 단축된 경로로 쿼리를 실행하기 때문에 Statement 보다 빠르게 처리된다.**
 
-애플리케이션에서 실행하려는 쿼리와 함께 preparedStatement() 함수를 호출하면 MySQL 서버는 그 쿼리를 미리 분석해서 별도로 저장해두고, 분석 정보가 저장된 주소(해시 키)를 애플리케이션으로 반환한다. **이렇게 PreparedStatement를 이용해 쿼리를 실해앟면 애플리케이션에서 쿼리 문장을 서버로 전달하지 않고 분석 정보가 저장된 주소(해시 키)와 쿼리에 바인딩할 변수 값만 서버로 전달한다.** MySQL 서버는 전달받은 해시 키를 이용해 분석 정보를 찾아 전달된 바인드 변수를 결합하고 쿼리를 실행한다.
+애플리케이션에서 실행하려는 쿼리와 함께 preparedStatement() 함수를 호출하면 MySQL 서버는 그 쿼리를 미리 분석해서 별도로 저장해두고, 분석 정보가 저장된 주소(해시 키)를 애플리케이션으로 반환한다. **이렇게 PreparedStatement를 이용해 쿼리를 실행하면 애플리케이션에서 쿼리 문장을 서버로 전달하지 않고 분석 정보가 저장된 주소(해시 키)와 쿼리에 바인딩할 변수 값만 서버로 전달한다.** MySQL 서버는 전달받은 해시 키를 이용해 분석 정보를 찾아 전달된 바인드 변수를 결합하고 쿼리를 실행한다.
 
-**결론적으로 PreparedStatement의 성능적인 장점은 한 번 실행된 쿼리는 매번 쿼리 분석 과정을 거치지 않고 처음 분성된 정보를 재사용한다는 점이다.** SQL 문장의 길이가 길어서 성능상의 문제가 되는 경우는 그다지 없겠지만 **매번 쿼리를 실행할 때 SQL 문장 자체가 네트워크로 전송되지 않고 바인딩할 변수 값만 전달되므로 네트웤, 트래픽 측면에서도 조금은 효율적이라고 볼 수있다.**
+
+**결론적으로 PreparedStatement의 성능적인 장점은 한 번 실행된 쿼리는 매번 쿼리 분석 과정을 거치지 않고 처음 분성된 정보를 재사용한다는 점이다.** SQL 문장의 길이가 길어서 성능상의 문제가 되는 경우는 그다지 없겠지만 **매번 쿼리를 실행할 때 SQL 문장 자체가 네트워크로 전송되지 않고 바인딩할 변수 값만 전달되므로 네트워크, 트래픽 측면에서도 조금은 효율적이라고 볼 수있다.**
 
 **PreparedStatement의 또 다른 장점은 바이너리 프로토콜을 사용한 다는 것이다.** 초기 MySQL Connctor/J 버전에서는 모든 Statement, PreparedStatement가 클라어은트(JDBC)와 서버(MySQL) 간의 통신에서 문자열 기반의 프로토콜을 사용했다. 그래서 사용자 프로그램에서 타입을 지정해서 값을 설정하더라도 내부적으로 MySQL 서버에 전송하기 위해 문자열 타입으로 데이터를 변환했으며, 서버에서는 다시 그 문자열 값을 지정된 타입으로 변환하는 과정을 거쳐야 했다. **즉 내부적으로 불 필요한 타입 변환을 수행했으며, 그로인해 데이터의 크기가 커지는 문제가 발생했던 것이다. 하지만 MySQL 5.0 이상에서는 PreparedStatement를 사용하면 별도의 타입 변환을 수행하지 않는 바이너리 통신 프로토콜을 사용하게 된다.** 하지만 Statement 객체를 사용하면 바이너리 통신 프로토콜을 사용하지 않고 예전과 같은 문자열로 변호나해서 통신한다.
 
 PreparedStatement의 또 다른 장점은 SQL 인젝션의 문제도 손쉽게 해결 가능하다. **PreparedStatement를 사용해 코드를 개발하면 아스케이프 문자 처리를 MySQL Connctor/J에서 대신해 처리해 주므로 개발자가 직접 이러한 부분을 고려하지 않아도 된다.**
 
-#### 프리페어 스테이트의 종류
+### 프리페어 스테이트의 종류
+
+MySQL Connctor/J의 프리페어 스테이트먼트에서 서버 프리페어 스테이트먼트라는 기능이 있다. 그와 반대의 개념인 클라이언트 프리페어 스테이트먼르도 있다. **이전 글에서 언급한 프리페어 스테이트먼트의 장점은은 모두 서버 프리페어 스테이트먼트를 사용할 때 얻을 수 있는 장점이다.**
+
+#### 클라이언트 프리페어 스테이트먼트
+MySQL Connctor/J를 이용하는 자바 애플리케이션에서 PreparedStatement 객체를 이용해 변수가 포함된 SQL 문장을 실행할 때 Connctor/J가 자체적으로 SQL 문장을 바인딩 변수에 값을 맵핑해 하나의 완성된 SQL 문장으로 만들어 서버에 전송하는 방식이다. **이 방식을 이용하면 애플리케이션 개발자는 프리페어 스테이트먼트를 사용한다고 느기지만 실제로 MySQL 서버는 매번 쿼리 문장을 분석하고 실행 계획을 수립해 쿼리를 실 행한다.**
+
+##### 서버 프리페어 스테이트먼트
+MySQL의 서버 프리페어 스테이트먼트를 다른 DBMS에서는 일반적인 프리페어 스테이트먼트라고 표현한다. **MySQL에서 서버 프리페어 스테이트먼트를 시용하면 매번 쿼리를 실행할 때 마다 클라이언트 SQL 문장에 바인딩할 변수 값만 전송하고, MySQL 서버는 저장된 쿼리의 분석 정보에 변수 값을 바인딩해서 쿼리를 실행한다.**
+
+**JDBC 표준에 프리페어 스테이트먼트 기능이 도입됐을 때 MySQL 서버에는 프리페어 스테이트먼트를 처리하는 기능이 없었다. 그래서 JDBC 표준의 프리페어 스테이트를 지원하기 위해 클라이언트에서 프리페어 스테이트먼트인 것처럼 에물레이트하는 기능이 필요했는데, 그것이 클라이언트 프리페어 스테이트먼트다.** MySQL 서버와 Connctor/J의 기능이 업그레이드되면서 JDBC 표준에서 제시하는 형태의 프리페어 스테이트먼트를 구현했는데, **이를 기존의 기능과 비교 하기 위해 서버 프리페어 스테이트먼트라는 이름으로 표현한 것이다.**
+
+오라클과 같은 다른 DBMS에서는 당연히 프리페어 스테이트먼트를 사용하는 것이 효율적이지만 MySQL 에서는 그렇지 않다. **이는 MySQL의 쿼리의 분석 작업이 그다지 무겁지 않아서 프리페어 스테이트먼트를 줄어 드는 작업이 오라클보다 적기 때문이다. 또 다른 이유로는 MySQL 5.0 버전까지는 서버 프리페어 스테이트먼트를 사용하면 MySQL의 쿼리 캐시를 사용하지 못했기 때문이기도 했다.** 사실 MySQL 5.0 버전전까지는 프리페어 스테이트먼트로 얻을 수 있는 성능 햐상보다 쿼리 캐시로 얻을 수 있는 성능 향상이 더 컸다고 볼 수 있다. 하지만 MySQL 5.1 이상의 버전에서 프리페어 스테이트먼트로 실행되는 쿼리로 쿼리 캐시를 사용할 수 있게 개선됐다. **즉 프리페어 스테이트먼트의 장점과 MySQL 쿼리 캐시의 장점을 모두 활용할 수 있게 됐음으로 반드시 두 기능을 모두 사용허길 권장한다.**
+
+한 가지 중요한것은 별도의 옵션 설정 없이 JDBC 컨넥션을 생성하면 서버 프리페어 스테이트먼트 기능을 사용하지 못하고 클라이언트 프리페어 스테이트먼트로 동작한다는 것이다. 이는 MySQL에서 기존 버전과의 호환성을 위해 클라이언트 프리페어 스테이트먼트를 기본값으로 설정해 둔 탓이다.
+
+```java
+public Connection getConnection() throws Exception {
+   final String driver = "com.mysql.cj.jdbc.Driver";
+   final String url = "jdbc:mysql://localhost:3366/batch_study?useServerPrepStmts=true";
+   final String user = "root";
+   final String password = "";
+
+   Class.forName(driver).newInstance();
+   return DriverManager.getConnection(url, user, password);
+}
+```
+서버 프리페어 스테이트먼트를 사용하려면 최초 컨넥션을 생성하는 시점에 JDBC URL 부분에 `useServerPrepStmts=true` 옵션을 추가 해야한다. **MySQL Connctor/J의 컨넥션 옵션을 추가하는 JDBC URL에 추가 해야한다. 이렇게 해야 서버 프리페어 스테이트먼트로 동작한다.**
+
+### 프리페어 스테이트먼트 주의할점
+
+**프리페어 스테이트먼트는 세션 단위로 관리되므로 애플리케이션에서 생성한 프리페어 스테이트먼트 객체는 하나의 MySQL 컨센션에서만 사용할 수 있다.** 그리고 MySQL의 프리페어 스테이트먼트에 관해 많이 잘못 이해하고 있는 부분이 있다. MySQL 서버에서는 자바나 C/C++로 개발된 애플리케이션에서 생성한 PreparedStatement 객체별로 SQL 분석 정보가 괸리된다.
+
+```java
+public static void main(String[] args) throws Exception {
+      Connection connection = null;
+      PreparedStatement statement = null;
+      ResultSet resultSet = null;
+      try {
+         connection = (new JdbcTest3()).getConnection();
+         PreparedStatement statement1 = connection.prepareStatement("select *from payment where id = ?");
+         PreparedStatement statement2 = connection.prepareStatement("select *from payment where id = ?");
+         PreparedStatement statement3 = connection.prepareStatement("select *from payment where id = ?");
+      } 
+      ...
+   }
+```
+
+하나의 컨넥션에서 똑같은 SQL 문장을 사용하는 프리페어 스테이트먼트 세 개를 생성했다. **하지만 MySQL 서버에서는 하나의 SQL의 분석 정보가 아니라 각 프리페어 스테이트먼트 별로 한 개씩 SQL 분석 정보가 생성된다.** 결국 MySQL 서버에도 똑가이 세 개의 분석 정보가 생성되는 것이다. **하나의 컨넥션에서 똑같은 SQL 문장을 사용하면 MySQL 서버에서 SQL 분석 정보가 공유될 것으로 예상하지만 그렇지 않는 것이다.**
+
+웹 프로그램에서는 사용자의 요청이 오면 요청의 종류별로 처리를 담당하는 단위 프로그램이 개발된다. 흔히 컨넥션을 컨넥션 풀로 사용하므로 각 단위 프로그램이 공유 되지만 Statement나 PreparedStatement는 매번 각 단위 프로그램에서 생성하고 더는 필요하지 않으면 close하는 형태로 사용된다. **위의 간단한 예제에서도 확인했듯이 각 단위 프로그램에서 매번 PreparedStatement를 생성해서 한번 쿼리를 실행하고 PreparedStatement를 폐기한다면 프리페어 스테이트먼트의 장점인 분석 정보 재활용의 효과는 얻지 못하는 것이다.**
+
+```sql
+set @@global.show_compatibility_56 = ON;
+
+select *
+from information_schema.GLOBAL_STATUS
+where VARIABLE_NAME in (
+                        'Com_stmt_prepare',
+                        'Com_stmt_execute',
+                        'Prepared_stmt_count'
+    )
+;
+```
+
+| VARIABLE\_NAME | VARIABLE\_VALUE |
+| :--- | :--- |
+| COM\_STMT\_EXECUTE | 2264 |
+| COM\_STMT\_PREPARE | 798 |
+| PREPARED\_STMT\_COUNT | 268 |
+
+1. `COM_STMT_PREPARE`: 서버 사이드 프리페어 스테이트먼트에서 Connection.prepareStatement() 함수 호출에 의해 PreparedStatement 객체가 만들어진 횟수
+2. `COM_STMT_EXECUTE`: 서버 사이드 프리페어 스테이트먼트에서 Connection.execute().executeUpdate().executeQuery() 함수 호출에 의해 PreparedStatement 쿼리가 실행된 횟수
+3. `PREPARED_STMT_COUNT`: MySQL 서버에   현재 만들어져 있는 프리페어 스테이트먼트 객체의 수
+   
+이 상태 값을 이용해 위의 결과를 해석해 보면 MySQL 서버가 시작된 이후로 프리페어 스테이트먼트를 생성하기 위해 전체 798번 SQL 문장이 분석 됐다. 그리고 준비된 프리페어 스테이트먼트는 2264번 실행 됐으며 현재와 비교해 본다면 Connection.preparedStatement()가 798번 호출 됐음을 알 수 있다. 이를 자바 프로그램 언어의 함수와 비교해본다면 Connection.preparedStatement()가 789번 호출됐으며 PreparedStatement.execute()와 executeQuery(), executeUpdate() 전체가 2264번 호출됐음을 의미한다.
+만약 마이바티스, 하이버네이트 등과 같은 ORM 도구나, JDBC 프레임워크를 사용한다면 이런 정보를 분석해 정상적으로 서버 프리페어 스테이트먼트를 사용하는지 알아보고, 원하는 바대로 사용되도록 튜닝하는 것이 좋다.
+
+### 배치 처리
+
+MySQL에서 많은 데이터를 한꺼번에 INSERRT하기 위해 배치 형태로 INSERT 문장으로 실행하는 것이 가능하다.
+
+```sql
+INSERT INTO MEMBER VALUES
+   (1, "AAA"),
+   (2, "BBB"),
+   (3, "CCC"),
+   (4, "DDD")
+;
+```
+JDBC 드라이버에서 제공하는 `addBatch()`, `executeBatch()` 함수를 이용해 평범한 INSERT 문장을 모아서 한 번의 INSERT 문장으로 실행할 수 있다.
+
+```java
+public class JdbcTest4 {
+
+    public static void main(String[] args) throws Exception {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = (new JdbcTest4()).getConnection();
+            statement = connection.prepareStatement("INSERT INTO payment (amount, order_id, created_at, updated_at) VALUES (?, ?, now(), now())"); 
+
+            for (int i = 0; i < 10; i++){
+                statement.setLong(1, 1);
+                statement.setLong(2, 1);
+                statement.addBatch(); // (2)
+            }
+            statement.executeBatch(); // (3)
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Connection Failed");
+            System.out.println(ex.getMessage());
+        } finally {
+            try { if (statement != null) statement.close(); } catch (SQLException ex) { }
+            try { if (connection != null) connection.close(); } catch (SQLException ex) { }
+        }
+    }
+
+    public Connection getConnection() throws Exception {
+        final String driver = "com.mysql.cj.jdbc.Driver";
+        final String url = "jdbc:mysql://localhost:3366/batch_study?rewriteBatchedStatements=true&useServerPrepStmts=false"; // (1)
+        final String user = "root";
+        final String password = "";
+
+        Class.forName(driver).newInstance();
+        return DriverManager.getConnection(url, user, password);
+    }
+}
+```
+**JDBC 컨넥션을 생성할 때 `(1)`코드 처럼 `rewriteBatchedStatements` 옵션을 true로 설정하면 MySQL Connctor/J가 `addBatch()` 함수로 누적된 레코드를 모아 다음과 같은 형태의 구문으로 실행한다.**
+
+```sql
+INSERT INTO payment (amount, created_at, order_id, updated_at)
+VALUES (0.00, '2021-06-05 13:41:37', 1, '2021-06-05 13:41:37'),
+       (0.00, '2021-06-05 13:41:37', 1, '2021-06-05 13:41:37'),
+       (0.00, '2021-06-05 13:41:37', 1, '2021-06-05 13:41:37')
+;
+```
+**`rewriteBatchedStatements`가 활성회 되려면 `useServerPrepStmts`는 비활성화해야 한다. 그렇지 않으면 JDBC 프로그램이 오작동을 일으킬 때가 많다.**
+
+위의 예제에서 INSERT 문장으로 처리되는데 레코드 하나의 평군 크기는 대략 375 바이트 정도였다. 만약 애플리케이션에서 INSERT를 배치 형태로 처리할 때 는 `executeBatch()` 함수로 실제 쿼리 실행하기 전에 `addBatch()`를 몇 번 실행하냐가 중요하다. 배치를 실행할 때 한 번에 몇 개의 레코드를 배치로 실행할 것이 최적인지는 다음과 같이 간단하 계산해보며 된다.
+
+```
+배피 적정 레코드 건수 = (12 * 1024) / (평균 레코드 크기)
+```
+이러한 형태로 배치를 만들어 실행하는 경우 LOAD DATE INSERT 보다는 빠르진 않겠지만 상대적으로 빠른 속도로 데이터를 적재하는 배치 프롤그램을 만들어 낼 수도 있다.
+
+### 트랜잭션
+
+어떤 DBMS를 어떤 용도로 사용하든 하나의 단위 처리가 쿼리 하나로 완료되는 작업은 거의 없다. 배부분 INSERT와, UPDATE, DELETE 등 쿼리가 여러 번 사용되어 하나의 처리가 완료된다. 이 작업을 원자성으로 처리돼야 하는 것들이 일반적이다. 즉 모두 완벽하게 처리되거나 모두 변경 이전의 상태로 100% 돌아가든 둘 중 하나이다. 이는 데이터 정합성 측면에서 아주 중요한 원칙이다.
+
+MySQL Connctor/J를 이요해 트랜잭션을 시작하고 종료하는 방법을 살펴보겠다. 기본적으로 MySQL Connctor/J를 이용할 떄 트랜잭션 관련해서 아무런 설정 하지 않으면 자동족으로 AutoCommit 모드에서 트랜잭션을 처리한다. AutoCommit 모드에서 각 스토리지 엔진별로 다음과 같이 쿼리가 처리 된다.
+
+**InnoDB 테이블에 대해서는 쿼리 하나하나에 대해서 트랜잭션이 보장되지만 연속해서 실행되는 쿼리의 묶음에 대해서는 트랜잭션이 보장되지 않는다.**
+
+**MyISAM, MEMORY 테이블은 AutoCommit의 모드와 관계 없이 항상 트랜잭션이 보장되자 않는다. 이 테이블에서 쿼리 하나에 대해서도 트랜잭션이 보장되지 않는는다.** 즉 MyISAM 테이블에서 UPDATE 쿼리 문장으로 10건의 레코드를 업데이트하는 중에 다른 컨넥션에서 해당 쿼리의 실행을 중단한다거나 갑작스러운 문제로 업데이트 작업이 멈추면 반쯤 실행된 상태로 그대로 남게 된다. **일부는 변경되고 일부는 변경되지 않은 상태로 남는 것이다.**
+
+**다음의 트랜잭션 사용 예제는 InnoDB 테이블에 대해서만 사용할 수 있으며 MyISAM, MEMORY 테이블 테이블에 대해서는 적용되지 않는다.**
+
+```java
+public static void main(String[] args) throws Exception {
+   Connection connection = null;
+   Statement statement = null;
+   ResultSet resultSet = null;
+   try {
+      connection = (new JdbcTest()).getConnection();
+      connection.setAutoCommit(false); // (1)
+      statement = connection.createStatement();
+
+      statement.executeUpdate("UPDATE payment SET amount = 1.00 WHERE id = 1;");
+      statement.executeUpdate("UPDATE payment SET amount = 1.00 WHERE id = 2;");
+      connection.commit();
+   } catch (SQLException ex) {
+      connection.rollback();
+   } finally {
+      try { if (resultSet != null) resultSet.close(); } catch (SQLException ex) { }
+      try { if (statement != null) statement.close(); } catch (SQLException ex) { }
+      try { if (connection != null) connection.close(); } catch (SQLException ex) { }
+   }
+}
+```
+
+**원자적으로 실행해야 할 여러 쿼리를 `connection.setAutoCommit(false)`와 `conn.commit()` 함수 사이에서 실행하면 그 사이의 모든 쿼리는 하나의 트랜잭션으로 묶이게 된다.** 이렇게 하나로 묶인 트랜잭션의 내의 모든 쿼리는 성공하거나 모두 실패하는 형태로만 가능해진다.
+
+`connection.setAutoCommit(false)`를 이용해 AutoCommit 모드를 FALSE로 변경하는 작업에 대해서 조금 더 자세히 살펴보자. AutoCommit이 FALSE 상태에서는 SELECT 쿼리 문장이 있는 MySQL 서버에 어떤 영향을 미치는가에 대한 문제다. **AutoCommit FALSE 상태에서 어떤 쿼리를 실행하면 트랜잭션이 바로 시작되고, 공유한 트랜잭션 번호가 발급된다.** INSERT, UPDATE, DELETE와 같은 SQL 문장은 트랜잭션으로 COMMIT 또는 ROLLBACK을 해야 한다. 그래서 해당 SQL 같은 데이터 변경 쿼리를 실행한 다음에는 COMMIT or ROLLBACK을 잊지 않고 실행 해야한다. **하지만 SELECT 쿼리 문장은 ROLLBACK, COMMIT을 수행해도 아무런 데이터 변화가 없기 떄문에 SELECT 쿼리르 사용한 후 COMMIT이나 ROLLBACK 없이 그냥 컨넥션을 반납하는 형태로 많이 사용한다. 하지만 AutoCommit이 FALSE인 상태에서는 무슨 쿼리가 실행되든 트랜잭션은 시작되고, 이 커넥션이 살아 있는 동안은 그 트랜잭션은 계속 유효한 상태로 남아 있는 것이다.**
+
+
+**트랜잭션 격리 수준인 REPEATABLE-READ인 MySQL 서버에서는 특정 트랜잭션이 유효한 동안에는 해당 트랜잭션이 처음 시작했던 시점의 데이터를 동일하게 보여줘야 한다.** 이것이 REPEATABLE-READ 격리 수준의 기본적인 동작 방법이다. **이렇게 REPEATABLE READ를 보장하기 위해서 InnoDB 스토리지 엔진은 다른 트랜잭션에서 그 데이터를 변경 했다 하더라도 변경하기 전의 데이터를 계속해서 쌓아 둬야 한다.** 만약 하나의 트랜잭션이 사당히 오랜 시간동안 유지된다면 **MySQL 서버는 데이터가 변경될 때마다 그 데이터를 계속 누적해서 보관해야 하므로 불필요한 자원 소모가 많이 발생하게 된다.** 그러므로 가능하다면 AutoCommit FALSE인 상태에서는 쿼리의 종류에 관계 없이 한번 실행됐다면 끝낼 때에는 COMMIT, ROLLBACK을 수행해주는 것이 좋다.
+
+AutoCommit이 TRUE 경우 자동으로 COMMIT이 수행되기 떄문에 이런 고민을 필요하지 않다. **AutoCommit이 TRUE인  상태에서도 특정 필요한 부분에서만 트랜잭션을사용하는 것이 가능하다. 아래 예제 처럼 MySQL에서 트랜잭션을 시작하는 `BEGIN`, `START TRANSACTION` 명령어를 `stmt.execute()`, `stmt.executeUpdate()` 함수로 실행하면 명시적으로 트랜잭션을 시작 할 수 있다.**
+
+```java
+public static void main(String[] args) throws Exception {
+   Connection connection = null;
+   Statement statement = null;
+   try {
+      connection = (new JdbcTest()).getConnection();
+      connection.setAutoCommit(true); // (1)
+      statement.execute("BEGIN");
+      statement = connection.createStatement();
+
+      statement.executeUpdate("UPDATE payment SET amount = 1.00 WHERE id = 1;");
+      statement.executeUpdate("UPDATE payment SET amount = 1.00 WHERE id = 2;");
+      connection.commit(); // 위 두 쿼리의 변경 내용을 영구히 적용
+   } catch (SQLException ex) {
+      connection.rollback();
+   } finally {
+      try { if (statement != null) statement.close(); } catch (SQLException ex) { }
+      try { if (connection != null) connection.close(); } catch (SQLException ex) { }
+   }
+}
+```
+`connection.setAutoCommit(true);` 설정으로 AutoCommit 모드를 TRUE로 해서 트랜잭션을 벼로도 사용하지 않고 꼭 필요한 프로그램에서만 트랜잭션을 사용할 수 있다. 또 트랜잭션이 꼭 필요할 때만 `connection.setAutoCommit(false);` 함수를 실행하면 트랜잭션을 사용할 수 있다.
+
+> 주의
+> 많은 사람들이 AutoCommit의 성능에 대해서 잘못 이해하고 있다. 많은 개발자들이 AutoCommit을 TRUE로 설정하면 쿼리의 성능이 훨씬 더 빨라질 것으로 기대한다. **하지만 결과는 반대이다. MySQL InnoDB 스토리지엔진에서 COMMIT이 실행될 때마다 테이블의 데이터나 로그 파일(InnoDB의 리두 로그, MySQL 바이너리 로그)이 디스크에 동기화되도록 잘독할 때가 많다.**
+> 
+> 만약 하나의 프로그램에서 동시에 쿼리 100개를 실행한다고 가정해보자. **AutoCommit이 TRUE인 상태에서는 이 작업을 위해 100번 디스크에 동기화 작업(FLUSH)을 실행하지만 AutoCommit이 FALSE이거나 명시적으로 트랜잭션이 시작된 상태에서는 마지막 COMMIT 단계에서 한 번만 디스크 동기화 작업을 실행한다.** 물론 이떄 트랜잭션을 사용한다고 성능이 100배가 빨라지는 것은 아니니지만 디스크 동기화 작업의 고비용을 고려한다면 AutoCommit이 FALSE일 때와 명시적으로 트랜잭션을 사용했을 때가 최초 2~3배 이상은 빨리 실행될 것이다.
+
+
+### Connector/J 설정 옵션
+
+옵션 이름 | 옵션 설명
+------|------
+useCompressin(true / false) | 애플리케이션과 MySQL 서버 사이에 전송되는 데이터를 압축할지 선택하는 옵션이다. 만약 애플리케이션과 MySQL 서버가 원격지로 떨어져 있고 네트워크가 좋지 않다면 TRUE로 설정해 데이터 전송 시 압축하는 것이 좋다. 하지만 데이터 압축을 위해 CPU 작업이 예상외로 크기 때문에 같은 IDC나 네트워크 대역 내에 있다면 찹축 기능을 사용하는 않는 것이 좋다. 기본 값은 FALSE 이다.
+allowMutiQueries(true/false) | 여러 개의 SQL 문장을 구분자 `,`로 구분해서 한 번에 실행할 수 있도록 허용 하는 기능이다. 기본 값은 FALSE
+allowLoadLocalInfile(true/false) | MySQL JDBC 드라이버 (Connctor/J)를 이용하는 자바 프로그램에서 `LOAD DATA LOCAL INFILE ...`명령어를 사용할 수 있도록 허용하는 옵션으로 기본 값은 TRUE
+useCusorFech(true/false) | MySQL 5.0.2 이상 버전에서 사용할 수 있으며, Connector/J에서 일반적으로 사용하는 클라이언트 커서 대신 서버 커서를 사용하도록 설정한다. 기본 값은 FALSE로 옵션을 설정하지 않는다면 모두 클라이언트 커서를 사용한다. useCusorFech를 활성화 하려면 defaultFetchSize 옵션 또는 0보다 큰 값으로 설정해야 한다.
+defaultFetchSize | 서버 커서를 사용할 때 MySQL 서버로부터 한 번에 몇 개식 레코드를 읽어올지를 설정한다. 기본값은 0이며 서버 커서를 사용하지 않고 클라이언트 커서를 사용하도록 돼 있다.
+holdResultsOpenOverStatementClose(true/false) | 가금 Statement가 닫혔지만 그 Statement로부터 생성된 ResultSet을 참조해야 할 때 이 옵션을 활성화하면 된다. 기본 값은 FALSE이다.
+rewriteBatchedStatementstrue(true/false) | 여러 개의 INSERT 문장을 한꺼번에 실행할 때 PreparedStatement의 addBatch() 함수로 누적된 레코드의 하나의 INSERT 으로 변환해서 누적된 레코드를 하나의 INSERT 문장으로 변환해서 실행하는 기능을 활성화 하는 옵션이다. PreparedStatement와 동시에 사용한다면 에러가 발생할 수 있의니 주의 해야한다. 기본은 FALSE 이다.
+useServerPrepStmts(true/false) | 서버 PreparedStatement를 사용할지 말지를 설졍하는 온셥이다. 기본은 FALSE 이므로 모든 기본 동작은 PreparedStatement는 클라이언 PreparedStatement로 동작한다.
+traceProtocol(true/false) | Connector/J가 MySQL 서버와 통신하기 위해 주고 받는 패킷을 Log4J를 이용해 로깅할 수 있다. 기본 값은 FALSE이다.
+
+그 밖에 다양한 설정이 있으니 [Connetor/J: Configuration Properties](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html)을 참조하는 것이 좋다.
+
+### 대량의 데이터 가져오기
+JDBC 표준에서 제공하는 `Statement.setFetchSzie()`라는 함수는 MySQL 서러보부터 SELECT된 레코드를 클라이언트인 애플리케이션으로 가져올 때 한 번에 가져올 레코드의 건수르 설정하는 역할을 한다. 하지만 MySQL의 Connctor/J도 JDBC의 표준 기능을 모두 지원하고 있지 못하는데, 그 중 하나가 setFetchSize() 함수이다. 우선 MySQL Connector/J로 SELECT 쿼리를 실행하면 MySQL 서버로부터 어떻게 결과를 가져오는지 보자
+
+![](../assets/rea-mysql-flow-1.png)
+
+*ConntorJ를 이용해 쿼리 실행(Statement.executeQuery) 하면 **Connetor/J가 SELECT 쿼리의 결과를 MySQL 서버로 부터 모두 내려 받아 Connector/J가 관리하는 캐시 메모리 영역에 그 결과를 저장한다. 이렇게 SELECT 쿼리의 결과가 다운로드되는 동안 `Statement.executeQuery()` 함수는 블록대 있다가 Connector/J가 모든 결과 값을 내려 받아 캐시에 저장되고 나면 그때서야 비로서` Statement.executeQuery()` 함수가 SELECT 쿼리 문장의 결과(ResultSet)의 핸드러를 애플리케이션에 반환한다.** 그 이후 애플리케이션에서 `ResultSet.next()`, `ResultSet.getString()` 등과 같은 함수가 호출되면 MySQL 서버까지 그 요청이 가지 않고, Connector/J가 캐시해둔 값을 애플리케이션 쪽으로 반환한다. **클라이언트 커서라고 하는 이러한 방식은 상당히 빠르기 때문에 MySQL Connector/J의 기본 동작으로 채택돼 있다..**
+
+그런데 이러한 방식은 한 가지 문제가 있다. **SELECT 쿼리의 결과가 너무 클 떄는 클라이언트로 다운로드 하는데 만흔 시간이 걸린다. 애플리케이션의 메모리에 SELECT 쿼리의 결과를 담아야 하기 때문에 OOM이가 발생할 가능성이 높다. MySQL에서는 `Statement.setFetchSzie()`를 예약된 값(Integer.MIN_VALUE)으로 설정하면 한 번에 쿼리의 결괄ㄹ 모두 다운로드 하지 않고 MySQL 서버에 한 건 단위로 읽어와서 가져가게 할 수 있다. 이러한 방식을 ResultSet Streaming 이라고 한다.**
+
+![](../assets/real_mysql_2222.png)
+
+ResultSet Streaming 방식은 매번 레코드 단위로 MySQL서버와 통신 해야 하므로 Connector/J의 기본 적인 처리 방식에 비해 상당히 느리다. 하지만 레코드가 아주 대량이면 이 밥법으로 처리할 수 밖에 없을 수도 있다. 결과 셋의 스트리밍 방식을 위해서는 다음과 같이 자바 프로그램 코드를 조금 변경 해야한다.
+
+```java
+public static void main(String[] args) throws Exception {
+   final Connection connection = (new JdbcTest()).getConnection();
+   final Statement statement = connection.createStatement(
+      ResultSet.TYPE_FORWARD_ONLY, // (1) 
+      ResultSet.CONCUR_READ_ONLY // (2)
+   );
+   statement.setFetchSize(Integer.MIN_VALUE);
+}
+```
+`connection.createStatement(...)` 메서드로 Statement를 생성한다 이때 `(2)` 값인 `ResultSet.CONCUR_READ_ONLY` 설정을 통해서 읽기 전용으로 으로 설정하고, `(1)` 값인 `ResultSet.TYPE_FORWARD_ONLY`으로 Statement 진행 방향을 앞쪽으로 읽을 것을 설정한다. 그리고 `statement.setFetchSize(Integer.MIN_VALUE)` 함수를 이용해 레코드의 패치 크기를 예약된 `(3)`의 값인 `Integer.MIN_VALUE`으로 설정해 주면 MySQL 서버는 클라이언트가 결과 셋을 레코드 한 건 단위로 다운로드 하리라는 것을 알아 채고 결과 셋을 준비해 둔다. 그리고 클라이언트세서 `ResultSet.next()` 함수가 호출될 떄 마다 한 건씩 클라이언트로 내려 보네게 된다. **여기서 `Integer.MIN_VALUE`는 특별한 의미를 가지지 않는 그냥 지정된 값일 뿐이다. MySQL Connector/J에서는 `setFetchSzie()` 함수에 100을 설정 하거나 10을 설정한다고 해서 100건 이나 10건 단위로 데이터를 가져올 수는 없다.**
+
+SELECT 쿼리의 결과 셋이 아주 대용량일 떄 또 다른 해결 방법이 있다. 바로 서버 커서를 사용하는 방법이다. 서커 커서를 사용하려면 Statement 수준의 옵션으로 설정하는 것이 아니라 컨넥션 자체를 생성할 때 JDBC URL에 옵션을 설정 해야 한다. 또한 이 방식은 서버 커서를 이요하는 방식이므로 MySQL 서버에서 결과 셋에 상응하는 크기의 임시 테이블(Full materialized table)을 만든다. 서버 커서를 사용하는 방법을 살펴보자
+
+```java
+public class JdbcTest8 {
+
+    public static void main(String[] args) throws Exception {
+        final Connection connection = (new JdbcTest8()).getConnection();
+        // 대용량 쿼리르 실행하는 부분
+    }
+
+    public Connection getConnection() throws Exception {
+        final String driver = "com.mysql.cj.jdbc.Driver";
+        final String url = "jdbc:mysql://localhost:3366/batch_study?useCursorFetch=true&defaultFetchSize=100000"; // (1)
+        final String user = "root";
+        final String password = "";
+
+        Class.forName(driver).newInstance();
+        return DriverManager.getConnection(url, user, password);
+    }
+}
+```
+**JDBC URL 설정에서 useCursorFetch 설정 옵션을 TRUE로 변경하고 `(1)`처럼 defaultFetchSize 값을 반드시 0보다 큰 값으로 설정해야만 서버 커서 방식으로 대용량의 결과 셋을 클라이언트로 가져올 수 있다. 추가로 서버 커서 방식은 반드시 서버 PreparedStatement 방식으로 처리돼야 하기 떄문에 useCursorFetch가 TRUE로 설정되면 useServerPrepStmts 설정 옵션까지 자동으로 TRUE로 변경된다.** 이 방식과 결과 셋의 스트리밍 방식의 차이는 스트리밍 방식은 한 건씩 서버에서 읽어 오지만 서버 커서 방식은 defaultFetchSzie에 명시된 레코드 건수 만큼 Connector/J의 캐시 메모리 영역에 내려 받아 애플리케이션에 제공된다. 즉 SELECT 쿼리의 건수가 100건 이상이여 ㅆ다면 스트리밍 방ㅆ씩은 MySQL서버와 통신이 100만 건 발생하지만 서커 커서 방식은 1000번(100만/1000)에 대해서만 통신이 필요하다는 의미이다.
+
+ResultSet Streaming 방식과 서버 커서를 사용하는 방식의 큰 차이는 MySQL 서버가 직접 결과를 담아 둘 임시 테이블을 사용하는지 여부다. 또한 그로 인한 장단점이 있어 상황에 맞게 필요한 방식으로 선택해서 사용하면 된다.
+
+* 스트리밍 방식은 MySQL 서버에 임시 ㅔ이블을 생성하지 않는다는 장점이 있다. 하지만 이 떄문에 JDBC 애플리케이션에서 데이터를 모두 가져갈 때까지 쿼리가 실행 중인 상태로 남아 있게 된다. 그래서 JDBC 애플리케이션에서 데이터를 모두 가져가기 전(ResultSet)에는 동일한 컨넥션이 새로운 쿼리를 실행하지 못한다. 만약 이미 스트리밍 방식의 쿼리를 실행한 상탸에서 다시 새로운 쿼리를 실행하면 `Streaming result set com.mysql.jdbc.RowDataDynamic is still active ...`오루가 생한다.
+* 커서 서버를 사용하는 방법은 쿼리가 실행 될 때 MySQL 서버는 그 결과를 임시 테이블로 복사해 두개 된다. 이렇게 MySQL 서버에서 데이터 복사가 완료되면 그 결과가 클라이언트로 다운로드 되지 않아도 즉시 `executeQuery()` 함수 호출은 완료된다. 하지만 MySQL 서버에 존재하는 커서를 임시 테이블 JDBC 애플리케이션에서 ResultSet의 결과 데이터를 모두 가져갔는지에 관계 없이 임시 테이블로 결과 데이터를 복사하고 쿼리는 종료되므로 대량의 쿼리를 여러번 중첩해 사용할 수 있다.
+
+
+
+
 
 
 # 14 데이터 모델링
