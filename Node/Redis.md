@@ -70,7 +70,7 @@ module.exports = (router) =>{
 ```
 port, host에 대한 설정은 `secret.js` 값을 참조 한다. 디비 정보들은 다른 설정파일에서 관리하는게 바람직하다.
 
-전역변수 client에 레디스 컨넥션 정보를 넣고 `router.use`를 사용해서 레디스 정보를 req.cache에 넣는다.
+전역변수 client에 레디스 커넥션 정보를 넣고 `router.use`를 사용해서 레디스 정보를 req.cache에 넣는다.
 
 ### Redis DAO
 ```javascript
