@@ -355,20 +355,20 @@ show global status like 'Qcache%'
 ```
 해당 명령어로 쿼리 캐시가 얼마나 사용됐고 MySQL 서버에서 SELECT 쿼리가 얼마나 실행됐는지 등에 대한 정보를 확인할 수 있다.
 
-| Variable\_name | Value |
-| :--- | :--- |
-| Qcache\_free\_blocks | 1 |
-| Qcache\_free\_memory | 1031832 |
-| Qcache\_hits | 0 |
-| Qcache\_inserts | 0 |
-| Qcache\_lowmem\_prunes | 0 |
-| Qcache\_not\_cached | 2348 |
-| Qcache\_queries\_in\_cache | 0 |
-| Qcache\_total\_blocks | 1 |
+| Variable\_name             | Value   |
+| :------------------------- | :------ |
+| Qcache\_free\_blocks       | 1       |
+| Qcache\_free\_memory       | 1031832 |
+| Qcache\_hits               | 0       |
+| Qcache\_inserts            | 0       |
+| Qcache\_lowmem\_prunes     | 0       |
+| Qcache\_not\_cached        | 2348    |
+| Qcache\_queries\_in\_cache | 0       |
+| Qcache\_total\_blocks      | 1       |
 
 | Variable\_name | Value |
-| :--- | :--- |
-| Com\_select | 2352 |
+| :------------- | :---- |
+| Com\_select    | 2352  |
 
 
 이 값 중에서 **`Qcache_hits`, `Com_select` 상태 값을 이용해 쿼리 캐시가 얼마나 효율적으로 사용되고 있는지 조사해 볼 수 있다. `Qcache_hits`는 쿼리 캐시로 처리된 SELECT 쿼리의 수를 의미하며, `Com_select`는 쿼쿼리 캐시에서 결과를 찾지 못해서 MySQL 서버가 쿼리를 실행한 회수를 의미한다.** 즉 `Qcache_hits`, `Com_select 이 두 값을 더하면 MySQL 서버로 요청된 모든 SELECT 문장의 총 합이 되느 것이다.
@@ -437,7 +437,7 @@ UPDATE member SET name = '홍길동' WHERE member_id = '1';
 
 > 매우 중요!
 
-격리 수준인 READ_COMMITED인 MySQL 서버에서 InnoDB 스토리지 엔진을 사용하는 테이블의 데이터 변경을 어떻게 처리하는지 그림으로 한번 살펴보자
+격리 수준인 READ_COMMITTED인 MySQL 서버에서 InnoDB 스토리지 엔진을 사용하는 테이블의 데이터 변경을 어떻게 처리하는지 그림으로 한번 살펴보자
 
 ```sql
 CREATE TABLE member (
@@ -474,17 +474,17 @@ UPDATE member SET m_area = '경기' where m_id = 12;
 ```sql
 SELECT * FROM member WHERE m_id = 12;
 ```
-이 질문에 대한 답은 MySQL 초기화 파라미터에 설정 격리 수준에 따라 다르다. **만약 격리 수준이 READ_UNCOMMITED인 경우 InnoDB 버퍼 풀이나 데이터 파일로 부터 변경되지 않은 데이터를 읽어서 반환한다. 즉 데이터가 커밋뙛든 아니든 변경된 상태의 데이터를 반환한다.**
+이 질문에 대한 답은 MySQL 초기화 파라미터에 설정 격리 수준에 따라 다르다. **만약 격리 수준이 READ_UNCOMMITTED인 경우 InnoDB 버퍼 풀이나 데이터 파일로 부터 변경되지 않은 데이터를 읽어서 반환한다. 즉 데이터가 커밋뙛든 아니든 변경된 상태의 데이터를 반환한다.**
 
-그렇지 않고 **READ_COMMITED나 그 이상의 격리수준(REPEATABLE_READ, SERIALIZABLE)인 경우에는 아직 커밋되지 않기 때문에 InnoDB 버퍼 풀이나 데이터 파일에 있는 내용 대신 변경되기 이전의 내용을 보관하고 있는 언두 영역의 데이터를 반환한다.**
+그렇지 않고 **READ_COMMITTED나 그 이상의 격리수준(REPEATABLE_READ, SERIALIZABLE)인 경우에는 아직 커밋되지 않기 때문에 InnoDB 버퍼 풀이나 데이터 파일에 있는 내용 대신 변경되기 이전의 내용을 보관하고 있는 언두 영역의 데이터를 반환한다.**
 
 **이러한 과정을 DBMS에서는 MVCC라고 표현한다. 즉 하나의 레코드에 대해 2개의 버전이 유지되고, 필요에 따라 어느 데이터가 보여지는지 여러 가지 상황에 따라 달라지는 구조다.** 여기서는 한 개의 데이터만 가지고 설명했지만 관리해야 하는 예전 버전의 데이터는 무한히 많아질 수 있다. **트랜잭션이 길어지면 언두에서 관리하는 예전 데이터가 삭제되지 못하고 오랫동안 관리돼야 하며, 자연히 언두 영역이 저장되는 시스템 테이블 스페이스의 공간이 많이 늘어나야 하는 상황이 발생할 수도 있다.**
 
-지금까지 UPDATE 쿼리가 실행디면 InnoDB 버퍼 풀은 즉시 새로운 데이터로 변경되며 기존 데이터는 언두로 복사되는 가정까지 살펴봤는데, **이 상태에서 COMMIT 명령어를 실행하면 InnoDB는 더 이상의 변경 작업 없이 지금의 상태를 영구적인 데이터로 만들어 버린다.** 하지만 **롤백을 실행하면 InnoDB는 언두 영역에 있는 백업된 데이터를 InnoDB 버퍼 풀로 다시 복구하고, 언드 여억의 내용을 삭제해 버린다.** 커밋이 된다고 언두 영역의 백업 데이터가 항상 바로 삭제되는 것은 아니다. **이 언두 영역을 필요로 하는 트랜잭션이 더 없을 때 비로소 삭제 된다.**
+지금까지 UPDATE 쿼리가 실행디면 InnoDB 버퍼 풀은 즉시 새로운 데이터로 변경되며 기존 데이터는 언두로 복사되는 가정까지 살펴봤는데, **이 상태에서 COMMIT 명령어를 실행하면 InnoDB는 더 이상의 변경 작업 없이 지금의 상태를 영구적인 데이터로 만들어 버린다.** 하지만 **롤백을 실행하면 InnoDB는 언두 영역에 있는 백업된 데이터를 InnoDB 버퍼 풀로 다시 복구하고, 언두 영역의 내용을 삭제해 버린다.** 커밋이 된다고 언두 영역의 백업 데이터가 항상 바로 삭제되는 것은 아니다. **이 언두 영역을 필요로 하는 트랜잭션이 더 없을 때 비로소 삭제 된다.**
 
 
 ### 자금 없는 일관된 읽기 (Non-locking consistent read)
-InnoDB에서 격리 수준이 SERIALIZABLE이 아닌 READ-UNCOMMITED, READ-COMIITED, REPEATABLE-READ 수준인 경우 **INSERT와 연결되지 않은 순수한 읽기 작업은 다른 트랜잭션의 변경 작업과 관계 없이 항상 잠금을 대기하지 않고 바로 실행된다. 특정 사용자가 레코드를 변경하지 하고 아직 커밋을 수행하지 않았다 하더라도 이 변경 트랜잭션이 다른 사용자의 SELECT 작업을 방해하지 않는다. 이를 잠금 없는 일관된 읽기 라고 표현하며 InnoDB에서 변경되기 전 데이터를 읽기 위해 언두 로그를 사용한다.**
+InnoDB에서 격리 수준이 SERIALIZABLE이 아닌 READ-UNCOMMITTED, READ-COMIITED, REPEATABLE-READ 수준인 경우 **INSERT와 연결되지 않은 순수한 읽기 작업은 다른 트랜잭션의 변경 작업과 관계 없이 항상 잠금을 대기하지 않고 바로 실행된다. 특정 사용자가 레코드를 변경하지 하고 아직 커밋을 수행하지 않았다 하더라도 이 변경 트랜잭션이 다른 사용자의 SELECT 작업을 방해하지 않는다. 이를 잠금 없는 일관된 읽기 라고 표현하며 InnoDB에서 변경되기 전 데이터를 읽기 위해 언두 로그를 사용한다.**
 
 오랜 시간 동안 활성 상태인 트랜잭션으로 인해 MySQL 서버가 느려지가너 문제가 발생할 때가 가끔 있는데. 바로 이러한 일관된 읽기를 위해 언두 로그를 삭제 하지 못하고 계속 유지해야 하기 때문에 발생하는 문제다. 따라서 트랜잭션이 시작됐다면 가능한 빨리 롤백이나 커밋을 통해 트랜잭션을 완료하는 것이 좋다.
 
@@ -598,7 +598,7 @@ MySQL에서 사용되는 잠금은 크게 스토리지 엔진 레벨과 MySQL �
 > 주의!
 > 글로벌 락을 거는 `FLUSH TABLE WRITE READ LOCK` 명령은 실행과 동시에 MySQL 서버에 존재하는 모든 테이블에 잠금을 건다. `FLUSH TABLE WRITE READ LOCK` 명령어 실행되기 전에 테이블이나 레코드에 쓰기 잠금을 걸고 있는 SQL이 실행되고 있다면, 이 명령은 해당 테이블의 읽기 잠금을 걸기 위해 먼저 실행된 SQL이 완료되고 그 트랜잭션이 완료될 때까지 기다려야한다. 그런데 `FLUSH TABLE WRITE READ LOCK` 명령은 완료돼야만 테이블을 플러시하거나 잠금을 걸 수 있다. 그래서 장시간 SELECT 쿼리가 실행되고 있을 때는 `FLUSH TABLE WRITE READ LOCK` 명령은 SELECT 쿼리가 종료될 때까지 기다려야 한다.
 >
-> `FLUSH TABLE WRITE READ LOCK` 명령의 최악의 케이스로 실행되면 MySQL 서버의 모든 테이블에 대한 INSERT, UPDATE, DELETE 쿼리가 아주 오랜 시간 동안 실행되지 못하고 기다려야 한다. 글로벌 락은 MySQL 서버의 모든 테이블에 큰 영향을 미치기 때문에 웹 서비스용으로 사용되는 MySQL 서버에서는 가급적 사용하지 않는 것이 좋다. 또한 mysqldump 같은 백업 프로그램을 우리가 알지 못하는 사이에 이 명령을 내부적으로 실행하고 백업할 떄도 있다. mysqldump를 이용해 백업을 수행한다면 mysqldump에서 사용하는 옵션에 따라 MySQL 서버에 어떤 잠금을 걸게 되는지 자세히 확인해보는 것이 좋다.
+> `FLUSH TABLE WRITE READ LOCK` 명령의 최악의 케이스로 실행되면 MySQL 서버의 모든 테이블에 대한 INSERT, UPDATE, DELETE 쿼리가 아주 오랜 시간 동안 실행되지 못하고 기다려야 한다. 글로벌 락은 MySQL 서버의 모든 테이블에 큰 영향을 미치기 때문에 웹 서비스용으로 사용되는 MySQL 서버에서는 가급적 사용하지 않는 것이 좋다. 또한 mysqldump 같은 백업 프로그램을 우리가 알지 못하는 사이에 이 명령을 내부적으로 실행하고 백업할 때도 있다. mysqldump를 이용해 백업을 수행한다면 mysqldump에서 사용하는 옵션에 따라 MySQL 서버에 어떤 잠금을 걸게 되는지 자세히 확인해보는 것이 좋다.
 
 ### 테이블 락
 개별 테이블 단위로 설정되는 잠금이며, 명시적 또는 묵시적으로 특정 특정 테이블의 락을 획득할 수 있다 명시적으로는 `LOCK TABLE table_name [READ | WRITE]` 명령으로 특정 테이블의 락을 획득 할 수 있다. MyISAM, InnoDB 스토리지 엔진을 사용하는 테이블도 동일하게 설정할 수 있다. 명시적으로 획득한 잠금은 `UNLOCK TABLES` 명령으로 잠금을 반납할수 있다. 명시적은 ㅔ이블 락은 특별한 상황이 아니면 애플리케이션에서 거의 사용할 일이 없다. 명시적 테이블 잠그는 작업은 글로벌 락과 동일하게 온라인 작업에 상당한 영향을 미치기 때문이다.
@@ -612,7 +612,7 @@ MySQL에서 사용되는 잠금은 크게 스토리지 엔진 레벨과 MySQL �
 데이터베이스 객체(테이블, 뷰 등)이름을 변경하는 경우 획득하는 잠금이다. 네임 락은 명시적으로 획득하거나 해제할 수 있는 것은 아니고 `RENAME TABLE table_a TO table_b`와 같이 테이블의 이림을 변경하는 경우 자동으로 획득하는 잠금이다. `RENAME TABLE` 명령의 경우 원본 이름과 변경될 이름 모두 한꺼번에 잠금을 설정한다. 또한 실시간으로 테이블을 바꿔야 하는 요건이 배피 프로그램에서 자주 발생하는데 다음 예제를 보자
 
 ```sql
--- 배피 프로그램에서 별도의 임시 테이블 (rank_new)에 서비스용 랭키 데이터를 생성
+-- 배치 프로그램에서 별도의 임시 테이블 (rank_new)에 서비스용 랭키 데이터를 생성
 -- 랭킹 배치가 완료되면 현재 서비스용 랭킹 테이블(rank)를 rank_backu 으로 백업하고
 -- 새로 만들어진 랭킹(rank_new)을 서비스용으로 대체 하고자 하는 경우
 RENAME TABLE rank to rank_backup, rank_new rank;
@@ -642,10 +642,10 @@ RENAME TABLE rank_new to rank
 SHOW STATUS LIKE 'Table%';
 ```
 
-| Variable\_name | Value |
-| :--- | :--- |
-| Table\_locks\_immediate | 125 |
-| Table\_locks\_waited | 22 |
+| Variable\_name          | Value |
+| :---------------------- | :---- |
+| Table\_locks\_immediate | 125   |
+| Table\_locks\_waited    | 22    |
 
 * `Table_locks_immediate`: 다른 잠금이 푸리기를 기다리지 않고 바로 잠금을 횟득한 횟수
 * `Table_locks_waited`: 다른 잠금이 이미 해당 테이블을 사용하고 있어서 기다려야했던 누적 횟수
@@ -653,14 +653,14 @@ SHOW STATUS LIKE 'Table%';
 ```
 잠금 대기 쿼리 비율 = Table_locks_waited / (Table_locks_immediate + Table_locks_waited) * 100
 ```
-22 /(125+22) *100 = 14.965986395%, 즉 100개 쿼리 중에서 14개 쿼리는 잠금 대기를 껵고 있다는 것을 알 수 있다. 만약 이 수치가 높고 테이블 잠금 때문에 경합이 많이 발생하고 있다면 자연히 처리 성능이 영향을 받고 있음을 의미하므로 테이블을 분리한다거나 InnoDB 스토리지 엔진으로 변환하는 방법을 고려하는 것이 좋다. InnoDB 스토리지 엔진의 경우 레코드 단위로 잠금을 사용하기 때문에 집께에 포함되지 않는다. 집계된 수치는 MyISAM, MEMORY, MERGE 스토리지 엔진을 사용하는 테이블이 대상이 된다.
+22 /(125+22) *100 = 14.965986395%, 즉 100개 쿼리 중에서 14개 쿼리는 잠금 대기를 껵고 있다는 것을 알 수 있다. 만약 이 수치가 높고 테이블 잠금 때문에 경합이 많이 발생하고 있다면 자연히 처리 성능이 영향을 받고 있음을 의미하므로 테이블을 분리한다거나 InnoDB 스토리지 엔진으로 변환하는 방법을 고려하는 것이 좋다. InnoDB 스토리지 엔진의 경우 레코드 단위로 잠금을 사용하기 때문에 집계에 포함되지 않는다. 집계된 수치는 MyISAM, MEMORY, MERGE 스토리지 엔진을 사용하는 테이블이 대상이 된다.
 
 ### 테이블 수준의 잠금 확인 및 해제
 **MyISAM, MEMORY 등과 스토리지 엔진을 사용하는 테이블은 모두 테이블 단위의 잠금이므로 테이블을 해제하지 않으면 다른 클라이언트에서 그 테이블을 사용하는 것이 불가능하다. 하나의 테이블에 전혀 다른 레코드라 하더라도 동시에 변경하는 것은 불가능하기 때문에 쿼리 처리의 동시성이 떨어지게 된다.**
 
 MySQL에서 테이블 잠금을 획득하는 방법은 LOCK TABLES 명령을 이용해 명시적으로 획득하는 방법과 SELECT, INSERT, DELETE, UPDATE 또는 (DDL 명령)쿼리 문장을 이용해 묵시적으로 획득하는 방법이 있다. **묵시적으로 잠금을 획득하는 방법은 쿼리가 실행되는 동안만 잠금을 획득하며, MyISAM, MEMORY 테이블 수준의 잠금을 사용하는 스토리지 엔진은 모두 트랜잭션을 지원하지 않으므로 하나의 쿼리가 실행되는 동안만 락이 걸렸다가 쿼리가 완료되면서 즉시 해제되는 것이다.**
 
-```
+```sql
 create table myisam_member
 (
     id   bigint auto_increment
@@ -672,11 +672,11 @@ engine MyISAM
 
 명시적인 방법은 `UNLOCK TABLES` 명령으로 해제하기 전에는 자동으로 해제되지 않는다.
 
-커넥션1 | 커넥션2 | 커넥션3
------|------|-----
-LOCK TABLES myisam_member READ; | - | -
-- | UPDATE myisam_member SET name = 'B' WHERE id = 1; | -
-- | - | UPDATE myisam_member SET name = 'c' WHERE id = 1;
+| 커넥션1                         | 커넥션2                                           | 커넥션3                                           |
+| ------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
+| LOCK TABLES myisam_member READ; | -                                                 | -                                                 |
+| -                               | UPDATE myisam_member SET name = 'B' WHERE id = 1; | -                                                 |
+| -                               | -                                                 | UPDATE myisam_member SET name = 'c' WHERE id = 1; |
 
 위와 같이 3개의 커넥션에 순차적으로 각 쿼리를 실행해 보면 커넥션의 1의 `LOCK TABLES` 명령은테이블의 잠금을 설정하고 바로 반환될 것이다. 하지만 2, 3 커넥션은 myisam_member 테이블의 잠금이 해제되기를 기다린다. 아래 명령어를 수행 해보자
 
@@ -685,26 +685,26 @@ show open tables from batch_study;
 show open tables from batch_study like 'myisam_member';
 ```
 
-| Database | Table | In\_use | Name\_locked |
-| :--- | :--- | :--- | :--- |
-| batch\_study | batch\_step\_execution\_context | 0 | 0 |
-| batch\_study | myisam\_member | 3 | 0 |
-| batch\_study | batch\_job\_execution\_params | 0 | 0 |
+| Database     | Table                           | In\_use | Name\_locked |
+| :----------- | :------------------------------ | :------ | :----------- |
+| batch\_study | batch\_step\_execution\_context | 0       | 0            |
+| batch\_study | myisam\_member                  | 3       | 0            |
+| batch\_study | batch\_job\_execution\_params   | 0       | 0            |
 
 
-| Database | Table | In\_use | Name\_locked |
-| :--- | :--- | :--- | :--- |
-| batch\_study | myisam\_member | 3 | 0 |
+| Database     | Table          | In\_use | Name\_locked |
+| :----------- | :------------- | :------ | :----------- |
+| batch\_study | myisam\_member | 3       | 0            |
 
 
 `show open tables from batch_study;`은 MySQL 서버의 모든 테이블에 대한 잠금 여부를 보여주고, `show open tables from batch_study like 'myisam_member';`명령의 결과 출력되는 `in_use` 값은 해당 테이블을 잠그고 있는 클라이언트 수뿐만 아니라 그 테이블의 잠금을 기다리는 클라이언트 수까지 더햇서 출력된다. 그리고 `Name_locked`는 테이블 이름에 대한 네임 락이 걸려 있느는지를 표시한다.
-위 결과를 보면 어떤 텡ㅇㅇㅇ이블이 잠겨있는지 알 수 있지만 어떤 클라이언트의 커넥션이 잠금을 기달리고 있는지를 보여주고 있지 않는데 이를 확인 할떄는 `show processlist ;`를 사용한다
+위 결과를 보면 어떤 텡ㅇㅇㅇ이블이 잠겨있는지 알 수 있지만 어떤 클라이언트의 커넥션이 잠금을 기달리고 있는지를 보여주고 있지 않는데 이를 확인 할때는 `show processlist ;`를 사용한다
 
-| Id | User | Host | db | Command | Time | State | Info |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | root | xxx.xx.0.1:59414 | batch\_study | Query | 0 | starting | /\* ApplicationName=DataGrip 2021.1.3 \*/ show processlist |
-| 3 | root | localhost | batch\_study | Query | 27 | Waiting for table metadata lock | update myisam\_member<br/>set name = 'B'<br/>where id = 1 |
-| 4 | root | localhost | batch\_study | Query | 4 | Waiting for table metadata lock | update myisam\_member<br/>set name = 'C'<br/>where id = 1 |
+| Id   | User | Host             | db           | Command | Time | State                           | Info                                                       |
+| :--- | :--- | :--------------- | :----------- | :------ | :--- | :------------------------------ | :--------------------------------------------------------- |
+| 1    | root | xxx.xx.0.1:59414 | batch\_study | Query   | 0    | starting                        | /\* ApplicationName=DataGrip 2021.1.3 \*/ show processlist |
+| 3    | root | localhost        | batch\_study | Query   | 27   | Waiting for table metadata lock | update myisam\_member<br/>set name = 'B'<br/>where id = 1  |
+| 4    | root | localhost        | batch\_study | Query   | 4    | Waiting for table metadata lock | update myisam\_member<br/>set name = 'C'<br/>where id = 1  |
 
 id 3번인 클라이언트와 5번인 클라이언트의 `State`가 `lock` 이라는 것을 보아 테이블 락을 기달리는 것을 알수 있으며, id 1번인 클라이언트는 지금 아무것도 하고 있지 않다. 3,4 번클라이언트가 업데이트하고자 하는 테이블에 동일하게 myisam_member 테이블 잠금을 가지고 있지 않다는 것을 알 수 있다. 그러므로 1번 클라이언트가 이 잠금을 가지고 있는 것이며, 이경우에는 id 1번인 커넥션을 종료시키면 3,4 번커넥션이 차례대로 처리될 수 있다. 
 
@@ -717,7 +717,7 @@ MySQL 서버의 `INFORMATION_SCHEMA` 테이블에 존재하는 `INNODB_TRX`, `IN
 
 
 **비관적 잠금(선점락)**
-현재 트랜잭션에서 변경하고자 하는 레코드에 대한 잠금을 획득하고 변경 작업을 처리하는 방식을 비관적 잠금이라고 한다. **이 처리 방식에서 느낄 수 있듯이 현재 변경하고자 하는 레코드를 다른 트랜잭션에서도 변경할 수 있다 라는 비관적인 가정을하기 떄문에 먼저 잠금을 획득한 것이다.** 높은 동시성 처리는 비관적 잠금이 유리하며 InnoDB 비관적 잠금 방식을 체택하고 있다
+현재 트랜잭션에서 변경하고자 하는 레코드에 대한 잠금을 획득하고 변경 작업을 처리하는 방식을 비관적 잠금이라고 한다. **이 처리 방식에서 느낄 수 있듯이 현재 변경하고자 하는 레코드를 다른 트랜잭션에서도 변경할 수 있다 라는 비관적인 가정을하기 때문에 먼저 잠금을 획득한 것이다.** 높은 동시성 처리는 비관적 잠금이 유리하며 InnoDB 비관적 잠금 방식을 체택하고 있다
 
 **낙관적 잠금(비선점)**
 낙관적 잠금에서는 기본적으로 각 트랜잭션이 같은 레코드를 변경하는 가능성은 상당히 희박할 것이라고 낙관하는 것이다. 그래서 우선 변경 작업을 수행하고 마지막에 잠금 충돌이 있었는지 확인ㅇ해 문제가 있었다면 ROLLBACK 처리하는 방식을 의미한다.
@@ -764,14 +764,14 @@ MySQL 5.1 이상 버전에서는 바이너리 로그가 활성화되ㅏ면 최�
 
 ### MySQ의 격리 수준
 
-**트랜잭션의 격리 수준이란 동시에 여러 트랜잭션이 처리될 때, 특정 트랜잭션이 다른 ㅡㅌ랜잭션에서 변경하거나 조회하는 데이터를 볼 수 있도록 허용할지 말지를 결정하는 것이다.** 격리 수준은 READ UNCOMMITED, READ COMMITED, REPEATABLE READ, SERIALIZABLE 4가지로 나뉘며, 4개의 트랜잭션 격리 수준에서 순대대로 뒤로 갈수록 각 트랜잭션 간의 데이터 격리 정도가 높아지며, 동시시성도 떨어지는 것이 일반적이라고 볼 수 있다. **격리 수준이 높아질 수록 MySQL 서버의 처리 성능이 많이 떨어질 것으로 생각하는 사용자가 많은데 사실 SERIALIZABLE 격리 수준이 아니라면 크게 성능의 개선이나 저하는 발생하지 않는다.**
+**트랜잭션의 격리 수준이란 동시에 여러 트랜잭션이 처리될 때, 특정 트랜잭션이 다른 트랜잭션에서 변경하거나 조회하는 데이터를 볼 수 있도록 허용할지 말지를 결정하는 것이다.** 격리 수준은 READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE 4가지로 나뉘며, 4개의 트랜잭션 격리 수준에서 순대대로 뒤로 갈수록 각 트랜잭션 간의 데이터 격리 정도가 높아지며, 동시시성도 떨어지는 것이 일반적이라고 볼 수 있다. **격리 수준이 높아질 수록 MySQL 서버의 처리 성능이 많이 떨어질 것으로 생각하는 사용자가 많은데 사실 SERIALIZABLE 격리 수준이 아니라면 크게 성능의 개선이나 저하는 발생하지 않는다.**
 
-ISOLATION | DIRY READ | NOE-REPEATABLE READ | PHANTOM READ
-----------------|-----------|---------------------|-------------
-READ UNCOMMITED | O | O | O
-UMREAD UNCOMMITED | X | O | O
-REPRETABLE RAD | X | X | O(InnoDB는 발생하지 않음)
-SERIALIZABLE | X | X | X
+| ISOLATION        | DIRY READ | NOE-REPEATABLE READ | PHANTOM READ              |
+| ---------------- | --------- | ------------------- | ------------------------- |
+| READ UNCOMMITTED | O         | O                   | O                         |
+| READ COMMITTED   | X         | O                   | O                         |
+| REPEATABLE READ  | X         | X                   | O(InnoDB는 발생하지 않음) |
+| SERIALIZABLE     | X         | X                   | X                         |
 
 
 # 05 인덱스
@@ -977,12 +977,9 @@ PreparedStatement를 사용할 때는 SQL 쿼리 문장을 이용해 PreparedSta
 
 애플리케이션에서 실행하려는 쿼리와 함께 preparedStatement() 함수를 호출하면 MySQL 서버는 그 쿼리를 미리 분석해서 별도로 저장해두고, 분석 정보가 저장된 주소(해시 키)를 애플리케이션으로 반환한다. **이렇게 PreparedStatement를 이용해 쿼리를 실행하면 애플리케이션에서 쿼리 문장을 서버로 전달하지 않고 분석 정보가 저장된 주소(해시 키)와 쿼리에 바인딩할 변수 값만 서버로 전달한다.** MySQL 서버는 전달받은 해시 키를 이용해 분석 정보를 찾아 전달된 바인드 변수를 결합하고 쿼리를 실행한다.
 
-
 **결론적으로 PreparedStatement의 성능적인 장점은 한 번 실행된 쿼리는 매번 쿼리 분석 과정을 거치지 않고 처음 분성된 정보를 재사용한다는 점이다.** SQL 문장의 길이가 길어서 성능상의 문제가 되는 경우는 그다지 없겠지만 **매번 쿼리를 실행할 때 SQL 문장 자체가 네트워크로 전송되지 않고 바인딩할 변수 값만 전달되므로 네트워크, 트래픽 측면에서도 조금은 효율적이라고 볼 수있다.**
 
-**PreparedStatement의 또 다른 장점은 바이너리 프로토콜을 사용한 다는 것이다.** 초기 MySQL Connctor/J 버전에서는 모든 Statement, PreparedStatement가 클라어은트(JDBC)와 서버(MySQL) 간의 통신에서 문자열 기반의 프로토콜을 사용했다. 그래서 사용자 프로그램에서 타입을 지정해서 값을 설정하더라도 내부적으로 MySQL 서버에 전송하기 위해 문자열 타입으로 데이터를 변환했으며, 서버에서는 다시 그 문자열 값을 지정된 타입으로 변환하는 과정을 거쳐야 했다. **즉 내부적으로 불 필요한 타입 변환을 수행했으며, 그로인해 데이터의 크기가 커지는 문제가 발생했던 것이다. 하지만 MySQL 5.0 이상에서는 PreparedStatement를 사용하면 별도의 타입 변환을 수행하지 않는 바이너리 통신 프로토콜을 사용하게 된다.** 하지만 Statement 객체를 사용하면 바이너리 통신 프로토콜을 사용하지 않고 예전과 같은 문자열로 변호나해서 통신한다.
-
-PreparedStatement의 또 다른 장점은 SQL 인젝션의 문제도 손쉽게 해결 가능하다. **PreparedStatement를 사용해 코드를 개발하면 아스케이프 문자 처리를 MySQL Connctor/J에서 대신해 처리해 주므로 개발자가 직접 이러한 부분을 고려하지 않아도 된다.**
+**PreparedStatement의 또 다른 장점은 바이너리 프로토콜을 사용한 다는 것이다.** 초기 MySQL Connctor/J 버전에서는 모든 Statement, PreparedStatement가 클라어은트(JDBC)와 서버(MySQL) 간의 통신에서 문자열 기반의 프로토콜을 사용했다. 그래서 사용자 프로그램에서 타입을 지정해서 값을 설정하더라도 내부적으로 MySQL 서버에 전송하기 위해 문자열 타입으로 데이터를 변환했으며, 서버에서는 다시 그 문자열 값을 지정된 타입으로 변환하는 과정을 거쳐야 했다. **즉 내부적으로 불 필요한 타입 변환을 수행했으며, 그로인해 데이터의 크기가 커지는 문제가 발생했던 것이다. 하지만 MySQL 5.0 이상에서는 PreparedStatement를 사용하면 별도의 타입 변환을 수행하지 않는 바이너리 통신 프로토콜을 사용하게 된다.** 하지만 Statement 객체를 사용하면 바이너리 통신 프로토콜을 사용하지 않고 예전과 같은 문자열로 변환해서 통신한다. PreparedStatement의 또 다른 장점은 SQL 인젝션의 문제도 손쉽게 해결 가능하다. **PreparedStatement를 사용해 코드를 개발하면 아스케이프 문자 처리를 MySQL Connctor/J에서 대신해 처리해 주므로 개발자가 직접 이러한 부분을 고려하지 않아도 된다.**
 
 ### 프리페어 스테이트의 종류
 
@@ -1049,11 +1046,11 @@ where VARIABLE_NAME in (
 ;
 ```
 
-| VARIABLE\_NAME | VARIABLE\_VALUE |
-| :--- | :--- |
-| COM\_STMT\_EXECUTE | 2264 |
-| COM\_STMT\_PREPARE | 798 |
-| PREPARED\_STMT\_COUNT | 268 |
+| VARIABLE\_NAME        | VARIABLE\_VALUE |
+| :-------------------- | :-------------- |
+| COM\_STMT\_EXECUTE    | 2264            |
+| COM\_STMT\_PREPARE    | 798             |
+| PREPARED\_STMT\_COUNT | 268             |
 
 1. `COM_STMT_PREPARE`: 서버 사이드 프리페어 스테이트먼트에서 Connection.prepareStatement() 함수 호출에 의해 PreparedStatement 객체가 만들어진 횟수
 2. `COM_STMT_EXECUTE`: 서버 사이드 프리페어 스테이트먼트에서 Connection.execute().executeUpdate().executeQuery() 함수 호출에 의해 PreparedStatement 쿼리가 실행된 횟수
@@ -1128,7 +1125,7 @@ VALUES (0.00, '2021-06-05 13:41:37', 1, '2021-06-05 13:41:37'),
 위의 예제에서 INSERT 문장으로 처리되는데 레코드 하나의 평군 크기는 대략 375 바이트 정도였다. 만약 애플리케이션에서 INSERT를 배치 형태로 처리할 때 는 `executeBatch()` 함수로 실제 쿼리 실행하기 전에 `addBatch()`를 몇 번 실행하냐가 중요하다. 배치를 실행할 때 한 번에 몇 개의 레코드를 배치로 실행할 것이 최적인지는 다음과 같이 간단하 계산해보며 된다.
 
 ```
-배피 적정 레코드 건수 = (12 * 1024) / (평균 레코드 크기)
+배치 적정 레코드 건수 = (12 * 1024) / (평균 레코드 크기)
 ```
 이러한 형태로 배치를 만들어 실행하는 경우 LOAD DATE INSERT 보다는 빠르진 않겠지만 상대적으로 빠른 속도로 데이터를 적재하는 배치 프롤그램을 만들어 낼 수도 있다.
 
@@ -1136,9 +1133,7 @@ VALUES (0.00, '2021-06-05 13:41:37', 1, '2021-06-05 13:41:37'),
 
 어떤 DBMS를 어떤 용도로 사용하든 하나의 단위 처리가 쿼리 하나로 완료되는 작업은 거의 없다. 배부분 INSERT와, UPDATE, DELETE 등 쿼리가 여러 번 사용되어 하나의 처리가 완료된다. 이 작업을 원자성으로 처리돼야 하는 것들이 일반적이다. 즉 모두 완벽하게 처리되거나 모두 변경 이전의 상태로 100% 돌아가든 둘 중 하나이다. 이는 데이터 정합성 측면에서 아주 중요한 원칙이다.
 
-MySQL Connctor/J를 이요해 트랜잭션을 시작하고 종료하는 방법을 살펴보겠다. 기본적으로 MySQL Connctor/J를 이용할 떄 트랜잭션 관련해서 아무런 설정 하지 않으면 자동족으로 AutoCommit 모드에서 트랜잭션을 처리한다. AutoCommit 모드에서 각 스토리지 엔진별로 다음과 같이 쿼리가 처리 된다.
-
-**InnoDB 테이블에 대해서는 쿼리 하나하나에 대해서 트랜잭션이 보장되지만 연속해서 실행되는 쿼리의 묶음에 대해서는 트랜잭션이 보장되지 않는다.**
+MySQL Connctor/J를 이용해 트랜잭션을 시작하고 종료하는 방법을 살펴보겠다. 기본적으로 MySQL Connctor/J를 이용할 때 트랜잭션 관련해서 아무런 설정 하지 않으면 자동적으로 AutoCommit 모드에서 트랜잭션을 처리한다. AutoCommit 모드에서 각 스토리지 엔진별로 다음과 같이 쿼리가 처리 된다. **InnoDB 테이블에 대해서는 쿼리 하나하나에 대해서 트랜잭션이 보장되지만 연속해서 실행되는 쿼리의 묶음에 대해서는 트랜잭션이 보장되지 않는다.**
 
 **MyISAM, MEMORY 테이블은 AutoCommit의 모드와 관계 없이 항상 트랜잭션이 보장되자 않는다. 이 테이블에서 쿼리 하나에 대해서도 트랜잭션이 보장되지 않는는다.** 즉 MyISAM 테이블에서 UPDATE 쿼리 문장으로 10건의 레코드를 업데이트하는 중에 다른 커넥션에서 해당 쿼리의 실행을 중단한다거나 갑작스러운 문제로 업데이트 작업이 멈추면 반쯤 실행된 상태로 그대로 남게 된다. **일부는 변경되고 일부는 변경되지 않은 상태로 남는 것이다.**
 
@@ -1169,12 +1164,12 @@ public static void main(String[] args) throws Exception {
 
 **원자적으로 실행해야 할 여러 쿼리를 `connection.setAutoCommit(false)`와 `conn.commit()` 함수 사이에서 실행하면 그 사이의 모든 쿼리는 하나의 트랜잭션으로 묶이게 된다.** 이렇게 하나로 묶인 트랜잭션의 내의 모든 쿼리는 성공하거나 모두 실패하는 형태로만 가능해진다.
 
-`connection.setAutoCommit(false)`를 이용해 AutoCommit 모드를 FALSE로 변경하는 작업에 대해서 조금 더 자세히 살펴보자. AutoCommit이 FALSE 상태에서는 SELECT 쿼리 문장이 있는 MySQL 서버에 어떤 영향을 미치는가에 대한 문제다. **AutoCommit FALSE 상태에서 어떤 쿼리를 실행하면 트랜잭션이 바로 시작되고, 공유한 트랜잭션 번호가 발급된다.** INSERT, UPDATE, DELETE와 같은 SQL 문장은 트랜잭션으로 COMMIT 또는 ROLLBACK을 해야 한다. 그래서 해당 SQL 같은 데이터 변경 쿼리를 실행한 다음에는 COMMIT or ROLLBACK을 잊지 않고 실행 해야한다. **하지만 SELECT 쿼리 문장은 ROLLBACK, COMMIT을 수행해도 아무런 데이터 변화가 없기 떄문에 SELECT 쿼리르 사용한 후 COMMIT이나 ROLLBACK 없이 그냥 커넥션을 반납하는 형태로 많이 사용한다. 하지만 AutoCommit이 FALSE인 상태에서는 무슨 쿼리가 실행되든 트랜잭션은 시작되고, 이 커넥션이 살아 있는 동안은 그 트랜잭션은 계속 유효한 상태로 남아 있는 것이다.**
+`connection.setAutoCommit(false)`를 이용해 AutoCommit 모드를 FALSE로 변경하는 작업에 대해서 조금 더 자세히 살펴보자. AutoCommit이 FALSE 상태에서는 SELECT 쿼리 문장이 있는 MySQL 서버에 어떤 영향을 미치는가에 대한 문제다. **AutoCommit FALSE 상태에서 어떤 쿼리를 실행하면 트랜잭션이 바로 시작되고, 공유한 트랜잭션 번호가 발급된다.** INSERT, UPDATE, DELETE와 같은 SQL 문장은 트랜잭션으로 COMMIT 또는 ROLLBACK을 해야 한다. 그래서 해당 SQL 같은 데이터 변경 쿼리를 실행한 다음에는 COMMIT or ROLLBACK을 잊지 않고 실행 해야한다. **하지만 SELECT 쿼리 문장은 ROLLBACK, COMMIT을 수행해도 아무런 데이터 변화가 없기 때문에 SELECT 쿼리르 사용한 후 COMMIT이나 ROLLBACK 없이 그냥 커넥션을 반납하는 형태로 많이 사용한다. 하지만 AutoCommit이 FALSE인 상태에서는 무슨 쿼리가 실행되든 트랜잭션은 시작되고, 이 커넥션이 살아 있는 동안은 그 트랜잭션은 계속 유효한 상태로 남아 있는 것이다.**
 
 
 **트랜잭션 격리 수준인 REPEATABLE-READ인 MySQL 서버에서는 특정 트랜잭션이 유효한 동안에는 해당 트랜잭션이 처음 시작했던 시점의 데이터를 동일하게 보여줘야 한다.** 이것이 REPEATABLE-READ 격리 수준의 기본적인 동작 방법이다. **이렇게 REPEATABLE READ를 보장하기 위해서 InnoDB 스토리지 엔진은 다른 트랜잭션에서 그 데이터를 변경 했다 하더라도 변경하기 전의 데이터를 계속해서 쌓아 둬야 한다.** 만약 하나의 트랜잭션이 사당히 오랜 시간동안 유지된다면 **MySQL 서버는 데이터가 변경될 때마다 그 데이터를 계속 누적해서 보관해야 하므로 불필요한 자원 소모가 많이 발생하게 된다.** 그러므로 가능하다면 AutoCommit FALSE인 상태에서는 쿼리의 종류에 관계 없이 한번 실행됐다면 끝낼 때에는 COMMIT, ROLLBACK을 수행해주는 것이 좋다.
 
-AutoCommit이 TRUE 경우 자동으로 COMMIT이 수행되기 떄문에 이런 고민을 필요하지 않다. **AutoCommit이 TRUE인  상태에서도 특정 필요한 부분에서만 트랜잭션을사용하는 것이 가능하다. 아래 예제 처럼 MySQL에서 트랜잭션을 시작하는 `BEGIN`, `START TRANSACTION` 명령어를 `stmt.execute()`, `stmt.executeUpdate()` 함수로 실행하면 명시적으로 트랜잭션을 시작 할 수 있다.**
+AutoCommit이 TRUE 경우 자동으로 COMMIT이 수행되기 때문에 이런 고민을 필요하지 않다. **AutoCommit이 TRUE인  상태에서도 특정 필요한 부분에서만 트랜잭션을사용하는 것이 가능하다. 아래 예제 처럼 MySQL에서 트랜잭션을 시작하는 `BEGIN`, `START TRANSACTION` 명령어를 `stmt.execute()`, `stmt.executeUpdate()` 함수로 실행하면 명시적으로 트랜잭션을 시작 할 수 있다.**
 
 ```java
 public static void main(String[] args) throws Exception {
@@ -1202,22 +1197,22 @@ public static void main(String[] args) throws Exception {
 > 주의
 > 많은 사람들이 AutoCommit의 성능에 대해서 잘못 이해하고 있다. 많은 개발자들이 AutoCommit을 TRUE로 설정하면 쿼리의 성능이 훨씬 더 빨라질 것으로 기대한다. **하지만 결과는 반대이다. MySQL InnoDB 스토리지엔진에서 COMMIT이 실행될 때마다 테이블의 데이터나 로그 파일(InnoDB의 리두 로그, MySQL 바이너리 로그)이 디스크에 동기화되도록 잘독할 때가 많다.**
 > 
-> 만약 하나의 프로그램에서 동시에 쿼리 100개를 실행한다고 가정해보자. **AutoCommit이 TRUE인 상태에서는 이 작업을 위해 100번 디스크에 동기화 작업(FLUSH)을 실행하지만 AutoCommit이 FALSE이거나 명시적으로 트랜잭션이 시작된 상태에서는 마지막 COMMIT 단계에서 한 번만 디스크 동기화 작업을 실행한다.** 물론 이떄 트랜잭션을 사용한다고 성능이 100배가 빨라지는 것은 아니니지만 디스크 동기화 작업의 고비용을 고려한다면 AutoCommit이 FALSE일 때와 명시적으로 트랜잭션을 사용했을 때가 최초 2~3배 이상은 빨리 실행될 것이다.
+> 만약 하나의 프로그램에서 동시에 쿼리 100개를 실행한다고 가정해보자. **AutoCommit이 TRUE인 상태에서는 이 작업을 위해 100번 디스크에 동기화 작업(FLUSH)을 실행하지만 AutoCommit이 FALSE이거나 명시적으로 트랜잭션이 시작된 상태에서는 마지막 COMMIT 단계에서 한 번만 디스크 동기화 작업을 실행한다.** 물론 이때 트랜잭션을 사용한다고 성능이 100배가 빨라지는 것은 아니니지만 디스크 동기화 작업의 고비용을 고려한다면 AutoCommit이 FALSE일 때와 명시적으로 트랜잭션을 사용했을 때가 최초 2~3배 이상은 빨리 실행될 것이다.
 
 
 ### Connector/J 설정 옵션
 
-옵션 이름 | 옵션 설명
-------|------
-useCompressin(true / false) | 애플리케이션과 MySQL 서버 사이에 전송되는 데이터를 압축할지 선택하는 옵션이다. 만약 애플리케이션과 MySQL 서버가 원격지로 떨어져 있고 네트워크가 좋지 않다면 TRUE로 설정해 데이터 전송 시 압축하는 것이 좋다. 하지만 데이터 압축을 위해 CPU 작업이 예상외로 크기 때문에 같은 IDC나 네트워크 대역 내에 있다면 찹축 기능을 사용하는 않는 것이 좋다. 기본 값은 FALSE 이다.
-allowMutiQueries(true/false) | 여러 개의 SQL 문장을 구분자 `,`로 구분해서 한 번에 실행할 수 있도록 허용 하는 기능이다. 기본 값은 FALSE
-allowLoadLocalInfile(true/false) | MySQL JDBC 드라이버 (Connctor/J)를 이용하는 자바 프로그램에서 `LOAD DATA LOCAL INFILE ...`명령어를 사용할 수 있도록 허용하는 옵션으로 기본 값은 TRUE
-useCusorFech(true/false) | MySQL 5.0.2 이상 버전에서 사용할 수 있으며, Connector/J에서 일반적으로 사용하는 클라이언트 커서 대신 서버 커서를 사용하도록 설정한다. 기본 값은 FALSE로 옵션을 설정하지 않는다면 모두 클라이언트 커서를 사용한다. useCusorFech를 활성화 하려면 defaultFetchSize 옵션 또는 0보다 큰 값으로 설정해야 한다.
-defaultFetchSize | 서버 커서를 사용할 때 MySQL 서버로부터 한 번에 몇 개식 레코드를 읽어올지를 설정한다. 기본값은 0이며 서버 커서를 사용하지 않고 클라이언트 커서를 사용하도록 돼 있다.
-holdResultsOpenOverStatementClose(true/false) | 가금 Statement가 닫혔지만 그 Statement로부터 생성된 ResultSet을 참조해야 할 때 이 옵션을 활성화하면 된다. 기본 값은 FALSE이다.
-rewriteBatchedStatementstrue(true/false) | 여러 개의 INSERT 문장을 한꺼번에 실행할 때 PreparedStatement의 addBatch() 함수로 누적된 레코드의 하나의 INSERT 으로 변환해서 누적된 레코드를 하나의 INSERT 문장으로 변환해서 실행하는 기능을 활성화 하는 옵션이다. PreparedStatement와 동시에 사용한다면 에러가 발생할 수 있의니 주의 해야한다. 기본은 FALSE 이다.
-useServerPrepStmts(true/false) | 서버 PreparedStatement를 사용할지 말지를 설졍하는 온셥이다. 기본은 FALSE 이므로 모든 기본 동작은 PreparedStatement는 클라이언 PreparedStatement로 동작한다.
-traceProtocol(true/false) | Connector/J가 MySQL 서버와 통신하기 위해 주고 받는 패킷을 Log4J를 이용해 로깅할 수 있다. 기본 값은 FALSE이다.
+| 옵션 이름                                     | 옵션 설명                                                                                                                                                                                                                                                                                                                                                              |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| useCompressin(true/false)                   | 애플리케이션과 MySQL 서버 사이에 전송되는 데이터를 압축할지 선택하는 옵션이다. 만약 애플리케이션과 MySQL 서버가 원격지로 떨어져 있고 네트워크가 좋지 않다면 TRUE로 설정해 데이터 전송 시 압축하는 것이 좋다. 하지만 데이터 압축을 위해 CPU 작업이 예상외로 크기 때문에 같은 IDC나 네트워크 대역 내에 있다면 찹축 기능을 사용하는 않는 것이 좋다. 기본 값은 FALSE 이다. |
+| allowMutiQueries(true/false)                  | 여러 개의 SQL 문장을 구분자 `,`로 구분해서 한 번에 실행할 수 있도록 허용 하는 기능이다. 기본 값은 FALSE                                                                                                                                                                                                                                                                |
+| allowLoadLocalInfile(true/false)              | MySQL JDBC 드라이버 (Connctor/J)를 이용하는 자바 프로그램에서 `LOAD DATA LOCAL INFILE ...`명령어를 사용할 수 있도록 허용하는 옵션으로 기본 값은 TRUE                                                                                                                                                                                                                   |
+| useCusorFech(true/false)                      | MySQL 5.0.2 이상 버전에서 사용할 수 있으며, Connector/J에서 일반적으로 사용하는 클라이언트 커서 대신 서버 커서를 사용하도록 설정한다. 기본 값은 FALSE로 옵션을 설정하지 않는다면 모두 클라이언트 커서를 사용한다. useCusorFech를 활성화 하려면 defaultFetchSize 옵션 또는 0보다 큰 값으로 설정해야 한다.                                                               |
+| defaultFetchSize                              | 서버 커서를 사용할 때 MySQL 서버로부터 한 번에 몇 개씩 레코드를 읽어올지를 설정한다. 기본값은 0이며 서버 커서를 사용하지 않고 클라이언트 커서를 사용하도록 되어 있다.                                                                                                                                                                                                    |
+| holdResultsOpenOverStatementClose(true/false) | 가금 Statement가 닫혔지만 그 Statement로부터 생성된 ResultSet을 참조해야 할 때 이 옵션을 활성화하면 된다. 기본 값은 FALSE이다.                                                                                                                                                                                                                                         |
+| rewriteBatchedStatementstrue(true/false)      | 여러 개의 INSERT 문장을 한꺼번에 실행할 때 PreparedStatement의 addBatch() 함수로 누적된 레코드의 하나의 INSERT 으로 변환해서 누적된 레코드를 하나의 INSERT 문장으로 변환해서 실행하는 기능을 활성화 하는 옵션이다. PreparedStatement와 동시에 사용한다면 에러가 발생할 수 있의니 주의 해야한다. 기본은 FALSE 이다.                                                     |
+| useServerPrepStmts(true/false)                | 서버 PreparedStatement를 사용할지 말지를 설졍하는 온셥이다. 기본은 FALSE 이므로 모든 기본 동작은 PreparedStatement는 클라이언 PreparedStatement로 동작한다.                                                                                                                                                                                                            |
+| traceProtocol(true/false)                     | Connector/J가 MySQL 서버와 통신하기 위해 주고 받는 패킷을 Log4J를 이용해 로깅할 수 있다. 기본 값은 FALSE이다.                                                                                                                                                                                                                                                          |
 
 그 밖에 다양한 설정이 있으니 [Connetor/J: Configuration Properties](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html)을 참조하는 것이 좋다.
 
@@ -1228,7 +1223,7 @@ JDBC 표준에서 제공하는 `Statement.setFetchSzie()`라는 함수는 MySQL 
 
 Conntor/J를 이용해 쿼리 실행(Statement.executeQuery) 하면 **Connetor/J가 SELECT 쿼리의 결과를 MySQL 서버로 부터 모두 내려 받아 Connector/J가 관리하는 캐시 메모리 영역에 그 결과를 저장한다. 이렇게 SELECT 쿼리의 결과가 다운로드되는 동안 `Statement.executeQuery()` 함수는 블록돼 있다가 Connector/J가 모든 결과 값을 내려 받아 캐시에 저장되고 나면 그때서야 비로서` Statement.executeQuery()` 함수가 SELECT 쿼리 문장의 결과(ResultSet)의 핸드러를 애플리케이션에 반환한다.** 그 이후 애플리케이션에서 `ResultSet.next()`, `ResultSet.getString()` 등과 같은 함수가 호출되면 MySQL 서버까지 그 요청이 가지 않고, Connector/J가 캐시해둔 값을 애플리케이션 쪽으로 반환한다. **클라이언트 커서라고 하는 이러한 방식은 상당히 빠르기 때문에 MySQL Connector/J의 기본 동작으로 채택돼 있다..**
 
-그런데 이러한 방식은 한 가지 문제가 있다. **SELECT 쿼리의 결과가 너무 클 떄는 클라이언트로 다운로드 하는데 만흔 시간이 걸린다. 애플리케이션의 메모리에 SELECT 쿼리의 결과를 담아야 하기 때문에 OOM이가 발생할 가능성이 높다. MySQL에서는 `Statement.setFetchSzie()`를 예약된 값(Integer.MIN_VALUE)으로 설정하면 한 번에 쿼리의 결과를 모두 다운로드 하지 않고 MySQL 서버에 한 건 단위로 읽어와서 가져가게 할 수 있다. 이러한 방식을 ResultSet Streaming 이라고 한다.**
+그런데 이러한 방식은 한 가지 문제가 있다. **SELECT 쿼리의 결과가 너무 클 때는 클라이언트로 다운로드 하는데 만흔 시간이 걸린다. 애플리케이션의 메모리에 SELECT 쿼리의 결과를 담아야 하기 때문에 OOM이가 발생할 가능성이 높다. MySQL에서는 `Statement.setFetchSzie()`를 예약된 값(Integer.MIN_VALUE)으로 설정하면 한 번에 쿼리의 결과를 모두 다운로드 하지 않고 MySQL 서버에 한 건 단위로 읽어와서 가져가게 할 수 있다. 이러한 방식을 ResultSet Streaming 이라고 한다.**
 
 ![](../assets/real_mysql_2222.png)
 
@@ -1244,7 +1239,7 @@ public static void main(String[] args) throws Exception {
    statement.setFetchSize(Integer.MIN_VALUE);
 }
 ```
-`connection.createStatement(...)` 메서드로 Statement를 생성한다 이때 `(2)` 값인 `ResultSet.CONCUR_READ_ONLY` 설정을 통해서 읽기 전용으로 으로 설정하고, `(1)` 값인 `ResultSet.TYPE_FORWARD_ONLY`으로 Statement 진행 방향을 앞쪽으로 읽을 것을 설정한다. 그리고 `statement.setFetchSize(Integer.MIN_VALUE)` 함수를 이용해 레코드의 패치 크기를 예약된 `(3)`의 값인 `Integer.MIN_VALUE`으로 설정해 주면 MySQL 서버는 클라이언트가 결과 셋을 레코드 한 건 단위로 다운로드 하리라는 것을 알아 채고 결과 셋을 준비해 둔다. 그리고 클라이언트에서 `ResultSet.next()` 함수가 호출될 떄 마다 한 건씩 클라이언트로 내려 보네게 된다. **여기서 `Integer.MIN_VALUE`는 특별한 의미를 가지지 않는 그냥 지정된 값일 뿐이다. MySQL Connector/J에서는 `setFetchSzie()` 함수에 100을 설정 하거나 10을 설정한다고 해서 100건 이나 10건 단위로 데이터를 가져올 수는 없다.**
+`connection.createStatement(...)` 메서드로 Statement를 생성한다 이때 `(2)` 값인 `ResultSet.CONCUR_READ_ONLY` 설정을 통해서 읽기 전용으로 으로 설정하고, `(1)` 값인 `ResultSet.TYPE_FORWARD_ONLY`으로 Statement 진행 방향을 앞쪽으로 읽을 것을 설정한다. 그리고 `statement.setFetchSize(Integer.MIN_VALUE)` 함수를 이용해 레코드의 패치 크기를 예약된 `(3)`의 값인 `Integer.MIN_VALUE`으로 설정해 주면 MySQL 서버는 클라이언트가 결과 셋을 레코드 한 건 단위로 다운로드 하리라는 것을 알아 채고 결과 셋을 준비해 둔다. 그리고 클라이언트에서 `ResultSet.next()` 함수가 호출될 때 마다 한 건씩 클라이언트로 내려 보네게 된다. **여기서 `Integer.MIN_VALUE`는 특별한 의미를 가지지 않는 그냥 지정된 값일 뿐이다. MySQL Connector/J에서는 `setFetchSzie()` 함수에 100을 설정 하거나 10을 설정한다고 해서 100건 이나 10건 단위로 데이터를 가져올 수는 없다.**
 
 
 ```java
@@ -1266,17 +1261,12 @@ public class JdbcTest8 {
     }
 }
 ```
-**JDBC URL 설정에서 useCursorFetch 설정 옵션을 TRUE로 변경하고 `(1)`처럼 defaultFetchSize 값을 반드시 0보다 큰 값으로 설정해야만 서버 커서 방식으로 대용량의 결과 셋을 클라이언트로 가져올 수 있다. 추가로 서버 커서 방식은 반드시 서버 PreparedStatement 방식으로 처리돼야 하기 떄문에 useCursorFetch가 TRUE로 설정되면 useServerPrepStmts 설정 옵션까지 자동으로 TRUE로 변경된다.** 이 방식과 결과 셋의 스트리밍 방식의 차이는 스트리밍 방식은 한 건씩 서버에서 읽어 오지만 서버 커서 방식은 defaultFetchSzie에 명시된 레코드 건수 만큼 Connector/J의 캐시 메모리 영역에 내려 받아 애플리케이션에 제공된다. 즉 SELECT 쿼리의 건수가 100건 이상이였 다면 스트리밍 방식은 MySQL서버와 통신이 100만 건 발생하지만 서커 커서 방식은 1000번(100만/1000)에 대해서만 통신이 필요하다는 의미이다.
+**JDBC URL 설정에서 useCursorFetch 설정 옵션을 TRUE로 변경하고 `(1)`처럼 defaultFetchSize 값을 반드시 0보다 큰 값으로 설정해야만 서버 커서 방식으로 대용량의 결과 셋을 클라이언트로 가져올 수 있다. 추가로 서버 커서 방식은 반드시 서버 PreparedStatement 방식으로 처리돼야 하기 때문에 useCursorFetch가 TRUE로 설정되면 useServerPrepStmts 설정 옵션까지 자동으로 TRUE로 변경된다.** 이 방식과 결과 셋의 스트리밍 방식의 차이는 스트리밍 방식은 한 건씩 서버에서 읽어 오지만 서버 커서 방식은 defaultFetchSzie에 명시된 레코드 건수 만큼 Connector/J의 캐시 메모리 영역에 내려 받아 애플리케이션에 제공된다. 즉 SELECT 쿼리의 건수가 100건 이상이였 다면 스트리밍 방식은 MySQL서버와 통신이 100만 건 발생하지만 서커 커서 방식은 1000번(100만/1000)에 대해서만 통신이 필요하다는 의미이다.
 
-ResultSet Streaming 방식과 서버 커서를 사용하는 방식의 큰 차이는 MySQL 서버가 직접 결과를 담아 둘 임시 테이블을 사용하는지 여부다. 또한 그로 인한 장단점이 있어 상황에 맞게 필요한 방식으로 선택해서 사용하면 된다.
+**ResultSet Streaming 방식과 서버 커서를 사용하는 방식의 큰 차이는 MySQL 서버가 직접 결과를 담아 둘 임시 테이블을 사용하는지 여부다.** 또한 그로 인한 장단점이 있어 상황에 맞게 필요한 방식으로 선택해서 사용하면 된다.
 
-* 스트리밍 방식은 MySQL 서버에 임시 ㅔ이블을 생성하지 않는다는 장점이 있다. 하지만 이 떄문에 JDBC 애플리케이션에서 데이터를 모두 가져갈 때까지 쿼리가 실행 중인 상태로 남아 있게 된다. 그래서 JDBC 애플리케이션에서 데이터를 모두 가져가기 전(ResultSet)에는 동일한 커넥션이 새로운 쿼리를 실행하지 못한다. 만약 이미 스트리밍 방식의 쿼리를 실행한 상탸에서 다시 새로운 쿼리를 실행하면 `Streaming result set com.mysql.jdbc.RowDataDynamic is still active ...`오루가 생한다.
+* 스트리밍 방식은 MySQL 서버에 임시 테이블을 생성하지 않는다는 장점이 있다. 하지만 이 때문에 JDBC 애플리케이션에서 데이터를 모두 가져갈 때까지 쿼리가 실행 중인 상태로 남아 있게 된다. 그래서 JDBC 애플리케이션에서 데이터를 모두 가져가기 전(ResultSet)에는 동일한 커넥션이 새로운 쿼리를 실행하지 못한다. 만약 이미 스트리밍 방식의 쿼리를 실행한 상태에서 다시 새로운 쿼리를 실행하면 `Streaming result set com.mysql.jdbc.RowDataDynamic is still active ...` 오류가 생한다.
 * 커서 서버를 사용하는 방법은 쿼리가 실행 될 때 MySQL 서버는 그 결과를 임시 테이블로 복사해 두개 된다. 이렇게 MySQL 서버에서 데이터 복사가 완료되면 그 결과가 클라이언트로 다운로드 되지 않아도 즉시 `executeQuery()` 함수 호출은 완료된다. 하지만 MySQL 서버에 존재하는 커서를 임시 테이블 JDBC 애플리케이션에서 ResultSet의 결과 데이터를 모두 가져갔는지에 관계 없이 임시 테이블로 결과 데이터를 복사하고 쿼리는 종료되므로 대량의 쿼리를 여러번 중첩해 사용할 수 있다.
-
-
-
-
-
 
 # 14 데이터 모델링
 
@@ -1285,7 +1275,6 @@ ResultSet Streaming 방식과 서버 커서를 사용하는 방식의 큰 차이
 # 16 베스트 프랙티스
 
 ## 페이징
-
 LIMIT이 사용된 페이징 쿼리가 인덱스를 이용할 수 있다면 크게 성능상의 문제 없이 사용할 수 있다. **하지만 인덱스를 사용한다 하더라도 계속해서 다음 페이지로 넘어가면 조금씩 조회 쿼리가 느려질수 밖에 없는 구조다. 단순히 LIMIT의 오프셋만 변경해 다음 페이지의 레코드를 조회하는 쿼리는 실제 필요하지 않은 레코드까지 모두 읽는 방식으로 처리된다.**
 
 예를들어 사용자가 100페이지를 조회한다고 가정하면 이쿼리는 `LIMIT (100*20), 20`와 같은 LIMIT 절을 사용해야한다. **그러면 MySQL 서버는 2000번째 렠드부터 20개의 레코드만 읽는 것이 아니라. 첫 번째 레코드 부터 20000번째 레코드까지 읽어서 버리고 그 위치에 20개의 레코드를 더 읽어서 클라이언트로 반환하는 것이다. 이 현상은 뒷 페이지로 넘어갈수록 더 심해질 것이다.**
@@ -1294,9 +1283,8 @@ LIMIT이 사용된 페이징 쿼리가 인덱스를 이용할 수 있다면 크�
 
 ![](../assets/limit_1.JPG)
 
-이 쿼리는 실제 필요하지 않은 70건의 레코드를 읽어서 그냥 버린다. **이 쿼리에서 WHERE 조건이 인덱스 칼럼만으로 처리(커버링 인덱스)될 수 있다면 그나마 다행이다. 하지만 페이징 쿼리가 커버링 인덱스로 처리되지 못한다면 이 쿼리는 쓸모도 없는 70건의 레코드에 대해 데이터 파일까지 읽어야 한다.** 아래 그림은 커버링 인덱스로 처리되지 못할 때 추가적으로 발생하는 부하를 표현하는데. 이는 인덱스를 통해 검색한 70건의 레코드에 대해 매번 랜덤하게 디스크를 읽는 작업이 필요하다느 것을 의미한다 
+이 쿼리는 실제 필요하지 않은 70건의 레코드를 읽어서 그냥 버린다. **이 쿼리에서 WHERE 조건이 인덱스 칼럼만으로 처리(커버링 인덱스)될 수 있다면 그나마 다행이다. 하지만 페이징 쿼리가 커버링 인덱스로 처리되지 못한다면 이 쿼리는 쓸모도 없는 70건의 레코드에 대해 데이터 파일까지 읽어야 한다.** 아래 그림은 커버링 인덱스로 처리되지 못할 때 추가적으로 발생하는 부하를 표현하는데. 이는 인덱스를 통해 검색한 70건의 레코드에 대해 매번 랜덤하게 디스크를 읽는 작업이 필요하다느 것을 의미한다.
 
 ![](../assets/limit_2.JPG)
-
 
 # 17 응급 처치
