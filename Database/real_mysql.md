@@ -1113,7 +1113,7 @@ SELECT * FROM employees ORDER BY first_name DESC LIMIT 5;
 
 즉, 인덱스를 역순으로 정렬하게 할 수는 없지만, 인덱스를 읽는 방향에 따라 오름차순 또는 내림차순으로 정렬 효과를 얻을 수 있다. 
 
-찻 번쨰 쿼리는 first_name 칼럼에 정의된 인덱스를 이용해서 "Annke" 라는 레코드를 찾은 후, 오름차순으로 해당 인덱스를 일그면서 3개의 레코드만 가져오면 아무런 비용을 들지 않고도 원하는 정렬 효과를 얻을 수 있다. 두번째 쿼리는 이와 반대로 first_name 칼럼에 정의된 인덱스를 역순으로 읽으면서 처음 다섯 레코드만 가져오면 되는 것이다.** ORDER BY, MIN(), MAX() 함수 등의 최적화가 필요한 경우 MySQL 옵티마이저는 인덱스의 읽기 방향을 전환해서 사욛하도록 실행 계획을 만들어 낸다.**
+찻 번쨰 쿼리는 first_name 칼럼에 정의된 인덱스를 이용해서 "Annke" 라는 레코드를 찾은 후, 오름차순으로 해당 인덱스를 일그면서 3개의 레코드만 가져오면 아무런 비용을 들지 않고도 원하는 정렬 효과를 얻을 수 있다. 두번째 쿼리는 이와 반대로 first_name 칼럼에 정의된 인덱스를 역순으로 읽으면서 처음 다섯 레코드만 가져오면 되는 것이다. **ORDER BY, MIN(), MAX() 함수 등의 최적화가 필요한 경우 MySQL 옵티마이저는 인덱스의 읽기 방향을 전환해서 사욛하도록 실행 계획을 만들어 낸다.**
 
 ### B-Tree 인덱스의 기용성과 효율성
 쿼리의 WHERE 조건이나 GROUP BY 또는 ORDER BY 절이 어떤 경우에는 인덱스를 사용할 수 있고 어떤 방식으로 사용할수 있는지 식벽할 수 있어야 한다. 그래서 쿼리의 조건을 최적화하거나, 역으로 쿼리에 맞게 인덱스를 최적으로 식별할 수 있어야 한다. 어떤 조건에서 인덱스를 사용할 수 있고 어떨 때 사용할 수 없는지 살펴보겠다.
@@ -1148,7 +1148,7 @@ B-Tree 인덱스의 특징은 왼쪽 값에 기준 해서 오른쪽 값이 정�
 
 ![](../assets/rea_mysql_index-11.png)
 
-**하나의 칼럼으로 검색해도 값의 왼쪽 부분이 ㅇ벗다면 인덱스 레인지 스캔 방식의 검색이 불가능 하다. 또한 다중 카럼 인덱스에서도 왼쪽 칼럼 값을 모르면 인덱스 레인지 스캔을 사용할 수 없다.** 
+**하나의 칼럼으로 검색해도 값의 왼쪽 부분이 없다면 인덱스 레인지 스캔 방식의 검색이 불가능 하다. 또한 다중 카럼 인덱스에서도 왼쪽 칼럼 값을 모르면 인덱스 레인지 스캔을 사용할 수 없다.** 
 
 
 ```sql
@@ -1164,19 +1164,19 @@ SELECT * FROM dept_emp WHERE emp_no>=10144
 
 #### 가용성과 효율성 판단 
 
-기본적으로 B-Tree 인덱스의 특성상 다음 조건에는 사용할 수 없다. 여기서 사용할 수 없다는 것은 작업 범위 결정 조건으로 사용할 수 없다느 의미이며, 경웨 따라서 체크 조건으로 인덱스를 사용할 수는 있다.
+기본적으로 B-Tree 인덱스의 특성상 다음 조건에는 사용할 수 없다. 여기서 사용할 수 없다는 것은 작업 범위 결정 조건으로 사용할 수 없다는 의미이며, 경웨 따라서 체크 조건으로 인덱스를 사용할 수는 있다.
 
 **NOT-EQUAL로 비교되는 경우 (<>, NOT IN, NOT BETWEEN, IS NOT NULL)**
-* WHERE column <> 'N'
-* WHERE column NOT IN (1,2,3)
-* WHERE column IS NOT NULL
+* **WHERE column <> 'N'**
+* **WHERE column NOT IN (1,2,3)**
+* **WHERE column IS NOT NULL**
 
 
 **LIKE $'??'(앞부분이 아닌 뒷부분 일치) 형태로 문자열 패턴이 비교된 경우**
 
-* WHERE column LIKE '$승한'
-* WHERE column LIKE '_승한'
-* WHERE column LIKE '%승%'
+* **WHERE column LIKE '$승한'**
+* **WHERE column LIKE '_승한'**
+* **WHERE column LIKE '%승%'**
 
 **스토어드 함수나 다른 연산자로 인덱스 칼럼이 변형된 후 비교된 경우**
 * WHERE SUBSTRING(column 1.1) = 'X'
@@ -1189,7 +1189,75 @@ SELECT * FROM dept_emp WHERE emp_no>=10144
 * WHERE char_column = 10
 
 **문자열 데이터 타입의 콜레이션이 다른 경우**
-* WHERE utf8_bin_char_column = euckr_bin_char_column
+* **WHERE utf8_bin_char_column = euckr_bin_char_column**
+
+다중 칼럼으로 만들어진 인덱스는 어떤 조건에서 사용될 수 있고, 어떤 경우에는 절대 사용될 수 없는지 살펴보자.
+
+```sql
+INDEX ix_test (column_1, column_2, column_3 ..., column_n)
+```
+
+**작업 범위 결정 조건으로 인덱스를 사용하지 못하는 경우**
+* **column_1 칼럼에 대한 조건이 없는 경우**
+* **column_1 칼럼의 비교 조건이 위의 인덱스 사용 불가 조건 중 하나의 경우**
+
+**작업 범위 결정 조건으로 인덱스를 사용하는 경우 (i는 2보카 크고 n보다 작은 임의의 값을 의미)**
+* column_1 ~ column_(i-1) 칼럼까지 Equal 형태, =, IN으로 비교
+* column_1 칼럼에 대한 다음 연산자 중 하나로 비교
+  * `=`, `IN` 비교
+  * `>`, `<`
+  * `LIKE` 좌측 일치 패턴 (`LIKE '승한%'`)
+
+위 2가지 조건을 모두 만족하는 쿼리는 column_1 ~ column_i 까지 범위 결정 조건으로 사용되고, column_i 부터 column_n 까지의 조건은 체크 조건으로 사용된다.
+
+```sql
+-- 다음 쿼리는 인덱스를 사용할 수 없음
+WHERE column_i <> 2
+
+-- 다음 쿼리는 column_1과 column_2까지 범위 결정 조건으로 사용됨
+WHERE column_1 = 1 AND column_2 > 10
+
+-- 다음 쿼리는 column_1, column_2, column_3 까지 범위 결정 조건으로 사용됨
+WHERE column_1 = 1 AND column_2 > 10 AND < column_3 <= 10
+
+-- 다음 쿼리는 column_1, column_2, column_3 까지는 범위 결정 조건으로,
+-- column_4는 체크 조건으로 사용됨
+WHERE column_1 = 1 AND column_2 = 2 AND column_3 IN (10, 20, 30) and column_4 <> 100
+
+-- 다음 쿼리는 column_1, column_2, column_3, column_4 까지는 범위 결정 조건으로 사용됨
+-- 좌측 패턴 일치 LIKE 비교는 크다 또는 작다 비교와 동급으로 생각하면 될듯 하다
+WHERE column_1 = 1 AND column_2 IN (2, 4) AND column_3 = 30 AND column_4 LIKE '김승%'
+
+-- 다음 쿼리는 column_1, column_2, column_3, column_4, column_5 까지 모두 범위 결정 조건으로 사용됨
+WHERE column_1 = 1 AND column_2 = 2 AND column_3 = 30 AND column_4 = '김승환' AND column_5 = '서울'
+```
+여기서 설명한 내용은 B-Treee 인덱스의 특징 이므로 MySQL 뿐만 아니라 대부분의 RDBMS에서도 동일하게 적용된다.
+
+## Hash 인덱스
+### 구조 및 특징
+### 해시 인덱스의 가용성 및 효율성
+
+## 전문 검색 (Full Text search) 인덱스
+### 인덱스 알고리즘
+#### 구분자 기법
+#### N-그램(n-Gram) 기법
+### 구분자 기법와 N-그램(n-Gram) 기법 차이
+
+## 클러스터링 인덱스
+### 클러스터링 인덱스
+### 보조 인덱스에 미치는 영향
+### 클러스터 인덱스의 장단점
+### 클러스터 테이블 사용 시 주의 사항
+
+## 유니크 인덱스
+### 유니크 인덱스와 일반 보조 인덱스의 비교
+### 유니크 인덱스 사용 시 주의사항
+
+## 외래키
+### 자식 테이블의 변경 대기하는 경우
+### 부모 테이블의 변경 작업이 대기하는 경우
+
+## 기타 주의 사항
 
 # 06 실행 계획
 
