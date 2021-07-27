@@ -2821,7 +2821,7 @@ class Repository12{
 ```
 
 1. HelloService.logic() 메서드에 @transactional을 선언해서 메소드를 호출할때 트랜잭션을 먼저 시작한다
-2. repositroy2.findMember()를 통해조회한 member 엔티티는 트랜잭션 범위 안에 있음으로 영속성 컨텍스트의 관리를 받는다. 따라서 지금은 영속 상태다.
+2. Repository2.findMember()를 통해조회한 member 엔티티는 트랜잭션 범위 안에 있음으로 영속성 컨텍스트의 관리를 받는다. 따라서 지금은 영속 상태다.
 3. @Transactional을 선언한 메소드가 정상 종료되면 트랜잭션을 커밋하는데, 이때 영속성 컨텍스트를 종료한다. 영속성 컨텍스트가 자라졌음으로 엔티티는 이제부터 준영속 상태가 된다.
 4. 서비스 메소드가 끝나면 트랜잭션과 영속성 컨텍스트가 종료되었다. 따라서 컨트롤러에 반횐된 member 엔티티는 준영속 상태다
 
@@ -2989,7 +2989,7 @@ class OrderFacade {
 class OrderService {
 
     public Order findORder(id){
-        return orderRepositroy.findOrder(id);
+        return orderRepository.findOrder(id);
     }
 }
 ```
