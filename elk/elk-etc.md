@@ -1,0 +1,143 @@
+# Elasticsearch
+
+## allow user 'elasticsearch' mlockall 오류
+
+```log
+[2021-07-27T08:27:18,437][WARN ][o.e.b.JNANatives         ] [localhost] These can be adjusted by modifying /etc/security/limits.conf, for example:
+        # allow user 'elasticsearch' mlockall
+        elasticsearch soft memlock unlimited
+        elasticsearch hard memlock unlimited
+```
+
+### 해결
+
+```
+$ vi /etc/security/limits.conf
+...
+
+#*               soft    core            0
+#*               hard    rss             10000
+#@student        hard    nproc           20
+#@faculty        soft    nproc           20
+#@faculty        hard    nproc           50
+#ftp             hard    nproc           0
+#@student        -       maxlogins       4
+elasticsearch soft memlock unlimited # 추가, 이미 추가된 경우 아래 진행
+elasticsearch hard memlock unlimited # 추가, 이미 추가된 경우 아래 진행
+```
+
+```
+vi /usr/lib/systemd/system/elasticsearch.service
+
+...
+[Service]
+...
+LimitMEMLOCK=infinity # 추가
+```
+
+```
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart elasticsearch.service
+$ sudo systemctl status elasticsearch.service
+```
+
+### 클러스터 구성시 node끼리 발견을 못하는 경우 해결방법
+
+```log
+# log meesage
+master not discovered yet, this node has not previously joined a bootstrapped (v7+) cluster, and this node must discover master-eligible nodes
+```
+
+```yml
+# ======================== Elasticsearch Configuration =========================
+#
+# NOTE: Elasticsearch comes with reasonable defaults for most settings.
+#       Before you set out to tweak and tune the configuration, make sure you
+#       understand what are you trying to accomplish and the consequences.
+#
+# The primary way of configuring a node is via this file. This template lists
+# the most important settings you may want to configure for a production cluster.
+#
+# Please consult the documentation for further information on configuration options:
+# https://www.elastic.co/guide/en/elasticsearch/reference/index.html
+#
+# ---------------------------------- Cluster -----------------------------------
+#
+# Use a descriptive name for your cluster:
+#
+cluster.name: my-application
+#
+# ------------------------------------ Node ------------------------------------
+#
+# Use a descriptive name for the node:
+#
+#node.name: node-1
+#
+# Add custom attributes to the node:
+#
+#node.attr.rack: r1
+#
+# ----------------------------------- Paths ------------------------------------
+#
+# Path to directory where to store the data (separate multiple locations by comma):
+#
+path.data: /var/lib/elasticsearch
+#
+# Path to log files:
+#
+path.logs: /var/log/elasticsearch
+#
+# ----------------------------------- Memory -----------------------------------
+#
+# Lock the memory on startup:
+#
+bootstrap.memory_lock: true
+#
+# Make sure that the heap size is set to about half the memory available
+# on the system and that the owner of the process is allowed to use this
+# limit.
+#
+# Elasticsearch performs poorly when the system is swapping the memory.
+#
+# ---------------------------------- Network -----------------------------------
+#
+# Set the bind address to a specific IP (IPv4 or IPv6):
+#
+network.host: 0.0.0.0
+#
+# Set a custom port for HTTP:
+#
+http.port: 9200
+#
+# For more information, consult the network module documentation.
+#
+# --------------------------------- Discovery ----------------------------------
+#
+# Pass an initial list of hosts to perform discovery when this node is started:
+# The default list of hosts is ["127.0.0.1", "[::1]"]
+#
+#discovery.seed_hosts: ["host1", "host2"]
+discovery.seed_hosts: [ "192.168.0.10:9200", "192.168.0.10:9300" ] # 클러스터링된 IP지정
+#
+# Bootstrap the cluster using an initial set of master-eligible nodes:
+#
+#cluster.initial_master_nodes: ["node-1", "node-2"]
+cluster.initial_master_nodes: [ "192.168.0.10" ] # 자신의 IP 지정
+#
+# For more information, consult the discovery and cluster formation module documentation.
+#
+# ---------------------------------- Gateway -----------------------------------
+#
+# Block initial recovery after a full cluster restart until N nodes are started:
+#
+#gateway.recover_after_nodes: 3
+#
+# For more information, consult the gateway module documentation.
+#
+# ---------------------------------- Various -----------------------------------
+#
+# Require explicit names when deleting indices:
+#
+#action.destructive_requires_name: true
+```
+
