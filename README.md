@@ -110,7 +110,8 @@
   * [Spring Cloud Gateway](https://github.com/cheese10yun/blog-sample/blob/master/spring-gateway/README.md)
   * [Spring Cloud Hystrix](https://github.com/cheese10yun/blog-sample/blob/master/msa-study/hystrix/README.md)
   * [Spring Cloud Stream](https://github.com/cheese10yun/blog-sample/blob/master/msa-study/steam-sample/README.md)
-  * [Spring Config Server 정리](https://github.com/cheese10yun/blog-sample/blob/master/spring-msa/docs/config-server.md)
+  * [Spring Cloud Config Server 정리](https://github.com/cheese10yun/blog-sample/blob/master/spring-msa/docs/config-server.md)
+  * [Spring Cloud Config & Cloud Bus](https://github.com/cheese10yun/blog-sample/blob/master/spring-msa/docs/config-client.md)
 * Redis
   * [Redis Getting Started](https://github.com/cheese10yun/blog-sample/blob/master/redis/README.md)
 * 연재
