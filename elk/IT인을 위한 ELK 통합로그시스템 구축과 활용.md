@@ -288,3 +288,86 @@ GET tourcompany/customerlist/_search?q="Disneyland"&_source=phone,holiday_dest
 
 GET tourcompany/customerlist/_search?q="2017/01/10" or "2021/01/11"&sort=name.keyword
 ```
+
+### 집계
+
+* 집계는 데이터에 통계를 그룹화하고 추추 할 수 있는 기능을 제공
+* Elasticsearch에서는 조회수를 반환하는 검색 기능을 수행 할 수 있이며 동시에 한 번의 응답으로 조회수와 별도로 집계된 결과를 반환
+* 이는 질으와 다중 집계를 실행하고 간결하고 단순화 된 API를 사용하여 네트워크 라운드 트립을 피하면서 한 번의 작업으로 결과를 모두 얻을 수 있다는 점에서 매우 강력하고 효율적
+
+
+# Kibana
+
+```
+PUT /shakespeare
+{
+  "mappings": {
+    "properties": {
+    "speaker": {"type": "keyword"},
+    "play_name": {"type": "keyword"},
+    "line_id": {"type": "integer"},
+    "speech_number": {"type": "integer"}
+    }
+  }
+}
+
+
+PUT /logstash-2015.05.18
+{
+  "mappings": {
+    "properties": {
+      "geo": {
+        "properties": {
+          "coordinates": {
+            "type": "geo_point"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /logstash-2015.05.19
+{
+  "mappings": {
+    "properties": {
+      "geo": {
+        "properties": {
+          "coordinates": {
+            "type": "geo_point"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /logstash-2015.05.20
+{
+  "mappings": {
+    "properties": {
+      "geo": {
+        "properties": {
+          "coordinates": {
+            "type": "geo_point"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+[kibana sample data](https://www.elastic.co/guide/en/kibana/7.6/tutorial-build-dashboard.html#load-dataset) 다운로드 받아 진행
+```
+curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/bank/_bulk?pretty' --data-binary @accounts.json
+curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/shakespeare/_bulk?pretty' --data-binary @shakespeare.json
+curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @logs.jsonl
+```
+
+# 로그스태시
+
+## 로그스태시 개요
+* 오픈 소스 서버측 데이터 처리로 파이프라인
+* 다양한 소스에서 동시에 데이터를 수집하여 변환
+* 그 다음 자주 사용하는 엘라스틱서치에 전달
