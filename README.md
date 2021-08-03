@@ -252,7 +252,7 @@
 * [나만의 데이터 분석 플랫폼 엘라스틱서치](https://github.com/cheese10yun/TIL/blob/master/elk/%EC%8B%9C%EC%9E%91%ED%95%98%EC%84%B8%EC%9A%94!_%EC%97%98%EB%9D%BC%EC%8A%A4%ED%8B%B1%EC%84%9C%EC%B9%98.md)
 * [시작하세요! 엘라스틱서치](https://github.com/cheese10yun/TIL/blob/master/elk/%EB%82%98%EB%A7%8C%EC%9D%98_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D_%ED%94%8C%EB%9E%AB%ED%8F%BC_%EC%97%98%EB%9D%BC%EC%8A%A4%ED%8B%B1%EC%84%9C%EC%B9%98.md)
 * [Elasticsearch APM 기본 설정](https://github.com/cheese10yun/blog-sample/blob/master/spring-msa/docs/elasticsearch-apm-1.md)
-* []()
+* [IT인을 위한 ELK 통합로그시스템 구축과 활용](https://github.com/cheese10yun/TIL/blob/master/elk/IT%EC%9D%B8%EC%9D%84%20%EC%9C%84%ED%95%9C%20ELK%20%ED%86%B5%ED%95%A9%EB%A1%9C%EA%B7%B8%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EA%B5%AC%EC%B6%95%EA%B3%BC%20%ED%99%9C%EC%9A%A9.md)
 
 ## POP it 포스팅
 * [작성글](https://www.popit.kr/author/Yun)
