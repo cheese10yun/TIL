@@ -26,3 +26,9 @@ $ ssh [user]@[host]
 $ ln -s xxx.x.x.x xxx
 ```
 * 심볼 링크를 생성함, 
+
+
+### journalctl 특정 서비스 로그보기
+```
+journalctl -e -f -u prometheus.service
+```
