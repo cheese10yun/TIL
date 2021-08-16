@@ -112,6 +112,7 @@
   * [Spring Cloud Stream](https://github.com/cheese10yun/blog-sample/blob/master/msa-study/steam-sample/README.md)
   * [Spring Cloud Config Server 정리](https://github.com/cheese10yun/blog-sample/blob/master/spring-msa/docs/config-server.md)
   * [Spring Cloud Config & Cloud Bus](https://github.com/cheese10yun/blog-sample/blob/master/spring-msa/docs/config-client.md)
+  * [Spring Cloud Resilience4j 기초 정리](https://github.com/cheese10yun/blog-sample/blob/master/spring-msa/docs/resillience4j-base.md)
 * Redis
   * [Redis Getting Started](https://github.com/cheese10yun/blog-sample/blob/master/redis/README.md)
 * 연재
