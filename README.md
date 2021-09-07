@@ -51,7 +51,7 @@
 * Security
   * [Security 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/security/basic.md)
   * [ACL](https://github.com/cheese10yun/TIL/blob/master/Spring/security/ACL.md)
-  * [CSRF](https://github.com/cheese10yun/blog-sample/tree/master/sample-csrf)
+  * [CSRF](https://github.com/cheese10yun/blog-sample/blob/master/sample-csrf/README.md)
   * [Custom Security Expression](https://github.com/cheese10yun/TIL/blob/master/Spring/security/Custom%20Security%20Expression.md)
   * [Security Expression](https://github.com/cheese10yun/TIL/blob/master/Spring/security/security-expression.md)
   * Security 학습
