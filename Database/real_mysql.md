@@ -599,6 +599,7 @@ MySQL에서 사용되는 잠금은 크게 스토리지 엔진 레벨과 MySQL �
 **글로벌 락은 `FLUSH TABLE WRITE READ LOCK` 명령으로만 획득할 수 있으며, MySQL에서 제공하는 잠금 가운데 가장 범위가 크다. 일단 한 세션에서 글로벌 락을 획득하면 다른 세션에서 SELECT를 제외한 대부분의 DDL 문장이나 DML 문장을 실행하는 경우 글로벌 락이 해제될 때 까지 해당 문장이 대기 상태로 남는다. 글러벌 락이 영향을 미치는 범위는 MySQL 서버 전체이며, 작업 대상 테이블이나 데이터베이스가 다르더라도 동일하게 영향을 받는다.** 여러 데이터베이스에 존재하는 MyISAM, MEMORY 테이블에 mysqldump로 일관된 백업을 받아야 할 때 글로벌 락을 사용한다.
 
 > 주의!
+> 
 > 글로벌 락을 거는 `FLUSH TABLE WRITE READ LOCK` 명령은 실행과 동시에 MySQL 서버에 존재하는 모든 테이블에 잠금을 건다. `FLUSH TABLE WRITE READ LOCK` 명령어 실행되기 전에 테이블이나 레코드에 쓰기 잠금을 걸고 있는 SQL이 실행되고 있다면, 이 명령은 해당 테이블의 읽기 잠금을 걸기 위해 먼저 실행된 SQL이 완료되고 그 트랜잭션이 완료될 때까지 기다려야한다. 그런데 `FLUSH TABLE WRITE READ LOCK` 명령은 완료돼야만 테이블을 플러시하거나 잠금을 걸 수 있다. 그래서 장시간 SELECT 쿼리가 실행되고 있을 때는 `FLUSH TABLE WRITE READ LOCK` 명령은 SELECT 쿼리가 종료될 때까지 기다려야 한다.
 >
 > `FLUSH TABLE WRITE READ LOCK` 명령의 최악의 케이스로 실행되면 MySQL 서버의 모든 테이블에 대한 INSERT, UPDATE, DELETE 쿼리가 아주 오랜 시간 동안 실행되지 못하고 기다려야 한다. 글로벌 락은 MySQL 서버의 모든 테이블에 큰 영향을 미치기 때문에 웹 서비스용으로 사용되는 MySQL 서버에서는 가급적 사용하지 않는 것이 좋다. 또한 mysqldump 같은 백업 프로그램을 우리가 알지 못하는 사이에 이 명령을 내부적으로 실행하고 백업할 때도 있다. mysqldump를 이용해 백업을 수행한다면 mysqldump에서 사용하는 옵션에 따라 MySQL 서버에 어떤 잠금을 걸게 되는지 자세히 확인해보는 것이 좋다.
@@ -772,7 +773,7 @@ MySQL 5.1 이상 버전에서는 바이너리 로그가 활성화되ㅏ면 최�
 | REPEATABLE READ  | X         | X                   | O(InnoDB는 발생하지 않음) |
 | SERIALIZABLE     | X         | X                   | X                         |
 
-SQL-92, SQL-99 표쥰에 따르면 **REPEATABLE READ 격리 수준에서는 PHANTOM READ가 발생할 수 있지만, InnoDB에서는 도특한 특성 때문에 REPEATABLE READ 격리 수준에서도 PHANTOM READ가 발생하지 않는다.** 아래의 예제는 모두 AUTO_COMMIT OFF 상태에서 테스트 할 수 있다.
+SQL-92, SQL-99 표쥰에 따르면 **REPEATABLE READ 격리 수준에서는 PHANTOM READ가 발생할 수 있지만, InnoDB에서는 독특한 특성 때문에 REPEATABLE READ 격리 수준에서도 PHANTOM READ가 발생하지 않는다.** 아래의 예제는 모두 AUTO_COMMIT OFF 상태에서 테스트 할 수 있다.
 
 ### READ UNCOMMITTED
 
@@ -799,6 +800,7 @@ SQL-92, SQL-99 표쥰에 따르면 **REPEATABLE READ 격리 수준에서는 PHAN
 **`READ COMMITTED` 격리 수준에서는 어떤 트랜잭션에서 변경한 내용이 커밋되기 전까지 다른 트랜잭션에서 그러한 변경 내용을 조회할 수 없다. 최종적으로 사용자 A가 변경된 내용을 커밋하면 그때 부터는 다른 트랜잭션에서도 백업된 언두 레코드가 아니라. 새롭게 변경된 데이터를 참조할 수 있게 된다.**
 
 > 주의!
+> 
 > 언두 레코드는 InnoDB의 시스템 테이블 스페이스의 언두 영역에 기록되는데, 언두 레코드는 트랜잭션의 격리 수준을 보장하기 위한 용도뿐 아니라 트랜잭션의 ROLLBACK에 대한 복구에서도 사용된다. 위 UNDO 로그 참고
 
 **READ COMMITTED 격리 수준에서도 NON-REPEATABLE READ가 가능하여 부정합 문제가 있다. NON-REPEATABLE READ가 왜 발생하고 어떤 문제를 만들어낼 수 있는지 확인 하자.** 
