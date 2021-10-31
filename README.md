@@ -273,6 +273,7 @@
 
 ## 쿠버네티스
 * [쿠버네티스 기초 학습](https://github.com/cheese10yun/TIL/blob/master/kubernetes/kubernetes-basic.md)
+* [컨테이너 인프라 환경 구축을 위한 쿠버네티스/도커](https://github.com/cheese10yun/TIL/blob/master/kubernetes/%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EC%9D%B8%ED%94%84%EB%9D%BC%20%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95%EC%9D%84%20%EC%9C%84%ED%95%9C%20%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4:%EB%8F%84%EC%BB%A4.md)
 
 ## AWS
 * [AWS CLI 설정](https://github.com/cheese10yun/TIL/blob/master/AWS/AWS-CLI.md)
