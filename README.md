@@ -137,6 +137,7 @@
 * [Spring Docker](https://github.com/cheese10yun/blog-sample/blob/master/spring-docker/README.md)
 * [Spring with Kotlin](https://github.com/cheese10yun/spring-kotlin-api/blob/master/docs/spring-with-kotlin.md)
 * [JDBC 정리](https://github.com/cheese10yun/blog-sample/blob/master/jdbc-study/README.md)
+* [Error Response 서버로 전달하기](https://github.com/cheese10yun/blog-sample/blob/master/msa-error-response/README.md)
 
 ## 운영체제
 * [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C_%EA%B8%B0%EC%B4%88.md)
