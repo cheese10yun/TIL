@@ -1053,7 +1053,7 @@ insertable, updatealbe 속성은 데이터베이스에 저장되어 있는 정�
 * EnumType.ORDINAL: enum 순서를 데티어베이스에 저장
 * EnumType.STRING: enum 이름을 데티어베이스에 저장
 
-**EnumType.ORDINAL 정의돈 순서대로 데티어베이스에 저장 될 수 있어 데이터 크가가 작은 장점이 있지만 이미 지정된 enum의 순서를 변경할 수없다. 또 사람이 인식하기 어렵다는 단점이 있어 String 타입으로 관리하는 것이 좋다고 생각한다**
+**EnumType.ORDINAL 정의된 순서대로 데티어베이스에 저장 될 수 있어 데이터 크가가 작은 장점이 있지만 이미 지정된 enum의 순서를 변경할 수없다. 또 사람이 인식하기 어렵다는 단점이 있어 String 타입으로 관리하는 것이 좋다고 생각한다**
 
 
 ### @Temporal

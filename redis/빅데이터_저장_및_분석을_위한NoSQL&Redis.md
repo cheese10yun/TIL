@@ -661,7 +661,7 @@ redis:6379>
 
 ### AOF(Append Only File) 명려어를 이용하여 저장하는 방법
 
-AOF 명령어를 이요해서 디스크 상에 `appendonly.aof` 파일로 저장하는 방법입니다. 이 방법은 `redis-shell` 상에서 `bgrewriteaof` 명령어를 실행한 이후 입력, 수정, 삭제 도니느 모든 데이터를 저장해 줍니다.
+AOF 명령어를 이용해서 디스크 상에 `appendonly.aof` 파일로 저장하는 방법입니다. 이 방법은 `redis-shell` 상에서 `bgrewriteaof` 명령어를 실행한 이후 입력, 수정, 삭제 도니느 모든 데이터를 저장해 줍니다.
 
 ### 비교
 
