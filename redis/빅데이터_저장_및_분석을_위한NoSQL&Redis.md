@@ -497,7 +497,7 @@ Redis 서버의 기본 아키텍처는 3가지 영역으로 구성되어 있습�
 * Client Process: `redis.cli.exe` 또는 사용자 애플리케이션에 의해 실행된는 명령어를 실행하기 위해 제공되는 프로세스 입니다.
 
 ### 멀티 쓰레드
-1. `main thread` : 해당 스레드는 Redis 서버에 수행되는 대부분의 명령어와 이벤트를 처리하는 역활을 수행
+1. `main thread` : 해당 스레드는 Redis 서버에 수행되는 대부분의 명령어와 이벤트를 처리하는 역할을 수행
 2. `sub thread 1(BIO-Close-File)`: AOF에 데이터를 Rewirte할 때 기존 파일을 close하고 새로운 AOF 파일에 Write할 때 사용됩니다.
 3. `sub thread 2(BIO-AOF-Resync)`: AOF에 쓰기 작업을 수행할 때 사용됩니다.
 4. `sub thread 3(BIO-LAZY-Free)`: `UNLINK`, `FLUSHALL`, `FLUSHDB` 명령어를 실행할 때 따른 성능을 보장하기 위해 백그라운드에서 사용됩니다.
