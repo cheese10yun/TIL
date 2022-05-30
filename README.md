@@ -222,6 +222,7 @@
 * [코틀린 기반 API 개발](https://github.com/cheese10yun/spring-kotlin-api/blob/master/README.md)
 * [Ktlint 코드 스타일 검사](https://github.com/cheese10yun/blog-sample/blob/master/ktlint/README.md)
 * [Exposed](https://github.com/cheese10yun/blog-sample/blob/master/exposed-study/README.md)
+* [Exposed 추가 정리](https://github.com/cheese10yun/blog-sample/blob/master/exposed-study/docs/exposed.md)
 
 ## Node
 * [Apex](https://github.com/cheese10yun/TIL/blob/master/Node/Apex.md)
