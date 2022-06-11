@@ -109,6 +109,7 @@
   * [Spring Cloud Eureka](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/eureka.md)
   * [Spring Cloud Zuul](https://github.com/cheese10yun/msa-study-sample/blob/master/docs/api-gateway.md)
   * [Spring Cloud Gateway](https://github.com/cheese10yun/blog-sample/blob/master/spring-gateway/README.md)
+  * [Spring Cloud Gateway Error Handling & Filter](https://github.com/cheese10yun/blog-sample/blob/master/spring-msa/docs/cloud-gateway.md)
   * [Spring Cloud Hystrix](https://github.com/cheese10yun/blog-sample/blob/master/msa-study/hystrix/README.md)
   * [Spring Cloud Stream](https://github.com/cheese10yun/blog-sample/blob/master/msa-study/steam-sample/README.md)
   * [Spring Cloud Config Server 정리](https://github.com/cheese10yun/blog-sample/blob/master/spring-msa/docs/config-server.md)
