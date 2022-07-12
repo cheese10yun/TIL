@@ -153,8 +153,8 @@
 * [정규화 정리](https://github.com/cheese10yun/TIL/blob/master/Database/%EC%A0%95%EA%B7%9C%ED%99%94.md)
 * [MySQL 5.7 완벽 분석](https://github.com/cheese10yun/TIL/blob/master/Database/Mysql_5.7_%EC%99%84%EB%B2%BD_%EB%B6%84%EC%84%9D.md)
 * [Real MySQL](https://github.com/cheese10yun/TIL/blob/master/Database/real_mysql.md)
-* [Real MySQL 8.0 1권](https://github.com/cheese10yun/TIL/blob/master/Database/real_mysql.md)
-* [Real MySQL 8.0 2권](https://github.com/cheese10yun/TIL/blob/master/Database/real_mysql.md)
+* [Real MySQL 8.0 1권](https://github.com/cheese10yun/TIL/blob/master/Database/real-mysql-8.0-part1.md)
+* [Real MySQL 8.0 2권](https://github.com/cheese10yun/TIL/blob/master/Database/real-mysql-8.0-part2.md)
 * [Mysql Tip](https://github.com/cheese10yun/TIL/blob/master/Database/mysql-tip.md)
 
 ## 네트워크
