@@ -1,6 +1,18 @@
 {
   "recentFiles": [
     {
+      "basename": "ssh-key",
+      "path": "ETC/GitHub/ssh-key.md"
+    },
+    {
+      "basename": "community",
+      "path": "ETC/community.md"
+    },
+    {
+      "basename": "2021-06-meet-coder-회고",
+      "path": "ETC/2021-06-meet-coder-회고.md"
+    },
+    {
       "basename": "도메인 주도 설계란 무엇인가",
       "path": "도서/도메인 주도 설계란 무엇인가.md"
     },

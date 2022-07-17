@@ -4,11 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "3b4f6668c959cc8b",
+        "id": "65bb4f189f4942aa",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "ETC/GitHub/ssh-key.md",
+            "mode": "preview",
+            "source": false
+          }
         }
       }
     ],
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "ETC/GitHub/ssh-key.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "ETC/GitHub/ssh-key.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": false
               }
@@ -146,17 +152,17 @@
     "direction": "horizontal",
     "width": 300
   },
-  "active": "3b4f6668c959cc8b",
+  "active": "65bb4f189f4942aa",
   "lastOpenFiles": [
+    "ETC/community.md",
+    "ETC/GitHub/ssh-key.md",
+    "ETC/mac/mac-setting.md",
+    "ETC/2021-06-meet-coder-회고.md",
     "도서/도메인 주도 설계란 무엇인가.md",
     "elk/나만의_데이터_분석_플랫폼_엘라스틱서치.md",
     "도서/소프트웨어 아키텍처 101.md",
     "Untitled Kanban.md",
     "assets/101-17-03.jpg",
-    "2022-07-16.md",
-    "ca/ca-basic.md",
-    "kubernetes/컨테이너 인프라 환경 구축을 위한 쿠버네티스:도커.md",
-    "elk/elk-etc.md",
-    "Spring/aop/AOP-basic.md"
+    "2022-07-16.md"
   ]
 }

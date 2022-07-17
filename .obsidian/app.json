@@ -1,3 +1,5 @@
 {
-  "communityPluginSortOrder": "download"
+  "communityPluginSortOrder": "download",
+  "showLineNumber": true,
+  "spellcheck": true
 }
