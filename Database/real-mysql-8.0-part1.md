@@ -36,7 +36,7 @@ create table tab_test
     PRIMARY KEY (fd1)
 )
     ENGINE = InnoDB
-    STATS_PERSISTENT = { DEFAULT | 0 | 1}
+    STATS_PERSISTENT = { DEFAULT | 0 | 1 }
 ```
 
 * STATS_PERSISTENT = 0: 테이블의 통계 정보를 MySQL 5.5 이전의 방식대로 관리하며, mysql 데이터베이스의 innodb_index_stats, innodb_table_stats 테이블에 젖아하지 않음
