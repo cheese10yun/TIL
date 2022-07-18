@@ -4,15 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "65bb4f189f4942aa",
+        "id": "6cdd8881bffab282",
         "type": "leaf",
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "ETC/GitHub/ssh-key.md",
-            "mode": "preview",
-            "source": false
-          }
+          "type": "empty",
+          "state": {}
+        }
+      },
+      {
+        "id": "188bc203c18f0139",
+        "type": "leaf",
+        "state": {
+          "type": "empty",
+          "state": {}
         }
       }
     ],
@@ -85,7 +89,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "ETC/GitHub/ssh-key.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +105,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "ETC/GitHub/ssh-key.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": false
               }
@@ -152,17 +154,17 @@
     "direction": "horizontal",
     "width": 300
   },
-  "active": "65bb4f189f4942aa",
+  "active": "188bc203c18f0139",
   "lastOpenFiles": [
-    "ETC/community.md",
+    "ca/무제노트.md",
+    "ca/ca-basic.md",
     "ETC/GitHub/ssh-key.md",
+    "ETC/community.md",
     "ETC/mac/mac-setting.md",
     "ETC/2021-06-meet-coder-회고.md",
     "도서/도메인 주도 설계란 무엇인가.md",
     "elk/나만의_데이터_분석_플랫폼_엘라스틱서치.md",
     "도서/소프트웨어 아키텍처 101.md",
-    "Untitled Kanban.md",
-    "assets/101-17-03.jpg",
-    "2022-07-16.md"
+    "Untitled Kanban.md"
   ]
 }

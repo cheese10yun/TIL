@@ -1,6 +1,10 @@
 {
   "recentFiles": [
     {
+      "basename": "ca-basic",
+      "path": "ca/ca-basic.md"
+    },
+    {
       "basename": "ssh-key",
       "path": "ETC/GitHub/ssh-key.md"
     },
@@ -35,10 +39,6 @@
     {
       "basename": "2022-07-16",
       "path": "2022-07-16.md"
-    },
-    {
-      "basename": "ca-basic",
-      "path": "ca/ca-basic.md"
     },
     {
       "basename": "컨테이너 인프라 환경 구축을 위한 쿠버네티스:도커",
