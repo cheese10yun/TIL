@@ -226,6 +226,9 @@
 * [Ktlint 코드 스타일 검사](https://github.com/cheese10yun/blog-sample/blob/master/ktlint/README.md)
 * [Exposed](https://github.com/cheese10yun/blog-sample/blob/master/exposed-study/README.md)
 * [Exposed 추가 정리](https://github.com/cheese10yun/blog-sample/blob/master/exposed-study/docs/exposed.md)
+* [이펙티브 코틀린](https://github.com/cheese10yun/TIL/blob/master/kotlin/%EC%9D%B4%ED%8E%99%ED%8B%B0%EB%B8%8C%20%EC%BD%94%ED%8B%80%EB%A6%B0.md)
+* [다재다능 코틀린 프로그래밍](https://github.com/cheese10yun/TIL/blob/master/kotlin/%EB%8B%A4%EC%9E%AC%EB%8B%A4%EB%8A%A5%20%EC%BD%94%ED%8B%80%EB%A6%B0%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
+* [코틀린 쿡북](https://github.com/cheese10yun/TIL/blob/master/kotlin/%EC%BD%94%ED%8B%80%EB%A6%B0%20%EC%BF%A1%EB%B6%81.md)
 
 ## Node
 * [Apex](https://github.com/cheese10yun/TIL/blob/master/Node/Apex.md)
