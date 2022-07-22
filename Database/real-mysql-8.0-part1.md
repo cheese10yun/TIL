@@ -26,7 +26,7 @@ show tables like '%_stats';
 | innodb\_index\_stats |
 | innodb\_table\_stats |
 
-MySQL 5.6에서 테이블을 생성할 떄는 STATS_PERSISTENT 옵션을 설정할 수 있는데, 이 설정값에 따라 테이블 단위로 영구적인 통계 정보를 보관할지 말지 결성할 수 있다.
+MySQL 5.6에서 테이블을 생성할 때는 STATS_PERSISTENT 옵션을 설정할 수 있는데, 이 설정값에 따라 테이블 단위로 영구적인 통계 정보를 보관할지 말지 결성할 수 있다.
 
 ```sql
 create table tab_test
