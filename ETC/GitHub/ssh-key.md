@@ -1,5 +1,15 @@
 ## GitHub ssh 생성하기
 
+
+### git local 설정
+
+```
+$ git config --global user.name "YourName"
+$ git config --global user.email YourEmail@example.com
+```
+
+### SSH Key 생성
+
 ```
 $ ssh-keygen -t -C "YourEmail@example.com"
 Enter passphrase (empty for no passphrase):
@@ -11,9 +21,11 @@ Enter same passphrase again:
 ```
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa
+
+$ pbcopy < xxxx.pub
 ```
 
-* 발급받은 ssh 깃허브 프로필 / ssh에 등록
+* 발급받은 [ssh 깃허브 프로필 / ssh에 등록](https://github.com/settings/keys)
 
 ```
 $ ssh -T git@github.com
