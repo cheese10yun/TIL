@@ -12,3 +12,12 @@
 ## 인덱싱 소개
 
 인덱스를 사용하지 않는 쿼리를 컬렉션 스캔이라 하며, 서버가 쿼리 결과를 찾으려면 전체 내용을 살펴봐야 함을 의미한다.
+
+```
+db.users.find({"username": "user101"}).explain("executionStats")
+```
+
+executionStats 모드는 인덱스를 이용한 쿼리의 효과를 이해하는데 도움이 된다.
+
+
+* mysql 인덱스ㅏ ㅅ
