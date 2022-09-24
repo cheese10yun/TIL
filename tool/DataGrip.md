@@ -6,7 +6,7 @@ DataGrip은 JetBrains에서 만든 데이터베이스 및 SQL 용 크로스 플�
 
 ## 다양한 플랫폼 지원
 
-![](/assets/DataGrip-1.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-1.png)
 
 DataGrip은 다양한 플랫폼을 지원하기 때문에 한 가지 도구를 이용하여 여러 플랫폼에 대한 제어가 가능합니다. 동일한 도구를 사용하기 때문에 단축키 및 플러그인 등을 그대로 사용이 가능하여 좋은 생산성을 제공해 줍니다.
 
@@ -15,7 +15,7 @@ DataGrip은 다양한 플랫폼을 지원하기 때문에 한 가지 도구를 �
 
 조회한 데이터를 다양한 형식으로 가공 처리를 도와줍니다. 데이터를 조회한 이후에 추출할 형식을 지정하고 원하는 데이터를 선택하고 복사하기만 하면 됩니다.
 
-![](/assets/DataGrip-3.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-3.png)
 
 ```csv
 id,amount,created_at,order_id,updated_at
@@ -28,7 +28,7 @@ id,amount,created_at,order_id,updated_at
 
 CSV 형식으로 복사를 하면 위 형식처럼 복사가 됩니다.
 
-![](/assets/DataGrip-4.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-4.png)
 
 CSV 형식 같은 경우는 다양한 형식으로 변경이 가능합니다.
 
@@ -45,22 +45,22 @@ values  (1, 10.00, '2022-09-23 17:52:00', 1, '2022-09-23 17:52:00'),
 
 ## 데이터 추출
 
-![](/assets/DataGrip-5.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-5.png)
 
 조회한 데이터를 추출하는 경우 다양한 형식의 데이터 추출을 지원합니다. 
 
 
 ## 자동 완성 기능
 
-![](/assets/DataGrip-6.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-6.png)
 
 강력하게 자동 완성을 제공해 줍니다. join 쿼리 같은 경우에는 대상 테이블끼리의 칼럼을 비교해서 조인 대상이 될만한 칼럼을 추천해 줍니다.
 
 ## ERD 지원
 
-![](/assets/DataGrip-7.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-7.png)
 
-![](/assets/DataGrip-8.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-8.png)
 
 테이블 간의 관계를 표현해 주는 ERD 기능을 제공합니다. **물리적인 FK를 맺지 않아도 테이블과 칼럼을 분석해서 연결해 줍니다.** 실제 프로덕트 환경에서는 다양한 이유로 물리적인 FK를 맺지 않고 사용해서 이 기능이 더 큰 장점인 거 같습니다.
 
@@ -69,13 +69,13 @@ values  (1, 10.00, '2022-09-23 17:52:00', 1, '2022-09-23 17:52:00'),
 
 `explain`를 시각화하여 제공합니다. 디테일한 내용을 확인하는 것보다는 부족하지만 간단한 쿼리 계획이나 해당 쿼리를 개선하여 리포팅할 매우 유용합니다.
 
-![](/assets/DataGrip-9.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-9.png)
 
-![](/assets/DataGrip-10.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-10.png)
 
 ## SQL Scripts 기능
 
-![](/assets/DataGrip-11.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-11.png)
 
 ```sql
 create table study.orders
@@ -101,9 +101,9 @@ Jetbrains에서 제공하고 있는 다양한 플러그인이 존재하며 다�
 
 Settings Repositroy는 해당 툴에 대한 단축키를 비롯한 다양한 설정을 Github에 저장하여 여러 환경에서 동일한 환경을 설정할 수 있게 해줍니다. 해당 설정은 XML으로 관리하며 변경 분을 Pull & Push 하여 설정을 동기화합니다. 저 같은 경우에는 단축키 및 다양한 설정들을 많이 하여 매우 유용하게 사용하고 있습니다.
 
-![](/assets/DataGrip-12.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-12.png)
 
-![](/assets/DataGrip-13.png)
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/DataGrip-13.png)
 
 해당 플러그인을 설치하고 `File -> Manage IDE Settings -> Settings Repositroy...`에서 본인의 깃헙 주소로 설정하면 됩니다.
 

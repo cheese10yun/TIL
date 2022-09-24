@@ -270,7 +270,7 @@
 
 ## Tool
 * [IntelliJ Tip](https://github.com/cheese10yun/IntelliJ)
-* [DataGrip]()
+* [DataGrip](https://github.com/cheese10yun/TIL/blob/master/tool/DataGrip.md)
 
 ## POP it 포스팅
 * [작성글](https://www.popit.kr/author/Yun)
