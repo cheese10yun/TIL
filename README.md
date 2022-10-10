@@ -94,6 +94,7 @@
   * [동일한 Bean(Class)에서 @Transactional 동작 방식](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/transaction.md)
   * [ApplicationEventPublisher 기반으로 강결합 및 트랜잭션 문제 해결](https://github.com/cheese10yun/blog-sample/tree/master/event-transaction)
   * [레플리케이션 트랜잭션 처리 방식](https://github.com/cheese10yun/blog-sample/blob/master/spring-transaction/READEMD.md)
+  * [외부 인프라스트럭처 테스트](https://github.com/cheese10yun/blog-sample/blob/master/tesing/demo/document/external-infrastructure-testing.md)
 * [Class Loader](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/class-loader.md)
 * Spring Boot
   * [Spring Boot 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/boot/spring-boot-basic.md)
