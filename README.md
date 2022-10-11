@@ -8,7 +8,7 @@
   * [AOP - 용어 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/aop/AOP-basic.md)
   * [AOP - Proxy](https://github.com/cheese10yun/TIL/blob/master/Spring/aop/AOP-proxiy.md)
 * Batch
-  * [Batch 기초](https://github.com/cheese10yun/blog-sample/tree/master/batch-demo)
+  * [Batch 기초](https://github.com/cheese10yun/blog-sample/blob/master/batch-demo/README.md)
   * [Batch 학습 정리](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/README.md)
   * [Spring Batch CSV Writer](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-csv-wirter.md)
   * [Batch CSV Reader](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-csv-reader.md)
@@ -22,7 +22,7 @@
 * JPA
   * [자바 ORM표준 JPA프로그래밍](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/%EC%9E%90%EB%B0%94ORM%ED%91%9C%EC%A4%80JPA%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
   * [페이징 API](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/JPA-Paging-API.md)
-  * [Embedded를 적극 활용하자](https://github.com/cheese10yun/blog-sample/tree/master/embedded)
+  * [Embedded를 적극 활용하자](https://github.com/cheese10yun/blog-sample/blob/master/embedded/README.md)
   * [OneToOne 관계 설정 팁](https://github.com/cheese10yun/spring-jpa-best-practices/blob/master/doc/step-05.md)
   * [OneToMany 관계 설정 팁](https://github.com/cheese10yun/spring-jpa-best-practices/blob/master/doc/step-09.md)
   * [Paging 처리 Fetch Join 적용시 limit 동작하지 않는 이슈](https://github.com/cheese10yun/blog-sample/blob/master/jpa-fetch-join/README.md)
@@ -81,20 +81,20 @@
   * [Mockito 정리](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-junit5/docs/mockito.md)
   * [TestContainer 정리](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/test-containers.md)
   * [JPA 기반 테스트 코드 작성 팁](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-test-support.md)
-  * [외부 인프라스트럭처 테스트](https://github.com/cheese10yun/blog-sample/tree/master/spring-mock-test)
+  * [외부 인프라스트럭처 테스트](https://github.com/cheese10yun/blog-sample/blob/master/spring-mock-test/README.md)
   * [Junit 5 Tip](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/junit5.md)
   * [Mockserver Netty 사용해서 HTTP 통신 Mocking 하기](https://github.com/cheese10yun/blog-sample/blob/master/mockserver-netty/README.md)
+  * [외부 인프라스트럭처를 테스트하는 자세](https://github.com/cheese10yun/blog-sample/blob/master/tesing/demo/document/external-infrastructure-testing.md)
 * Transaction
   * [Isolation Level](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/isolation.md)
   * [트랜잭션 Lock - 트랜잭션 선점 잠금, 비선점 잠금](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-lock.md)
   * [트랜잭션 Checked Exception에대한 고찰](https://github.com/cheese10yun/blog-sample/blob/master/exception/README.md)
   * [트랜잭션 기초 학습 정리](https://github.com/cheese10yun/TIL/blob/master/Spring/transaction/transaction-study.md)
-  * [트랜잭션 Rollback 케이스 정리](https://github.com/cheese10yun/blog-sample/tree/master/spring-transaction-test)
+  * [트랜잭션 Rollback 케이스 정리](https://github.com/cheese10yun/blog-sample/blob/master/spring-transaction-test/README.md)
   * [트랜잭션 단위](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-junit5/docs/transaction.md)
   * [동일한 Bean(Class)에서 @Transactional 동작 방식](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/transaction.md)
-  * [ApplicationEventPublisher 기반으로 강결합 및 트랜잭션 문제 해결](https://github.com/cheese10yun/blog-sample/tree/master/event-transaction)
+  * [ApplicationEventPublisher 기반으로 강결합 및 트랜잭션 문제 해결](https://github.com/cheese10yun/blog-sample/blob/master/event-transaction/README.md)
   * [레플리케이션 트랜잭션 처리 방식](https://github.com/cheese10yun/blog-sample/blob/master/spring-transaction/READEMD.md)
-  * [외부 인프라스트럭처 테스트](https://github.com/cheese10yun/blog-sample/blob/master/tesing/demo/document/external-infrastructure-testing.md)
 * [Class Loader](https://github.com/cheese10yun/TIL/blob/master/Spring/basic/class-loader.md)
 * Spring Boot
   * [Spring Boot 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/boot/spring-boot-basic.md)
@@ -120,11 +120,11 @@
 * Redis
   * [Redis Getting Started](https://github.com/cheese10yun/blog-sample/blob/master/redis/README.md)
 * 연재
-  * [Spring Jpa Best Practices](https://github.com/cheese10yun/spring-jpa-best-practices)
-  * [Spring 실전 가이드](https://github.com/cheese10yun/spring-guide)
+  * [Spring Jpa Best Practices](https://github.com/cheese10yun/spring-jpa-best-practices/blob/master/README.md)
+  * [Spring 실전 가이드](https://github.com/cheese10yun/spring-guide/blob/master/README.md)
 * [Slack Notification](https://github.com/cheese10yun/spring-boot-slack-notificaion/blob/master/README.md)
 * [RabbitMQ - 간단 정리 및 기초 활용법](https://github.com/cheese10yun/TIL/blob/master/Spring/rabbitmq.md)
-* [Jackson 어노테이션 정리](https://github.com/cheese10yun/blog-sample/tree/master/jackson)
+* [Jackson 어노테이션 정리](https://github.com/cheese10yun/blog-sample/blob/master/jackson/README.md)
 * [Lombok 사용팁 정리](https://github.com/cheese10yun/blog-sample/blob/master/lombok/README.md)
 * [Lombok 가이드](https://github.com/cheese10yun/TIL/blob/master/Spring/lombok-guide.md)
 * [Custom Validation 어노테이션 만들기(1)](https://github.com/cheese10yun/blog-sample/blob/master/custom-validation/docs/field-validation.md)
@@ -270,7 +270,7 @@
 * [엘라스틱 스택 개발 부터 운영까지](https://github.com/cheese10yun/TIL/blob/master/%EB%8F%84%EC%84%9C/%EC%97%98%EB%9D%BC%EC%8A%A4%ED%8B%B1%20%EC%8A%A4%ED%83%9D%20%EA%B0%9C%EB%B0%9C%20%EB%B6%80%ED%84%B0%20%EC%9A%B4%EC%98%81%EA%B9%8C%EC%A7%80.md)
 
 ## Tool
-* [IntelliJ Tip](https://github.com/cheese10yun/IntelliJ)
+* [IntelliJ Tip](https://github.com/cheese10yun/IntelliJ/blob/master/README.md)
 * [DataGrip](https://github.com/cheese10yun/TIL/blob/master/tool/DataGrip.md)
 
 ## POP it 포스팅
