@@ -1089,11 +1089,11 @@ REPEATABLE READ는 MySQL의 InnoDB 스토리지 엔진에서 기본적으로 사
 ![](../assets/real_mysql_REPEATABLE-READ-2.png)
 
 1. B 사용자는 BEGEN 명령으로 트랜잭션을 시작 
-2. B 사용자는 TRX-ID: 10 으로 emp_no=5000 조회, 결과 1건 (Han)응답
+2. B 사용자는 TRX-ID: 10 으로 emp_no>=5000 조회, 결과 1건 (Han)응답
 3. A 사용자는 BEGEN 명령으로 트랜잭션을 시작
-4. A 사용자는 TRX-ID: 12으로 신규 데이터 Moon 등록, COMMIT 완료
+4. A 사용자는 TRX-ID: 12으로 신규 데이터 Moo 등록, COMMIT 완료
 5. **B 사용자는 SELECT ... FOR UPDATE 쿼리로 조회**
-6. **B 사용자는 동일 트랜잭션에서 동일한 조회를 했음에도 불과하고 결과 2건(Han, Moon), 즉 REPEATABLE READ를 준수하지 못함**
+6. **B 사용자는 동일 트랜잭션에서 동일한 조회를 했음에도 불과하고 결과 2건(Han, Moo), 즉 REPEATABLE READ를 준수하지 못함**
 
 
 동일한 트랜잭션에서는 B 사용자가 실행하는 두 번의 SELECT ... FOR UPDATE 쿼리 결과는 똑같아야 한다. 하지만 결과가 서로 다르다. 이렇게 **다른 트랜잭션에서 수행한 변경 작업에 의해 레코드가 보였다가 안 보였다가 하는 현상을 PHANTOM EAD라고 한다. SELECT ... FOR UPDATE 쿼리는 SELECT 하는 레코드에 쓰기 잠금을 걸어야 하는데, 언두 레코드에는 잠금을 걸 수 없다. 그래서 SELECT ... FOR UPDATE, SELECT .. LOCK IN SHARE MOD로 조회하는 레코드는 언두 영역의 변경 전 데이터를 가져오는 것이 아니라 현재 레코드 값을 가져오게 되는 것이다.**
