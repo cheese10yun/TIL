@@ -1096,7 +1096,7 @@ REPEATABLE READ는 MySQL의 InnoDB 스토리지 엔진에서 기본적으로 사
 6. **B 사용자는 동일 트랜잭션에서 동일한 조회를 했음에도 불과하고 결과 2건(Han, Moo), 즉 REPEATABLE READ를 준수하지 못함**
 
 
-동일한 트랜잭션에서는 B 사용자가 실행하는 두 번의 SELECT ... FOR UPDATE 쿼리 결과는 똑같아야 한다. 하지만 결과가 서로 다르다. 이렇게 **다른 트랜잭션에서 수행한 변경 작업에 의해 레코드가 보였다가 안 보였다가 하는 현상을 PHANTOM EAD라고 한다. SELECT ... FOR UPDATE 쿼리는 SELECT 하는 레코드에 쓰기 잠금을 걸어야 하는데, 언두 레코드에는 잠금을 걸 수 없다. 그래서 SELECT ... FOR UPDATE, SELECT .. LOCK IN SHARE MOD로 조회하는 레코드는 언두 영역의 변경 전 데이터를 가져오는 것이 아니라 현재 레코드 값을 가져오게 되는 것이다.**
+동일한 트랜잭션에서는 B 사용자가 실행하는 두 번의 SELECT ... FOR UPDATE 쿼리 결과는 똑같아야 한다. 하지만 결과가 서로 다르다. 이렇게 **다른 트랜잭션에서 수행한 변경 작업에 의해 레코드가 보였다가 안 보였다가 하는 현상을 PHANTOM READ라고 한다. SELECT ... FOR UPDATE 쿼리는 SELECT 하는 레코드에 쓰기 잠금을 걸어야 하는데, 언두 레코드에는 잠금을 걸 수 없다. 그래서 SELECT ... FOR UPDATE, SELECT .. LOCK IN SHARE MOD로 조회하는 레코드는 언두 영역의 변경 전 데이터를 가져오는 것이 아니라 현재 레코드 값을 가져오게 되는 것이다.**
 
 ### SERIALIZABLE
 가장 단순한 격리 수준이지만 가장 엄격한 격리 수준이다. 또한 그만큼 동시 처리 성능도 다른 트랜잭션 격리 수준 보다 떨어진다. **InnoDB 테이블에서 기본적으로 순수한 SELECT 작업(INSERT ... SELECT, CREATE TABE ... AS SELECT ... 가 아닌)은 아무런 레코드 잠금도 설정하지 않고 실행된다. InnoDB 메뉴얼에서 자주 나타는 `Non-locking conssistent read`(잠금이 필요 없는 일관된 읽기)를 제공하는 것이다.**  하지만 트랜잭션 격리 수준이 SERIALIZABLE로 설정되면 읽기 작업도 공유 잠금(읽기 잠금)을 획득해야만 하며, 동시에 다른 트랜잭션은 그러한 레코드를 변경하지 못한다. **즉 트랜잭션에서 읽고 쓰는 레코드를 다른 트랜잭션에서 절대 접근할 수 없는 것이다.** SERIALIZABLE 격리 수준에서는 일반적인 DBMS에서 일어나는 PHANTOM READ 문제가 발생하지 않는다. 하지만 **InnoDB 스토리지 엔진에서는 REPEATABLE READ 격리 수준에서도 이미 PHANTOM READ가 발생하지 않기 때문에 굳이 SERIALIZABLE을 사용할 필요성은 없다.**
