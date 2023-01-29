@@ -32,3 +32,35 @@ movie = {
 db.movies.insertOne(movie)
 ```
 
+# explain
+
+```
+db.users.find(
+  {
+    "username": "user101"
+  }
+).explain("executionStats")
+```
+* executionStats 모드는 인덱스를 이용한 쿼리 정보를 확인할 수 있다.
+
+# createIndex
+
+```
+db.users.createIndex( { "username": 1 } ) // 단일 인덱스
+db.users.createIndex({ // 복합 인덱스
+  "age":1,
+  "username":1
+})
+```
+* index 생성
+
+# sort
+```
+db.users.find({"age": 21}).sort({"username": -1})
+```
+
+
+# 비교
+```
+db.users.find({"age": {"$gte": 21, "$lt": 30}})
+```

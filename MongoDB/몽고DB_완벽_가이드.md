@@ -406,3 +406,234 @@ db.users.find(
 서브도큐먼트 쿼리에 정확하게 일치 해야한다. 그러지 않으면 조회되지 않는다. 내장 도큐먼트키를 점 표기법으로 사용할 수 있다.
 
 # 5 인덱싱
+
+## 인덱스 스캔
+
+인덱스를 사용하지 않는 쿼리를 컬렉션 스캔 이라하며, 전체 내용을 살펴봐야하는 Full Scan을 의미한다. rows 282,101 유저가 있는 경우 실행 계획을 보면
+
+```
+db.users.find(
+  {
+    "username": "user101"
+  }
+).explain("executionStats")
+```
+
+```json
+[
+  {
+    "executionStats": {
+      "executionSuccess": true,
+      "nReturned": 1,
+      "executionTimeMillis": 56,
+      "totalKeysExamined": 0,
+      "totalDocsExamined": 282101,
+      "executionStages": {
+        "stage": "COLLSCAN",
+        "filter": {
+          "username": {
+            "$eq": "user101"
+          }
+        },
+        "nReturned": 1,
+        "executionTimeMillisEstimate": 1,
+        "works": 282103,
+        "advanced": 1,
+        "needTime": 282101,
+        "needYield": 0,
+        "saveState": 282,
+        "restoreState": 282,
+        "isEOF": 1,
+        "direction": "forward",
+        "docsExamined": 282101
+      }
+    },
+    "ok": 1,
+    "queryPlanner": {
+      "plannerVersion": 1,
+      "namespace": "users.users",
+      "indexFilterSet": false,
+      "parsedQuery": {
+        "username": {
+          "$eq": "user101"
+        }
+      },
+      "winningPlan": {
+        "stage": "COLLSCAN",
+        "filter": {
+          "username": {
+            "$eq": "user101"
+          }
+        },
+        "direction": "forward"
+      },
+      "rejectedPlans": []
+    },
+    "serverInfo": {
+      "host": "36b49af79a43",
+      "port": 27017,
+      "version": "4.4.18",
+      "gitVersion": "8ed32b5c2c68ebe7f8ae2ebe8d23f36037a17dea"
+    }
+  }
+]
+```
+
+totalDocsExamined는 몽고DB가 쿼리르 실행하면서 살펴본 도큐먼트 개수로 모든 도큐먼트에 대해서 조회를 진행 한것이다. nReturned 필드는 반환받은 결과의 개수를 보여준다. 1명만 존재하기 떄문에 1을 응답받았다. 몽고DB가 쿼리에 효율적으로 응답하게 하려면 애플리케이션의 모든 쿼리 패턴에 인덱스를 사용해야 한다.
+
+### 인덱스 생성
+
+```
+db.users.createIndex( { "username": 1 } )
+```
+
+username 필드에 인덱스를 만들려면 createIndex 컬렉션 메서드를 사용한다.
+
+```josn
+[
+  {
+    "executionStats": {
+      "executionSuccess": true,
+      "nReturned": 1,
+      "executionTimeMillis": 7,
+      "totalKeysExamined": 1,
+      "totalDocsExamined": 1,
+      "executionStages": {
+        "stage": "FETCH",
+        "nReturned": 1,
+        "executionTimeMillisEstimate": 0,
+        "works": 2,
+        "advanced": 1,
+        "needTime": 0,
+        "needYield": 0,
+        "saveState": 0,
+        "restoreState": 0,
+        "isEOF": 1,
+        "docsExamined": 1,
+        "alreadyHasObj": 0,
+        "inputStage": {
+          "stage": "IXSCAN",
+          "nReturned": 1,
+          "executionTimeMillisEstimate": 0,
+          "works": 2,
+          "advanced": 1,
+          "needTime": 0,
+          "needYield": 0,
+          "saveState": 0,
+          "restoreState": 0,
+          "isEOF": 1,
+          "keyPattern": {
+            "username": 1
+          },
+          "indexName": "username_1",
+          "isMultiKey": false,
+          "multiKeyPaths": {
+            "username": []
+          },
+          "isUnique": false,
+          "isSparse": false,
+          "isPartial": false,
+          "indexVersion": 2,
+          "direction": "forward",
+          "indexBounds": {
+            "username": ["[\"user102\", \"user102\"]"]
+          },
+          "keysExamined": 1,
+          "seeks": 1,
+          "dupsTested": 0,
+          "dupsDropped": 0
+        }
+      }
+    },
+    "ok": 1,
+    "queryPlanner": {
+      "plannerVersion": 1,
+      "namespace": "users.users",
+      "indexFilterSet": false,
+      "parsedQuery": {
+        "username": {
+          "$eq": "user102"
+        }
+      },
+      "winningPlan": {
+        "stage": "FETCH",
+        "inputStage": {
+          "stage": "IXSCAN",
+          "keyPattern": {
+            "username": 1
+          },
+          "indexName": "username_1",
+          "isMultiKey": false,
+          "multiKeyPaths": {
+            "username": []
+          },
+          "isUnique": false,
+          "isSparse": false,
+          "isPartial": false,
+          "indexVersion": 2,
+          "direction": "forward",
+          "indexBounds": {
+            "username": ["[\"user102\", \"user102\"]"]
+          }
+        }
+      },
+      "rejectedPlans": []
+    },
+    "serverInfo": {
+      "host": "36b49af79a43",
+      "port": 27017,
+      "version": "4.4.18",
+      "gitVersion": "8ed32b5c2c68ebe7f8ae2ebe8d23f36037a17dea"
+    }
+  }
+]
+```
+
+totalDocsExaminedrk 1으로 인덱스를 타서 조회를 진행한 것을 볼 수 있다. executionTimeMillis도 56 -> 7로 계선되었다. 인덱싱된 필드를 변경하는 쓰기 작업은 더 오래 걸린다. 데이터가 변경될 때마다 도큐먼트뿐 아니라 모든 인덱스를 갱신해야 하기 떄문이다. 몽고DB에서 인덱스는 정형적인 관계형 데이터베이스의 인덱스와 거의 동일하게 작동한다.
+
+### 복합 인덱스
+
+쿼리 패턴은 두 개 이상의 키를 기반으로 인덱스를 작성하는 것은 흔한 케이스이다. 인덱스는 모든 값을 정렬된 순서로 보관하므로 인덱스 키로 도큐먼트를 정렬하는 작업이 훨씬 빨라지게 한다. 하지만 인덱스가 앞부분에 놓일 때만 정렬에 도움이 된다. 예를 들어 인덱스는 다음 정렬에 큰 도움이 되지 않는다.
+
+```
+db.users.find().sort({
+  "age": 1,
+  "username":1
+})
+```
+
+age로 정렬한 후에 username으로 정렬하는데, username에 의한 완전정렬은 별로 도움이되지 않는다. 정렬을 최적화하려면 age, username에 인덱스를 만들어야 한다.
+
+### db.users.find({"age": 21}).sort({"username": -1})
+
+인덱스의 두 번째 필드로 인해 결과는 이미 적절한 순서로 정렬된다. 즉 몽고DB는 {"age": 21}과 일치하는 마지막 항목부터 순서대로 인덱스를 탐색한다. 이러한 쿼리는 매우 효율적이다. 몽고DB는 곧바로 정확한 나이로 건너뛸 수 있으며 인덱스 탐색은 데이터를 올바른 순서로 반환하므루ㅗ 결과를 정렬할 필요가 없다.
+
+### db.users.find({"age": {"$gte": 21, "$lt": 30}})
+
+범위 쿼리이며 여러 값이 일치하는 도뮤컨트를 찾는다. 몽고DB는 인덱스에 있는 첫 번째 키인 "age"를 다음 처럼 사용해 일치하는 도뮤컨트틀 반환받는다. 몽고DB가 인덱스를 사용해 쿼리하면 일반적으로 인덱스 순서에 따라 도뮤컨트 결과를 반환한다.
+
+### db.users.find({"age": {"$gte": 21, "$lt": 30}}).sort({"username": 1})
+
+다중 값 쿼리 이지만 정렬을 포함하는 경우 이전 처럼 몽고DB는 검색 조건에 맞는 인덱스를 사용한다. 하지만 인덱스는 사용자명을 정렬된 순서로 반환하지 않으며, 쿼리는 사용자명에 따라 정렬된 결과를 요청한다. 몽고DB가 이미 원하는 순서대로 도뮤컨트가 정렬된 인덱스를 단순히 통과하지 않고, 결과를 반환하기 전에 메모리에서 정렬 해야 함을 의미한다.
+
+검색 조건에 일치하는 결과에 따라 속도가 달라지며 결과가 너무 많은 경우 동작이 느려지거나 전혀 작동하지 않ㄹ을 수도 있다. 결고결과가 32메가 이상이면 몽고DB는 데이터가 너무 많아 정렬을 거부한다는 오류를 내보낸다. 해당 오류를 피하고 싶다면 정렬 작업을 지원하는 인덱스를 생성하고 sort, limit 방식을 함께 사용해 결과를 줄여야한다.
+
+## 몽고DB가 인덱스를 선택하는 방법
+
+쿼리가 들어오면 몽고DB는 쿼리 모양을 확인한다. 모양은 검색할 필드와 정렬 여부 등 추가 정보와 관련 있다. 시스템은 이 정보를 기반으로 쿼리를 충족하는 데 사용할 인덱스 후보 집합을 식별한다.
+
+쿼리가 들어오고 인덱스가 5개 중 3개가 쿼리 후보로 식별됐다고 가정해보자. 몽고DB는 각 인덱스 후보에 하나씩 총3 개의 쿼리 플랜을 만들고, 각각 다른 인덱스를 사용하는 3개의 벙렬된 스레드에서 쿼리를 실행한다. 어떤 스레드가 가장 빨리 결과를 반환하는지 확인 하기 위함이다.
+
+이 과정을 레이스라고 하며 가장 먼저 목표 상테에 도달하는 쿼리 플랜이 승자가 된다. 또한 앞으로 동일한 모양을 가진 쿼리에 사용할 인덱스로 선택된다는 점이 중요하다.
+
+쿼르 스레드가 레이스에서 이기려면, 모든 쿼리 결과를 가장 먼저 반환하거나 결과에 대한 시범 횟수를 정렬 순서로 가장 먼저 반환해야 한다. 인메모리 정렬을 하면 비용이 많이 들기 떄문에 정렬 순서는 중요한 부분이다.
+
+여러 쿼리 플랜이 서로 경쟁함으로써, 모양이 동일한 후속 쿼리가 있을 때 몽고DB 서버에서 어떤 인덱스를 선택할지 알 수 있다. 서버는 쿼리 플랜의 캐시를 유지하는데, 승리한 플랜은 차후 모양이 같은 쿼리에 사용하기 위해 캐시에 저장된다. 시간이 지나거나 컬렉션과 인덱스가 변경되면 쿼리 플랜이 캐시에 제거되고, 몽고DB는 다시 가능한 쿼리 프랠ㄴ을 실험해 해당 컬렉션 및 인덱스 집합에 가장 적합한 플랜을 찾는다.
+
+### 복합 인덱스 사용
+
+먼저 인덱스의 선택성을 고려해야한다. 
+
+
+
+
