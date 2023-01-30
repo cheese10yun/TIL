@@ -19,6 +19,8 @@
   * [Batch Insert 성능 향상기 2편 - 성능 측정](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-batch-insert.md)
   * [Spring Batch Reader 성능 측정 및 분석](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/item-reader-performance.md)
   * [Batch HTTP Page Item Reader](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-http-page-item-reader.md)
+  * [MySQL Batch Update 성능 측정 및 분석](https://github.com/cheese10yun/blog-sample/blob/master/exposed-study/docs/bulk-update.md)
+  * [Batch Update Performance 성능 측정 및 분석](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-update-performance.md)
 * JPA
   * [자바 ORM표준 JPA프로그래밍](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/%EC%9E%90%EB%B0%94ORM%ED%91%9C%EC%A4%80JPA%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D.md)
   * [페이징 API](https://github.com/cheese10yun/TIL/blob/master/Spring/jpa/JPA-Paging-API.md)
@@ -144,8 +146,6 @@
 * [JDBC 정리](https://github.com/cheese10yun/blog-sample/blob/master/jdbc-study/README.md)
 * [Error Response 서버로 전달하기](https://github.com/cheese10yun/blog-sample/blob/master/msa-error-response/README.md)
 * [HTTP Client 책임 분리하기](https://github.com/cheese10yun/blog-sample/blob/master/msa-error-response/docs/http-client.md)
-* [MySQL Batch Update 성능 측정 및 분석](https://github.com/cheese10yun/blog-sample/blob/master/exposed-study/docs/bulk-update.md)
-* [Batch Update Performance 성능 측정 및 분석](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/batch-update-performance.md)
 
 ## 운영체제
 * [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C_%EA%B8%B0%EC%B4%88.md)
