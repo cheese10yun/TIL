@@ -864,7 +864,7 @@ db.users.createIndex({"lastUpdated": 1}, {"expireAfterSeconds": 60*60*24})
 
 lastUpdated 필드에 TTL 인덱스를 생성한다. 도큐먼트에 lastUpdated 필드가 존재하고 날짜형이라면, 서버 시간이 도큐먼트 시간의 expireAfterSeconds 초를 지나면 도큐먼트가 삭제된다.
 
-활동 중인 세션이 삭제되는 것을 방지하려면 활동이 있을 때마다 lastUpdated 필드를 현재 시간으로 갱싱한다. 몽고DB는 TTL 인덱스를 매분마다 청소하므로 초 단위로 신경 쓸 필요는 없다. collMod 명령어를 이용해 expireAfterSeconds를 변경할 수 있다.
+활동 중인 세션이 삭제되는 것을 방지하려면 활동이 있을 때마다 lastUpdated 필드를 현재 시간으로 갱신한다. 몽고DB는 TTL 인덱스를 매분마다 청소하므로 초 단위로 신경 쓸 필요는 없다. collMod 명령어를 이용해 expireAfterSeconds를 변경할 수 있다.
 
 하나의 컬렉션의 TTL 인덱스를 여러 개 가질 수 있다. 복합 인덱스는 될 수 없지만 정렬 및 쿼리 최적화가 목적이라면 일반 인덱스 처럼 사용될 수 있다.
 
@@ -1022,7 +1022,7 @@ db.books.aggregate(
 )
 ```
 * middle가 비어 있는 경우 제외 (REMOVE)
-* 로직적으로 제어 가
+* 로직적으로 제어 가능
 
 ```json
 [
