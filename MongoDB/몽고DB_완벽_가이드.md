@@ -1128,6 +1128,45 @@ db.books.aggregate(
 ]
 ```
 
+```json
+[
+  {
+    "_id": 1,
+    "stop": {
+      "title": "book1",
+      "author": "xyz",
+      "page": 32
+    },
+    "user": "1234"
+  },
+  {
+    "_id": 2,
+    "stop": [
+      {
+        "title": "book2",
+        "author": "abc",
+        "page": 5
+      },
+      {
+        "title": "book3",
+        "author": "ijk",
+        "page": 100
+      }
+    ],
+    "user": "7890"
+  }
+]
+```
+* stop을 통해서 title이 포함된 무넛 필드만 출력
+
+```
+db.bookmarks.aggregate(
+  [
+    {$project: {"stop.title": 1}}
+  ]
+)
+```
+
 ##    
 
 # 스터디
