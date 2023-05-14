@@ -1,6 +1,20 @@
 # Grafana
 
-# Docker
+## Prometheus Docker
+
+
+```
+docker run \
+-d \
+--name=prometheus \
+--network=host \
+-v /prometheus/config:/etc/prometheus  \
+-v /prometheus/config:/data \
+prom/prometheus:v2.29.2 \
+--config.file=/etc/prometheus/prometheus.yml \
+--storage.tsdb.path=/data --web.enable-lifecycle \
+--storage.tsdb.retention.time=10d
+```
 
 
 ```
