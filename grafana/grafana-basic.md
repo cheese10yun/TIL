@@ -1,6 +1,6 @@
 # Grafana
 
-# Docker 
+# Docker
 
 
 ```
@@ -47,3 +47,49 @@ http 통신을 위한 prometheus reload 및 shutdown 활성화
 --log.level
 저장된 단계 이상으로 로그를 보임
 ```
+
+
+
+## Prometheus 설정
+
+### global
+````
+global: 전역으로 사용되는 설정 값
+scrape_internal: 메트릭 수집 주기
+scrape_timeout: 수집 요청 시 timeout 
+evaluatioj_interval: rule_files에 명시된 규칙 확인 주기
+````
+
+### alerting
+````
+alerting: Alertmanager에 연관된 설정 명시부
+alertmanagers: 알람을 받을 Alertmanager 서버 관련 설정
+follow_redirects: 수집 시, 리다이렉션을 따를지 여부
+scheme: 요청 시 사용될 프로토콜(http)
+timeout: Alertmanager가 알림을 받을 시에 timeout
+static_configs: Alertmanager로 사용될 대상 서버 설정
+targets: Alertmanager로 사용될 대상 서버 리스트
+rule_files: 메트릭 알람 조건 
+````
+
+### scrape_configs
+```
+scrape_configs: 수집할 방법 및 대상을 설정하는 부분
+job_name: 수집될 메트릭에 할당될 그룹 이름
+scrape_interval: 메트릭스 수집 주기 (global 설정)
+scrape_path: 메트릭을 가져올 요청 경로 (/metrics)
+scheme: 요청 시 사용될 프로토컬(http)
+follow_redirects: 수집 시, 리다이렉션을 따를지 여부(tue)
+static_configs: 수집될 대상 서버 설정
+targets: 대상 서버 리스트
+```
+
+## Exporter
+
+Exporters는 특정 메트릭을 수집해서 외부로 노출시키는 애플리케이션
+
+
+## 서비스 디스커버리
+
+서비스 디스커버리는 타겟 서버에 대한 정보를 가지고 오기 위한 설정, 리벨을 통해 타겟 서버 관리
+
