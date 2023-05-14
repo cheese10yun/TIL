@@ -1,7 +1,6 @@
-# Grafana
+# Grafana & Prometheus
 
 ## Prometheus Docker
-
 
 ```
 docker run \
@@ -16,7 +15,6 @@ prom/prometheus:v2.29.2 \
 --storage.tsdb.retention.time=10d
 ```
 
-
 ```
 docker run
 새로운 컨테이너에서 해당 명령어를 실행
@@ -25,7 +23,6 @@ docker run
 -- network: 컨테이너를 네트워크에 연결
 -v, --volume: 컨테이너 볼륨을 호스트 볼룸에 바인딩
 ```
-
 
 ```
 docker ps
@@ -62,11 +59,10 @@ http 통신을 위한 prometheus reload 및 shutdown 활성화
 저장된 단계 이상으로 로그를 보임
 ```
 
-
-
 ## Prometheus 설정
 
 ### global
+
 ````
 global: 전역으로 사용되는 설정 값
 scrape_internal: 메트릭 수집 주기
@@ -75,6 +71,7 @@ evaluatioj_interval: rule_files에 명시된 규칙 확인 주기
 ````
 
 ### alerting
+
 ````
 alerting: Alertmanager에 연관된 설정 명시부
 alertmanagers: 알람을 받을 Alertmanager 서버 관련 설정
@@ -87,6 +84,7 @@ rule_files: 메트릭 알람 조건
 ````
 
 ### scrape_configs
+
 ```
 scrape_configs: 수집할 방법 및 대상을 설정하는 부분
 job_name: 수집될 메트릭에 할당될 그룹 이름
@@ -102,8 +100,16 @@ targets: 대상 서버 리스트
 
 Exporters는 특정 메트릭을 수집해서 외부로 노출시키는 애플리케이션
 
-
 ## 서비스 디스커버리
 
 서비스 디스커버리는 타겟 서버에 대한 정보를 가지고 오기 위한 설정, 리벨을 통해 타겟 서버 관리
+
+## 메트릭 종류
+
+| 종류 | 설명 |
+|---------|--|
+| Counter | 누적 개수 |
+| Gauge | 현재 상태 |
+| Histogram | 특정 기간 동안의 집계 |
+| Summary | Histogram과 유사, Quantile |
 
