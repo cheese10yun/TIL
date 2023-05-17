@@ -113,3 +113,15 @@ Exporters는 특정 메트릭을 수집해서 외부로 노출시키는 애플�
 | Histogram | 특정 기간 동안의 집계 |
 | Summary | Histogram과 유사, Quantile |
 
+
+## 데이터 유형
+
+
+| 종류 | 설명 |
+|---------|--|
+| Instant vector | 동 시간대 샘플 집합 |
+| Range vector | 특정 시간 범위의 샘플 집합 |
+| Scalar | 숫자 |
+| String | 문자 |
+
+
