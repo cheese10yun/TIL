@@ -277,6 +277,7 @@
 ## Tool
 * [IntelliJ Tip](https://github.com/cheese10yun/IntelliJ/blob/master/README.md)
 * [DataGrip](https://github.com/cheese10yun/TIL/blob/master/tool/DataGrip.md)
+* [IntelliJ 자주 사용하는 기능 정리](https://github.com/cheese10yun/blog-sample/blob/master/intellij-test/intellij-test/REAEMD.md)
 
 ## POP it 포스팅
 * [작성글](https://www.popit.kr/author/Yun)
