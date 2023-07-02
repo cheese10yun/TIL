@@ -22,9 +22,9 @@
       - [sort_buffer_size](#sort_buffer_size)
       - [join_buffer_size](#join_buffer_size)
       - [read_buffer_size](#read_buffer_size)
-      - [read_rnd_buffer_szie](#read_rnd_buffer_szie)
-      - [sort_buffer_szie, join_buffer_size, read_buffer_szie, rnd_buffer_szie](#sort_buffer_szie-join_buffer_size-read_buffer_szie-rnd_buffer_szie)
-      - [query_cache_szie, query_cache_limit](#query_cache_szie-query_cache_limit)
+      - [read_rnd_buffer_size](#read_rnd_buffer_size)
+      - [sort_buffer_size, join_buffer_size, read_buffer_size, rnd_buffer_size](#sort_buffer_size-join_buffer_size-read_buffer_size-rnd_buffer_size)
+      - [query_cache_size, query_cache_limit](#query_cache_size-query_cache_limit)
       - [group_concat_max_len](#group_concat_max_len)
       - [transcation-isolation](#transcation-isolation)
       - [innodb_buffer_pool_size](#innodb_buffer_pool_size)
@@ -39,7 +39,7 @@
       - [innodb_flush_log_at_trx_commit](#innodb_flush_log_at_trx_commit)
       - [innodb_flush_method](#innodb_flush_method)
       - [innodb_old_locks_time](#innodb_old_locks_time)
-      - [buffer_szie](#buffer_szie)
+      - [buffer_size](#buffer_size)
       - [general_log, general_log_file](#general_log-general_log_file)
       - [slow-query-log, long_query_time, slow_query_log_file](#slow-query-log-long_query_time-slow_query_log_file)
       - [log_slow_admin_statements](#log_slow_admin_statements)
@@ -327,11 +327,11 @@ MySQL에서 인덱스를 이용하거나 별도의 메모리 디스크 공간에
 
 #### read_buffer_size
 
-#### read_rnd_buffer_szie
+#### read_rnd_buffer_size
 
-#### sort_buffer_szie, join_buffer_size, read_buffer_szie, rnd_buffer_szie
+#### sort_buffer_size, join_buffer_size, read_buffer_size, rnd_buffer_size
 
-#### query_cache_szie, query_cache_limit
+#### query_cache_size, query_cache_limit
 
 #### group_concat_max_len
 MySQL에서는 `GROUP_CONCAT()` 이라는 함수로 `GROUP BY`된 레코드의 특정 칼럼 값이나 표현식을 구분자로 연결해 가져오는 경우 이때 group_concat_max_len 값으로 지정된 이상의 연결은 불가능하다. 이 버퍼 또한 세션 단위의 버퍼이므로 주의해서 적절한 값으로 설정해야한다.
@@ -340,7 +340,7 @@ MySQL에서는 `GROUP_CONCAT()` 이라는 함수로 `GROUP BY`된 레코드의 �
 트랜잭션의 격리 수준을 설정하는 설정 값으로 기본 값은 `REPEATABLE-READ`다.
 
 #### innodb_buffer_pool_size
-InnoDB 스토리 엔진에서 가장 중요한 옵션이다. InnoDB 스토리지 엔진의 버퍼풀 디스크의 데이터를 메모리에 캐싱함과 동시에 데이터의 변경을 버퍼링하는 역할을 수행한다. 일반적으로 innodb_buffer_pool_szie는 운영체제나 MySQL 클라이언트에 대한 서버 스레드가 사용할 메모리를 제외하고는 남는 거의 모든 메모리 공간을 설정한다.
+InnoDB 스토리 엔진에서 가장 중요한 옵션이다. InnoDB 스토리지 엔진의 버퍼풀 디스크의 데이터를 메모리에 캐싱함과 동시에 데이터의 변경을 버퍼링하는 역할을 수행한다. 일반적으로 innodb_buffer_pool_size는 운영체제나 MySQL 클라이언트에 대한 서버 스레드가 사용할 메모리를 제외하고는 남는 거의 모든 메모리 공간을 설정한다.
 
 하지만 이 예측치는 최대 사용 가능한 메모리 크기이므로 상당히 현실성이 떨어지며, 실제 사용하는 메모리는 쿼리의 특성에 따라 달라진다. 그래서 일반적으로 50 ~ 80% 까지 수준에서 inndb_buffer_pool_size를 설정한다.
 
@@ -387,8 +387,8 @@ InooDB에서 접근을 획득을 위해 최대한 대기할 수 있는 시간(�
 
 #### innodb_old_locks_time
 
-#### buffer_szie
-InnoDB 스토리지 엔진에서 가장 중요한 설정 값이 inno_db_buffer_pool_szie 라면 MyISAM 스토리지 엔진에서 가장 중요한 설정값은 key_buffer_size다. InnoDB의 버퍼 풀은 인덱스와 모든 데이터 페이지에 대해 캐시와 버퍼의 역할을 동시에 수행하지만 MyISAM의 키 버퍼는 주로 인덱스에 대해서만 캐시 역할을 한다. 
+#### buffer_size
+InnoDB 스토리지 엔진에서 가장 중요한 설정 값이 inno_db_buffer_pool_size 라면 MyISAM 스토리지 엔진에서 가장 중요한 설정값은 key_buffer_size다. InnoDB의 버퍼 풀은 인덱스와 모든 데이터 페이지에 대해 캐시와 버퍼의 역할을 동시에 수행하지만 MyISAM의 키 버퍼는 주로 인덱스에 대해서만 캐시 역할을 한다. 
 
 
 #### general_log, general_log_file
@@ -662,7 +662,7 @@ InnoDB에는 손실이나 장애로부터 데이터를 보호하기 위한 여�
 
 InnoDB 스토리지 엔진에서 가장 핵심적인 부분으로, **디스크의 데이터 파일이나 인덱스 정보를 메모리에 캐시해 두는 공간이다. 쓰기 작업을 지연시켜 일괄 작업으로 처리할 수 있게 해주는 버퍼 역할도 같이한다.**  일반적인 애플리케이션에서는 INSERT, UPDATE, DELETE와 같은 데이터를 변경하는 쿼리는 데이터 파일의 이곳저곳에 위치한 레코드를 변경하기 때문에 **랜덤 디스크 작업을 발생시킨다. 하지만 버퍼 풀이 이러한 변경된 데이터를 모아서 처리하게 되면 랜덤한 디스크 작업의 횟수를 줄일 수 있다.**
 
-**InnoDB 버퍼 풀은 데이터와 인덱스 모두 캐시하고 쓰기 버퍼링의 역할까지 모두 처리하고 있다.** 그 밖에도 InnoDB의 버퍼 풀은 많은 백그라운드 작업의 기반이 되는 메모리 공간이다. 따라서 InnoDB의 버퍼 풀 크기를 설정하는 파라미터(innodb_buffer_pool_szie)는 신중하게 설정하는 것이 좋다. 일반적으로 전체 물리적인 메모리의 80% 정도를 InnoDB의 버퍼 풀로 설정하라는 내용의 게시물도 있는데, 그렇게 단순하게 설정해서 되는 값은 아니며 운영체제와 각 클라이언트 스레드가 사용할 메모리도 충분히 고려해서 설정해야한다. **일반적으로 전체 장착된 물리 메모리 50~80% 수주에서 버퍼 풀의 메모리 크기를 결정한다.**
+**InnoDB 버퍼 풀은 데이터와 인덱스 모두 캐시하고 쓰기 버퍼링의 역할까지 모두 처리하고 있다.** 그 밖에도 InnoDB의 버퍼 풀은 많은 백그라운드 작업의 기반이 되는 메모리 공간이다. 따라서 InnoDB의 버퍼 풀 크기를 설정하는 파라미터(innodb_buffer_pool_size)는 신중하게 설정하는 것이 좋다. 일반적으로 전체 물리적인 메모리의 80% 정도를 InnoDB의 버퍼 풀로 설정하라는 내용의 게시물도 있는데, 그렇게 단순하게 설정해서 되는 값은 아니며 운영체제와 각 클라이언트 스레드가 사용할 메모리도 충분히 고려해서 설정해야한다. **일반적으로 전체 장착된 물리 메모리 50~80% 수주에서 버퍼 풀의 메모리 크기를 결정한다.**
 
 **InnoDB 버퍼 풀은 아직 디스크에 기록되지 않은 데이터를 가지고 있다(이러한 데이터를 가지고 있는 페이지를 더피 페이지(Dirty page)라고 한다). 이러한 더티 페이지는 InnoDB에서 주기적으로 또는 어떤 조건이 도면 체크포인트 이벤드가 발생하는데, 이 때 Write 스레드가 필요한 만큼의 더티 페이지만 디스크로 기록된다.** 체크 포인트가 발생한다고 해서 버퍼 풀의 모든 더티 페이지를 디스크로 기록하는 것은 아니다.
 
@@ -2543,13 +2543,13 @@ public static void main(String[] args) throws Exception {
 그 밖에 다양한 설정이 있으니 [Connetor/J: Configuration Properties](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html)을 참조하는 것이 좋다.
 
 ### 대량의 데이터 가져오기
-JDBC 표준에서 제공하는 `Statement.setFetchSzie()`라는 함수는 MySQL 서러보부터 SELECT된 레코드를 클라이언트인 애플리케이션으로 가져올 때 한 번에 가져올 레코드의 건수를 설정하는 역할을 한다. 하지만 MySQL의 Connctor/J도 JDBC의 표준 기능을 모두 지원하고 있지 못하는데, 그 중 하나가 setFetchSize() 함수이다. 우선 MySQL Connector/J로 SELECT 쿼리를 실행하면 MySQL 서버로부터 어떻게 결과를 가져오는지 보자
+JDBC 표준에서 제공하는 `Statement.setFetchSize()`라는 함수는 MySQL 서러보부터 SELECT된 레코드를 클라이언트인 애플리케이션으로 가져올 때 한 번에 가져올 레코드의 건수를 설정하는 역할을 한다. 하지만 MySQL의 Connctor/J도 JDBC의 표준 기능을 모두 지원하고 있지 못하는데, 그 중 하나가 setFetchSize() 함수이다. 우선 MySQL Connector/J로 SELECT 쿼리를 실행하면 MySQL 서버로부터 어떻게 결과를 가져오는지 보자
 
 ![](../assets/rea-mysql-flow-1.png)
 
 Conntor/J를 이용해 쿼리 실행(Statement.executeQuery) 하면 **Connetor/J가 SELECT 쿼리의 결과를 MySQL 서버로 부터 모두 내려 받아 Connector/J가 관리하는 캐시 메모리 영역에 그 결과를 저장한다. 이렇게 SELECT 쿼리의 결과가 다운로드되는 동안 `Statement.executeQuery()` 함수는 블록돼 있다가 Connector/J가 모든 결과 값을 내려 받아 캐시에 저장되고 나면 그때서야 비로서` Statement.executeQuery()` 함수가 SELECT 쿼리 문장의 결과(ResultSet)의 핸드러를 애플리케이션에 반환한다.** 그 이후 애플리케이션에서 `ResultSet.next()`, `ResultSet.getString()` 등과 같은 함수가 호출되면 MySQL 서버까지 그 요청이 가지 않고, Connector/J가 캐시해둔 값을 애플리케이션 쪽으로 반환한다. **클라이언트 커서라고 하는 이러한 방식은 상당히 빠르기 때문에 MySQL Connector/J의 기본 동작으로 채택돼 있다.**
 
-그런데 이러한 방식은 한 가지 문제가 있다. **SELECT 쿼리의 결과가 너무 클 때는 클라이언트로 다운로드 하는데 많은 시간이 걸린다. 애플리케이션의 메모리에 SELECT 쿼리의 결과를 담아야 하기 때문에 OOM이가 발생할 가능성이 높다. MySQL에서는 `Statement.setFetchSzie()`를 예약된 값(Integer.MIN_VALUE)으로 설정하면 한 번에 쿼리의 결과를 모두 다운로드 하지 않고 MySQL 서버에 한 건 단위로 읽어와서 가져가게 할 수 있다. 이러한 방식을 ResultSet Streaming 이라고 한다.**
+그런데 이러한 방식은 한 가지 문제가 있다. **SELECT 쿼리의 결과가 너무 클 때는 클라이언트로 다운로드 하는데 많은 시간이 걸린다. 애플리케이션의 메모리에 SELECT 쿼리의 결과를 담아야 하기 때문에 OOM이가 발생할 가능성이 높다. MySQL에서는 `Statement.setFetchSize()`를 예약된 값(Integer.MIN_VALUE)으로 설정하면 한 번에 쿼리의 결과를 모두 다운로드 하지 않고 MySQL 서버에 한 건 단위로 읽어와서 가져가게 할 수 있다. 이러한 방식을 ResultSet Streaming 이라고 한다.**
 
 ![](../assets/real_mysql_2222.png)
 
@@ -2565,7 +2565,7 @@ public static void main(String[] args) throws Exception {
    statement.setFetchSize(Integer.MIN_VALUE);
 }
 ```
-`connection.createStatement(...)` 메서드로 Statement를 생성한다 이때 `(2)` 값인 `ResultSet.CONCUR_READ_ONLY` 설정을 통해서 읽기 전용으로 으로 설정하고, `(1)` 값인 `ResultSet.TYPE_FORWARD_ONLY`으로 Statement 진행 방향을 앞쪽으로 읽을 것을 설정한다. 그리고 `statement.setFetchSize(Integer.MIN_VALUE)` 함수를 이용해 레코드의 패치 크기를 예약된 `(3)`의 값인 `Integer.MIN_VALUE`으로 설정해 주면 MySQL 서버는 클라이언트가 결과 셋을 레코드 한 건 단위로 다운로드 하리라는 것을 알아 채고 결과 셋을 준비해 둔다. 그리고 클라이언트에서 `ResultSet.next()` 함수가 호출될 때 마다 한 건씩 클라이언트로 내려 보네게 된다. **여기서 `Integer.MIN_VALUE`는 특별한 의미를 가지지 않는 그냥 지정된 값일 뿐이다. MySQL Connector/J에서는 `setFetchSzie()` 함수에 100을 설정 하거나 10을 설정한다고 해서 100건 이나 10건 단위로 데이터를 가져올 수는 없다.**
+`connection.createStatement(...)` 메서드로 Statement를 생성한다 이때 `(2)` 값인 `ResultSet.CONCUR_READ_ONLY` 설정을 통해서 읽기 전용으로 으로 설정하고, `(1)` 값인 `ResultSet.TYPE_FORWARD_ONLY`으로 Statement 진행 방향을 앞쪽으로 읽을 것을 설정한다. 그리고 `statement.setFetchSize(Integer.MIN_VALUE)` 함수를 이용해 레코드의 패치 크기를 예약된 `(3)`의 값인 `Integer.MIN_VALUE`으로 설정해 주면 MySQL 서버는 클라이언트가 결과 셋을 레코드 한 건 단위로 다운로드 하리라는 것을 알아 채고 결과 셋을 준비해 둔다. 그리고 클라이언트에서 `ResultSet.next()` 함수가 호출될 때 마다 한 건씩 클라이언트로 내려 보네게 된다. **여기서 `Integer.MIN_VALUE`는 특별한 의미를 가지지 않는 그냥 지정된 값일 뿐이다. MySQL Connector/J에서는 `setFetchSize()` 함수에 100을 설정 하거나 10을 설정한다고 해서 100건 이나 10건 단위로 데이터를 가져올 수는 없다.**
 
 
 ```java
@@ -2587,7 +2587,7 @@ public class JdbcTest8 {
     }
 }
 ```
-**JDBC URL 설정에서 useCursorFetch 설정 옵션을 TRUE로 변경하고 `(1)`처럼 defaultFetchSize 값을 반드시 0보다 큰 값으로 설정해야만 서버 커서 방식으로 대용량의 결과 셋을 클라이언트로 가져올 수 있다. 추가로 서버 커서 방식은 반드시 서버 PreparedStatement 방식으로 처리돼야 하기 때문에 useCursorFetch가 TRUE로 설정되면 useServerPrepStmts 설정 옵션까지 자동으로 TRUE로 변경된다.** 이 방식과 결과 셋의 스트리밍 방식의 차이는 스트리밍 방식은 한 건씩 서버에서 읽어 오지만 서버 커서 방식은 defaultFetchSzie에 명시된 레코드 건수 만큼 Connector/J의 캐시 메모리 영역에 내려 받아 애플리케이션에 제공된다. 즉 SELECT 쿼리의 건수가 100건 이상이였 다면 스트리밍 방식은 MySQL서버와 통신이 100만 건 발생하지만 서커 커서 방식은 1000번(100만/1000)에 대해서만 통신이 필요하다는 의미이다.
+**JDBC URL 설정에서 useCursorFetch 설정 옵션을 TRUE로 변경하고 `(1)`처럼 defaultFetchSize 값을 반드시 0보다 큰 값으로 설정해야만 서버 커서 방식으로 대용량의 결과 셋을 클라이언트로 가져올 수 있다. 추가로 서버 커서 방식은 반드시 서버 PreparedStatement 방식으로 처리돼야 하기 때문에 useCursorFetch가 TRUE로 설정되면 useServerPrepStmts 설정 옵션까지 자동으로 TRUE로 변경된다.** 이 방식과 결과 셋의 스트리밍 방식의 차이는 스트리밍 방식은 한 건씩 서버에서 읽어 오지만 서버 커서 방식은 defaultFetchSize에 명시된 레코드 건수 만큼 Connector/J의 캐시 메모리 영역에 내려 받아 애플리케이션에 제공된다. 즉 SELECT 쿼리의 건수가 100건 이상이였 다면 스트리밍 방식은 MySQL서버와 통신이 100만 건 발생하지만 서커 커서 방식은 1000번(100만/1000)에 대해서만 통신이 필요하다는 의미이다.
 
 **ResultSet Streaming 방식과 서버 커서를 사용하는 방식의 큰 차이는 MySQL 서버가 직접 결과를 담아 둘 임시 테이블을 사용하는지 여부다.** 또한 그로 인한 장단점이 있어 상황에 맞게 필요한 방식으로 선택해서 사용하면 된다.
 
