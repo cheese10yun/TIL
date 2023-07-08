@@ -329,4 +329,13 @@
 
 
 ## 외부활동
+* [양재동 코드랩](https://www.youtube.com/@user-nl2vv9cj8d)
+  * [자바 스프링 실전 가이드](https://www.youtube.com/watch?v=TIag2sXhZRk)
+  * [Kotlin 기반 Spring Boot를 통한 REST API 개발](https://www.youtube.com/watch?v=l7k1PnEgt94)
+* [한 번에 끝내는 Spring 완.전.판 강의](https://fastcampus.co.kr/dev_online_spring)
+  * Part 6: Spring Security OAuth2 Social
+  * Part 8: Spring REST Docs
+  * Part 9: 리팩토링: 유지보수하기 좋은 코드 디자인
 * [스프링 캠프 2023 - 실무에서 적용하는 테스트 코드 작성 방법과 노하우](https://springcamp.ksug.org/2023/)
+* [Kakao Tech](https://tech.kakao.com/)
+  * [Kakao Tech 제2회 - Spring Batch 애플리케이션 성능 향상을 위한 주요 팁](https://tech.kakao.com/2023/07/04/kakao-tech-meet-2/)
