@@ -326,3 +326,7 @@
 * [VIM](https://github.com/cheese10yun/TIL/blob/master/ETC/VIM.md)
 * [ETC](https://github.com/cheese10yun/TIL/blob/master/ETC/ETC.md)
 * [Github Action With Gradle](https://github.com/cheese10yun/github-action/blob/master/README.md)
+
+
+## 외부활동
+* [스프링 캠프 2023 - 실무에서 적용하는 테스트 코드 작성 방법과 노하우](https://springcamp.ksug.org/2023/)
