@@ -338,5 +338,7 @@
   * Part 8: Spring REST Docs
   * Part 9: 리팩토링: 유지보수하기 좋은 코드 디자인
 * [스프링 캠프 2023 - 실무에서 적용하는 테스트 코드 작성 방법과 노하우](https://springcamp.ksug.org/2023/)
+* [Kakaopay Tech Blog](https://tech.kakaopay.com/)
+  * [실무에서 적용하는 테스트 코드 작성 방법과 노하우 Part 1: 효율적인 Mock Test](https://tech.kakaopay.com/post/mock-test-code/)
 * [Kakao Tech](https://tech.kakao.com/)
-  * [Kakao Tech 제2회 - Spring Batch 애플리케이션 성능 향상을 위한 주요 팁](https://tech.kakao.com/2023/07/04/kakao-tech-meet-2/)
+  * [Kakao Tech 제2회 - Spring Batch 애플리케이션 성능 향상을 위한 주요 팁](https://tech.kakao.com/2023/07/04/kakao-tech-meet-2/) - [발표영상]()
