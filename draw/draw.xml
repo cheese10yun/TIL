@@ -1,4 +1,4 @@
-<mxfile modified="2023-08-26T16:21:59.046Z" host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="Tg6QRuDlwtjIWUGw6KU_" version="21.6.8" type="device" pages="16">
+<mxfile modified="2023-08-28T16:20:34.065Z" host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="d1IBR1WiHxGbnaGR1SJ2" version="21.6.8" type="device" pages="16">
   <diagram id="bR0syG99WqXj30Xq2RZ7" name="Redis">
     <mxGraphModel dx="-7663" dy="-10606" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -14863,7 +14863,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="RKVzQSrC2rseNxU99L3K" name="Spring Batch">
-    <mxGraphModel dx="-3316" dy="619" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="-3316" dy="488" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="uDVWkmyBL49qzFE1Zadd-0" />
         <mxCell id="uDVWkmyBL49qzFE1Zadd-1" parent="uDVWkmyBL49qzFE1Zadd-0" />
