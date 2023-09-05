@@ -44,6 +44,7 @@
   * [JPA @Where 사용법](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/jpa-where.md)
   * [JPA Batch Insert](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/jpa-batch-insert.md)
   * [JPQL 조회 방식에 대한 분석](https://github.com/cheese10yun/blog-sample/blob/master/jpa-repeatable-read/README.md)
+  * [JPA 페이징 Performance 향상 방법](https://cheese10yun.github.io/page-performance/)
 * Data Flow
   * Task
     * [Task 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/data-flow/task/task-basic.md)
@@ -346,5 +347,6 @@
 * [Kakaopay Tech Blog](https://tech.kakaopay.com/)
   * [실무에서 적용하는 테스트 코드 작성 방법과 노하우 Part 1: 효율적인 Mock Test](https://tech.kakaopay.com/post/mock-test-code/)
   * [실무에서 적용하는 테스트 코드 작성 방법과 노하우 Part 2: 테스트 코드로부터 피드백 받기](https://tech.kakaopay.com/post/mock-test-code-part-2/)
+  * [Spring Batch 애플리케이션 성능 향상을 위한 주요 팁](https://tech.kakaopay.com/post/spring-batch-performance/)
 * [Kakao Tech](https://tech.kakao.com/)
   * [Kakao Tech 제2회 - Spring Batch 애플리케이션 성능 향상을 위한 주요 팁](https://tech.kakao.com/2023/07/04/kakao-tech-meet-2/) - [발표영상](https://www.youtube.com/watch?v=XSkz0kO7J3w)
