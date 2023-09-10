@@ -143,6 +143,13 @@ B+Tree 방식의 인덱스에 대한 데이터를 추가하고, 삭제 및 수�
 
 **세컨더리(보조) 인덱스는 항상 PK 인덱스를 거쳐 실제 데이터를 탐색하기 때문에 세컨더리(보조) 인덱스는 항상 PK를 가지고 있음(실제 데이터 주소는 클러스터 인덱스에서 가짐)**
 
+#### 인덱스 구조
+
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/real_mysql_b-trre-1.png)
+
+![](https://raw.githubusercontent.com/cheese10yun/TIL/master/assets/real_mysql_b-trre-2.png)
+
+
 ### 클러스터 인덱스 요약
 
 1. **클러스터 인덱스는 데이터 위츠를 결정하는 키 값이다.**
