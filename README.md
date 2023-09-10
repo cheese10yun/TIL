@@ -165,7 +165,8 @@
 * [Real MySQL 8.0 1권](https://github.com/cheese10yun/TIL/blob/master/Database/real-mysql-8.0-part1.md)
 * [Real MySQL 8.0 2권](https://github.com/cheese10yun/TIL/blob/master/Database/real-mysql-8.0-part2.md)
 * [MySQL Tip](https://github.com/cheese10yun/TIL/blob/master/Database/mysql-tip.md)
-* [MySQL Study]()
+* [MySQL Index](https://github.com/cheese10yun/TIL/blob/master/Database/mysql-index-study.md)
+* [MySQL Pagination](https://github.com/cheese10yun/TIL/blob/master/Database/mysql-pagination.md)
 
 ## Mongo DB
 * [몽고 디비 완벽 가이드](https://github.com/cheese10yun/TIL/blob/master/MongoDB/%EB%AA%BD%EA%B3%A0DB_%EC%99%84%EB%B2%BD_%EA%B0%80%EC%9D%B4%EB%93%9C.md)
