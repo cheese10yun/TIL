@@ -167,6 +167,8 @@
 * [MySQL Tip](https://github.com/cheese10yun/TIL/blob/master/Database/mysql-tip.md)
 * [MySQL Index](https://github.com/cheese10yun/TIL/blob/master/Database/mysql-index-study.md)
 * [MySQL Pagination](https://github.com/cheese10yun/TIL/blob/master/Database/mysql-pagination.md)
+* [MySQL Concurrency](https://github.com/cheese10yun/TIL/blob/master/Database/mysql-concurrency.md)
+
 
 ## Mongo DB
 * [몽고 디비 완벽 가이드](https://github.com/cheese10yun/TIL/blob/master/MongoDB/%EB%AA%BD%EA%B3%A0DB_%EC%99%84%EB%B2%BD_%EA%B0%80%EC%9D%B4%EB%93%9C.md)
