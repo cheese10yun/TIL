@@ -174,7 +174,7 @@
 
 ## Mongo DB
 * [몽고 디비 완벽 가이드](https://github.com/cheese10yun/TIL/blob/master/MongoDB/%EB%AA%BD%EA%B3%A0DB_%EC%99%84%EB%B2%BD_%EA%B0%80%EC%9D%B4%EB%93%9C.md)
-* [몽고 디비 Study](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongo-study/README.md)
+* [몽고 디비 Study](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/README.md)
 
 ## 네트워크
 * [OSI 7 계층](https://github.com/cheese10yun/TIL/blob/master/network/OSI-7%EA%B3%84%EC%B8%B5.md)
