@@ -47,7 +47,7 @@
   * [JPA 페이징 Performance 향상 방법](https://cheese10yun.github.io/page-performance/)
 * Mongo
   * [Spring Data MongoDB Repository 확장](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongo-custom-repository.md)
-  * [Spring Data MongoDB Test Data 손쉽게 셋업하기](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/spring-data-mongo-test-data-setup.md)
+  * [MongoDB 다양한 테스트 케이스를 커버할 수 있는 테스트 데이터 셋업 방법](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/spring-data-mongo-test-data-setup.md)
 * Data Flow
   * Task
     * [Task 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/data-flow/task/task-basic.md)
