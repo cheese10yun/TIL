@@ -45,6 +45,7 @@
   * [JPA Batch Insert](https://github.com/cheese10yun/blog-sample/blob/master/batch-study/docs/jpa-batch-insert.md)
   * [JPQL 조회 방식에 대한 분석](https://github.com/cheese10yun/blog-sample/blob/master/jpa-repeatable-read/README.md)
   * [JPA 페이징 Performance 향상 방법](https://cheese10yun.github.io/page-performance/)
+  * [Spring Boot3 Kotlin JPA & Querydsl 적용하기](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/spirngboot3-jpa-querydsl.md)
 * Mongo
   * [Spring Data MongoDB Repository 확장](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongo-custom-repository.md)
   * [MongoDB 다양한 테스트 케이스를 커버할 수 있는 테스트 데이터 셋업 방법](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/spring-data-mongo-test-data-setup.md)
