@@ -259,6 +259,7 @@
 * [코틀린 코루틴 학습](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/Kotlin%20Coroutines.md)
 * [2시간으로 끝내는 코루틴 학습 정리](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/2%EC%8B%9C%EA%B0%84%EC%9C%BC%EB%A1%9C%20%EB%81%9D%EB%82%B4%EB%8A%94%20%EC%BD%94%EB%A3%A8%ED%8B%B4.md)
 * [Kotlin JSON Minify](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/kotlin-json-minify.md)
+* [코틀린 고급편](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/kotlin-advance.md)
 
 ## Node
 * [Apex](https://github.com/cheese10yun/TIL/blob/master/Node/Apex.md)
