@@ -372,8 +372,8 @@
 * [VIM](https://github.com/cheese10yun/TIL/blob/master/ETC/VIM.md)
 * [ETC](https://github.com/cheese10yun/TIL/blob/master/ETC/ETC.md)
 * [Github Action With Gradle](https://github.com/cheese10yun/github-action/blob/master/README.md)
-* [Locust Server 성능 테스트 도구](https://github.com/cheese10yun/blog-sample/blob/master/locust/README.md)
-
+* [Locust Server 성능 테스트 도구 소개](https://github.com/cheese10yun/blog-sample/blob/master/locust/README.md)
+* [Locust Server 성능 테스트 도구 기능 소개](https://github.com/cheese10yun/blog-sample/blob/master/locust/docs/part-2.md)
 
 ## 외부활동
 * [양재동 코드랩](https://www.youtube.com/@user-nl2vv9cj8d)
