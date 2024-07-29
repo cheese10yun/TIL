@@ -14,10 +14,10 @@
 | 쓰기락(Exclusive Lock) | 대기               | 대기                  |
 
 * 읽기락(Shared Lock)이 잠금을 획득한 상태에서 다른 읽기락(Shared Lock)이 들어오면 이름 처럼 공유가 가능
-* 쓰기락(Exclusive Lock) 베타적인 락이기 떄문에 읽기락이 걸려 있든 쓰기락이 걸려있든 무조건 대기가 필요
+* 쓰기락(Exclusive Lock) 베타적인 락이기 때문에 읽기락이 걸려 있든 쓰기락이 걸려있든 무조건 대기가 필요
 * 읽기락은 SELECT ... FOR SHARE 쿼리
 * 쓰기락은 SELECT ... FOR UPDATE, UPDATE, DELETE 쿼리
-* **매번 잠금이 필요한 경우, 성능저하를 피할 수 없기 떄문에 MySQL에서 일반적인 SELECT는 Nonblocking Consistent Read로 동작**
+* **매번 잠금이 필요한 경우, 성능저하를 피할 수 없기 때문에 MySQL에서 일반적인 SELECT는 Nonblocking Consistent Read로 동작**
 * SELECT는 Nonblocking Consistent Read 동작이 가능한 이유는 MVCC를 통한 UNDO Log를 통해 가능하다.
 
 ### 레코드 락
