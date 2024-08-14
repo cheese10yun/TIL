@@ -389,6 +389,7 @@
 * [Kakaopay Tech Blog](https://tech.kakaopay.com/)
   * [실무에서 적용하는 테스트 코드 작성 방법과 노하우 Part 1: 효율적인 Mock Test](https://tech.kakaopay.com/post/mock-test-code/)
   * [실무에서 적용하는 테스트 코드 작성 방법과 노하우 Part 2: 테스트 코드로부터 피드백 받기](https://tech.kakaopay.com/post/mock-test-code-part-2/)
+  * [실무에서 적용하는 테스트 코드 작성 방법과 노하우 Part 3: Given 지옥에서 벗어나기 - 객체 기반 데이터 셋업의 한계](https://tech.kakaopay.com/post/given-test-code/)
   * [Spring Batch 애플리케이션 성능 향상을 위한 주요 팁](https://tech.kakaopay.com/post/spring-batch-performance/)
   * [MSA 환경에서의 유연한 HTTP 클라이언트 설계 전략](https://tech.kakaopay.com/post/make-http-client-design-flexible/)
 * [Kakao Tech](https://tech.kakao.com/)
