@@ -157,6 +157,7 @@
 * [Error Response 서버로 전달하기](https://github.com/cheese10yun/blog-sample/blob/master/msa-error-response/README.md)
 * [HTTP Client 책임 분리하기](https://github.com/cheese10yun/blog-sample/blob/master/msa-error-response/docs/http-client.md)
 * [MySQL Connection Pool 관리 - HikariCP 설정 및 타임아웃 처리](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/mysql-connection-pool.md)
+* [Spring Boot에서 HikariCP로 MySQL Connection Pool 최적화하기](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/mysql-connection-pool-2.md)
 
 ## 운영체제
 * [운영체제 기초](https://github.com/cheese10yun/TIL/blob/master/OS/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C_%EA%B8%B0%EC%B4%88.md)
