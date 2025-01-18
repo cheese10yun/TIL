@@ -50,6 +50,7 @@
   * [Spring Data MongoDB Repository 확장](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongo-custom-repository.md)
   * [MongoDB 다양한 테스트 케이스를 커버할 수 있는 테스트 데이터 셋업 방법](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/spring-data-mongo-test-data-setup.md)
   * [MongoDB Update 성능 측정 및 분석](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongodb-bulk-update-performance.md)
+  * [Spring Data MongoDB에서의 Update 전략과 경험](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongodb-guide-part-1.md)
 * Data Flow
   * Task
     * [Task 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/data-flow/task/task-basic.md)
