@@ -55,7 +55,8 @@
   * [MongoDB 드라이버의 블로킹 특성과 비동기 처리 방법](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongodb-driver.md)
   * [AggregationOptions](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/AggregationOptions.md)
   * [MongoDB Connection Properties](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongodb-connection-properties.md)
-  * [Spring Data MongoDB N+1 발생 원인과 해결 방법](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/spring-data-mongo-dbref.md)
+  * [Spring Data MongoDB에서 N+1 문제 다루기: 성능 이슈와 최적화 전략](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/spring-data-mongo-dbref.md)
+  * [CursorBatchSize](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongodb-cursorBatchSize.md)
 * Data Flow
   * Task
     * [Task 기초](https://github.com/cheese10yun/TIL/blob/master/Spring/data-flow/task/task-basic.md)
