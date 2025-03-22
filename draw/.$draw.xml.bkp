@@ -19988,7 +19988,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="YsYG2yyFNRLNH8w7y9Ud" name="kafka">
-    <mxGraphModel dx="1851" dy="996" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2074" dy="1212" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -20571,7 +20571,7 @@
         <mxCell id="0CnqXANRizqcED6rHFJq-30" value="&lt;b&gt;Producer 원래 전송 순서와&amp;nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;다르게 B1, B0 순으로 저장&lt;/b&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1270" y="3430" width="190" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="0CnqXANRizqcED6rHFJq-31" value="&lt;b&gt;enable.idempotence=true 설정으로&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="0CnqXANRizqcED6rHFJq-31" value="&lt;b&gt;enable.idempotence=true 설정으로&lt;/b&gt;&lt;div&gt;&lt;b&gt;max.in.flight.requests.per.connection이 1보다 큰 경우 발생할 수 있는 메시지 순서 이슈 해결&lt;/b&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1280" y="3240" width="280" height="30" as="geometry" />
         </mxCell>
       </root>

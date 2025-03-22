@@ -273,6 +273,7 @@
 * [Kotlin 자주 사용하는 패턴 정리](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/Kotlin-pattern.md)
 * [Kotlin 코루틴으로 성능 개선: Flow를 활용한 다중 요청 처리](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/coroutine-flatMapMerge.md)
 * [Kotlin 객체 생성의 안전성과 유효성 강화하기](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/Kotlin-pattern-2.md)
+* [코루틴 Dispatchers.IO: 특징과 활용 가이드](https://github.com/cheese10yun/blog-sample/blob/master/kotlin-coroutine/coroutine-io.md)
 
 ## Node
 * [Apex](https://github.com/cheese10yun/TIL/blob/master/Node/Apex.md)
