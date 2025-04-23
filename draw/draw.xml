@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.16 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36" version="26.0.16" pages="16">
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1" pages="16">
   <diagram id="bR0syG99WqXj30Xq2RZ7" name="Redis">
     <mxGraphModel dx="-7897" dy="-10855" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -19006,7 +19006,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="Pbtxs0vLxRF5FIgpW2CW" name="coroutine">
-    <mxGraphModel dx="819" dy="488" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1200" dy="835" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -19864,34 +19864,40 @@
           <mxGeometry x="1259" y="6090" width="479" height="650" as="geometry" />
         </mxCell>
         <mxCell id="WXXVXHooRKrvNYbhg3hk-1" value="&lt;b&gt;Count 쿼리&lt;br&gt;1,000ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
-          <mxGeometry x="440" y="4100" width="170" height="40" as="geometry" />
+          <mxGeometry x="1180" y="3850" width="170" height="40" as="geometry" />
         </mxCell>
         <mxCell id="WXXVXHooRKrvNYbhg3hk-2" value="&lt;b&gt;Content 쿼리&lt;br&gt;500ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
-          <mxGeometry x="590" y="4100" width="110" height="40" as="geometry" />
+          <mxGeometry x="1330" y="3850" width="110" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="WXXVXHooRKrvNYbhg3hk-8" value="&lt;b&gt;Count 쿼리&lt;br&gt;1,000ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
-          <mxGeometry x="1230" y="3940" width="170" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="WXXVXHooRKrvNYbhg3hk-9" value="&lt;b&gt;Content 쿼리&lt;br&gt;500ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
-          <mxGeometry x="1240" y="4000" width="110" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="8GWJd5rTQ6BEoHqJIScO-1" value="&lt;b&gt;Count 쿼리&lt;br&gt;1,000ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+        <mxCell id="8GWJd5rTQ6BEoHqJIScO-1" value="&lt;b&gt;Count 쿼리&lt;br&gt;1,000ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
           <mxGeometry x="2648" y="4010" width="170" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="8GWJd5rTQ6BEoHqJIScO-2" value="&lt;b&gt;Content 쿼리&lt;br&gt;500ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+        <mxCell id="8GWJd5rTQ6BEoHqJIScO-2" value="&lt;b&gt;Content 쿼리&lt;br&gt;500ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
           <mxGeometry x="2798" y="4010" width="110" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="8GWJd5rTQ6BEoHqJIScO-3" value="&lt;b&gt;Count 쿼리&lt;br&gt;1,000ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+        <mxCell id="8GWJd5rTQ6BEoHqJIScO-3" value="&lt;b&gt;Count 쿼리&lt;br&gt;1,000ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
           <mxGeometry x="3000" y="3980" width="170" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="8GWJd5rTQ6BEoHqJIScO-4" value="&lt;b&gt;Content 쿼리&lt;br&gt;500ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+        <mxCell id="8GWJd5rTQ6BEoHqJIScO-4" value="&lt;b&gt;Content 쿼리&lt;br&gt;500ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
           <mxGeometry x="3000" y="4040" width="110" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="8GWJd5rTQ6BEoHqJIScO-5" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <mxCell id="8GWJd5rTQ6BEoHqJIScO-5" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="2930" y="4029.71" as="sourcePoint" />
             <mxPoint x="2980" y="4029.71" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="fW9XEOqGxLraw58qaIBD-1" value="순차 수행" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="3780" width="319" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="fW9XEOqGxLraw58qaIBD-2" value="동시 수행" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="3980" width="319" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="WXXVXHooRKrvNYbhg3hk-8" value="&lt;b&gt;Count 쿼리&lt;br&gt;1,000ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="fW9XEOqGxLraw58qaIBD-2" vertex="1">
+          <mxGeometry x="74.5" y="40" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WXXVXHooRKrvNYbhg3hk-9" value="&lt;b&gt;Content 쿼리&lt;br&gt;500ms&lt;br&gt;&lt;/b&gt;" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="fW9XEOqGxLraw58qaIBD-2" vertex="1">
+          <mxGeometry x="104.5" y="92" width="110" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
