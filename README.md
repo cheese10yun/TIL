@@ -395,10 +395,12 @@
 * [양재동 코드랩](https://www.youtube.com/@user-nl2vv9cj8d)
   * [자바 스프링 실전 가이드](https://www.youtube.com/watch?v=TIag2sXhZRk)
   * [Kotlin 기반 Spring Boot를 통한 REST API 개발](https://www.youtube.com/watch?v=l7k1PnEgt94)
-* [한 번에 끝내는 Spring 완.전.판 강의](https://fastcampus.co.kr/dev_online_spring)
-  * Part 6: Spring Security OAuth2 Social
-  * Part 8: Spring REST Docs
-  * Part 9: 리팩토링: 유지보수하기 좋은 코드 디자인
+* 패스트캠퍼스 강의
+  * [한 번에 끝내는 Spring 완.전.판 강의](https://fastcampus.co.kr/dev_online_spring)
+    * Part 6: Spring Security OAuth2 Social
+    * Part 8: Spring REST Docs
+    * Part 9: 리팩토링: 유지보수하기 좋은 코드 디자인
+  * [실무를 위한 Spring Batch의 모든 것 : 성능 개선부터 프로젝트까지](https://fastcampus.co.kr/dev_online_springbatch)
 * [스프링 캠프 2023 - 실무에서 적용하는 테스트 코드 작성 방법과 노하우](https://springcamp.ksug.org/2023/) - [발표영상](https://youtu.be/XSkz0kO7J3w?si=GdyjgM0NIiS67bqy)
 * [Kakaopay Tech Blog](https://tech.kakaopay.com/)
   * [실무에서 적용하는 테스트 코드 작성 방법과 노하우 Part 1: 효율적인 Mock Test](https://tech.kakaopay.com/post/mock-test-code/)
