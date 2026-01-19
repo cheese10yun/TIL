@@ -46,6 +46,7 @@
   * [JPQL 조회 방식에 대한 분석](https://github.com/cheese10yun/blog-sample/blob/master/jpa-repeatable-read/README.md)
   * [JPA 페이징 Performance 향상 방법](https://cheese10yun.github.io/page-performance/)
   * [Spring Boot3 Kotlin JPA & Querydsl 적용하기](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/spirngboot3-jpa-querydsl.md)
+  * [QueryDSL을 이용한 Batch Insert 성능 개선](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/querydsl-batch-insert.md)
 * Mongo
   * [Spring Data MongoDB Repository 확장](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongo-custom-repository.md)
   * [Spring Data MongoDB Repository 확장 - Aggregation 기반 페이징 처리](https://github.com/cheese10yun/blog-sample/blob/master/mongo-study/mongo-custom-repository-2.md)
