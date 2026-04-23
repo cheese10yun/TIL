@@ -230,7 +230,7 @@
 * [Spring OOP 프로그래밍 예제(4) - Service, ServiceImpl 구조에 대한 고찰](https://github.com/cheese10yun/blog-sample/blob/master/service/README.md)
 * [Spring OOP 프로그래밍 예제(5) - 외부 API(PagerDuty) 호출](https://github.com/cheese10yun/blog-sample/blob/master/pagerduty/README.md)
 * [Spring OOP 프로그래밍 예제(6) - 예제로 보는 캡슐화](https://github.com/cheese10yun/blog-sample/blob/master/encapsulation/README.md)
-* [좋은 캡슐화란 무엇인가 - private 생성자와 invoke를 활용한 객체 설계](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/kotlin-encapsulation-invoke.md)
+* [좋은 캡슐화란 무엇인가 - private 생성자와 invoke를 활용한 객체 설계](https://github.com/cheese10yun/blog-sample/blob/master/query-dsl/docs/test-feedback-encapsulation.md.md)
 
 ## Docker
 * [Docker 기초](https://github.com/cheese10yun/TIL/blob/master/docker/docker-beginner.md)
